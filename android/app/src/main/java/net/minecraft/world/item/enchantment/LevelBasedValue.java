@@ -50,7 +50,7 @@ public interface LevelBasedValue {
    record Clamped(LevelBasedValue value, float min, float max) implements LevelBasedValue {
       public static final MapCodec<LevelBasedValue.Clamped> CODEC = RecordCodecBuilder.mapCodec(
             i -> i.group(
-                  ((Codec<LevelBasedValue>)LevelBasedValue.CODEC).fieldOf("value").forGetter((LevelBasedValue.Clamped c) -> c.value()),
+                  Codec.lazyInitialized(() -> LevelBasedValue.CODEC).fieldOf("value").forGetter((LevelBasedValue.Clamped c) -> c.value()),
                   Codec.FLOAT.fieldOf("min").forGetter((LevelBasedValue.Clamped c) -> c.min()),
                   Codec.FLOAT.fieldOf("max").forGetter((LevelBasedValue.Clamped c) -> c.max())
                )
@@ -88,9 +88,9 @@ public interface LevelBasedValue {
 
    record Exponent(LevelBasedValue base, LevelBasedValue power) implements LevelBasedValue {
       public static final MapCodec<LevelBasedValue.Exponent> CODEC = RecordCodecBuilder.mapCodec(
-         i -> i.<LevelBasedValue, LevelBasedValue>group(
-               LevelBasedValue.CODEC.fieldOf("base").forGetter(LevelBasedValue.Exponent::base),
-               LevelBasedValue.CODEC.fieldOf("power").forGetter(LevelBasedValue.Exponent::power)
+         i -> i.group(
+               Codec.lazyInitialized(() -> LevelBasedValue.CODEC).fieldOf("base").forGetter((LevelBasedValue.Exponent e) -> e.base()),
+               Codec.lazyInitialized(() -> LevelBasedValue.CODEC).fieldOf("power").forGetter((LevelBasedValue.Exponent e) -> e.power())
             )
             .apply(i, LevelBasedValue.Exponent::new)
       );
@@ -108,9 +108,9 @@ public interface LevelBasedValue {
 
    record Fraction(LevelBasedValue numerator, LevelBasedValue denominator) implements LevelBasedValue {
       public static final MapCodec<LevelBasedValue.Fraction> CODEC = RecordCodecBuilder.mapCodec(
-         i -> i.<LevelBasedValue, LevelBasedValue>group(
-               LevelBasedValue.CODEC.fieldOf("numerator").forGetter(LevelBasedValue.Fraction::numerator),
-               LevelBasedValue.CODEC.fieldOf("denominator").forGetter(LevelBasedValue.Fraction::denominator)
+         i -> i.group(
+               Codec.lazyInitialized(() -> LevelBasedValue.CODEC).fieldOf("numerator").forGetter((LevelBasedValue.Fraction f) -> f.numerator()),
+               Codec.lazyInitialized(() -> LevelBasedValue.CODEC).fieldOf("denominator").forGetter((LevelBasedValue.Fraction f) -> f.denominator())
             )
             .apply(i, LevelBasedValue.Fraction::new)
       );
@@ -129,7 +129,7 @@ public interface LevelBasedValue {
 
    record LevelsSquared(float added) implements LevelBasedValue {
       public static final MapCodec<LevelBasedValue.LevelsSquared> CODEC = RecordCodecBuilder.mapCodec(
-         i -> i.<Float>group(Codec.FLOAT.fieldOf("added").forGetter(LevelBasedValue.LevelsSquared::added)).apply(i, LevelBasedValue.LevelsSquared::new)
+         i -> i.group(Codec.FLOAT.fieldOf("added").forGetter((LevelBasedValue.LevelsSquared ls) -> ls.added())).apply(i, LevelBasedValue.LevelsSquared::new)
       );
 
       @Override
@@ -145,9 +145,9 @@ public interface LevelBasedValue {
 
    record Linear(float base, float perLevelAboveFirst) implements LevelBasedValue {
       public static final MapCodec<LevelBasedValue.Linear> CODEC = RecordCodecBuilder.mapCodec(
-         i -> i.<Float, Float>group(
-               Codec.FLOAT.fieldOf("base").forGetter(LevelBasedValue.Linear::base),
-               Codec.FLOAT.fieldOf("per_level_above_first").forGetter(LevelBasedValue.Linear::perLevelAboveFirst)
+         i -> i.group(
+               Codec.FLOAT.fieldOf("base").forGetter((LevelBasedValue.Linear l) -> l.base()),
+               Codec.FLOAT.fieldOf("per_level_above_first").forGetter((LevelBasedValue.Linear l) -> l.perLevelAboveFirst())
             )
             .apply(i, LevelBasedValue.Linear::new)
       );
@@ -165,9 +165,9 @@ public interface LevelBasedValue {
 
    record Lookup(List<Float> values, LevelBasedValue fallback) implements LevelBasedValue {
       public static final MapCodec<LevelBasedValue.Lookup> CODEC = RecordCodecBuilder.mapCodec(
-         i -> i.<List<Float>, LevelBasedValue>group(
-               Codec.FLOAT.listOf().fieldOf("values").forGetter(LevelBasedValue.Lookup::values),
-               LevelBasedValue.CODEC.fieldOf("fallback").forGetter(LevelBasedValue.Lookup::fallback)
+         i -> i.group(
+               Codec.FLOAT.listOf().fieldOf("values").forGetter((LevelBasedValue.Lookup l) -> l.values()),
+               Codec.lazyInitialized(() -> LevelBasedValue.CODEC).fieldOf("fallback").forGetter((LevelBasedValue.Lookup l) -> l.fallback())
             )
             .apply(i, LevelBasedValue.Lookup::new)
       );

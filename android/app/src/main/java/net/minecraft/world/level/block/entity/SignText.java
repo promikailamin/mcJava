@@ -115,7 +115,7 @@ public class SignText {
       return this.renderMessages;
    }
 
-   private Optional<List<Component>> filteredMessagesForSerialization() {
+   Optional<List<Component>> filteredMessagesForSerialization() {
       return this.filteredMessages.equals(this.messages) ? Optional.empty() : Optional.of(this.filteredMessages);
    }
 
