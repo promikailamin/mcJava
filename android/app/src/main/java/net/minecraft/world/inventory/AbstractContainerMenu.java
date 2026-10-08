@@ -197,7 +197,7 @@ public abstract class AbstractContainerMenu {
    public void broadcastChanges() {
       for (int i = 0; i < this.slots.size(); i++) {
          ItemStack current = this.slots.get(i).getItem();
-         Supplier<ItemStack> currentCopy = Suppliers.memoize(current::copy);
+         com.google.common.base.Supplier<ItemStack> currentCopy = Suppliers.memoize(current::copy);
          this.triggerSlotListeners(i, current, currentCopy);
          this.synchronizeSlotToRemote(i, current, currentCopy);
       }

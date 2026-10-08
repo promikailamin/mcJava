@@ -2,7 +2,7 @@ package net.minecraft.world.level;
 
 import com.google.common.base.Suppliers;
 import java.util.List;
-import java.util.function.Supplier;
+import com.google.common.base.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;

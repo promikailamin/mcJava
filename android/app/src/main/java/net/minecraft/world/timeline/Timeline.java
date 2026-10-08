@@ -36,12 +36,12 @@ public class Timeline {
    );
    public static final Codec<Timeline> DIRECT_CODEC = RecordCodecBuilder.create(
          i -> i.group(
-               WorldClock.CODEC.fieldOf("clock").forGetter(t -> t.clock),
-               ExtraCodecs.POSITIVE_INT.optionalFieldOf("period_ticks").forGetter(t -> t.periodTicks),
-               TRACKS_CODEC.optionalFieldOf("tracks", Map.of()).forGetter(t -> t.tracks),
+               WorldClock.CODEC.fieldOf("clock").forGetter((Timeline t) -> t.clock),
+               ExtraCodecs.POSITIVE_INT.optionalFieldOf("period_ticks").forGetter((Timeline t) -> t.periodTicks),
+               TRACKS_CODEC.optionalFieldOf("tracks", Map.of()).forGetter((Timeline t) -> t.tracks),
                Codec.unboundedMap(ClockTimeMarker.KEY_CODEC, Timeline.TimeMarkerInfo.CODEC)
                   .optionalFieldOf("time_markers", Map.of())
-                  .forGetter(t -> t.timeMarkers)
+                  .forGetter((Timeline t) -> t.timeMarkers)
             )
             .apply(i, Timeline::new)
       )

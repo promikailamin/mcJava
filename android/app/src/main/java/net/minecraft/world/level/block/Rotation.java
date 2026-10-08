@@ -76,7 +76,9 @@ public enum Rotation implements StringRepresentable {
                default -> throw new IllegalArgumentException("Unknown rotation: " + rotation);
             }
          }
-         default -> this;
+         default -> {
+            yield this;
+         }
       };
    }
 
