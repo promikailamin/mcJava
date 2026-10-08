@@ -11,6 +11,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // Mojang's own Maven repo hosting com.mojang artifacts (authlib, brigadier,
+        // datafixerupper, blocklist, logging).
+        maven { url = uri('https://libraries.minecraft.net/') }
     }
 }
 
