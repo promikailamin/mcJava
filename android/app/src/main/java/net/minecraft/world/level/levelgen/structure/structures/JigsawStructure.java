@@ -34,7 +34,7 @@ public final class JigsawStructure extends Structure {
    public static final int MIN_DEPTH = 0;
    public static final int MAX_DEPTH = 20;
    public static final MapCodec<JigsawStructure> CODEC = RecordCodecBuilder.mapCodec(
-         i -> i.group(
+         (Instance<JigsawStructure> i) -> i.group(
                Structure.<JigsawStructure>settingsCodec(i),
                StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter(j -> j.startPool),
                Identifier.CODEC.optionalFieldOf("start_jigsaw_name").forGetter(j -> j.startJigsawName),
@@ -61,7 +61,7 @@ public final class JigsawStructure extends Structure {
    private final DimensionPadding dimensionPadding;
    private final LiquidSettings liquidSettings;
 
-   private static DataResult<JigsawStructure> verifyRange(final JigsawStructure structure) {
+   static DataResult<JigsawStructure> verifyRange(final JigsawStructure structure) {
       int edgeNeeded = switch (structure.terrainAdaptation()) {
          case NONE -> 0;
          case BURY, BEARD_THIN, BEARD_BOX, ENCAPSULATE -> 12;

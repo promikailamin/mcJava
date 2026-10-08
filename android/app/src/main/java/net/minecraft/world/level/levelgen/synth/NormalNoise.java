@@ -366,7 +366,7 @@ public final class NormalNoise {
          )
          .validate(NormalNoise.Parameters::validate);
 
-      private static DataResult<NormalNoise.Parameters> validate(final NormalNoise.Parameters parameters) {
+      static DataResult<NormalNoise.Parameters> validate(final NormalNoise.Parameters parameters) {
          return !parameters.amplitudeModifiers().isEmpty() && parameters.amplitudeModifiers().size() != parameters.octaveCount()
             ? DataResult.error(
                () -> "amplitude_modifiers had size " + parameters.amplitudeModifiers().size() + ", but octave_count was " + parameters.octaveCount()

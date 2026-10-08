@@ -49,14 +49,14 @@ public interface LevelBasedValue {
 
    record Clamped(LevelBasedValue value, float min, float max) implements LevelBasedValue {
       public static final MapCodec<LevelBasedValue.Clamped> CODEC = RecordCodecBuilder.mapCodec(
-            i -> i.group(
+            i -> i.<LevelBasedValue, Float, Float>group(
                   ((Codec<LevelBasedValue>)LevelBasedValue.CODEC).fieldOf("value").forGetter(LevelBasedValue.Clamped::value),
                   Codec.FLOAT.fieldOf("min").forGetter(LevelBasedValue.Clamped::min),
                   Codec.FLOAT.fieldOf("max").forGetter(LevelBasedValue.Clamped::max)
                )
                .apply(i, LevelBasedValue.Clamped::new)
          )
-         .validate(u -> u.max <= u.min ? DataResult.error(() -> "Max must be larger than min, min: " + u.min + ", max: " + u.max) : DataResult.success(u));
+         .validate((LevelBasedValue.Clamped u) -> u.max <= u.min ? DataResult.error(() -> "Max must be larger than min, min: " + u.min + ", max: " + u.max) : DataResult.success(u));
 
       @Override
       public float calculate(final int level) {
