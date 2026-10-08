@@ -37,7 +37,8 @@ member names (`game_view`, `client_launcher`, `set_swap_function`); upstream `ne
 
 ## Building
 
-Requires: Android Studio / AGP 8.x, `compileSdk 35`, JDK 17.
+Requires: Android Studio / AGP 8.5.2, `compileSdk 35`, JDK 21 (the 26.3 sources use
+record patterns / pattern-matching switch).
 
 ```
 cd android
