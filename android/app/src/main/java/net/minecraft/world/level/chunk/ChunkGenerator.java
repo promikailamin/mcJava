@@ -90,7 +90,7 @@ import org.jspecify.annotations.Nullable;
 public abstract class ChunkGenerator {
    public static final Codec<ChunkGenerator> CODEC = BuiltInRegistries.CHUNK_GENERATOR.byNameCodec().dispatchStable(ChunkGenerator::codec, Function.identity());
    protected final BiomeSource biomeSource;
-   private final Supplier<List<FeatureSorter.StepFeatureData>> featuresPerStep;
+   private final com.google.common.base.Supplier<List<FeatureSorter.StepFeatureData>> featuresPerStep;
    private final Function<Holder<Biome>, BiomeGenerationSettings> generationSettingsGetter;
 
    public ChunkGenerator(final BiomeSource biomeSource) {

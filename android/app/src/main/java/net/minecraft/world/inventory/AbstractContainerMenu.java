@@ -237,7 +237,7 @@ public abstract class AbstractContainerMenu {
       }
    }
 
-   private void triggerSlotListeners(final int i, final ItemStack current, final Supplier<ItemStack> currentCopy) {
+   private void triggerSlotListeners(final int i, final ItemStack current, final com.google.common.base.Supplier<ItemStack> currentCopy) {
       ItemStack localExpected = this.lastSlots.get(i);
       if (!ItemStack.matches(localExpected, current)) {
          ItemStack newItem = currentCopy.get();
@@ -249,7 +249,7 @@ public abstract class AbstractContainerMenu {
       }
    }
 
-   private void synchronizeSlotToRemote(final int i, final ItemStack current, final Supplier<ItemStack> currentCopy) {
+   private void synchronizeSlotToRemote(final int i, final ItemStack current, final com.google.common.base.Supplier<ItemStack> currentCopy) {
       if (!this.suppressRemoteUpdates) {
          RemoteSlot remoteExpected = this.remoteSlots.get(i);
          if (!remoteExpected.matches(current)) {
