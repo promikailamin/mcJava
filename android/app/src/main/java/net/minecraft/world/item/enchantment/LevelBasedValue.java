@@ -12,6 +12,25 @@ import net.minecraft.util.Mth;
 
 public interface LevelBasedValue {
    Codec<LevelBasedValue> DISPATCH_CODEC = BuiltInRegistries.ENCHANTMENT_LEVEL_BASED_VALUE_TYPE.byNameCodec().dispatch(LevelBasedValue::codec, c -> c);
+
+   record Constant(float value) implements LevelBasedValue {
+      public static final Codec<LevelBasedValue.Constant> CODEC = Codec.FLOAT.xmap(LevelBasedValue.Constant::new, LevelBasedValue.Constant::value);
+      public static final MapCodec<LevelBasedValue.Constant> TYPED_CODEC = RecordCodecBuilder.mapCodec(
+         i -> i.group(Codec.FLOAT.fieldOf("value").forGetter(LevelBasedValue.Constant::value)).apply(i, LevelBasedValue.Constant::new)
+      );
+
+      @Override
+      public float calculate(final int level) {
+         return this.value;
+      }
+
+      @Override
+      public MapCodec<LevelBasedValue.Constant> codec() {
+         return TYPED_CODEC;
+      }
+   }
+
+   Codec<LevelBasedValue> DISPATCH_CODEC = BuiltInRegistries.ENCHANTMENT_LEVEL_BASED_VALUE_TYPE.byNameCodec().dispatch(LevelBasedValue::codec, c -> c);
    Codec<LevelBasedValue> CODEC = Codec.either(LevelBasedValue.Constant.CODEC, DISPATCH_CODEC)
       .xmap(
          either -> (LevelBasedValue)either.map(l -> l, r -> r),
@@ -73,23 +92,6 @@ public interface LevelBasedValue {
       }
    }
 
-   record Constant(float value) implements LevelBasedValue {
-      public static final Codec<LevelBasedValue.Constant> CODEC = Codec.FLOAT.xmap(LevelBasedValue.Constant::new, LevelBasedValue.Constant::value);
-      public static final MapCodec<LevelBasedValue.Constant> TYPED_CODEC = RecordCodecBuilder.mapCodec(
-         i -> i.group(Codec.FLOAT.fieldOf("value").forGetter(LevelBasedValue.Constant::value)).apply(i, LevelBasedValue.Constant::new)
-      );
-
-      @Override
-      public float calculate(final int level) {
-         return this.value;
-      }
-
-      @Override
-      public MapCodec<LevelBasedValue.Constant> codec() {
-         return TYPED_CODEC;
-      }
-   }
-
    record Exponent(LevelBasedValue base, LevelBasedValue power) implements LevelBasedValue {
       public static final MapCodec<LevelBasedValue.Exponent> CODEC = RecordCodecBuilder.mapCodec(
          i -> i.group(
@@ -133,7 +135,7 @@ public interface LevelBasedValue {
 
    record LevelsSquared(float added) implements LevelBasedValue {
       public static final MapCodec<LevelBasedValue.LevelsSquared> CODEC = RecordCodecBuilder.mapCodec(
-         i -> i.group(Codec.FLOAT.fieldOf("added").forGetter((LevelBasedValue.LevelsSquared ls) -> ls.added())).apply(i, LevelBasedValue.LevelsSquared::new)
+         i -> i.group(Codec.FLOAT.fieldOf("added").forGetter(ls -> ls.added())).apply(i, LevelBasedValue.LevelsSquared::new)
       );
 
       @Override
@@ -150,8 +152,8 @@ public interface LevelBasedValue {
    record Linear(float base, float perLevelAboveFirst) implements LevelBasedValue {
       public static final MapCodec<LevelBasedValue.Linear> CODEC = RecordCodecBuilder.mapCodec(
          i -> i.group(
-               Codec.FLOAT.fieldOf("base").forGetter((LevelBasedValue.Linear l) -> l.base()),
-               Codec.FLOAT.fieldOf("per_level_above_first").forGetter((LevelBasedValue.Linear l) -> l.perLevelAboveFirst())
+               Codec.FLOAT.fieldOf("base").forGetter(l -> l.base()),
+               Codec.FLOAT.fieldOf("per_level_above_first").forGetter(l -> l.perLevelAboveFirst())
             )
             .apply(i, LevelBasedValue.Linear::new)
       );
