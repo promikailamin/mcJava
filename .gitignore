@@ -1,0 +1,20 @@
+# Gradle / Android build output
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+.kotlin/
+build/
+captures/
+
+# IDE
+.idea/
+*.iml
+
+# Local downloads & decompile workspace (kept out of the repository)
+dl/
+mcsrc/
+*.jar
+
+# OS
+.DS_Store

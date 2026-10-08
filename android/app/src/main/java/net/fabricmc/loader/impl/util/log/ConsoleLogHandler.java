@@ -1,0 +1,54 @@
+package net.fabricmc.loader.impl.util.log;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+public class ConsoleLogHandler implements LogHandler {
+   private static final LogLevel MIN_STDERR_LEVEL = LogLevel.ERROR;
+   private static final LogLevel MIN_STDOUT_LEVEL = LogLevel.getDefault();
+
+   @Override
+   public void log(long time, LogLevel level, LogCategory category, String msg, Throwable exc, boolean fromReplay, boolean wasSuppressed) {
+      String formatted = formatLog(time, level, category, msg, exc);
+      if (level.isLessThan(MIN_STDERR_LEVEL)) {
+         System.out.print(formatted);
+      } else {
+         System.err.print(formatted);
+      }
+   }
+
+   protected static String formatLog(long time, LogLevel level, LogCategory category, String msg, Throwable exc) {
+      String ret = String.format("[%tT] [%s] [%s/%s]: %s%n", time, level.name(), category.context, category.name, msg);
+      if (exc != null) {
+         StringWriter writer = new StringWriter(ret.length() + 500);
+         PrintWriter pw = new PrintWriter(writer, false);
+
+         try {
+            pw.print(ret);
+            exc.printStackTrace(pw);
+         } catch (Throwable var12) {
+            try {
+               pw.close();
+            } catch (Throwable var11) {
+               var12.addSuppressed(var11);
+            }
+
+            throw var12;
+         }
+
+         pw.close();
+         ret = writer.toString();
+      }
+
+      return ret;
+   }
+
+   @Override
+   public boolean shouldLog(LogLevel level, LogCategory category) {
+      return !level.isLessThan(MIN_STDOUT_LEVEL);
+   }
+
+   @Override
+   public void close() {
+   }
+}

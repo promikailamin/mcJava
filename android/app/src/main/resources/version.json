@@ -1,0 +1,16 @@
+{
+  "id": "26.3",
+  "name": "26.3",
+  "world_version": 5023,
+  "series_id": "main",
+  "protocol_version": 777,
+  "pack_version": {
+    "resource_major": 97,
+    "resource_minor": 1,
+    "data_major": 121,
+    "data_minor": 0
+  },
+  "build_time": "2026-03-26T12:00:00Z",
+  "stable": true,
+  "release_target": "26.3"
+}

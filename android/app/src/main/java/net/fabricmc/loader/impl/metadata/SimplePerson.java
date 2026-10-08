@@ -1,0 +1,22 @@
+package net.fabricmc.loader.impl.metadata;
+
+import net.fabricmc.loader.api.metadata.ContactInformation;
+import net.fabricmc.loader.api.metadata.Person;
+
+class SimplePerson implements Person {
+   private final String name;
+
+   SimplePerson(String name) {
+      this.name = name;
+   }
+
+   @Override
+   public String getName() {
+      return this.name;
+   }
+
+   @Override
+   public ContactInformation getContact() {
+      return ContactInformation.EMPTY;
+   }
+}
