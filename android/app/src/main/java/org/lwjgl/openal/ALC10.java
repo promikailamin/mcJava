@@ -96,4 +96,21 @@ public final class ALC10 {
         };
         return java.nio.charset.StandardCharsets.UTF_8.encode(s);
     }
+
+    public static String alcGetStringString(long device, int param) {
+        ByteBuffer buffer = alcGetString(device, param);
+        if (buffer == null) {
+            return null;
+        }
+        ByteBuffer b = buffer.duplicate();
+        StringBuilder sb = new StringBuilder(b.remaining());
+        while (b.hasRemaining()) {
+            byte c = b.get();
+            if (c == 0) {
+                break;
+            }
+            sb.append((char) (c & 0xFF));
+        }
+        return sb.toString();
+    }
 }

@@ -11,11 +11,17 @@ public abstract class Struct implements NativeType {
     private long address;
     private Struct tracked;
 
-    protected abstract int sizeof();
-
     @Override
     public long sizeof() {
-        return sizeof();
+        return nativeSize();
+    }
+
+    public long nativeSize() {
+        return sizeOfStruct();
+    }
+
+    protected long sizeOfStruct() {
+        return 16L;
     }
 
     public long address() {

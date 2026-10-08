@@ -15,7 +15,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.management.ThreadInfo;
+import net.minecraft.util.ThreadInfo;
 import java.net.Proxy;
 import java.nio.file.FileStore;
 import java.nio.file.Files;

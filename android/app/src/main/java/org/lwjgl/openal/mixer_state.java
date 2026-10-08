@@ -38,7 +38,7 @@ final class mixer_state {
         int format;
     }
 
-    private static final class source_state {
+    static final class source_state {
         int state = 0x1011; // AL_INITIAL
         float pitch = 1.0f;
         float gain = 1.0f;

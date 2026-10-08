@@ -5,7 +5,6 @@ import com.mojang.datafixers.DataFixer;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.Lifecycle;
-import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -219,7 +218,7 @@ public class Main {
                server.setDemo(options.has(demo));
                server.setId((String)options.valueOf(serverId));
                boolean gui = !options.has(nogui) && !options.valuesOf(nonOptions).contains("nogui");
-               if (gui && !GraphicsEnvironment.isHeadless()) {
+               if (gui && !isHeadless()) {
                   server.showGui();
                }
 
@@ -237,6 +236,10 @@ public class Main {
       } catch (Throwable t) {
          LOGGER.error(LogUtils.FATAL_MARKER, "Failed to start the minecraft server", t);
       }
+   }
+
+   private static boolean isHeadless() {
+      return true;
    }
 
    private static WorldLoader.DataLoadOutput<LevelDataAndDimensions.WorldDataAndGenSettings> createNewWorldData(

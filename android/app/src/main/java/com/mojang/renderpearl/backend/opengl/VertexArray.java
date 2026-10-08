@@ -35,7 +35,7 @@ public abstract sealed class VertexArray implements UncheckedAutoCloseable permi
 
    public abstract void bind(final @Nullable GpuBufferSlice[] vertexBuffers);
 
-   private static final class Emulated extends VertexArray {
+   static final class Emulated extends VertexArray {
       private final int[] bufferStride = new int[16];
       private final int[] bufferDivisor = new int[16];
       private final int[] bufferIndex = new int[16];
@@ -104,7 +104,7 @@ public abstract sealed class VertexArray implements UncheckedAutoCloseable permi
       }
    }
 
-   private static final class Separate extends VertexArray {
+   static final class Separate extends VertexArray {
       private final boolean needsMesaWorkaround;
       private final int[] strides = new int[16];
 

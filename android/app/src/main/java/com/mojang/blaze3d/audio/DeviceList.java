@@ -15,7 +15,7 @@ public record DeviceList(@Nullable String defaultDevice, List<String> allDevices
       }
 
       List<String> allDevices = Objects.requireNonNullElse(ALUtil.getStringList(0L, 4115), List.of());
-      String defaultDevice = ALC10.alcGetString(0L, 4114);
+      String defaultDevice = ALC10.alcGetStringString(0L, 4114);
       return new DeviceList(defaultDevice, allDevices);
    }
 }

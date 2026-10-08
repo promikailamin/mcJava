@@ -78,7 +78,7 @@ public final class MemoryUtil {
 
     private static final AtomicLong NEXT_HANDLE = new AtomicLong(0x1000L);
     private static final NavigableMap<Long, Region> REGIONS = new TreeMap<>();
-    private static final ConcurrentHashMap<ByteBuffer, Long> SLICES = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Buffer, Long> SLICES = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<Buffer, Long> HANDLED = new ConcurrentHashMap<>();
 
     private static final boolean DEBUG = Boolean.parseBoolean(
@@ -190,7 +190,7 @@ public final class MemoryUtil {
         if (address == 0L) {
             return null;
         }
-        return REGIONS.floorEntry(address).value;
+        return REGIONS.floorEntry(address).getValue();
     }
 
     /** Resolve an address to the nearest mapped arena (throws on garbage handles). */
@@ -378,7 +378,7 @@ public final class MemoryUtil {
         ByteBuffer s = sr.bytes();
         ByteBuffer d = dr.bytes();
         s.limit(sc);
-        d.put(s.slice().limit(dc));
+        d.put((ByteBuffer) s.slice().limit(dc));
     }
 
     public static void memCopy(ByteBuffer src, long dst, long count) {
@@ -386,7 +386,7 @@ public final class MemoryUtil {
         ByteBuffer s = src.duplicate();
         ByteBuffer d = dr.bytes();
         int n = (int) Math.min(count, Math.min(s.remaining(), d.capacity()));
-        d.put(s.slice().limit(n));
+        d.put((ByteBuffer) s.slice().limit(n));
     }
 
     public static void memSet(long address, int value, long count) {

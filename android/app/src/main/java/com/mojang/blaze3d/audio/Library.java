@@ -194,9 +194,9 @@ public class Library {
    }
 
    private static String queryDeviceName(final long deviceId) {
-      String name = ALC10.alcGetString(deviceId, 4115);
+      String name = ALC10.alcGetStringString(deviceId, 4115);
       if (name == null) {
-         name = ALC10.alcGetString(deviceId, 4101);
+         name = ALC10.alcGetStringString(deviceId, 4101);
       }
 
       if (name == null) {

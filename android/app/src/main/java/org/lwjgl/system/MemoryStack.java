@@ -7,6 +7,8 @@ import java.nio.IntBuffer;
 import java.nio.LongBuffer;
 import java.nio.ShortBuffer;
 
+import org.lwjgl.PointerBuffer;
+
 /**
  * Strict forward-American style allocator stack ({@code stackPush}/{@code pop}) backed by
  * individually allocated {@link MemoryUtil} arenas, freed on {@code pop()}.
@@ -15,7 +17,7 @@ public class MemoryStack {
 
     private static final ThreadLocal<MemoryStack> THREAD_STACK = ThreadLocal.withInitial(MemoryStack::new);
 
-    private final java.util.ArrayDeque<Long> freeStack = new java.util.ArrayDeque<>();
+    private final java.util.ArrayDeque<Integer> freeStack = new java.util.ArrayDeque<>();
     private int frameBase;
 
     public static MemoryStack stackGet() {

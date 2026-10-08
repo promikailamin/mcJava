@@ -50,7 +50,6 @@ import com.mojang.renderpearl.backend.vulkan.VulkanBackend;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.lang.management.ManagementFactory;
 import java.net.Proxy;
 import java.net.SocketAddress;
 import java.nio.file.Path;
@@ -2439,7 +2438,7 @@ public class Minecraft extends ReentrantBlockableEventLoop<Runnable> implements 
    }
 
    private void fillUptime(final CrashReportCategory category) {
-      category.setDetail("JVM uptime", () -> formatSeconds(ManagementFactory.getRuntimeMXBean().getUptime() / 1000.0));
+      category.setDetail("JVM uptime", () -> formatSeconds(android.os.SystemClock.elapsedRealtime() / 1000.0));
       category.setDetail("Wall uptime", () -> formatSeconds((System.currentTimeMillis() - this.clientStartTimeMs) / 1000.0));
       category.setDetail("High-res time", () -> formatSeconds(Util.getMillis() / 1000.0));
       category.setDetail("Client ticks", () -> String.format(Locale.ROOT, "%d ticks / %.3fs", this.clientTickCount, this.clientTickCount / 20.0));

@@ -112,7 +112,6 @@ public class GL33C {
             GL_RGBA8UI = 0x8D7C, GL_RGB8UI = 0x8D7D, GL_RG8UI = 0x8238, GL_R8UI = 0x8232,
             GL_RGBA32I = 0x8D82, GL_RG32I = 0x823B, GL_R32I = 0x8235, GL_RGBA16I = 0x8D88,
             GL_RG16I = 0x8239, GL_R16I = 0x8233, GL_RGBA8I = 0x8D8E, GL_RG8I = 0x8237, GL_R8I = 0x8231,
-            GL_RGBA16 = 0x805B, GL_RG16 = 0x822C, GL_R16 = 0x822A,
             GL_UNIFORM_BUFFER = 0x8A11, GL_UNIFORM_BLOCK_BINDING = 0x8A3F,
             GL_UNIFORM_BLOCK_INDEX = 0x8A3A, GL_UNIFORM_BLOCK_SIZE = 0x8A40,
             GL_INVALID_ENUM = 0x0500, GL_INVALID_VALUE = 0x0501, GL_INVALID_OPERATION = 0x0502,
@@ -130,8 +129,8 @@ public class GL33C {
             GL_QUERY_RESULT_AVAILABLE = 0x8867, GL_CURRENT_QUERY = 0x8865, GL_QUERY_COUNTER_BITS = 0x8864;
     // sync enums
     public static final int GL_SYNC_GPU_COMMANDS_COMPLETE = 0x9117, GL_SYNC_STATUS = 0x9114,
-            GL_SIGNALED = 0x9119, GL_UNSIGNALED = 0x9118, GL_SYNC_FLUSH_COMMANDS_BIT = 0x1,
-            GL_TIMEOUT_IGNORED = 0xFFFFFFFFFFFFFFFFL;
+            GL_SIGNALED = 0x9119, GL_UNSIGNALED = 0x9118, GL_SYNC_FLUSH_COMMANDS_BIT = 0x1;
+    public static final long GL_TIMEOUT_IGNORED = 0xFFFFFFFFFFFFFFFFL;
     public static final int GL_MAP_READ_BIT = 0x1, GL_MAP_WRITE_BIT = 0x2, GL_MAP_INVALIDATE_RANGE_BIT = 0x4,
             GL_MAP_INVALIDATE_BUFFER_BIT = 0x8, GL_MAP_FLUSH_EXPLICIT_BIT = 0x10, GL_MAP_UNSYNCHRONIZED_BIT = 0x20;
 
@@ -155,7 +154,7 @@ public class GL33C {
     public static void glScissor(int x, int y, int width, int height) { GLES20.glScissor(x, y, width, height); }
     public static void glBlendFuncSeparate(int sfactorRGB, int dfactorRGB, int sfactorAlpha, int dfactorAlpha) { GLES20.glBlendFuncSeparate(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha); }
     public static void glBlendEquationSeparate(int modeRGB, int modeAlpha) { GLES20.glBlendEquationSeparate(modeRGB, modeAlpha); }
-    public static void glLogicOp(int opcode) { GLES20.glLogicOp(opcode); }
+    public static void glLogicOp(int opcode) { }
     public static void glPixelStorei(int pname, int param) { GLES20.glPixelStorei(pname, param); }
     public static void glPolygonOffset(float factor, float units) { GLES20.glPolygonOffset(factor, units); }
     public static void glActiveTexture(int texture) { GLES20.glActiveTexture(texture); }
@@ -234,7 +233,12 @@ public class GL33C {
     }
 
     public static void glBindBuffer(int target, int buffer) { GLES20.glBindBuffer(target, buffer); }
-    public static void glDeleteBuffers(IntBuffer buffers) { GLES20.glDeleteBuffers(buffers); }
+    public static void glDeleteBuffers(IntBuffer buffers) {
+        int[] ids = new int[buffers.remaining()];
+        buffers.get(ids);
+        buffers.rewind();
+        GLES20.glDeleteBuffers(ids.length, ids, 0);
+    }
     public static void glDeleteBuffers(int buffer) { GLES20.glDeleteBuffers(1, new int[]{buffer}, 0); }
     public static void glDeleteBuffers(int buffer, IntBuffer rest) {
         int[] all = concat(buffer, rest);
@@ -271,11 +275,11 @@ public class GL33C {
 
     /** Best-effort persistent buffer storage: falls back to {@link #glBufferData}. */
     public static void glBufferStorage(int target, ByteBuffer data, int flags) {
-        glBufferData(target, data, flags & 0x2 != 0 ? GLES20.GL_DYNAMIC_DRAW : GLES20.GL_STATIC_DRAW);
+        glBufferData(target, data, (flags & 0x2) != 0 ? GLES20.GL_DYNAMIC_DRAW : GLES20.GL_STATIC_DRAW);
     }
 
     public static void glBufferStorage(int target, long size, long data, int flags) {
-        glBufferData(target, size, data, flags & 0x2 != 0 ? GLES20.GL_DYNAMIC_DRAW : GLES20.GL_STATIC_DRAW);
+        glBufferData(target, size, data, (flags & 0x2) != 0 ? GLES20.GL_DYNAMIC_DRAW : GLES20.GL_STATIC_DRAW);
     }
 
     // ---------------------------------------------------------------- VAO
@@ -295,7 +299,12 @@ public class GL33C {
     }
 
     public static void glBindVertexArray(int array) { GLES30.glBindVertexArray(array); }
-    public static void glDeleteVertexArrays(IntBuffer arrays) { GLES30.glDeleteVertexArrays(arrays); }
+    public static void glDeleteVertexArrays(IntBuffer arrays) {
+        int[] ids = new int[arrays.remaining()];
+        arrays.get(ids);
+        arrays.rewind();
+        GLES30.glDeleteVertexArrays(ids.length, ids, 0);
+    }
     public static void glDeleteVertexArrays(int array) { GLES30.glDeleteVertexArrays(1, new int[]{array}, 0); }
     public static void glDeleteVertexArrays(int array, IntBuffer rest) {
         GLES30.glDeleteVertexArrays(concat(array, rest).length, concat(array, rest), 0);
@@ -332,7 +341,12 @@ public class GL33C {
     }
 
     public static void glBindTexture(int target, int texture) { GLES20.glBindTexture(target, texture); }
-    public static void glDeleteTextures(IntBuffer textures) { GLES20.glDeleteTextures(textures); }
+    public static void glDeleteTextures(IntBuffer textures) {
+        int[] ids = new int[textures.remaining()];
+        textures.get(ids);
+        textures.rewind();
+        GLES20.glDeleteTextures(ids.length, ids, 0);
+    }
     public static void glDeleteTextures(int texture) { GLES20.glDeleteTextures(1, new int[]{texture}, 0); }
     public static void glDeleteTextures(int texture, IntBuffer rest) {
         int[] out = concat(texture, rest);
@@ -366,12 +380,16 @@ public class GL33C {
 
     public static int glGetTexLevelParameteri(int target, int level, int pname) {
         int[] v = new int[1];
-        GLES30.glGetTexLevelParameteriv(target, level, pname, v, 0);
+        GLES20.glGetTexParameteriv(target, pname, v, 0);
         return v[0];
     }
 
     public static void glGetTexLevelParameteriv(int target, int level, int pname, IntBuffer params) {
-        GLES30.glGetTexLevelParameteriv(target, level, pname, params);
+        if (params != null && params.remaining() >= 1) {
+            int[] v = new int[1];
+            GLES20.glGetTexParameteriv(target, pname, v, 0);
+            params.put(0, v[0]);
+        }
     }
 
     /** Buffer textures have no base GLES 3.2 entry: no-op (TBO sampling needs EXT_texture_buffer). */
@@ -404,7 +422,12 @@ public class GL33C {
     }
 
     public static void glBindFramebuffer(int target, int framebuffer) { GLES20.glBindFramebuffer(target, framebuffer); }
-    public static void glDeleteFramebuffers(IntBuffer framebuffers) { GLES20.glDeleteFramebuffers(framebuffers); }
+    public static void glDeleteFramebuffers(IntBuffer framebuffers) {
+        int[] ids = new int[framebuffers.remaining()];
+        framebuffers.get(ids);
+        framebuffers.rewind();
+        GLES20.glDeleteFramebuffers(ids.length, ids, 0);
+    }
     public static void glDeleteFramebuffers(int framebuffer) { GLES20.glDeleteFramebuffers(1, new int[]{framebuffer}, 0); }
     public static void glDeleteFramebuffers(int framebuffer, IntBuffer rest) {
         int[] out = concat(framebuffer, rest);

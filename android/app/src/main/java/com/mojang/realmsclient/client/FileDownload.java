@@ -13,12 +13,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpRequest.Builder;
-import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Locale;
@@ -85,62 +81,34 @@ public class FileDownload {
       "LPT9"
    };
 
-   private <T> @Nullable T joinCancellableRequest(final CompletableFuture<T> pendingRequest) throws Throwable {
-      this.pendingRequest = pendingRequest;
-      if (this.cancelled) {
-         pendingRequest.cancel(true);
-         return null;
-      }
-
-      try {
-         try {
-            return pendingRequest.join();
-         } catch (CompletionException e) {
-            throw e.getCause();
-         }
-      } catch (CancellationException e) {
-         return null;
-      }
-   }
-
-   private static HttpClient createClient() {
-      return HttpClient.newBuilder().executor(Util.nonCriticalIoPool()).connectTimeout(Duration.ofMinutes(2L)).build();
-   }
-
-   private static Builder createRequest(final String downloadLink) {
-      return HttpRequest.newBuilder(URI.create(downloadLink)).timeout(Duration.ofMinutes(2L));
+   private static HttpURLConnection openConnection(final String urlString, final String method) throws IOException {
+      HttpURLConnection connection = (HttpURLConnection) URI.create(urlString).toURL().openConnection();
+      connection.setRequestMethod(method);
+      connection.setConnectTimeout(120000);
+      connection.setReadTimeout(120000);
+      connection.setInstanceFollowRedirects(true);
+      connection.setUseCaches(false);
+      return connection;
    }
 
    @CheckReturnValue
    public static OptionalLong contentLength(final String downloadLink) {
+      HttpURLConnection connection = null;
       try {
-         HttpClient client = createClient();
-
-         OptionalLong var3;
-         try {
-            HttpResponse<Void> response = client.send(createRequest(downloadLink).HEAD().build(), BodyHandlers.discarding());
-            var3 = response.headers().firstValueAsLong("Content-Length");
-         } catch (Throwable var5) {
-            if (client != null) {
-               try {
-                  client.close();
-               } catch (Throwable var4) {
-                  var5.addSuppressed(var4);
-               }
-            }
-
-            throw var5;
+         connection = openConnection(downloadLink, "HEAD");
+         long length = connection.getHeaderFieldLong("Content-Length", 0L);
+         if (length > 0L) {
+            return OptionalLong.of(length);
          }
-
-         if (client != null) {
-            client.close();
-         }
-
-         return var3;
       } catch (Exception e) {
          LOGGER.error("Unable to get content length for download");
-         return OptionalLong.empty();
+      } finally {
+         if (connection != null) {
+            connection.disconnect();
+         }
       }
+
+      return OptionalLong.empty();
    }
 
    public void download(
@@ -151,13 +119,11 @@ public class FileDownload {
    ) {
       if (this.currentThread == null) {
          this.currentThread = new Thread(() -> {
-            HttpClient client = createClient();
-
             label205: {
                try {
                   try {
                      this.tempFile = File.createTempFile("backup", ".tar.gz");
-                     this.download(downloadStatus, client, worldDownload.downloadLink(), this.tempFile);
+                     this.download(downloadStatus, worldDownload.downloadLink(), this.tempFile);
                      this.finishWorldDownload(worldName.trim(), this.tempFile, levelStorageSource, downloadStatus);
                   } catch (Exception e) {
                      LOGGER.error("Caught exception while downloading world", e);
@@ -179,7 +145,7 @@ public class FileDownload {
                   if (!resourcePackLink.isEmpty() && !worldDownload.resourcePackHash().isEmpty()) {
                      try {
                         this.tempFile = File.createTempFile("resources", ".tar.gz");
-                        this.download(downloadStatus, client, resourcePackLink, this.tempFile);
+                        this.download(downloadStatus, resourcePackLink, this.tempFile);
                         this.finishResourcePackDownload(downloadStatus, this.tempFile, worldDownload);
                      } catch (Exception e) {
                         LOGGER.error("Caught exception while downloading resource pack", e);
@@ -196,26 +162,10 @@ public class FileDownload {
 
                   this.finished = true;
                } catch (Throwable t$) {
-                  if (client != null) {
-                     try {
-                        client.close();
-                     } catch (Throwable x2) {
-                        t$.addSuppressed(x2);
-                     }
-                  }
-
                   throw t$;
                }
 
-               if (client != null) {
-                  client.close();
-               }
-
                return;
-            }
-
-            if (client != null) {
-               client.close();
             }
          }, "Realms world download");
          this.currentThread.setUncaughtExceptionHandler(new RealmsDefaultUncaughtExceptionHandler(LOGGER));
@@ -223,33 +173,27 @@ public class FileDownload {
       }
    }
 
-   private void download(final RealmsDownloadLatestWorldScreen.DownloadStatus downloadStatus, final HttpClient client, final String url, final File target) throws IOException {
-      HttpRequest request = createRequest(url).GET().build();
-
-      HttpResponse<InputStream> response;
+   private void download(final RealmsDownloadLatestWorldScreen.DownloadStatus downloadStatus, final String url, final File target) throws IOException {
+      HttpURLConnection connection = openConnection(url, "GET");
       try {
-         response = this.joinCancellableRequest(client.sendAsync(request, BodyHandlers.ofInputStream()));
-      } catch (Error e) {
-         throw e;
-      } catch (Throwable e) {
-         LOGGER.error("Failed to download {}", url, e);
-         this.error = true;
-         return;
-      }
-
-      if (response != null && !this.cancelled) {
-         if (response.statusCode() != 200) {
-            this.error = true;
-         } else {
-            downloadStatus.totalBytes = response.headers().firstValueAsLong("Content-Length").orElse(0L);
-
-            try (
-               InputStream is = response.body();
-               OutputStream os = new FileOutputStream(target);
-            ) {
-               is.transferTo(new FileDownload.DownloadCountingOutputStream(os, downloadStatus));
-            }
+         if (this.cancelled) {
+            return;
          }
+
+         if (connection.getResponseCode() != 200) {
+            this.error = true;
+            return;
+         }
+
+         downloadStatus.totalBytes = connection.getHeaderFieldLong("Content-Length", 0L);
+         try (
+            InputStream is = connection.getInputStream();
+            OutputStream os = new FileOutputStream(target);
+         ) {
+            is.transferTo(new FileDownload.DownloadCountingOutputStream(os, downloadStatus));
+         }
+      } finally {
+         connection.disconnect();
       }
    }
 
@@ -260,10 +204,6 @@ public class FileDownload {
       }
 
       this.cancelled = true;
-      CompletableFuture<?> pendingRequest = this.pendingRequest;
-      if (pendingRequest != null) {
-         pendingRequest.cancel(true);
-      }
    }
 
    public boolean isFinished() {

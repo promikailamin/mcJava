@@ -276,7 +276,7 @@ public class RealmsPdpScreen extends RealmsScreen {
          );
       }
 
-      private void addHeader(final Component title, final @Nullable RealmsPdpScreen.PdpHeaderEntry.Subtitle subTitle) {
+      private void addHeader(final Component title, final RealmsPdpScreen.PdpHeaderEntry.Subtitle subTitle) {
          RealmsPdpScreen.PdpHeaderEntry entry = RealmsPdpScreen.this.new PdpHeaderEntry(title, subTitle);
          this.addEntry(entry, entry.entryHeight());
       }

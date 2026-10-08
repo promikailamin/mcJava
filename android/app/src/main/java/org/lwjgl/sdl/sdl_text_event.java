@@ -1,7 +1,7 @@
 package org.lwjgl.sdl;
 
 /** Backs {@code SDL_TextInputEvent}, {@code SDL_TextEditingEvent} and {@code SDL_DropEvent}. */
-public final class sdl_text_event extends sdl_struct {
+public class sdl_text_event extends sdl_struct {
 
     public sdl_text_event(java.util.Map<String, Object> fields, String prefix) {
         super(fields, prefix);

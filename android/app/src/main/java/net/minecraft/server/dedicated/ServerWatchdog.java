@@ -2,7 +2,7 @@ package net.minecraft.server.dedicated;
 
 import com.google.common.collect.Streams;
 import com.mojang.logging.LogUtils;
-import java.lang.management.ThreadInfo;
+import net.minecraft.util.ThreadInfo;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Comparator;

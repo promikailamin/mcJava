@@ -2,8 +2,6 @@ package net.minecraft;
 
 import com.mojang.logging.LogUtils;
 import java.io.FileNotFoundException;
-import java.lang.management.ManagementFactory;
-import java.lang.management.MemoryUsage;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
@@ -61,8 +59,8 @@ public class SystemReport {
          long freeMb = free / 1048576L;
          return free + " bytes (" + freeMb + " MiB) / " + total + " bytes (" + totalMb + " MiB) up to " + max + " bytes (" + maxMb + " MiB)";
       });
-      this.setDetail("Memory (heap)", () -> printMemoryUsage(ManagementFactory.getMemoryMXBean().getHeapMemoryUsage()));
-      this.setDetail("Memory (non-heap)", () -> printMemoryUsage(ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage()));
+      this.setDetail("Memory (heap)", () -> printMemoryUsage(runtimeHeapMemory()));
+      this.setDetail("Memory (non-heap)", () -> printMemoryUsage(runtimeNonHeapMemory()));
       this.setDetail("CPUs", () -> String.valueOf(Runtime.getRuntime().availableProcessors()));
       this.ignoreErrors("hardware", () -> this.putHardware(new SystemInfo()));
       this.ignoreErrors("software", () -> this.putSoftware(new SystemInfo()));
@@ -70,21 +68,32 @@ public class SystemReport {
       this.setDetail("Debug Flags", () -> printJvmFlags(arg -> arg.startsWith("-DMC_DEBUG_")));
    }
 
-   private static String printMemoryUsage(final MemoryUsage memoryUsage) {
+   private static long[] runtimeHeapMemory() {
+      Runtime runtime = Runtime.getRuntime();
+      long total = runtime.totalMemory();
+      long used = total - runtime.freeMemory();
+      return new long[]{total, used, total, runtime.maxMemory()};
+   }
+
+   private static long[] runtimeNonHeapMemory() {
+      long allocated = android.os.Debug.getNativeHeapAllocatedSize();
+      long size = android.os.Debug.getNativeHeapSize();
+      return new long[]{0L, allocated, size, size};
+   }
+
+   private static String printMemoryUsage(final long[] usage) {
       return String.format(
          Locale.ROOT,
          "init: %03dMiB, used: %03dMiB, committed: %03dMiB, max: %03dMiB",
-         memoryUsage.getInit() / 1048576L,
-         memoryUsage.getUsed() / 1048576L,
-         memoryUsage.getCommitted() / 1048576L,
-         memoryUsage.getMax() / 1048576L
+         usage[0] / 1048576L,
+         usage[1] / 1048576L,
+         usage[2] / 1048576L,
+         usage[3] / 1048576L
       );
    }
 
    private static String printJvmFlags(final Predicate<String> selector) {
-      List<String> allArguments = ManagementFactory.getRuntimeMXBean().getInputArguments();
-      List<String> selectedArguments = allArguments.stream().filter(selector).toList();
-      return String.format(Locale.ROOT, "%d total; %s", selectedArguments.size(), String.join(" ", selectedArguments));
+      return "0 total; ";
    }
 
    public void setDetail(final String key, final String value) {

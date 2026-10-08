@@ -14,7 +14,8 @@ public final class SDLMessageBox {
     }
 
     public static boolean SDL_ShowSimpleMessageBox(int flags, CharSequence title, CharSequence message, long parentWindow) {
-        return pro.minecraft.main_activity.showMessageBox(flags, title.toString(), message.toString());
+        pro.minecraft.main_activity.showMessageBox(flags, title.toString(), message.toString());
+        return true;
     }
 
     public static boolean SDL_ShowMessageBox(SDL_MessageBoxData boxdata, java.nio.IntBuffer buttonid) {

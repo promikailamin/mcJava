@@ -25,7 +25,7 @@ public final class STBImage {
             byte[] data = new byte[bytes.remaining()];
             bytes.duplicate().get(data);
             BitmapFactory.Options opts = new BitmapFactory.Options();
-            opts.inPreferredConfig = Bitmap.Config.RGBA_8888;
+            opts.inPreferredConfig = android.graphics.Bitmap.Config.RGBA_8888;
             Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length, opts);
             if (bmp == null) {
                 lastError = "unable to decode image";

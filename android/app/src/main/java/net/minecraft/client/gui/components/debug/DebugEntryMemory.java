@@ -1,7 +1,5 @@
 package net.minecraft.client.gui.components.debug;
 
-import java.lang.management.GarbageCollectorMXBean;
-import java.lang.management.ManagementFactory;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -46,7 +44,6 @@ public class DebugEntryMemory implements DebugScreenEntry {
 
    private static class AllocationRateCalculator {
       private static final int UPDATE_INTERVAL_MS = 500;
-      private static final List<GarbageCollectorMXBean> GC_MBEANS = ManagementFactory.getGarbageCollectorMXBeans();
       private long lastTime = 0L;
       private long lastHeapUsage = -1L;
       private long lastGcCounts = -1L;
@@ -72,13 +69,7 @@ public class DebugEntryMemory implements DebugScreenEntry {
       }
 
       private static long gcCounts() {
-         long total = 0L;
-
-         for (GarbageCollectorMXBean gcBean : GC_MBEANS) {
-            total += gcBean.getCollectionCount();
-         }
-
-         return total;
+         return android.os.Debug.getGlobalGcInvocationCount();
       }
    }
 }

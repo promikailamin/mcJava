@@ -30,9 +30,6 @@ import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ReferenceImmutableList;
 import it.unimi.dsi.fastutil.objects.ReferenceList;
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
-import java.lang.management.ThreadInfo;
-import java.lang.management.ThreadMXBean;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.CopyOption;
@@ -572,8 +569,7 @@ public class Util {
    }
 
    public static ThreadInfo[] dumpThreadInfo() {
-      ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
-      return threadMXBean.dumpAllThreads(threadMXBean.isObjectMonitorUsageSupported(), threadMXBean.isSynchronizerUsageSupported());
+      return Thread.getAllStackTraces().keySet().stream().map(ThreadInfo::new).toArray(ThreadInfo[]::new);
    }
 
    public static Util.OS getPlatform() {

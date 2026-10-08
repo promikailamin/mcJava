@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import net.minecraft.util.filefix.access.FileAccessProvider;
+import net.minecraft.util.filefix.access.ScopedValue;
 import net.minecraft.util.worldupdate.UpgradeProgress;
 
 public class ModifyContent implements FileFixOperation {

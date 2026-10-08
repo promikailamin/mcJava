@@ -80,6 +80,8 @@ android {
                 exclude 'net/minecraft/util/profiling/jfr/serialize/**'
                 exclude 'net/minecraft/util/profiling/jfr/stats/**'
                 exclude 'net/minecraft/util/profiling/jfr/JfrProfiler.java'
+                // SummaryReporter imports the excluded jfr/parse package.
+                exclude 'net/minecraft/util/profiling/jfr/SummaryReporter.java'
                 // javax.swing-based dedicated server admin GUI (desktop-only).
                 exclude 'net/minecraft/server/gui/**'
                 // javax.management JMX registry (JVM-only).
@@ -103,6 +105,8 @@ dependencies {
     implementation 'io.netty:netty-handler:4.2.16.Final'
     implementation 'io.netty:netty-resolver:4.2.16.Final'
     implementation 'io.netty:netty-transport:4.2.16.Final'
+    implementation 'io.netty:netty-transport-classes-epoll:4.2.16.Final'
+    implementation 'io.netty:netty-transport-classes-kqueue:4.2.16.Final'
     implementation 'it.unimi.dsi:fastutil:8.5.18'
     implementation 'org.joml:joml:1.10.9'
     implementation 'org.apache.commons:commons-lang3:3.20.0'

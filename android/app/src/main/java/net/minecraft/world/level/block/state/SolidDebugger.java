@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.Holder;
+import net.minecraft.util.filefix.access.ScopedValue;
 import net.minecraft.world.level.block.Block;
 import org.slf4j.Logger;
 
