@@ -20,7 +20,7 @@ public record CommonDialogData(
    List<Input> inputs
 ) {
    public static final MapCodec<CommonDialogData> MAP_CODEC = RecordCodecBuilder.mapCodec(
-         i -> i.group(
+         i -> i.<CommonDialogData, Component, Optional<Component>, Boolean, Boolean, DialogAction, List<DialogBody>, List<Input>>group(
                ComponentSerialization.CODEC.fieldOf("title").forGetter(CommonDialogData::title),
                ComponentSerialization.CODEC.optionalFieldOf("external_title").forGetter(CommonDialogData::externalTitle),
                Codec.BOOL.optionalFieldOf("can_close_with_escape", true).forGetter(CommonDialogData::canCloseWithEscape),

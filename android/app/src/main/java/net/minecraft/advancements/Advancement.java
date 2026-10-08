@@ -36,7 +36,7 @@ public record Advancement(
    private static final Codec<Map<String, Criterion<?>>> CRITERIA_CODEC = Codec.unboundedMap(Codec.STRING, Criterion.CODEC)
       .validate(criteria -> criteria.isEmpty() ? DataResult.error(() -> "Advancement criteria cannot be empty") : DataResult.success(criteria));
    public static final Codec<Advancement> CODEC = RecordCodecBuilder.create(
-         i -> i.<Optional<Identifier>, Optional<DisplayInfo>, AdvancementRewards, Map<String, Criterion<?>>, Optional<AdvancementRequirements>, Boolean>group(
+         i -> i.<Advancement, Optional<Identifier>, Optional<DisplayInfo>, AdvancementRewards, Map<String, Criterion<?>>, Optional<AdvancementRequirements>, Boolean>group(
                Identifier.CODEC.optionalFieldOf("parent").forGetter(Advancement::parent),
                DisplayInfo.CODEC.optionalFieldOf("display").forGetter(Advancement::display),
                AdvancementRewards.CODEC.optionalFieldOf("rewards", AdvancementRewards.EMPTY).forGetter(Advancement::rewards),

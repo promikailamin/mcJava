@@ -17,7 +17,7 @@ import net.minecraft.world.level.levelgen.WorldDimensions;
 
 public class WorldPreset {
    public static final Codec<WorldPreset> DIRECT_CODEC = RecordCodecBuilder.create(
-         i -> i.group(Codec.unboundedMap(ResourceKey.codec(Registries.LEVEL_STEM), LevelStem.CODEC).fieldOf("dimensions").forGetter((WorldPreset e) -> e.dimensions))
+         i -> i.<WorldPreset, Map<ResourceKey<LevelStem>, LevelStem>>group(Codec.unboundedMap(ResourceKey.codec(Registries.LEVEL_STEM), LevelStem.CODEC).fieldOf("dimensions").forGetter((WorldPreset e) -> e.dimensions))
             .apply(i, WorldPreset::new)
       )
       .validate(WorldPreset::requireOverworld);

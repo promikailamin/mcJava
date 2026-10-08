@@ -355,7 +355,7 @@ public final class NormalNoise {
          .listOf(0, 32)
          .xmap(DoubleArrayList::new, Function.identity());
       public static final Codec<NormalNoise.Parameters> CODEC = RecordCodecBuilder.create(
-            i -> i.<Double, Integer, Integer, NormalNoise.Normalization, DoubleList>group(
+            i -> i.<NormalNoise.Parameters, Double, Integer, Integer, NormalNoise.Normalization, DoubleList>group(
                   Codec.doubleRange(1.0E-5F, 1000000.0).optionalFieldOf("base_amplitude", 1.0).forGetter(NormalNoise.Parameters::baseAmplitude),
                   Codec.intRange(-32, 32).fieldOf("base_octave").forGetter(NormalNoise.Parameters::baseOctave),
                   Codec.intRange(1, 32).optionalFieldOf("octave_count", 1).forGetter(NormalNoise.Parameters::octaveCount),
