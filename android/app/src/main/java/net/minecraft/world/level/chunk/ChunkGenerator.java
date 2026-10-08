@@ -379,7 +379,7 @@ public abstract class ChunkGenerator {
                if (structureManager.shouldGenerateStructures()) {
                   for (Structure structure : structuresByStep.getOrDefault(stepIndex, Collections.emptyList())) {
                      random.setFeatureSeed(decorationSeed, index, stepIndex);
-                     Supplier<String> currentlyGenerating = () -> structuresRegistry.getResourceKey(structure)
+                     java.util.function.Supplier<String> currentlyGenerating = () -> structuresRegistry.getResourceKey(structure)
                         .map(Object::toString)
                         .orElseGet(structure::toString);
 
@@ -419,7 +419,7 @@ public abstract class ChunkGenerator {
                   for (int featureIndex = 0; featureIndex < numberOfFeaturesInStep; featureIndex++) {
                      int globalIndexOfFeature = indexArray[featureIndex];
                      PlacedFeature feature = stepFeatureData.features().get(globalIndexOfFeature);
-                     Supplier<String> currentlyGenerating = () -> featureRegistry.getResourceKey(feature).map(Object::toString).orElseGet(feature::toString);
+                     java.util.function.Supplier<String> currentlyGenerating = () -> featureRegistry.getResourceKey(feature).map(Object::toString).orElseGet(feature::toString);
                      random.setFeatureSeed(decorationSeed, globalIndexOfFeature, stepIndex);
 
                      try {

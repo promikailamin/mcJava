@@ -37,48 +37,28 @@ public enum Rotation implements StringRepresentable {
 
    public Rotation getRotated(final Rotation rot) {
       return switch (rot) {
-         case CLOCKWISE_90 -> {
-            switch (this) {
-               case NONE:
-                  yield CLOCKWISE_90;
-               case CLOCKWISE_90:
-                  yield CLOCKWISE_180;
-               case CLOCKWISE_180:
-                  yield COUNTERCLOCKWISE_90;
-               case COUNTERCLOCKWISE_90:
-                  yield NONE;
-               default -> throw new IllegalArgumentException("Unknown rotation: " + rotation);
-            }
-         }
-         case CLOCKWISE_180 -> {
-            switch (this) {
-               case NONE:
-                  yield CLOCKWISE_180;
-               case CLOCKWISE_90:
-                  yield COUNTERCLOCKWISE_90;
-               case CLOCKWISE_180:
-                  yield NONE;
-               case COUNTERCLOCKWISE_90:
-                  yield CLOCKWISE_90;
-               default -> throw new IllegalArgumentException("Unknown rotation: " + rotation);
-            }
-         }
-         case COUNTERCLOCKWISE_90 -> {
-            switch (this) {
-               case NONE:
-                  yield COUNTERCLOCKWISE_90;
-               case CLOCKWISE_90:
-                  yield NONE;
-               case CLOCKWISE_180:
-                  yield CLOCKWISE_90;
-               case COUNTERCLOCKWISE_90:
-                  yield CLOCKWISE_180;
-               default -> throw new IllegalArgumentException("Unknown rotation: " + rotation);
-            }
-         }
-         default -> {
-            yield this;
-         }
+         case CLOCKWISE_90 -> switch (this) {
+            case NONE -> CLOCKWISE_90;
+            case CLOCKWISE_90 -> CLOCKWISE_180;
+            case CLOCKWISE_180 -> COUNTERCLOCKWISE_90;
+            case COUNTERCLOCKWISE_90 -> NONE;
+            default -> throw new IllegalArgumentException("Unknown rotation: " + rotation);
+         };
+         case CLOCKWISE_180 -> switch (this) {
+            case NONE -> CLOCKWISE_180;
+            case CLOCKWISE_90 -> COUNTERCLOCKWISE_90;
+            case CLOCKWISE_180 -> NONE;
+            case COUNTERCLOCKWISE_90 -> CLOCKWISE_90;
+            default -> throw new IllegalArgumentException("Unknown rotation: " + rotation);
+         };
+         case COUNTERCLOCKWISE_90 -> switch (this) {
+            case NONE -> COUNTERCLOCKWISE_90;
+            case CLOCKWISE_90 -> NONE;
+            case CLOCKWISE_180 -> CLOCKWISE_90;
+            case COUNTERCLOCKWISE_90 -> CLOCKWISE_180;
+            default -> throw new IllegalArgumentException("Unknown rotation: " + rotation);
+         };
+         default -> this;
       };
    }
 
