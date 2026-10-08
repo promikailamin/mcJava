@@ -407,10 +407,10 @@ public class BlendingData {
    public record Packed(int minSection, int maxSection, Optional<float[]> heights) {
       private static final Codec<float[]> FLOAT_ARRAY_CODEC = Codec.FLOAT.listOf().xmap(Floats::toArray, Floats::asList);
       public static final Codec<BlendingData.Packed> CODEC = RecordCodecBuilder.create(
-            i -> i.<BlendingData.Packed, Integer, Integer, Optional<float[]>>group(
-                  Codec.INT.fieldOf("min_section").forGetter(BlendingData.Packed::minSection),
-                  Codec.INT.fieldOf("max_section").forGetter(BlendingData.Packed::maxSection),
-                  FLOAT_ARRAY_CODEC.lenientOptionalFieldOf("heights").forGetter(BlendingData.Packed::heights)
+            i -> i.group(
+                  Codec.INT.fieldOf("min_section").forGetter((BlendingData.Packed p) -> p.minSection()),
+                  Codec.INT.fieldOf("max_section").forGetter((BlendingData.Packed p) -> p.maxSection()),
+                  FLOAT_ARRAY_CODEC.lenientOptionalFieldOf("heights").forGetter((BlendingData.Packed p) -> p.heights())
                )
                .apply(i, BlendingData.Packed::new)
          )

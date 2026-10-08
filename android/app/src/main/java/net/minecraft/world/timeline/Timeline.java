@@ -35,13 +35,13 @@ public class Timeline {
       EnvironmentAttributes.CODEC, Util.memoize(AttributeTrack::createCodec)
    );
    public static final Codec<Timeline> DIRECT_CODEC = RecordCodecBuilder.create(
-         i -> i.<Holder<WorldClock>, Optional<Integer>, Map<EnvironmentAttribute<?>, AttributeTrack<?, ?>>, Map<ResourceKey<ClockTimeMarker>, TimeMarkerInfo>>group(
-               WorldClock.CODEC.fieldOf("clock").forGetter((Timeline t) -> t.clock),
-               ExtraCodecs.POSITIVE_INT.optionalFieldOf("period_ticks").forGetter((Timeline t) -> t.periodTicks),
-               TRACKS_CODEC.optionalFieldOf("tracks", Map.of()).forGetter((Timeline t) -> t.tracks),
+         i -> i.group(
+               WorldClock.CODEC.fieldOf("clock").forGetter((Timeline t) -> t.clock()),
+               ExtraCodecs.POSITIVE_INT.optionalFieldOf("period_ticks").forGetter((Timeline t) -> t.periodTicks()),
+               TRACKS_CODEC.optionalFieldOf("tracks", Map.of()).forGetter((Timeline t) -> t.tracks()),
                Codec.unboundedMap(ClockTimeMarker.KEY_CODEC, Timeline.TimeMarkerInfo.CODEC)
                   .optionalFieldOf("time_markers", Map.of())
-                  .forGetter((Timeline t) -> t.timeMarkers)
+                  .forGetter((Timeline t) -> t.timeMarkers())
             )
             .apply(i, Timeline::new)
       )

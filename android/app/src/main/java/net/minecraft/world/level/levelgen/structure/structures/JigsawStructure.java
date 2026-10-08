@@ -36,16 +36,16 @@ public final class JigsawStructure extends Structure {
    public static final MapCodec<JigsawStructure> CODEC = RecordCodecBuilder.mapCodec(
          (Instance<JigsawStructure> i) -> i.group(
                Structure.<JigsawStructure>settingsCodec(i),
-               StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter(j -> j.startPool),
-               Identifier.CODEC.optionalFieldOf("start_jigsaw_name").forGetter(j -> j.startJigsawName),
-               Codec.intRange(0, 20).fieldOf("size").forGetter(j -> j.maxDepth),
-               HeightProvider.CODEC.fieldOf("start_height").forGetter(j -> j.startHeight),
-               Codec.BOOL.fieldOf("use_expansion_hack").forGetter(j -> j.useExpansionHack),
-               Heightmap.Types.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter(j -> j.projectStartToHeightmap),
-               JigsawStructure.MaxDistance.CODEC.fieldOf("max_distance_from_center").forGetter(j -> j.maxDistanceFromCenter),
-               Codec.list(PoolAliasBinding.CODEC).optionalFieldOf("pool_aliases", List.of()).forGetter(j -> j.poolAliases),
-               DimensionPadding.CODEC.optionalFieldOf("dimension_padding", DEFAULT_DIMENSION_PADDING).forGetter(j -> j.dimensionPadding),
-               LiquidSettings.CODEC.optionalFieldOf("liquid_settings", DEFAULT_LIQUID_SETTINGS).forGetter(j -> j.liquidSettings)
+               StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter((JigsawStructure j) -> j.startPool()),
+               Identifier.CODEC.optionalFieldOf("start_jigsaw_name").forGetter((JigsawStructure j) -> j.startJigsawName()),
+               Codec.intRange(0, 20).fieldOf("size").forGetter((JigsawStructure j) -> j.maxDepth()),
+               HeightProvider.CODEC.fieldOf("start_height").forGetter((JigsawStructure j) -> j.startHeight()),
+               Codec.BOOL.fieldOf("use_expansion_hack").forGetter((JigsawStructure j) -> j.useExpansionHack()),
+               Heightmap.Types.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter((JigsawStructure j) -> j.projectStartToHeightmap()),
+               JigsawStructure.MaxDistance.CODEC.fieldOf("max_distance_from_center").forGetter((JigsawStructure j) -> j.maxDistanceFromCenter()),
+               Codec.list(PoolAliasBinding.CODEC).optionalFieldOf("pool_aliases", List.of()).forGetter((JigsawStructure j) -> j.poolAliases()),
+               DimensionPadding.CODEC.optionalFieldOf("dimension_padding", DEFAULT_DIMENSION_PADDING).forGetter((JigsawStructure j) -> j.dimensionPadding()),
+               LiquidSettings.CODEC.optionalFieldOf("liquid_settings", DEFAULT_LIQUID_SETTINGS).forGetter((JigsawStructure j) -> j.liquidSettings())
             )
             .apply(i, JigsawStructure::new)
       )

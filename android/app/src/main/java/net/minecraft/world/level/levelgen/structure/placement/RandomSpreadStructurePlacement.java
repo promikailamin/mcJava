@@ -15,10 +15,10 @@ public class RandomSpreadStructurePlacement extends AbstractSpreadingStructurePl
    public static final MapCodec<RandomSpreadStructurePlacement> CODEC = RecordCodecBuilder.mapCodec(
          i -> placementCodec(i)
             .and(
-               i.<RandomSpreadStructurePlacement, Integer, Integer, RandomSpreadType>group(
-                  Codec.intRange(0, 4096).fieldOf("spacing").forGetter(RandomSpreadStructurePlacement::spacing),
-                  Codec.intRange(0, 4096).fieldOf("separation").forGetter(RandomSpreadStructurePlacement::separation),
-                  RandomSpreadType.CODEC.optionalFieldOf("spread_type", RandomSpreadType.LINEAR).forGetter(RandomSpreadStructurePlacement::spreadType)
+               i.group(
+                  Codec.intRange(0, 4096).fieldOf("spacing").forGetter((RandomSpreadStructurePlacement s) -> s.spacing()),
+                  Codec.intRange(0, 4096).fieldOf("separation").forGetter((RandomSpreadStructurePlacement s) -> s.separation()),
+                  RandomSpreadType.CODEC.optionalFieldOf("spread_type", RandomSpreadType.LINEAR).forGetter((RandomSpreadStructurePlacement s) -> s.spreadType())
                )
             )
             .apply(i, RandomSpreadStructurePlacement::new)

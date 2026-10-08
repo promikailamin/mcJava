@@ -27,11 +27,11 @@ import org.jspecify.annotations.Nullable;
 public class SignText {
    public static final int LINES = 4;
    public static final Codec<SignText> CODEC = RecordCodecBuilder.create(
-         i -> i.<SignText, List<Component>, Optional<List<Component>>, DyeColor, Boolean>group(
-               ComponentSerialization.CODEC.listOf(4, 4).fieldOf("messages").forGetter(o -> o.messages),
+         i -> i.group(
+               ComponentSerialization.CODEC.listOf(4, 4).fieldOf("messages").forGetter((SignText o) -> o.messages),
                ComponentSerialization.CODEC.listOf(4, 4).lenientOptionalFieldOf("filtered_messages").forGetter(SignText::filteredMessagesForSerialization),
-               ExtraCodecs.optionalAlwaysPresentFieldOf(DyeColor.CODEC, "color", DyeColor.BLACK).forGetter(o -> o.color),
-               ExtraCodecs.optionalAlwaysPresentFieldOf(Codec.BOOL, "has_glowing_text", false).forGetter(o -> o.hasGlowingText)
+               ExtraCodecs.optionalAlwaysPresentFieldOf(DyeColor.CODEC, "color", DyeColor.BLACK).forGetter((SignText o) -> o.color),
+               ExtraCodecs.optionalAlwaysPresentFieldOf(Codec.BOOL, "has_glowing_text", false).forGetter((SignText o) -> o.hasGlowingText)
             )
             .apply(i, SignText::load)
       )
