@@ -56,7 +56,11 @@ public interface LevelBasedValue {
                )
                .apply(i, LevelBasedValue.Clamped::new)
          )
-         .validate((LevelBasedValue.Clamped u) -> u.max <= u.min ? DataResult.error(() -> "Max must be larger than min, min: " + u.min + ", max: " + u.max) : DataResult.success(u));
+         .validate(LevelBasedValue.Clamped::validateRange);
+
+      private static DataResult<LevelBasedValue.Clamped> validateRange(final LevelBasedValue.Clamped u) {
+         return u.max <= u.min ? DataResult.error(() -> "Max must be larger than min, min: " + u.min + ", max: " + u.max) : DataResult.success(u);
+      }
 
       @Override
       public float calculate(final int level) {

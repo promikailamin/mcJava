@@ -40,7 +40,7 @@ public class SignText {
       ComponentSerialization.STREAM_CODEC.apply(ByteBufCodecs.fixedSizeList(4)),
       o -> o.messages,
       ComponentSerialization.STREAM_CODEC.apply(ByteBufCodecs.fixedSizeList(4)).apply(ByteBufCodecs::optional),
-      SignText::filteredMessagesForSerialization,
+      o -> o.filteredMessagesForSerialization(),
       DyeColor.STREAM_CODEC,
       o -> o.color,
       ByteBufCodecs.BOOL,
@@ -115,7 +115,7 @@ public class SignText {
       return this.renderMessages;
    }
 
-   Optional<List<Component>> filteredMessagesForSerialization() {
+   private Optional<List<Component>> filteredMessagesForSerialization() {
       return this.filteredMessages.equals(this.messages) ? Optional.empty() : Optional.of(this.filteredMessages);
    }
 
