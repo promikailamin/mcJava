@@ -187,7 +187,9 @@ public class Villager extends AbstractVillager implements VillagerDataHolder, Re
 
    @Override
    public Brain<Villager> getBrain() {
-      return super.getBrain();
+      @SuppressWarnings("unchecked")
+      Brain<Villager> brain = (Brain<Villager>) super.getBrain();
+      return brain;
    }
 
    @Override

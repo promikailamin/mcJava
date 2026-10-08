@@ -137,7 +137,9 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
 
    @Override
    public Brain<Hoglin> getBrain() {
-      return super.getBrain();
+      @SuppressWarnings("unchecked")
+      Brain<Hoglin> brain = (Brain<Hoglin>) super.getBrain();
+      return brain;
    }
 
    @Override

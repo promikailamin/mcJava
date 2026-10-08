@@ -81,7 +81,9 @@ public class Breeze extends Monster {
 
    @Override
    public Brain<Breeze> getBrain() {
-      return super.getBrain();
+      @SuppressWarnings("unchecked")
+      Brain<Breeze> brain = (Brain<Breeze>) super.getBrain();
+      return brain;
    }
 
    @Override

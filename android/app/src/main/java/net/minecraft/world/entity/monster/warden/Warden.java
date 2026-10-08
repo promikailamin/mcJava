@@ -377,7 +377,9 @@ public class Warden extends Monster implements VibrationSystem {
 
    @Override
    public Brain<Warden> getBrain() {
-      return super.getBrain();
+      @SuppressWarnings("unchecked")
+      Brain<Warden> brain = (Brain<Warden>) super.getBrain();
+      return brain;
    }
 
    @Override

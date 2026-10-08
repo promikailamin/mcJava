@@ -135,7 +135,9 @@ public class Armadillo extends Animal {
 
    @Override
    public Brain<Armadillo> getBrain() {
-      return super.getBrain();
+      @SuppressWarnings("unchecked")
+      Brain<Armadillo> brain = (Brain<Armadillo>) super.getBrain();
+      return brain;
    }
 
    @Override
