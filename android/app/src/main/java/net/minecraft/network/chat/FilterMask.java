@@ -147,8 +147,10 @@ private final java.util.function.Supplier<MapCodec<FilterMask>> codec;
    Type(final int id, final String serializedName, final java.util.function.Supplier<MapCodec<FilterMask>> codec, final java.util.function.Supplier<StreamCodec<ByteBuf, FilterMask>> streamCodec) {
       this.id = id;
       this.serializedName = serializedName;
-      this.codec = Suppliers.memoize(() -> codec.get());
-      this.streamCodec = Suppliers.memoize(() -> streamCodec.get());
+      com.google.common.base.Supplier<MapCodec<FilterMask>> memoizedCodec = Suppliers.memoize(() -> codec.get());
+      com.google.common.base.Supplier<StreamCodec<ByteBuf, FilterMask>> memoizedStreamCodec = Suppliers.memoize(() -> streamCodec.get());
+      this.codec = memoizedCodec::get;
+      this.streamCodec = memoizedStreamCodec::get;
    }
 
       @Override

@@ -745,7 +745,7 @@ public interface StreamCodec<B, V> extends StreamEncoder<B, V>, StreamDecoder<B,
 
    static <B, T> StreamCodec<B, T> recursive(final UnaryOperator<StreamCodec<B, T>> factory) {
       return new StreamCodec<B, T>() {
-         private final Supplier<StreamCodec<B, T>> inner = Suppliers.memoize(() -> factory.apply(this));
+         private final com.google.common.base.Supplier<StreamCodec<B, T>> inner = Suppliers.memoize(() -> factory.apply(this));
 
          @Override
          public T decode(final B input) {
@@ -760,7 +760,9 @@ public interface StreamCodec<B, V> extends StreamEncoder<B, V>, StreamDecoder<B,
    }
 
    default <S extends B> StreamCodec<S, V> cast() {
-      return this;
+      @SuppressWarnings("unchecked")
+      StreamCodec<S, V> casted = (StreamCodec<S, V>) this;
+      return casted;
    }
 
    @FunctionalInterface

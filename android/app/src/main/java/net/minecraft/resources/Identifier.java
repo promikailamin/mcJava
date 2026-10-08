@@ -150,7 +150,7 @@ public final class Identifier implements Comparable<Identifier> {
    }
 
    public Path resolveAgainst(final Path root) {
-      Path resultingPath = root.resolve(this.getNamespace(), new String[]{this.getPath()});
+      Path resultingPath = root.resolve(this.getNamespace()).resolve(this.getPath());
       Path normalizedPath = resultingPath.normalize();
       Path normalizedRoot = root.normalize();
       if (!normalizedPath.startsWith(normalizedRoot)) {

@@ -31,13 +31,16 @@ public record ClientboundLevelChunkWithLightPacket(int x, int z, ClientboundLeve
       final @Nullable BitSet skyChangedLightSectionFilter,
       final @Nullable BitSet blockChangedLightSectionFilter
    ) {
-      final ChunkPos chunkPos = levelChunk.getPos();
       this(
-         chunkPos.x(),
-         chunkPos.z(),
+         chunkPos(levelChunk).x(),
+         chunkPos(levelChunk).z(),
          new ClientboundLevelChunkPacketData(levelChunk),
-         new ClientboundLightUpdatePacketData(chunkPos, lightEngine, skyChangedLightSectionFilter, blockChangedLightSectionFilter)
+         new ClientboundLightUpdatePacketData(chunkPos(levelChunk), lightEngine, skyChangedLightSectionFilter, blockChangedLightSectionFilter)
       );
+   }
+
+   private static ChunkPos chunkPos(final LevelChunk levelChunk) {
+      return levelChunk.getPos();
    }
 
    @Override

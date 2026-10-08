@@ -292,10 +292,10 @@ public class ExtraCodecs {
          return makeInterval.apply(min, max);
       }), p -> ImmutableList.of(getMin.apply(p), getMax.apply(p)));
       Codec<I> objectCodec = RecordCodecBuilder.create(
-            i -> i.group(pointCodec.fieldOf(lowerBoundName).forGetter(Pair::getFirst), pointCodec.fieldOf(upperBoundName).forGetter(Pair::getSecond))
+            i -> i.<P, P>group(pointCodec.fieldOf(lowerBoundName).forGetter(Pair::getFirst), pointCodec.fieldOf(upperBoundName).forGetter(Pair::getSecond))
                .apply(i, Pair::of)
          )
-         .comapFlatMap(p -> makeInterval.apply(p.getFirst(), p.getSecond()), i -> Pair.of(getMin.apply(i), getMax.apply(i)));
+         .comapFlatMap((Pair<P, P> p) -> makeInterval.apply(p.getFirst(), p.getSecond()), i -> Pair.of(getMin.apply(i), getMax.apply(i)));
       Codec<I> arrayOrObjectCodec = Codec.withAlternative(arrayCodec, objectCodec);
       return Codec.either(pointCodec, arrayOrObjectCodec)
          .comapFlatMap(either -> either.map(min -> makeInterval.apply(min, min), DataResult::success), p -> {
@@ -603,7 +603,7 @@ public class ExtraCodecs {
             return builder;
          }
 
-         private <T, V2 extends V> DataResult<T> encode(final Codec<V2> codec, final V input, final DynamicOps<T> ops) {
+         private <T, V2 extends V> DataResult<T> encode(final Codec<V2> codec, final V2 input, final DynamicOps<T> ops) {
             return codec.encodeStart(ops, input);
          }
       };
