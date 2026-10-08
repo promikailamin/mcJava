@@ -45,12 +45,12 @@ public class EnvironmentAttributeSystem implements EnvironmentAttributeReader {
       Value constantBaseValue = attribute.defaultValue();
 
       while (!layers.isEmpty()) {
-         if (!(layers.getFirst() instanceof EnvironmentAttributeLayer.Constant<Value> constantLayer)) {
+         if (!(layers.get(0) instanceof EnvironmentAttributeLayer.Constant<Value> constantLayer)) {
             break;
          }
 
          constantBaseValue = constantLayer.applyConstant(constantBaseValue);
-         layers.removeFirst();
+         layers.remove(0);
       }
 
       boolean isAffectedByPosition = layers.stream().anyMatch(layer -> layer instanceof EnvironmentAttributeLayer.Positional);
@@ -273,7 +273,7 @@ public class EnvironmentAttributeSystem implements EnvironmentAttributeReader {
                case EnvironmentAttributeLayer.Positional<Value> positionalLayer -> positionalLayer.applyPositional(
                   result, Objects.requireNonNull(pos), biomeInterpolator
                );
-               default -> throw new MatchException(null, null);
+               default -> throw new IllegalArgumentException("Unexpected layer type: " + layer);
             });
          }
 
@@ -288,7 +288,7 @@ public class EnvironmentAttributeSystem implements EnvironmentAttributeReader {
                case EnvironmentAttributeLayer.Constant<Value> constantLayer -> constantLayer.applyConstant(result);
                case EnvironmentAttributeLayer.TimeBased<Value> timeBasedLayer -> timeBasedLayer.applyTimeBased(result, this.cacheTickId);
                case EnvironmentAttributeLayer.Positional<Value> ignored -> result;
-               default -> throw new MatchException(null, null);
+               default -> throw new IllegalArgumentException("Unexpected layer type: " + layer);
             });
          }
 

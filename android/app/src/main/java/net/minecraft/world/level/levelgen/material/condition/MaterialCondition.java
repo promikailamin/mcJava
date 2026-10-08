@@ -15,7 +15,7 @@ public interface MaterialCondition {
       return switch (holder) {
          case Holder.Direct<MaterialCondition> direct -> (MaterialCondition)direct.value();
          case Holder.Reference<MaterialCondition> reference -> new MaterialCondition.HolderHolder(reference);
-         default -> throw new MatchException(null, null);
+         default -> throw new IllegalArgumentException("Unexpected holder type: " + holder);
       };
    }, value -> {
       return switch (value) {

@@ -140,7 +140,7 @@ public class Climate {
       public static <T> Codec<Climate.ParameterList<T>> codec(final MapCodec<T> valueCodec) {
          return ExtraCodecs.nonEmptyList(
                RecordCodecBuilder.create(
-                     i -> i.group(Climate.ParameterPoint.CODEC.fieldOf("parameters").forGetter(Pair::getFirst), valueCodec.forGetter(Pair::getSecond))
+                     i -> i.<Climate.ParameterPoint, T>group(Climate.ParameterPoint.CODEC.fieldOf("parameters").forGetter(Pair::getFirst), valueCodec.forGetter(Pair::getSecond))
                         .apply(i, Pair::of)
                   )
                   .listOf()

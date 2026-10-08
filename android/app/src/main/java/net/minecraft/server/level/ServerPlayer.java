@@ -410,7 +410,7 @@ public class ServerPlayer extends Player {
       this.raidOmenPosition = input.<BlockPos>read("raid_omen_position", BlockPos.CODEC).orElse(null);
       this.gameMode
          .setGameModeForPlayer(this.calculateGameModeForNewPlayer(readPlayerMode(input, "playerGameType")), readPlayerMode(input, "previousPlayerGameType"));
-      input.<Collection<Identifier>>read("post_effects", Codec.list(Identifier.CODEC)).ifPresent(this.postEffects::addAll);
+      input.read("post_effects", Codec.list(Identifier.CODEC)).ifPresent(this.postEffects::addAll);
       this.setShoulderEntityLeft(input.<CompoundTag>read("ShoulderEntityLeft", CompoundTag.CODEC).orElseGet(CompoundTag::new));
       this.setShoulderEntityRight(input.<CompoundTag>read("ShoulderEntityRight", CompoundTag.CODEC).orElseGet(CompoundTag::new));
    }

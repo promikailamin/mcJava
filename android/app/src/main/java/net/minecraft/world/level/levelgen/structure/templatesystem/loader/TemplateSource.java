@@ -63,8 +63,13 @@ public abstract class TemplateSource {
 
    private static CompoundTag readTextStructure(final InputStream input) throws IOException, CommandSyntaxException {
       try (Reader reader = new InputStreamReader(input, StandardCharsets.UTF_8)) {
-         String contents = reader.readAllAsString();
-         return NbtUtils.snbtToStructure(contents);
+         StringBuilder sb = new StringBuilder();
+         char[] buf = new char[4096];
+         int n;
+         while ((n = reader.read(buf)) != -1) {
+            sb.append(buf, 0, n);
+         }
+         return NbtUtils.snbtToStructure(sb.toString());
       }
    }
 

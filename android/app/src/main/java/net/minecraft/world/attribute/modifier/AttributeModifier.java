@@ -80,7 +80,9 @@ public interface AttributeModifier<Subject, Argument> {
    );
 
    static <Value> AttributeModifier<Value, Value> override() {
-      return AttributeModifier.OverrideModifier.INSTANCE;
+      @SuppressWarnings("unchecked")
+      AttributeModifier<Value, Value> instance = (AttributeModifier<Value, Value>) OverrideModifier.INSTANCE;
+      return instance;
    }
 
    static <Element> Map<AttributeModifier.OperationId, AttributeModifier<List<Element>, ?>> listLibrary() {

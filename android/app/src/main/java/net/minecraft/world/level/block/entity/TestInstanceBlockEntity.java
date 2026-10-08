@@ -104,7 +104,7 @@ public class TestInstanceBlockEntity extends BlockEntity implements BoundingBoxR
       return this.data.test();
    }
 
-   public Component getTestName() {
+   public MutableComponent getTestName() {
       return this.test().map(key -> Component.literal(key.identifier().toString())).orElse(INVALID_TEST_NAME);
    }
 
@@ -162,7 +162,7 @@ public class TestInstanceBlockEntity extends BlockEntity implements BoundingBoxR
       input.<TestInstanceBlockEntity.Data>read("data", TestInstanceBlockEntity.Data.CODEC).ifPresent(this::set);
       this.errorMarkers.clear();
       this.errorMarkers
-         .addAll(input.<List<? extends TestInstanceBlockEntity.ErrorMarker>>read("errors", TestInstanceBlockEntity.ErrorMarker.LIST_CODEC).orElse(List.of()));
+         .addAll(input.read("errors", TestInstanceBlockEntity.ErrorMarker.LIST_CODEC).orElse(List.of()));
    }
 
    @Override

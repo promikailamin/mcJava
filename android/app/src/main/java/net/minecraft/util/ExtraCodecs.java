@@ -286,21 +286,21 @@ public class ExtraCodecs {
       final Function<I, P> getMin,
       final Function<I, P> getMax
    ) {
-      Codec<I> arrayCodec = Codec.list(pointCodec).comapFlatMap(list -> Util.fixedSize(list, 2).flatMap(l -> {
-         P min = (P)l.get(0);
-         P max = (P)l.get(1);
+      Codec<I> arrayCodec = Codec.list(pointCodec).comapFlatMap(list -> Util.fixedSize(list, 2).<List<P>>flatMap(l -> {
+         P min = l.get(0);
+         P max = l.get(1);
          return makeInterval.apply(min, max);
-      }), p -> ImmutableList.of(getMin.apply((I)p), getMax.apply((I)p)));
+      }), p -> ImmutableList.of(getMin.apply(p), getMax.apply(p)));
       Codec<I> objectCodec = RecordCodecBuilder.create(
             i -> i.group(pointCodec.fieldOf(lowerBoundName).forGetter(Pair::getFirst), pointCodec.fieldOf(upperBoundName).forGetter(Pair::getSecond))
                .apply(i, Pair::of)
          )
-         .comapFlatMap(p -> makeInterval.apply((P)p.getFirst(), (P)p.getSecond()), i -> Pair.of(getMin.apply((I)i), getMax.apply((I)i)));
+         .comapFlatMap(p -> makeInterval.apply(p.getFirst(), p.getSecond()), i -> Pair.of(getMin.apply(i), getMax.apply(i)));
       Codec<I> arrayOrObjectCodec = Codec.withAlternative(arrayCodec, objectCodec);
       return Codec.either(pointCodec, arrayOrObjectCodec)
-         .comapFlatMap(either -> (DataResult)either.map(min -> makeInterval.apply((P)min, (P)min), DataResult::success), p -> {
-            P min = getMin.apply((I)p);
-            P max = getMax.apply((I)p);
+         .comapFlatMap(either -> either.map(min -> makeInterval.apply(min, min), DataResult::success), p -> {
+            P min = getMin.apply(p);
+            P max = getMax.apply(p);
             return Objects.equals(min, max) ? Either.left(min) : Either.right(p);
          });
    }

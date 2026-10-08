@@ -22,7 +22,7 @@ public interface DensityFunction {
       return switch (holder) {
          case Holder.Direct<DensityFunction> direct -> (DensityFunction)direct.value();
          case Holder.Reference<DensityFunction> reference -> new DensityFunctions.HolderHolder(reference);
-         default -> throw new MatchException(null, null);
+         default -> throw new IllegalArgumentException("Unexpected holder type: " + holder);
       };
    }, value -> {
       return switch (value) {

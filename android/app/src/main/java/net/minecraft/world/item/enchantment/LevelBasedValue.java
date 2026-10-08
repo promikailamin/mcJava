@@ -49,8 +49,8 @@ public interface LevelBasedValue {
 
    record Clamped(LevelBasedValue value, float min, float max) implements LevelBasedValue {
       public static final MapCodec<LevelBasedValue.Clamped> CODEC = RecordCodecBuilder.mapCodec(
-            i -> i.group(
-                  LevelBasedValue.CODEC.fieldOf("value").forGetter(LevelBasedValue.Clamped::value),
+            i -> i.<LevelBasedValue, Float, Float>group(
+                  ((Codec<LevelBasedValue>)LevelBasedValue.CODEC).fieldOf("value").forGetter(LevelBasedValue.Clamped::value),
                   Codec.FLOAT.fieldOf("min").forGetter(LevelBasedValue.Clamped::min),
                   Codec.FLOAT.fieldOf("max").forGetter(LevelBasedValue.Clamped::max)
                )

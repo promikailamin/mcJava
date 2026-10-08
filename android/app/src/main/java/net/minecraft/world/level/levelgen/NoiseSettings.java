@@ -9,7 +9,7 @@ import net.minecraft.world.level.dimension.DimensionType;
 
 public record NoiseSettings(int minY, int height) {
    public static final Codec<NoiseSettings> CODEC = RecordCodecBuilder.create(
-         i -> i.group(
+         i -> i.<Integer, Integer>group(
                Codec.intRange(DimensionType.MIN_Y, DimensionType.MAX_Y).fieldOf("min_y").forGetter(NoiseSettings::minY),
                Codec.intRange(0, DimensionType.Y_SIZE).fieldOf("height").forGetter(NoiseSettings::height)
             )

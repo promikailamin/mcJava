@@ -16,10 +16,6 @@ import org.jspecify.annotations.Nullable;
 
 public final class EnvironmentAttributeMap {
    public static final EnvironmentAttributeMap EMPTY = new EnvironmentAttributeMap(Map.of());
-   public static final Codec<EnvironmentAttributeMap> CODEC = Codec.lazyInitialized(
-      () -> Codec.dispatchedMap(EnvironmentAttributes.CODEC, Util.memoize(EnvironmentAttributeMap.Entry::createCodec))
-         .xmap(EnvironmentAttributeMap::new, v -> v.entries)
-   );
    public static final Codec<EnvironmentAttributeMap> NETWORK_CODEC = CODEC.xmap(
       EnvironmentAttributeMap::filterSyncable, EnvironmentAttributeMap::filterSyncable
    );
@@ -30,6 +26,10 @@ public final class EnvironmentAttributeMap {
             ? DataResult.error(() -> "The following attributes cannot be positional: " + illegalAttributes)
             : DataResult.success(map);
       }
+   );
+   public static final Codec<EnvironmentAttributeMap> CODEC = Codec.lazyInitialized(
+      () -> Codec.dispatchedMap(EnvironmentAttributes.CODEC, Util.memoize(EnvironmentAttributeMap.Entry::createCodec))
+         .xmap(map -> new EnvironmentAttributeMap(map), v -> v.entries)
    );
    private final Map<EnvironmentAttribute<?>, EnvironmentAttributeMap.Entry<?, ?>> entries;
 
@@ -112,7 +112,7 @@ public final class EnvironmentAttributeMap {
             .dispatch("modifier", EnvironmentAttributeMap.Entry::modifier, Util.memoize(modifier -> createFullCodec(attribute, modifier)));
          return Codec.either(attribute.valueCodec(), fullCodec)
             .xmap(
-               either -> (EnvironmentAttributeMap.Entry)either.map(value -> new EnvironmentAttributeMap.Entry<>(value, AttributeModifier.override()), e -> e),
+               either -> (EnvironmentAttributeMap.Entry<Value, ?>)either.map(value -> new EnvironmentAttributeMap.Entry<>(value, AttributeModifier.override()), e -> e),
                entry -> entry.modifier == AttributeModifier.override() ? Either.left(entry.argument()) : Either.right(entry)
             );
       }
@@ -122,7 +122,7 @@ public final class EnvironmentAttributeMap {
       ) {
          return RecordCodecBuilder.mapCodec(
             i -> i.group(modifier.argumentCodec(attribute).fieldOf("argument").forGetter(EnvironmentAttributeMap.Entry::argument))
-               .apply(i, value -> new EnvironmentAttributeMap.Entry<>(value, modifier))
+               .apply(i, (Function<Argument, EnvironmentAttributeMap.Entry<Value, Argument>>) value -> new EnvironmentAttributeMap.Entry<>(value, modifier))
          );
       }
 

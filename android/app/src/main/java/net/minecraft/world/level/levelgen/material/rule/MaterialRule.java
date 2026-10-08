@@ -16,7 +16,7 @@ public interface MaterialRule {
       return switch (holder) {
          case Holder.Direct<MaterialRule> direct -> (MaterialRule)direct.value();
          case Holder.Reference<MaterialRule> reference -> new MaterialRule.HolderHolder(reference);
-         default -> throw new MatchException(null, null);
+         default -> throw new IllegalArgumentException("Unexpected holder type: " + holder);
       };
    }, value -> {
       return switch (value) {

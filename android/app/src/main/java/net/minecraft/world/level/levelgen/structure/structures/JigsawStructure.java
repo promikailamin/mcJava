@@ -35,7 +35,7 @@ public final class JigsawStructure extends Structure {
    public static final int MAX_DEPTH = 20;
    public static final MapCodec<JigsawStructure> CODEC = RecordCodecBuilder.mapCodec(
          i -> i.group(
-               settingsCodec(i),
+               Structure.<JigsawStructure>settingsCodec(i),
                StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter(j -> j.startPool),
                Identifier.CODEC.optionalFieldOf("start_jigsaw_name").forGetter(j -> j.startJigsawName),
                Codec.intRange(0, 20).fieldOf("size").forGetter(j -> j.maxDepth),
