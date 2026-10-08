@@ -208,16 +208,17 @@ public class CrashReportCategory {
 
    public record Entry(String key, String value) {
       public Entry(final String key, final @Nullable Object rawValue) {
-         String value;
-         if (rawValue == null) {
-            value = "~~NULL~~";
-         } else if (rawValue instanceof Throwable t) {
-            value = "~~ERROR~~ " + t.getClass().getSimpleName() + ": " + t.getMessage();
-         } else {
-            value = rawValue.toString();
-         }
+         this(key, toStringValue(rawValue));
+      }
 
-         this(key, value);
+      private static String toStringValue(final @Nullable Object rawValue) {
+         if (rawValue == null) {
+            return "~~NULL~~";
+         } else if (rawValue instanceof Throwable t) {
+            return "~~ERROR~~ " + t.getClass().getSimpleName() + ": " + t.getMessage();
+         } else {
+            return rawValue.toString();
+         }
       }
    }
 }

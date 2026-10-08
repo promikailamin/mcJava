@@ -42,18 +42,25 @@ public record CompositeDirection(Set<Direction> directions, Vec3i step) implemen
 
    @VisibleForTesting
    CompositeDirection(final Direction... directions) {
-      Set<Direction> immutableDirections = Sets.immutableEnumSet(Arrays.asList(directions));
+      this(toImmutableSet(directions), toOffset(toImmutableSet(directions)));
+   }
+
+   private static Set<Direction> toImmutableSet(final Direction[] directions) {
+      return Sets.immutableEnumSet(Arrays.asList(directions));
+   }
+
+   private static Vec3i toOffset(final Set<Direction> directions) {
       int x = 0;
       int y = 0;
       int z = 0;
 
-      for (Direction direction : immutableDirections) {
+      for (Direction direction : directions) {
          x += direction.getStepX();
          y += direction.getStepY();
          z += direction.getStepZ();
       }
 
-      this(immutableDirections, new Vec3i(x, y, z));
+      return new Vec3i(x, y, z);
    }
 
    public CompositeDirection compose(final CompositeDirection other) {

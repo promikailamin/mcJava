@@ -31,7 +31,7 @@ public record ClientboundLevelChunkWithLightPacket(int x, int z, ClientboundLeve
       final @Nullable BitSet skyChangedLightSectionFilter,
       final @Nullable BitSet blockChangedLightSectionFilter
    ) {
-      ChunkPos chunkPos = levelChunk.getPos();
+      final ChunkPos chunkPos = levelChunk.getPos();
       this(
          chunkPos.x(),
          chunkPos.z(),

@@ -52,7 +52,13 @@ public class Resource {
 
    public String readAllAsString() throws IOException {
       try (Reader reader = this.openAsReader()) {
-         return reader.readAllAsString();
+         StringBuilder sb = new StringBuilder();
+         char[] buf = new char[4096];
+         int n;
+         while ((n = reader.read(buf)) != -1) {
+            sb.append(buf, 0, n);
+         }
+         return sb.toString();
       }
    }
 

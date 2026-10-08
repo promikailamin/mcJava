@@ -9,24 +9,26 @@ import net.minecraft.network.codec.StreamCodec;
 
 public record TypedDataComponent<T>(DataComponentType<T> type, T value) {
    public static final StreamCodec<RegistryFriendlyByteBuf, TypedDataComponent<?>> STREAM_CODEC = new StreamCodec<RegistryFriendlyByteBuf, TypedDataComponent<?>>() {
+      @Override
       public TypedDataComponent<?> decode(final RegistryFriendlyByteBuf input) {
          DataComponentType<?> type = DataComponentType.STREAM_CODEC.decode(input);
-         return decodeTyped(input, (DataComponentType<T>)type);
+         return decodeTyped(input, type);
       }
 
-      private static <T> TypedDataComponent<T> decodeTyped(final RegistryFriendlyByteBuf input, final DataComponentType<T> type) {
-         return new TypedDataComponent<>(type, type.streamCodec().decode(input));
-      }
-
+      @Override
       public void encode(final RegistryFriendlyByteBuf output, final TypedDataComponent<?> value) {
-         encodeCap(output, (TypedDataComponent<T>)value);
-      }
-
-      private static <T> void encodeCap(final RegistryFriendlyByteBuf output, final TypedDataComponent<T> component) {
-         DataComponentType.STREAM_CODEC.encode(output, component.type());
-         component.type().streamCodec().encode(output, component.value());
+         encodeCap(output, value);
       }
    };
+
+   private static <T> TypedDataComponent<T> decodeTyped(final RegistryFriendlyByteBuf input, final DataComponentType<T> type) {
+      return new TypedDataComponent<>(type, type.streamCodec().decode(input));
+   }
+
+   private static <T> void encodeCap(final RegistryFriendlyByteBuf output, final TypedDataComponent<T> component) {
+      DataComponentType.STREAM_CODEC.encode(output, component.type());
+      component.type().streamCodec().encode(output, component.value());
+   }
 
    static TypedDataComponent<?> fromEntryUnchecked(final Entry<DataComponentType<?>, Object> entry) {
       return createUnchecked(entry.getKey(), entry.getValue());

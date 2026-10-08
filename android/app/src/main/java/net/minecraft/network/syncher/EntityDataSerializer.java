@@ -10,7 +10,9 @@ public interface EntityDataSerializer<T> {
       return new EntityDataAccessor<>(id, this);
    }
 
-   T copy(T value);
+   default T copy(T value) {
+      return value;
+   }
 
    static <T> EntityDataSerializer<T> forValueType(final StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
       return () -> codec;

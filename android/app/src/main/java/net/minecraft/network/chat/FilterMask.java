@@ -141,15 +141,15 @@ public class FilterMask {
       public static final StreamCodec<ByteBuf, FilterMask.Type> STREAM_CODEC = ByteBufCodecs.idMapper(ID_MAP, t -> t.id);
       private final int id;
       private final String serializedName;
-      private final Supplier<MapCodec<FilterMask>> codec;
-      private final Supplier<StreamCodec<ByteBuf, FilterMask>> streamCodec;
+private final java.util.function.Supplier<MapCodec<FilterMask>> codec;
+   private final java.util.function.Supplier<StreamCodec<ByteBuf, FilterMask>> streamCodec;
 
-      Type(final int id, final String serializedName, final Supplier<MapCodec<FilterMask>> codec, final Supplier<StreamCodec<ByteBuf, FilterMask>> streamCodec) {
-         this.id = id;
-         this.serializedName = serializedName;
-         this.codec = Suppliers.memoize(codec::get);
-         this.streamCodec = Suppliers.memoize(streamCodec::get);
-      }
+   Type(final int id, final String serializedName, final java.util.function.Supplier<MapCodec<FilterMask>> codec, final java.util.function.Supplier<StreamCodec<ByteBuf, FilterMask>> streamCodec) {
+      this.id = id;
+      this.serializedName = serializedName;
+      this.codec = Suppliers.memoize(() -> codec.get());
+      this.streamCodec = Suppliers.memoize(() -> streamCodec.get());
+   }
 
       @Override
       public String getSerializedName() {

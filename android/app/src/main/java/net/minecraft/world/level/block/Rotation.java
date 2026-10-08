@@ -47,8 +47,7 @@ public enum Rotation implements StringRepresentable {
                   yield COUNTERCLOCKWISE_90;
                case COUNTERCLOCKWISE_90:
                   yield NONE;
-               default:
-                  throw new MatchException(null, null);
+               default -> throw new IllegalArgumentException("Unknown rotation: " + rotation);
             }
          }
          case CLOCKWISE_180 -> {
@@ -61,8 +60,7 @@ public enum Rotation implements StringRepresentable {
                   yield NONE;
                case COUNTERCLOCKWISE_90:
                   yield CLOCKWISE_90;
-               default:
-                  throw new MatchException(null, null);
+               default -> throw new IllegalArgumentException("Unknown rotation: " + rotation);
             }
          }
          case COUNTERCLOCKWISE_90 -> {
@@ -75,8 +73,7 @@ public enum Rotation implements StringRepresentable {
                   yield CLOCKWISE_90;
                case COUNTERCLOCKWISE_90:
                   yield CLOCKWISE_180;
-               default:
-                  throw new MatchException(null, null);
+               default -> throw new IllegalArgumentException("Unknown rotation: " + rotation);
             }
          }
          default -> this;
