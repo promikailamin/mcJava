@@ -189,8 +189,4 @@ public interface LevelBasedValue {
             levelBasedValue -> levelBasedValue instanceof LevelBasedValue.Constant constant ? Either.left(constant) : Either.right(levelBasedValue)
          );
    }
-
-   static Codec<LevelBasedValue> codec() {
-      return CodecHolder.CODEC;
-   }
 }
