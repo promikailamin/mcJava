@@ -76,43 +76,53 @@ jobs:
           path: android/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
 
-      - name: Auto-fix build errors with opencode (persistent session)
-        if: failure()
+      - name: Auto-fix build errors with opencode
+        if: failure() && github.event_name != 'pull_request'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd $GITHUB_WORKSPACE
-          
-          # Create prompt file
-          cat > /tmp/fix_prompt.txt << 'PROMPT'
-          Fix compilation errors in mcJava Android build.
-          
-          Context: This is a persistent opencode session. Previous fixes have been attempted.
-          
-          Task:
-          1. Read android/build.log to see current compilation errors
-          2. Fix errors in android/app/src/main/java
-          3. Make minimal, targeted fixes
-          4. Commit with message: "fix: auto-fix build errors [session]"
-          5. Push to current branch
-          
-          Focus on root cause errors first.
-          PROMPT
-          
-          # Run opencode with prompt from file using stdin
-          opencode run --model opencode/big-pickle --yes < /tmp/fix_prompt.txt
-          
-          # Save session for next run
-          cp ~/.opencode/sessions/latest.json opencode-session.json 2>/dev/null || true
-          
-          # Commit session if changed
-          if git diff --quiet opencode-session.json; then
-            echo "No session changes"
-          else
-            git add opencode-session.json
-            git commit -m "chore: update opencode session" || true
-            git push origin HEAD:$GITHUB_REF_NAME || true
+          set -e
+          cd "$GITHUB_WORKSPACE"
+
+          if [ ! -f android/build.log ]; then
+              echo "Build log not found"
+              exit 1
           fi
+
+          cat > /tmp/fix_prompt.txt << 'PROMPT'
+          Fix compilation errors in the mcJava Android project.
+
+          Instructions:
+          1. Read android/build.log and identify the root cause.
+          2. Make minimal, targeted fixes.
+          3. Run the relevant Gradle build to verify the fixes.
+          4. Do not modify unrelated files.
+          5. If the build succeeds, commit the changes with:
+             fix: auto-fix build errors
+          6. Push the commit to the current branch.
+          7. If the build still fails, explain the remaining errors.
+          PROMPT
+
+          if [ -f opencode-session.json ]; then
+              echo "Existing session file found."
+          fi
+
+          prompt="$(cat /tmp/fix_prompt.txt)"
+
+          if [ -f opencode-session.json ]; then
+              opencode run \
+                  --model opencode/big-pickle \
+                  --auto \
+                  --continue \
+                  "$prompt"
+          else
+              opencode run \
+                  --model opencode/big-pickle \
+                  --auto \
+                  "$prompt"
+          fi
+
+          git status --short
 
       - name: Trigger rebuild
         if: failure()
