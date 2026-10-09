@@ -28,46 +28,10 @@ public interface LevelBasedValue {
       }
    }
 
-   Codec<LevelBasedValue> DISPATCH_CODEC = BuiltInRegistries.ENCHANTMENT_LEVEL_BASED_VALUE_TYPE.byNameCodec().dispatch(LevelBasedValue::codec, c -> c);
-   Codec<LevelBasedValue> CODEC = Codec.either(LevelBasedValue.Constant.CODEC, DISPATCH_CODEC)
-      .xmap(
-         either -> (LevelBasedValue)either.map(l -> l, r -> r),
-         levelBasedValue -> levelBasedValue instanceof LevelBasedValue.Constant constant ? Either.left(constant) : Either.right(levelBasedValue)
-      );
-
-   static MapCodec<? extends LevelBasedValue> bootstrap(final Registry<MapCodec<? extends LevelBasedValue>> registry) {
-      Registry.register(registry, "clamped", LevelBasedValue.Clamped.CODEC);
-      Registry.register(registry, "fraction", LevelBasedValue.Fraction.CODEC);
-      Registry.register(registry, "levels_squared", LevelBasedValue.LevelsSquared.CODEC);
-      Registry.register(registry, "linear", LevelBasedValue.Linear.CODEC);
-      Registry.register(registry, "exponent", LevelBasedValue.Exponent.CODEC);
-      return Registry.register(registry, "lookup", LevelBasedValue.Lookup.CODEC);
-   }
-
-   static LevelBasedValue.Constant constant(final float value) {
-      return new LevelBasedValue.Constant(value);
-   }
-
-   static LevelBasedValue.Linear perLevel(final float base, final float perLevelAboveFirst) {
-      return new LevelBasedValue.Linear(base, perLevelAboveFirst);
-   }
-
-   static LevelBasedValue.Linear perLevel(final float perLevel) {
-      return perLevel(perLevel, perLevel);
-   }
-
-   static LevelBasedValue.Lookup lookup(final List<Float> values, final LevelBasedValue fallback) {
-      return new LevelBasedValue.Lookup(values, fallback);
-   }
-
-   float calculate(int level);
-
-   MapCodec<? extends LevelBasedValue> codec();
-
    record Clamped(LevelBasedValue value, float min, float max) implements LevelBasedValue {
       public static final MapCodec<LevelBasedValue.Clamped> CODEC = RecordCodecBuilder.mapCodec(
             i -> i.group(
-                  LevelBasedValue.CODEC.fieldOf("value").forGetter(c -> c.value()),
+                  CodecHolder.CODEC.fieldOf("value").forGetter(c -> c.value()),
                   Codec.FLOAT.fieldOf("min").forGetter(c -> c.min()),
                   Codec.FLOAT.fieldOf("max").forGetter(c -> c.max())
                )
@@ -93,8 +57,8 @@ public interface LevelBasedValue {
    record Exponent(LevelBasedValue base, LevelBasedValue power) implements LevelBasedValue {
       public static final MapCodec<LevelBasedValue.Exponent> CODEC = RecordCodecBuilder.mapCodec(
          i -> i.group(
-               LevelBasedValue.CODEC.fieldOf("base").forGetter(e -> e.base()),
-               LevelBasedValue.CODEC.fieldOf("power").forGetter(e -> e.power())
+               CodecHolder.CODEC.fieldOf("base").forGetter(e -> e.base()),
+               CodecHolder.CODEC.fieldOf("power").forGetter(e -> e.power())
             )
             .apply(i, LevelBasedValue.Exponent::new)
       );
@@ -113,8 +77,8 @@ public interface LevelBasedValue {
    record Fraction(LevelBasedValue numerator, LevelBasedValue denominator) implements LevelBasedValue {
       public static final MapCodec<LevelBasedValue.Fraction> CODEC = RecordCodecBuilder.mapCodec(
          i -> i.group(
-               LevelBasedValue.CODEC.fieldOf("numerator").forGetter(f -> f.numerator()),
-               LevelBasedValue.CODEC.fieldOf("denominator").forGetter(f -> f.denominator())
+               CodecHolder.CODEC.fieldOf("numerator").forGetter(f -> f.numerator()),
+               CodecHolder.CODEC.fieldOf("denominator").forGetter(f -> f.denominator())
             )
             .apply(i, LevelBasedValue.Fraction::new)
       );
@@ -171,7 +135,7 @@ public interface LevelBasedValue {
       public static final MapCodec<LevelBasedValue.Lookup> CODEC = RecordCodecBuilder.mapCodec(
          i -> i.group(
                Codec.FLOAT.listOf().fieldOf("values").forGetter(l -> l.values()),
-               LevelBasedValue.CODEC.fieldOf("fallback").forGetter(l -> l.fallback())
+               CodecHolder.CODEC.fieldOf("fallback").forGetter(l -> l.fallback())
             )
             .apply(i, LevelBasedValue.Lookup::new)
       );
@@ -185,5 +149,48 @@ public interface LevelBasedValue {
       public MapCodec<LevelBasedValue.Lookup> codec() {
          return CODEC;
       }
+   }
+
+   static MapCodec<? extends LevelBasedValue> bootstrap(final Registry<MapCodec<? extends LevelBasedValue>> registry) {
+      Registry.register(registry, "clamped", LevelBasedValue.Clamped.CODEC);
+      Registry.register(registry, "fraction", LevelBasedValue.Fraction.CODEC);
+      Registry.register(registry, "levels_squared", LevelBasedValue.LevelsSquared.CODEC);
+      Registry.register(registry, "linear", LevelBasedValue.Linear.CODEC);
+      Registry.register(registry, "exponent", LevelBasedValue.Exponent.CODEC);
+      return Registry.register(registry, "lookup", LevelBasedValue.Lookup.CODEC);
+   }
+
+   static LevelBasedValue.Constant constant(final float value) {
+      return new LevelBasedValue.Constant(value);
+   }
+
+   static LevelBasedValue.Linear perLevel(final float base, final float perLevelAboveFirst) {
+      return new LevelBasedValue.Linear(base, perLevelAboveFirst);
+   }
+
+   static LevelBasedValue.Linear perLevel(final float perLevel) {
+      return perLevel(perLevel, perLevel);
+   }
+
+   static LevelBasedValue.Lookup lookup(final List<Float> values, final LevelBasedValue fallback) {
+      return new LevelBasedValue.Lookup(values, fallback);
+   }
+
+   float calculate(int level);
+
+   MapCodec<? extends LevelBasedValue> codec();
+
+   static final class CodecHolder {
+      static final Codec<LevelBasedValue> DISPATCH_CODEC = BuiltInRegistries.ENCHANTMENT_LEVEL_BASED_VALUE_TYPE.byNameCodec()
+         .dispatch(LevelBasedValue::codec, c -> c);
+      static final Codec<LevelBasedValue> CODEC = Codec.either(LevelBasedValue.Constant.CODEC, DISPATCH_CODEC)
+         .xmap(
+            either -> (LevelBasedValue)either.map(l -> l, r -> r),
+            levelBasedValue -> levelBasedValue instanceof LevelBasedValue.Constant constant ? Either.left(constant) : Either.right(levelBasedValue)
+         );
+   }
+
+   static Codec<LevelBasedValue> codec() {
+      return CodecHolder.CODEC;
    }
 }
