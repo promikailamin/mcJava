@@ -77,9 +77,8 @@ android {
             def srcFile = file('src/main/java/javax/sound/sampled/AudioFormat.java')
             stubDir.mkdirs()
             copy {
-                from srcFile.parentFile
-                into stubDir
-                include 'AudioFormat.java'
+                from srcFile
+                into new File(stubDir, 'javax/sound/sampled')
             }
             def proc = ['/usr/lib/jvm/temurin-21-jdk-amd64/bin/javac', '--patch-module', 'java.desktop=' + stubDir.absolutePath, '-d', stubDir.absolutePath, stubDir.absolutePath + '/javax/sound/sampled/AudioFormat.java'].execute()
             proc.waitFor()
