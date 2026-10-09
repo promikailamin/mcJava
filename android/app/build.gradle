@@ -71,30 +71,10 @@ android {
         checkReleaseBuilds false
     }
 
-    task compileJavaDesktopStub {
-        doLast {
-            def stubDir = file('build/generated/stub/java.desktop')
-            def srcFile = file('src/main/java/javax/sound/sampled/AudioFormat.java')
-            stubDir.mkdirs()
-            copy {
-                from srcFile
-                into new File(stubDir, 'javax/sound/sampled')
-            }
-            def proc = ['/usr/lib/jvm/temurin-21-jdk-amd64/bin/javac', '--patch-module', 'java.desktop=' + stubDir.absolutePath, '-d', stubDir.absolutePath, stubDir.absolutePath + '/javax/sound/sampled/AudioFormat.java'].execute()
-            proc.waitFor()
-            if (proc.exitValue() != 0) {
-                throw new GradleException('Failed to compile java.desktop stub: ' + proc.text)
-            }
-        }
-    }
-
     tasks.withType(JavaCompile).configureEach {
-        dependsOn compileJavaDesktopStub
-        options.compilerArgs << "-Xbootclasspath/p:/usr/lib/jvm/temurin-21-jdk-amd64/lib/modules"
-        options.compilerArgs.remove("--system")
-        options.compilerArgs.remove("/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/jdkImage")
-        options.compilerArgs << "--patch-module"
-        options.compilerArgs << "java.desktop=/home/runner/work/mcJava/mcJava/android/app/build/generated/stub/java.desktop"
+        // Keep compiling after the default 100-error cap so the whole error surface
+        // is visible in a single pass while porting the tree.
+        options.compilerArgs << "-Xmaxerrs" << "100000"
     }
 
     sourceSets {
@@ -118,8 +98,6 @@ android {
                 exclude 'net/minecraft/server/gui/**'
                 // javax.management JMX registry (JVM-only).
                 exclude 'net/minecraft/util/monitoring/jmx/**'
-                // javax.sound.sampled stub provided via --patch-module
-                exclude 'javax/sound/sampled/**'
             }
         }
     }
