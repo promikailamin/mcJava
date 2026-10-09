@@ -11,7 +11,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 public record EnchantmentLevelProvider(LevelBasedValue amount) implements ContextFloatProvider, LootContextUser {
    public static final MapCodec<EnchantmentLevelProvider> MAP_CODEC = RecordCodecBuilder.mapCodec(
-      i -> i.group(LevelBasedValue.CODEC.fieldOf("amount").forGetter(EnchantmentLevelProvider::amount)).apply(i, EnchantmentLevelProvider::new)
+      i -> i.group(LevelBasedValue.CodecHolder.CODEC.fieldOf("amount").forGetter(EnchantmentLevelProvider::amount)).apply(i, EnchantmentLevelProvider::new)
    );
 
    @Override

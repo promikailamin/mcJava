@@ -11,7 +11,7 @@ import net.minecraft.world.phys.Vec3;
 
 public record ApplyExhaustion(LevelBasedValue amount) implements EnchantmentEntityEffect {
    public static final MapCodec<ApplyExhaustion> CODEC = RecordCodecBuilder.mapCodec(
-      i -> i.group(LevelBasedValue.CODEC.fieldOf("amount").forGetter(ApplyExhaustion::amount)).apply(i, ApplyExhaustion::new)
+      i -> i.group(LevelBasedValue.CodecHolder.CODEC.fieldOf("amount").forGetter(ApplyExhaustion::amount)).apply(i, ApplyExhaustion::new)
    );
 
    @Override

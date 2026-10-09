@@ -27,8 +27,8 @@ public record ReplaceDisk(
 ) implements EnchantmentEntityEffect {
    public static final MapCodec<ReplaceDisk> CODEC = RecordCodecBuilder.mapCodec(
       i -> i.group(
-            LevelBasedValue.CODEC.fieldOf("radius").forGetter(ReplaceDisk::radius),
-            LevelBasedValue.CODEC.fieldOf("height").forGetter(ReplaceDisk::height),
+            LevelBasedValue.CodecHolder.CODEC.fieldOf("radius").forGetter(ReplaceDisk::radius),
+            LevelBasedValue.CodecHolder.CODEC.fieldOf("height").forGetter(ReplaceDisk::height),
             Vec3i.CODEC.optionalFieldOf("offset", Vec3i.ZERO).forGetter(ReplaceDisk::offset),
             BlockPredicate.CODEC.optionalFieldOf("predicate").forGetter(ReplaceDisk::predicate),
             BlockStateProvider.CODEC.fieldOf("block_state").forGetter(ReplaceDisk::blockState),

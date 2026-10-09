@@ -43,10 +43,10 @@ public record ExplodeEffect(
       i -> i.group(
             Codec.BOOL.optionalFieldOf("attribute_to_user", false).forGetter(ExplodeEffect::attributeToUser),
             DamageType.CODEC.optionalFieldOf("damage_type").forGetter(ExplodeEffect::damageType),
-            LevelBasedValue.CODEC.optionalFieldOf("knockback_multiplier").forGetter(ExplodeEffect::knockbackMultiplier),
+            LevelBasedValue.CodecHolder.CODEC.optionalFieldOf("knockback_multiplier").forGetter(ExplodeEffect::knockbackMultiplier),
             RegistryCodecs.holderSet(Registries.BLOCK).optionalFieldOf("immune_blocks").forGetter(ExplodeEffect::immuneBlocks),
             Vec3.CODEC.optionalFieldOf("offset", Vec3.ZERO).forGetter(ExplodeEffect::offset),
-            LevelBasedValue.CODEC.fieldOf("radius").forGetter(ExplodeEffect::radius),
+            LevelBasedValue.CodecHolder.CODEC.fieldOf("radius").forGetter(ExplodeEffect::radius),
             Codec.BOOL.optionalFieldOf("create_fire", false).forGetter(ExplodeEffect::createFire),
             Level.ExplosionInteraction.CODEC.fieldOf("block_interaction").forGetter(ExplodeEffect::blockInteraction),
             ParticleTypes.CODEC.fieldOf("small_particle").forGetter(ExplodeEffect::smallParticle),

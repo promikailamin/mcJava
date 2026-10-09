@@ -15,8 +15,8 @@ import net.minecraft.world.phys.Vec3;
 public record DamageEntity(LevelBasedValue minDamage, LevelBasedValue maxDamage, Holder<DamageType> damageType) implements EnchantmentEntityEffect {
    public static final MapCodec<DamageEntity> CODEC = RecordCodecBuilder.mapCodec(
       i -> i.group(
-            LevelBasedValue.CODEC.fieldOf("min_damage").forGetter(DamageEntity::minDamage),
-            LevelBasedValue.CODEC.fieldOf("max_damage").forGetter(DamageEntity::maxDamage),
+            LevelBasedValue.CodecHolder.CODEC.fieldOf("min_damage").forGetter(DamageEntity::minDamage),
+            LevelBasedValue.CodecHolder.CODEC.fieldOf("max_damage").forGetter(DamageEntity::maxDamage),
             DamageType.CODEC.fieldOf("damage_type").forGetter(DamageEntity::damageType)
          )
          .apply(i, DamageEntity::new)
