@@ -112,8 +112,14 @@ public static final Codec<EnderDragonFight> CODEC = RecordCodecBuilder.create(
              ExtraCodecs.optionalAlwaysPresentFieldOf(Codec.INT, "respawn_time", 0).forGetter((EnderDragonFight fight) -> fight.respawnTime),
              UUIDUtil.CODEC.lenientOptionalFieldOf("dragon_uuid").forGetter((EnderDragonFight fight) -> Optional.ofNullable(fight.dragonUUID)),
              BlockPos.CODEC.lenientOptionalFieldOf("exit_portal_location").forGetter((EnderDragonFight fight) -> Optional.ofNullable(fight.exitPortalLocation)),
-             Codec.list(Codec.INT).lenientOptionalFieldOf("gateways", new ArrayList()).forGetter((EnderDragonFight fight) -> fight.gateways),
-             Codec.list(EntityReference.codec()).optionalFieldOf("respawn_crystals", List.of()).forGetter((EnderDragonFight fight) -> fight.respawnCrystals)
+Codec.list(Codec.INT).lenientOptionalFieldOf("gateways", new ArrayList()).forGetter(fight -> new ArrayList<Integer>(fight.gateways)),
+              Codec.list(EntityReference.codec()).optionalFieldOf("respawn_crystals", List.of()).forGetter(fight -> {
+                 List<EntityReference<?>> list = new ArrayList<>();
+                 for (EntityReference<EndCrystal> ref : fight.respawnCrystals) {
+                    list.add(ref);
+                 }
+                 return list;
+              })
           )
           .apply(i, EnderDragonFight::new)
     );

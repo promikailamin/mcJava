@@ -16,7 +16,7 @@ public final class MemoryMap implements Iterable<MemoryMap.Value<?>> {
       .byNameCodec()
       .validate(type -> type.canSerialize() ? DataResult.success(type) : DataResult.error(() -> "Memory module " + type + " cannot be encoded"));
 public static final Codec<MemoryMap> CODEC = Codec.dispatchedMap(SERIALIZABLE_MEMORY_MODULE_CODEC, type -> (Codec)type.getCodec().orElseThrow())
-       .xmap(m -> new MemoryMap(m), MemoryMap::memories);
+        .xmap(m -> new MemoryMap((Map<MemoryModuleType<?>, ExpirableValue<?>>)m), MemoryMap::memories);
    public static final MemoryMap EMPTY = new MemoryMap(Map.of());
    private final Map<MemoryModuleType<?>, ExpirableValue<?>> memories;
 

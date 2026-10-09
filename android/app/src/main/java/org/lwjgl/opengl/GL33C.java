@@ -466,11 +466,20 @@ public class GL33C {
     }
 
     public static void glGetShaderSource(int shader, IntBuffer length, ByteBuffer source) {
-        GLES20.glGetShaderSource(shader, source.capacity(), length, source);
+        String src = GLES20.glGetShaderSource(shader);
+        if (src != null) {
+            byte[] bytes = src.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+            if (bytes.length <= source.remaining()) {
+                source.put(bytes);
+            }
+            if (length != null) {
+                length.put(0, bytes.length);
+            }
+        }
     }
 
     public static void glShaderSource(int shader, CharSequence source) {
-        GLES20.glShaderSource(shader, shaderSourceCompat(source));
+        GLES20.glShaderSource(shader, source.toString());
     }
 
     public static void glShaderSource(int shader, ByteBuffer string) {
@@ -481,7 +490,7 @@ public class GL33C {
     public static void nglShaderSource(int shader, int count, long strings, long length) {
         long first = MemoryUtil.memGetAddress(strings);
         String src = readCString(MemoryUtil.byteBuffer(first, 65536));
-        GLES20.glShaderSource(shader, shaderSourceCompat(src));
+        GLES20.glShaderSource(shader, src);
     }
 
     public static void nglShaderSource(int shader, CharSequence source) {
@@ -501,17 +510,31 @@ public class GL33C {
     }
 
     public static int glGetProgramInfoLog(int program, IntBuffer length, ByteBuffer infoLog) {
-        int[] len = new int[1];
-        GLES20.glGetProgramInfoLog(program, infoLog.capacity(), len, infoLog);
-        if (length != null) { length.put(0, len[0]); }
-        return len[0];
+        String log = GLES20.glGetProgramInfoLog(program);
+        if (log != null && infoLog != null) {
+            byte[] bytes = log.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+            if (bytes.length <= infoLog.remaining()) {
+                infoLog.put(bytes);
+            }
+            if (length != null) {
+                length.put(0, bytes.length);
+            }
+        }
+        return log != null ? log.length() : 0;
     }
 
     public static int glGetShaderInfoLog(int shader, IntBuffer length, ByteBuffer infoLog) {
-        int[] len = new int[1];
-        GLES20.glGetShaderInfoLog(shader, infoLog.capacity(), len, infoLog);
-        if (length != null) { length.put(0, len[0]); }
-        return len[0];
+        String log = GLES20.glGetShaderInfoLog(shader);
+        if (log != null && infoLog != null) {
+            byte[] bytes = log.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+            if (bytes.length <= infoLog.remaining()) {
+                infoLog.put(bytes);
+            }
+            if (length != null) {
+                length.put(0, bytes.length);
+            }
+        }
+        return log != null ? log.length() : 0;
     }
 
     public static int glGetUniformLocation(int program, CharSequence name) {
@@ -646,7 +669,7 @@ public class GL33C {
 
     public static void glMultiDrawElementsIndirect(int mode, int type, ByteBuffer indirect, int drawcount, int stride) {
         int s = stride == 0 ? 20 : stride;
-        int bytes = type == GLConst.GL_UNSIGNED_SHORT ? 2 : 4;
+        int bytes = type == 0x1403 ? 2 : 4;
         for (int i = 0; i < drawcount; i++) {
             int base = i * s;
             int count = indirect.getInt(base);
@@ -726,7 +749,16 @@ public class GL33C {
         return out[0];
     }
 
-    public static void glDeleteQueries(IntBuffer ids) { GLES30.glDeleteQueries(ids); }
+    public static void glDeleteQueries(IntBuffer ids) {
+        int count = ids.remaining();
+        int[] out = new int[count];
+        int pos = ids.position();
+        for (int i = 0; i < count; i++) {
+            out[i] = ids.get(pos + i);
+        }
+        GLES30.glDeleteQueries(count, out, 0);
+    }
+
     public static void glDeleteQueries(int id) { GLES30.glDeleteQueries(1, new int[]{id}, 0); }
 
     public static void glQueryCounter(int id, int target) {
@@ -737,7 +769,8 @@ public class GL33C {
 
     public static int glGetQueryObjecti(int id, int pname) {
         int[] v = new int[1];
-        GLES30.glGetQueryObjectiv(id, pname, v, 0);
+        // Android GLES30 doesn't have glGetQueryObjectiv, use glGetQueryObjectuiv instead
+        GLES30.glGetQueryObjectuiv(id, pname, v, 0);
         return v[0];
     }
 

@@ -282,6 +282,12 @@ public final class MemoryUtil {
         return buf;
     }
 
+    public static IntBuffer memIntBuffer(long address, int size) {
+        IntBuffer buf = byteBuffer(address, size * Integer.BYTES).asIntBuffer();
+        SLICES.put(buf, address);
+        return buf;
+    }
+
     public static IntBuffer memCallocInt(int count) {
         IntBuffer buf = memAllocInt(count);
         for (int i = 0; i < buf.capacity(); i++) {

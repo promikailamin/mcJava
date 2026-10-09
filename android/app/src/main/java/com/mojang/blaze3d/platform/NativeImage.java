@@ -662,28 +662,32 @@ public final class NativeImage implements AutoCloseable {
       }
    }
 
-   private static class WriteCallback extends STBIWriteCallback {
-      private final WritableByteChannel output;
-      private @Nullable IOException exception;
+private static class WriteCallback extends STBIWriteCallback {
+       private final WritableByteChannel output;
+       private @Nullable IOException exception;
 
-      private WriteCallback(final WritableByteChannel output) {
-         this.output = output;
-      }
+       private WriteCallback(final WritableByteChannel output) {
+          this.output = output;
+       }
 
-      public void invoke(final long context, final long data, final int size) {
-         ByteBuffer dataBuf = getData(data, size);
+       public void invoke(final long context, final long data, final int size) {
+          ByteBuffer dataBuf = getData(data, size);
 
-         try {
-            this.output.write(dataBuf);
-         } catch (IOException e) {
-            this.exception = e;
-         }
-      }
+          try {
+             this.output.write(dataBuf);
+          } catch (IOException e) {
+             this.exception = e;
+          }
+       }
 
-      public void throwIfException() throws IOException {
-         if (this.exception != null) {
-            throw this.exception;
-         }
-      }
-   }
+       public void throwIfException() throws IOException {
+          if (this.exception != null) {
+             throw this.exception;
+          }
+       }
+
+       public void free() {
+          // No-op for Android implementation
+       }
+    }
 }

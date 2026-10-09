@@ -80,8 +80,16 @@ public class MemoryStack {
         return frameBase;
     }
 
+    public int getPointer() {
+        return frameBase;
+    }
+
     public void putPointer(long pointer) {
         frameBase = (int) pointer;
+    }
+
+    public void close() {
+        pop();
     }
 
     // ---------------------------------------------------------------- allocs

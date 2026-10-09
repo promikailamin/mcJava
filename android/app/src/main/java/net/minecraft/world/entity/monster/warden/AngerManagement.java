@@ -65,14 +65,14 @@ public class AngerManagement {
    }
 
 private List<Pair<UUID, Integer>> createUuidAngerPairs() {
-       return Streams.concat(
-             new Stream[]{
-                this.suspects.stream().map(e -> Pair.of(e.getUUID(), this.angerBySuspect.getInt(e))),
-                this.angerByUuid.object2IntEntrySet().stream().map(e -> Pair.of((UUID)e.getKey(), e.getIntValue()))
-             }
-          )
-          .<Pair<UUID, Integer>>collect(Collectors.toList());
-    }
+        return Streams.concat(
+              new Stream[]{
+                 this.suspects.stream().map(e -> Pair.of(e.getUUID(), this.angerBySuspect.getInt(e))),
+                 this.angerByUuid.object2IntEntrySet().stream().map(e -> Pair.of((UUID)e.getKey(), e.getIntValue()))
+              }
+           )
+           .collect(Collectors.toList());
+     }
 
    public void tick(final ServerLevel level, final Predicate<Entity> validEntity) {
       this.conversionDelay--;

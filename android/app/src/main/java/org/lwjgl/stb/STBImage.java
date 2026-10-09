@@ -1,6 +1,7 @@
 package org.lwjgl.stb;
 
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,13 +20,13 @@ public final class STBImage {
         return lastError;
     }
 
-    public static ByteBuffer stbi_load_from_memory(ByteBuffer bytes, int[] w, int[] h, int[] comp, int req_comp) {
+    public static ByteBuffer stbi_load_from_memory(ByteBuffer bytes, IntBuffer w, IntBuffer h, IntBuffer comp, int req_comp) {
         lastError = null;
         try {
             byte[] data = new byte[bytes.remaining()];
             bytes.duplicate().get(data);
             BitmapFactory.Options opts = new BitmapFactory.Options();
-            opts.inPreferredConfig = android.graphics.Bitmap.Config.RGBA_8888;
+            opts.inPreferredConfig = android.graphics.Bitmap.Config.ARGB_8888;
             Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length, opts);
             if (bmp == null) {
                 lastError = "unable to decode image";
@@ -34,9 +35,9 @@ public final class STBImage {
             int width = bmp.getWidth();
             int height = bmp.getHeight();
             int components = req_comp > 0 ? req_comp : 4;
-            if (w != null) w[0] = width;
-            if (h != null) h[0] = height;
-            if (comp != null) comp[0] = 4;
+            if (w != null) w.put(0, width);
+            if (h != null) h.put(0, height);
+            if (comp != null) comp.put(0, 4);
 
             int[] pixels = new int[width * height];
             bmp.getPixels(pixels, 0, width, 0, 0, width, height);

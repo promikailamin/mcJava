@@ -5,6 +5,12 @@ plugins {
 def minecraftVersion = "26.3"
 def loaderVersion = "0.19.5"
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 android {
     namespace 'pro.minecraft'
     compileSdk 35
@@ -20,15 +26,9 @@ android {
 
     compileOptions {
         // The 26.3 source tree uses record patterns and pattern-matching switch
-        // (sealed Uniform instances, HoverEvent ShowText, ...) -> needs JDK 25.
-        sourceCompatibility JavaVersion.VERSION_25
-        targetCompatibility JavaVersion.VERSION_25
-    }
-
-    tasks.withType(JavaCompile).configureEach {
-        // Use forked javac to avoid compiler API issues
-        options.fork = true
-        options.forkOptions.executable = '/usr/lib/jvm/temurin-25-jdk-amd64/bin/javac'
+        // (sealed Uniform instances, HoverEvent ShowText, ...) -> needs JDK 21+.
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     buildTypes {
@@ -71,6 +71,33 @@ android {
         checkReleaseBuilds false
     }
 
+    task compileJavaDesktopStub {
+        doLast {
+            def stubDir = file('build/generated/stub/java.desktop')
+            def srcFile = file('src/main/java/javax/sound/sampled/AudioFormat.java')
+            stubDir.mkdirs()
+            copy {
+                from srcFile.parentFile
+                into stubDir
+                include 'AudioFormat.java'
+            }
+            def proc = ['/usr/lib/jvm/temurin-21-jdk-amd64/bin/javac', '--patch-module', 'java.desktop=' + stubDir.absolutePath, '-d', stubDir.absolutePath, stubDir.absolutePath + '/javax/sound/sampled/AudioFormat.java'].execute()
+            proc.waitFor()
+            if (proc.exitValue() != 0) {
+                throw new GradleException('Failed to compile java.desktop stub: ' + proc.text)
+            }
+        }
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        dependsOn compileJavaDesktopStub
+        options.compilerArgs << "-Xbootclasspath/p:/usr/lib/jvm/temurin-21-jdk-amd64/lib/modules"
+        options.compilerArgs.remove("--system")
+        options.compilerArgs.remove("/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/jdkImage")
+        options.compilerArgs << "--patch-module"
+        options.compilerArgs << "java.desktop=/home/runner/work/mcJava/mcJava/android/app/build/generated/stub/java.desktop"
+    }
+
     sourceSets {
         main {
             java {
@@ -92,6 +119,8 @@ android {
                 exclude 'net/minecraft/server/gui/**'
                 // javax.management JMX registry (JVM-only).
                 exclude 'net/minecraft/util/monitoring/jmx/**'
+                // javax.sound.sampled stub provided via --patch-module
+                exclude 'javax/sound/sampled/**'
             }
         }
     }

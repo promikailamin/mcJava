@@ -38,24 +38,28 @@ public final class DataComponentPatch {
       return map;
    }
 
-   @SuppressWarnings("unchecked")
-   public static final Codec<DataComponentPatch> CODEC = Codec.dispatchedMap(DataComponentPatch.PatchKey.CODEC, DataComponentPatch.PatchKey::valueCodec)
-       .<DataComponentPatch>xmap(
-          (Map<DataComponentPatch.PatchKey, ?> data) -> {
-             if (data.isEmpty()) {
-                return EMPTY;
-             }
+@SuppressWarnings("unchecked")
+    public static final Codec<DataComponentPatch> CODEC = Codec.dispatchedMap(DataComponentPatch.PatchKey.CODEC, DataComponentPatch.PatchKey::valueCodec)
+        .<DataComponentPatch>xmap(
+           (Map<DataComponentPatch.PatchKey, ?> data) -> {
+              if (data.isEmpty()) {
+                 return EMPTY;
+              }
 
-             Reference2ObjectMap<DataComponentType<?>, Object> map = new Reference2ObjectArrayMap(data.size());
+              Reference2ObjectMap<DataComponentType<?>, Object> map = new Reference2ObjectArrayMap(data.size());
 
-             for (Entry<DataComponentPatch.PatchKey, ?> entry : data.entrySet()) {
-                map.put(entry.getKey().type(), entry.getValue());
-             }
+              for (Entry<DataComponentPatch.PatchKey, ?> entry : data.entrySet()) {
+                 map.put(entry.getKey().type(), entry.getValue());
+              }
 
-             return new DataComponentPatch(map);
-          },
-          patch -> (Map<DataComponentPatch.PatchKey, ?>)(Object)DataComponentPatch.toMap(patch)
-       );
+              return new DataComponentPatch(map);
+           },
+           patch -> {
+              @SuppressWarnings("rawtypes")
+              Map m = DataComponentPatch.toMap(patch);
+              return m;
+           }
+        );
    public static final StreamCodec<RegistryFriendlyByteBuf, DataComponentPatch> STREAM_CODEC = createStreamCodec(new DataComponentPatch.CodecGetter() {
       @Override
       public <T> StreamCodec<RegistryFriendlyByteBuf, T> apply(final DataComponentType<T> type) {

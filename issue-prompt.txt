@@ -3,14 +3,14 @@ You are working in a GitHub repository.
 A new GitHub issue has been opened. Complete the requested task
 by inspecting the repository and making the necessary changes.
 
-Issue number: 5
-Issue URL: https://github.com/promikailamin/mcJava/issues/5
+Issue number: 6
+Issue URL: https://github.com/promikailamin/mcJava/issues/6
 
 Issue title:
-Build this project
+Fix all errors
 
 Issue description:
-Fix all errors and build this project
+Fix all errors and build this
 
 Instructions:
 - Understand the issue before making changes.
