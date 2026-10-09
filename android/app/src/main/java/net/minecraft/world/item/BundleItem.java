@@ -47,7 +47,7 @@ public class BundleItem extends Item {
       return switch (contents.weight()) {
          case Success<Fraction> success -> (Fraction)success.value();
          case Error<?> error -> Fraction.ONE;
-         default -> throw new MatchException(null, null);
+         default -> throw new IllegalStateException("MatchException: " + null, null);
       };
    }
 

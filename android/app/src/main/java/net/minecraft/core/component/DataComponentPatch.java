@@ -10,6 +10,7 @@ import it.unimi.dsi.fastutil.objects.Reference2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectMaps;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -21,34 +22,40 @@ import org.jspecify.annotations.Nullable;
 
 public final class DataComponentPatch {
    public static final DataComponentPatch EMPTY = new DataComponentPatch(Reference2ObjectMaps.emptyMap());
+   private static Map<DataComponentPatch.PatchKey, Object> toMap(final DataComponentPatch patch) {
+      Reference2ObjectMap<DataComponentPatch.PatchKey, Object> map = new Reference2ObjectArrayMap(patch.map.size());
+      Iterator i$ = Reference2ObjectMaps.fastIterable(patch.map).iterator();
+
+      while (i$.hasNext()) {
+         Entry<DataComponentType<?>, Object> entry = (Entry<DataComponentType<?>, Object>)i$.next();
+         DataComponentType<?> type = entry.getKey();
+         if (!type.isTransient()) {
+            Object value = entry.getValue();
+            map.put(new DataComponentPatch.PatchKey(type, Removed.isRemoved(value)), value);
+         }
+      }
+
+      return map;
+   }
+
+   @SuppressWarnings("unchecked")
    public static final Codec<DataComponentPatch> CODEC = Codec.dispatchedMap(DataComponentPatch.PatchKey.CODEC, DataComponentPatch.PatchKey::valueCodec)
-      .xmap(data -> {
-         if (data.isEmpty()) {
-            return EMPTY;
-         }
+       .<DataComponentPatch>xmap(
+          (Map<DataComponentPatch.PatchKey, ?> data) -> {
+             if (data.isEmpty()) {
+                return EMPTY;
+             }
 
-         Reference2ObjectMap<DataComponentType<?>, Object> map = new Reference2ObjectArrayMap(data.size());
+             Reference2ObjectMap<DataComponentType<?>, Object> map = new Reference2ObjectArrayMap(data.size());
 
-         for (Entry<DataComponentPatch.PatchKey, ?> entry : data.entrySet()) {
-            map.put(entry.getKey().type(), entry.getValue());
-         }
+             for (Entry<DataComponentPatch.PatchKey, ?> entry : data.entrySet()) {
+                map.put(entry.getKey().type(), entry.getValue());
+             }
 
-         return new DataComponentPatch(map);
-      }, patch -> {
-         Reference2ObjectMap<DataComponentPatch.PatchKey, Object> map = new Reference2ObjectArrayMap(patch.map.size());
-         Iterator i$ = Reference2ObjectMaps.fastIterable(patch.map).iterator();
-
-         while (i$.hasNext()) {
-            Entry<DataComponentType<?>, Object> entry = (Entry<DataComponentType<?>, Object>)i$.next();
-            DataComponentType<?> type = entry.getKey();
-            if (!type.isTransient()) {
-               Object value = entry.getValue();
-               map.put(new DataComponentPatch.PatchKey(type, Removed.isRemoved(value)), value);
-            }
-         }
-
-         return map;
-      });
+             return new DataComponentPatch(map);
+          },
+          patch -> (Map<DataComponentPatch.PatchKey, ?>)(Object)DataComponentPatch.toMap(patch)
+       );
    public static final StreamCodec<RegistryFriendlyByteBuf, DataComponentPatch> STREAM_CODEC = createStreamCodec(new DataComponentPatch.CodecGetter() {
       @Override
       public <T> StreamCodec<RegistryFriendlyByteBuf, T> apply(final DataComponentType<T> type) {

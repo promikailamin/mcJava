@@ -18,8 +18,8 @@ public class TagEntry {
          )
          .apply(i, TagEntry::new)
    );
-   public static final Codec<TagEntry> CODEC = Codec.either(ExtraCodecs.TAG_OR_ELEMENT_ID, FULL_CODEC)
-      .xmap(e -> (TagEntry)e.map(l -> new TagEntry(l, true), r -> r), entry -> entry.required ? Either.left(entry.elementOrTag()) : Either.right(entry));
+public static final Codec<TagEntry> CODEC = Codec.either(ExtraCodecs.TAG_OR_ELEMENT_ID, FULL_CODEC)
+       .xmap(e -> e.map(l -> new TagEntry(l, true), r -> r), entry -> entry.required ? Either.left(entry.elementOrTag()) : Either.right(entry));
    private final Identifier id;
    private final boolean tag;
    private final boolean required;

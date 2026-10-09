@@ -118,7 +118,7 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
             yield channelFactory.newChannel(fileNode.storagePath(), options, attrs);
          }
          case DirectoryNode var14 -> throw new CowFSFileSystemException(cowPath + ": not a regular file");
-         default -> throw new MatchException(null, null);
+         default -> throw new IllegalStateException("MatchException: " + null, null);
       });
    }
 
@@ -269,7 +269,7 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
       Path checkPath = switch (node) {
          case DirectoryNode var9 -> this.fs.tmpDirectory();
          case FileNode file -> file.storagePath();
-         default -> throw new MatchException(null, null);
+         default -> throw new IllegalStateException("MatchException: " + null, null);
       };
       checkPath.getFileSystem().provider().checkAccess(checkPath, modes);
    }
@@ -298,7 +298,7 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
          } : null;
          case DirectoryNode var9 -> type == BasicFileAttributeView.class ? DUMMY_DIRECTORY_VIEW : null;
          case FileNode file -> Files.getFileAttributeView(file.storagePath(), type, options);
-         default -> throw new MatchException(null, null);
+         default -> throw new IllegalStateException("MatchException: " + null, null);
       });
    }
 
@@ -310,7 +310,7 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
       return (A)(switch (node) {
          case DirectoryNode var9 -> DummyFileAttributes.DIRECTORY;
          case FileNode file -> Files.readAttributes(file.storagePath(), type, options);
-         default -> throw new MatchException(null, null);
+         default -> throw new IllegalStateException("MatchException: " + null, null);
       });
    }
 

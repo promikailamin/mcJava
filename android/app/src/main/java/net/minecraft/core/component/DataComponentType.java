@@ -108,10 +108,12 @@ public interface DataComponentType<T> {
             return this.streamCodec;
          }
 
-         @Override
-         public String toString() {
-            return Util.getRegisteredName((Registry<DataComponentType.Builder.SimpleType<T>>)BuiltInRegistries.DATA_COMPONENT_TYPE, this);
-         }
+@Override
+          public String toString() {
+             @SuppressWarnings("unchecked")
+             Registry<DataComponentType.Builder.SimpleType<T>> registry = (Registry<DataComponentType.Builder.SimpleType<T>>)(Object)BuiltInRegistries.DATA_COMPONENT_TYPE;
+             return Util.getRegisteredName(registry, this);
+          }
       }
    }
 }

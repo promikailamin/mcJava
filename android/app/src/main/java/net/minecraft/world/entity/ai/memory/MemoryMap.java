@@ -15,14 +15,18 @@ public final class MemoryMap implements Iterable<MemoryMap.Value<?>> {
    private static final Codec<MemoryModuleType<?>> SERIALIZABLE_MEMORY_MODULE_CODEC = BuiltInRegistries.MEMORY_MODULE_TYPE
       .byNameCodec()
       .validate(type -> type.canSerialize() ? DataResult.success(type) : DataResult.error(() -> "Memory module " + type + " cannot be encoded"));
-   public static final Codec<MemoryMap> CODEC = Codec.dispatchedMap(SERIALIZABLE_MEMORY_MODULE_CODEC, type -> (Codec)type.getCodec().orElseThrow())
-      .xmap(MemoryMap::new, m -> m.memories);
+public static final Codec<MemoryMap> CODEC = Codec.dispatchedMap(SERIALIZABLE_MEMORY_MODULE_CODEC, type -> (Codec)type.getCodec().orElseThrow())
+       .xmap(m -> new MemoryMap(m), MemoryMap::memories);
    public static final MemoryMap EMPTY = new MemoryMap(Map.of());
    private final Map<MemoryModuleType<?>, ExpirableValue<?>> memories;
 
-   private MemoryMap(final Map<MemoryModuleType<?>, ExpirableValue<?>> memories) {
-      this.memories = Map.copyOf(memories);
-   }
+private MemoryMap(final Map<MemoryModuleType<?>, ExpirableValue<?>> memories) {
+       this.memories = Map.copyOf(memories);
+    }
+
+    Map<MemoryModuleType<?>, ExpirableValue<?>> memories() {
+       return this.memories;
+    }
 
    public static MemoryMap of(final Stream<MemoryMap.Value<?>> memories) {
       return new MemoryMap(memories.collect(Collectors.toMap(MemoryMap.Value::type, MemoryMap.Value::value)));

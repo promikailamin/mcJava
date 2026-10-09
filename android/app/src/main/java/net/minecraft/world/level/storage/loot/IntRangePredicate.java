@@ -21,7 +21,7 @@ public sealed interface IntRangePredicate extends Validatable permits IntRangePr
       return switch (range) {
          case IntRangePredicate.Point point -> Either.left(point);
          case IntRangePredicate.Line line -> Either.right(line);
-         default -> throw new MatchException(null, null);
+         default -> throw new IllegalStateException("MatchException: " + null, null);
       };
    });
 

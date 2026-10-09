@@ -33,7 +33,7 @@ public sealed interface CubicSpline<I> permits CubicSpline.Multipoint, CubicSpli
       return switch (spline) {
          case CubicSpline.Multipoint<I> multipoint -> CubicSpline.Multipoint.sample(multipoint, coordinate);
          case CubicSpline.Constant<I> constant -> constant.value();
-         default -> throw new MatchException(null, null);
+         default -> throw new IllegalStateException("MatchException: " + null, null);
       };
    }
 
@@ -51,7 +51,7 @@ public sealed interface CubicSpline<I> permits CubicSpline.Multipoint, CubicSpli
             }
          };
          case CubicSpline.Constant<I> constant -> BoundedFloatFunction.constant(constant.value());
-         default -> throw new MatchException(null, null);
+         default -> throw new IllegalStateException("MatchException: " + null, null);
       };
    }
 
@@ -63,7 +63,7 @@ public sealed interface CubicSpline<I> permits CubicSpline.Multipoint, CubicSpli
                return switch (spline) {
                   case CubicSpline.Constant(float value) -> Either.left(value);
                   case CubicSpline.Multipoint<I> multipoint -> Either.right(multipoint);
-                  default -> throw new MatchException(null, null);
+                  default -> throw new IllegalStateException("MatchException: " + null, null);
                };
             })
       );

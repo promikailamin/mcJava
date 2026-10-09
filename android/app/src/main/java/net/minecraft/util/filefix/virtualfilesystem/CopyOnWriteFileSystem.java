@@ -221,7 +221,7 @@ public class CopyOnWriteFileSystem extends FileSystem {
                this.collectMoveOperations(target, directoryNode, result);
                break;
             default:
-               throw new MatchException(null, null);
+               throw new IllegalStateException("MatchException: " + null, null);
          }
       }
    }

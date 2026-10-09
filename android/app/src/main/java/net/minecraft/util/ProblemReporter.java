@@ -104,20 +104,20 @@ public interface ProblemReporter {
          }
       }
 
-      public String getReport() {
-         Multimap<String, ProblemReporter.Problem> groupedProblems = HashMultimap.create();
-         this.forEach(groupedProblems::put);
-         return groupedProblems.asMap()
-            .entrySet()
-            .stream()
-            .map(
-               entry -> " at "
-                  + (String)entry.getKey()
-                  + ": "
-                  + ((Collection)entry.getValue()).stream().map(ProblemReporter.Problem::description).collect(Collectors.joining("; "))
-            )
-            .collect(Collectors.joining("\n"));
-      }
+public String getReport() {
+          Multimap<String, ProblemReporter.Problem> groupedProblems = HashMultimap.create();
+          this.forEach(groupedProblems::put);
+          return groupedProblems.asMap()
+             .entrySet()
+             .stream()
+             .map(
+                entry -> " at "
+                   + (String)entry.getKey()
+                   + ": "
+                   + ((Collection<ProblemReporter.Problem>)entry.getValue()).stream().map(ProblemReporter.Problem::description).collect(Collectors.joining("; "))
+             )
+             .collect(Collectors.joining("\n"));
+       }
 
       public String getTreeReport() {
          List<ProblemReporter.PathElement> pathElements = new ArrayList<>();

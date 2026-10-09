@@ -605,9 +605,11 @@ public class Block extends BlockBehaviour implements ItemLike {
       };
    }
 
-   private static <S extends StateHolder<?, S>, T extends Comparable<T>> S setValueHelper(final S state, final Property<T> property, final Object value) {
-      return state.setValue(property, (Comparable)value);
-   }
+private static <S extends StateHolder<?, S>, T extends Comparable<T>> S setValueHelper(final S state, final Property<T> property, final Object value) {
+       @SuppressWarnings("unchecked")
+       T typedValue = (T) value;
+       return state.setValue(property, typedValue);
+    }
 
    @Deprecated
    public Holder.Reference<Block> builtInRegistryHolder() {

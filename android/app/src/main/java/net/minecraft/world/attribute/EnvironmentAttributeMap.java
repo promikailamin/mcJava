@@ -10,12 +10,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import net.minecraft.util.Util;
 import net.minecraft.world.attribute.modifier.AttributeModifier;
 import org.jspecify.annotations.Nullable;
 
 public final class EnvironmentAttributeMap {
    public static final EnvironmentAttributeMap EMPTY = new EnvironmentAttributeMap(Map.of());
+   private static Map toMap(final EnvironmentAttributeMap attributes) {
+      return attributes.entries();
+   }
+
+   @SuppressWarnings("unchecked")
+   public static final Codec<EnvironmentAttributeMap> CODEC = Codec.lazyInitialized(
+      () -> Codec.dispatchedMap(EnvironmentAttributes.CODEC, Util.memoize(EnvironmentAttributeMap.Entry::createCodec))
+         .xmap(
+            map -> new EnvironmentAttributeMap(map),
+            (EnvironmentAttributeMap attributes) -> (Map)EnvironmentAttributeMap.toMap(attributes)
+         )
+   );
    public static final Codec<EnvironmentAttributeMap> NETWORK_CODEC = CODEC.xmap(
       EnvironmentAttributeMap::filterSyncable, EnvironmentAttributeMap::filterSyncable
    );
@@ -27,19 +40,19 @@ public final class EnvironmentAttributeMap {
             : DataResult.success(map);
       }
    );
-   public static final Codec<EnvironmentAttributeMap> CODEC = Codec.lazyInitialized(
-      () -> Codec.dispatchedMap(EnvironmentAttributes.CODEC, Util.memoize(EnvironmentAttributeMap.Entry::createCodec))
-         .xmap(map -> new EnvironmentAttributeMap(map), v -> v.entries)
-   );
    private final Map<EnvironmentAttribute<?>, EnvironmentAttributeMap.Entry<?, ?>> entries;
 
    private static EnvironmentAttributeMap filterSyncable(final EnvironmentAttributeMap attributes) {
       return new EnvironmentAttributeMap(Map.copyOf(Maps.filterKeys(attributes.entries, EnvironmentAttribute::isSyncable)));
    }
 
-   private EnvironmentAttributeMap(final Map<EnvironmentAttribute<?>, EnvironmentAttributeMap.Entry<?, ?>> entries) {
-      this.entries = entries;
-   }
+private EnvironmentAttributeMap(final Map<EnvironmentAttribute<?>, EnvironmentAttributeMap.Entry<?, ?>> entries) {
+       this.entries = entries;
+    }
+
+    Map<EnvironmentAttribute<?>, EnvironmentAttributeMap.Entry<?, ?>> entries() {
+       return this.entries;
+    }
 
    public static EnvironmentAttributeMap.Builder builder() {
       return new EnvironmentAttributeMap.Builder();
@@ -105,26 +118,33 @@ public final class EnvironmentAttributeMap {
       }
    }
 
-   public record Entry<Value, Argument>(Argument argument, AttributeModifier<Value, Argument> modifier) {
-      private static <Value> Codec<EnvironmentAttributeMap.Entry<Value, ?>> createCodec(final EnvironmentAttribute<Value> attribute) {
-         Codec<EnvironmentAttributeMap.Entry<Value, ?>> fullCodec = attribute.type()
-            .modifierCodec()
-            .dispatch("modifier", EnvironmentAttributeMap.Entry::modifier, Util.memoize(modifier -> createFullCodec(attribute, modifier)));
-         return Codec.either(attribute.valueCodec(), fullCodec)
-            .xmap(
-               either -> (EnvironmentAttributeMap.Entry<Value, ?>)either.map(value -> new EnvironmentAttributeMap.Entry<>(value, AttributeModifier.override()), e -> e),
-               entry -> entry.modifier == AttributeModifier.override() ? Either.left(entry.argument()) : Either.right(entry)
-            );
-      }
+public record Entry<Value, Argument>(Argument argument, AttributeModifier<Value, Argument> modifier) {
+       private static <Value> Codec<EnvironmentAttributeMap.Entry<Value, ?>> createCodec(final EnvironmentAttribute<Value> attribute) {
+          Codec<EnvironmentAttributeMap.Entry<Value, ?>> fullCodec = attribute.type()
+             .modifierCodec()
+             .dispatch("modifier", EnvironmentAttributeMap.Entry::modifier, Util.memoize(modifier -> createFullCodec(attribute, modifier)));
+          return Codec.either(attribute.valueCodec(), fullCodec)
+             .xmap(
+                either -> {
+                   @SuppressWarnings("unchecked")
+                   EnvironmentAttributeMap.Entry<Value, ?> result = (EnvironmentAttributeMap.Entry<Value, ?>)either.map(
+                      value -> new EnvironmentAttributeMap.Entry<>(value, AttributeModifier.override()),
+                      e -> e
+                   );
+                   return result;
+                },
+                entry -> entry.modifier == AttributeModifier.override() ? Either.left(entry.argument()) : Either.right(entry)
+             );
+       }
 
-      private static <Value, Argument> MapCodec<EnvironmentAttributeMap.Entry<Value, Argument>> createFullCodec(
-         final EnvironmentAttribute<Value> attribute, final AttributeModifier<Value, Argument> modifier
-      ) {
-         return RecordCodecBuilder.mapCodec(
-            i -> i.group(modifier.argumentCodec(attribute).fieldOf("argument").forGetter(EnvironmentAttributeMap.Entry::argument))
-               .apply(i, (Function<Argument, EnvironmentAttributeMap.Entry<Value, Argument>>) value -> new EnvironmentAttributeMap.Entry<>(value, modifier))
-         );
-      }
+private static <Value, Argument> MapCodec<EnvironmentAttributeMap.Entry<Value, Argument>> createFullCodec(
+          final EnvironmentAttribute<Value> attribute, final AttributeModifier<Value, Argument> modifier
+       ) {
+          return RecordCodecBuilder.mapCodec(
+             i -> i.group(modifier.argumentCodec(attribute).fieldOf("argument").forGetter(EnvironmentAttributeMap.Entry::argument))
+                .apply(i, value -> new EnvironmentAttributeMap.Entry<>(value, modifier))
+          );
+       }
 
       public Value applyModifier(final Value subject) {
          return this.modifier.apply(subject, this.argument);

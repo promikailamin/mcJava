@@ -23,7 +23,7 @@ public sealed interface ResolvableInt permits ResolvableInt.Constant, Resolvable
       return switch (resolvableNumber) {
          case ResolvableInt.Constant constant -> Either.left(constant);
          case ResolvableInt.Reference reference -> Either.right(reference);
-         default -> throw new MatchException(null, null);
+         default -> throw new IllegalStateException("MatchException: " + null, null);
       };
    }
 

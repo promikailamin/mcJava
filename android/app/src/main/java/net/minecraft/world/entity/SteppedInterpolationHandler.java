@@ -128,7 +128,7 @@ public class SteppedInterpolationHandler extends AbstractInterpolationHandler {
                try {
                   var10000.endPosition();
                } catch (Throwable var17) {
-                  throw new MatchException(var17.toString(), var17);
+                  throw new IllegalStateException("MatchException: " + var17.toString(), var17);
                }
 
                var10000 = var9;
@@ -136,7 +136,7 @@ public class SteppedInterpolationHandler extends AbstractInterpolationHandler {
                try {
                   var24 = var10000.steps();
                } catch (Throwable var16) {
-                  throw new MatchException(var16.toString(), var16);
+                  throw new IllegalStateException("MatchException: " + var16.toString(), var16);
                }
 
                List totalInterpolationTicks = var24;
@@ -160,7 +160,7 @@ public class SteppedInterpolationHandler extends AbstractInterpolationHandler {
                break;
             }
             default:
-               throw new MatchException(null, null);
+               throw new IllegalStateException("MatchException: " + null, null);
          }
       }
 

@@ -227,13 +227,14 @@ public class Brain<E extends LivingEntity> {
       return this.getMemorySlot(type).timeToLive();
    }
 
-   public void forEach(final Brain.Visitor visitor) {
-      this.memories.forEach((memoryModuleType, slot) -> callVisitor(visitor, (MemoryModuleType<?>)memoryModuleType, (MemorySlot<?>)slot));
-   }
+public void forEach(final Brain.Visitor visitor) {
+       this.memories.forEach((memoryModuleType, slot) -> callVisitor(visitor, memoryModuleType, slot));
+    }
 
-   private static <U> void callVisitor(final Brain.Visitor visitor, final MemoryModuleType<U> memoryModuleType, final MemorySlot<?> slot) {
-      slot.visit(memoryModuleType, visitor);
-   }
+    @SuppressWarnings("unchecked")
+    private static <U> void callVisitor(final Brain.Visitor visitor, final MemoryModuleType<U> memoryModuleType, final MemorySlot<U> slot) {
+       slot.visit(memoryModuleType, visitor);
+    }
 
    public <U> boolean isMemoryValue(final MemoryModuleType<U> memoryType, final U value) {
       MemorySlot<U> slot = this.getMemorySlotIfPresent(memoryType);

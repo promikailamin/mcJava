@@ -587,7 +587,7 @@ public class FrontendRenderPass implements RenderPass, RenderPass.UniformUploade
                      try {
                         var30 = var10000.view();
                      } catch (Throwable var18) {
-                        throw new MatchException(var18.toString(), var18);
+                        throw new IllegalStateException("MatchException: " + var18.toString(), var18);
                      }
 
                      GpuTextureView length = var30;
@@ -597,7 +597,7 @@ public class FrontendRenderPass implements RenderPass, RenderPass.UniformUploade
                      try {
                         var32 = var10000.sampler();
                      } catch (Throwable var17) {
-                        throw new MatchException(var17.toString(), var17);
+                        throw new IllegalStateException("MatchException: " + var17.toString(), var17);
                      }
 
                      GpuSampler var26 = var32;

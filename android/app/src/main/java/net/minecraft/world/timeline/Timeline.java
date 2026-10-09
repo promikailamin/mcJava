@@ -34,18 +34,41 @@ public class Timeline {
    private static final Codec<Map<EnvironmentAttribute<?>, AttributeTrack<?, ?>>> TRACKS_CODEC = Codec.dispatchedMap(
       EnvironmentAttributes.CODEC, Util.memoize(AttributeTrack::createCodec)
    );
-   public static final Codec<Timeline> DIRECT_CODEC = RecordCodecBuilder.create(
-         i -> i.group(
-               WorldClock.CODEC.fieldOf("clock").forGetter((Timeline t) -> t.clock()),
-               ExtraCodecs.POSITIVE_INT.optionalFieldOf("period_ticks").forGetter((Timeline t) -> t.periodTicks()),
-               TRACKS_CODEC.optionalFieldOf("tracks", Map.of()).forGetter((Timeline t) -> t.tracks()),
-               Codec.unboundedMap(ClockTimeMarker.KEY_CODEC, Timeline.TimeMarkerInfo.CODEC)
-                  .optionalFieldOf("time_markers", Map.of())
-                  .forGetter((Timeline t) -> t.timeMarkers())
-            )
-            .apply(i, Timeline::new)
-      )
-      .validate(Timeline::validateInternal);
+private static Timeline create(final Holder<WorldClock> clock, final Optional<Integer> periodTicks, final Map<EnvironmentAttribute<?>, AttributeTrack<?, ?>> tracks, final Map<ResourceKey<ClockTimeMarker>, Timeline.TimeMarkerInfo> timeMarkers) {
+       return new Timeline(clock, periodTicks, tracks, timeMarkers);
+   }
+
+   public static final Codec<Timeline> DIRECT_CODEC = new com.mojang.serialization.Codec<Timeline>() {
+      private final com.mojang.serialization.MapCodec<Holder<WorldClock>> clockCodec = WorldClock.CODEC.fieldOf("clock");
+      private final com.mojang.serialization.MapCodec<Optional<Integer>> periodTicksCodec = ExtraCodecs.POSITIVE_INT.optionalFieldOf("period_ticks");
+      private final com.mojang.serialization.MapCodec<Map<EnvironmentAttribute<?>, AttributeTrack<?, ?>>> tracksCodec = TRACKS_CODEC.optionalFieldOf("tracks", Map.of());
+      private final com.mojang.serialization.MapCodec<Map<ResourceKey<ClockTimeMarker>, Timeline.TimeMarkerInfo>> timeMarkersCodec = Codec.unboundedMap(ClockTimeMarker.KEY_CODEC, Timeline.TimeMarkerInfo.CODEC).optionalFieldOf("time_markers", Map.of());
+
+      @Override
+      public <T> com.mojang.serialization.DataResult<T> encode(Timeline input, com.mojang.serialization.DynamicOps<T> ops, T prefix) {
+         com.mojang.serialization.DataResult<T> clockResult = clockCodec.encode(input.clock(), ops, prefix);
+         com.mojang.serialization.DataResult<T> periodResult = periodTicksCodec.encode(input.periodTicks(), ops, prefix);
+         com.mojang.serialization.DataResult<T> tracksResult = tracksCodec.encode(input.tracks(), ops, prefix);
+         com.mojang.serialization.DataResult<T> timeMarkersResult = timeMarkersCodec.encode(input.timeMarkers(), ops, prefix);
+         
+         return clockResult.flatMap(cr -> periodResult.flatMap(pr -> tracksResult.flatMap(tr -> timeMarkersResult)));
+      }
+
+      @Override
+      public <T> com.mojang.serialization.DataResult<com.mojang.datafixers.util.Pair<Timeline, T>> decode(com.mojang.serialization.DynamicOps<T> ops, T input) {
+         com.mojang.serialization.DataResult<com.mojang.datafixers.util.Pair<Holder<WorldClock>, T>> clockResult = clockCodec.decode(ops, input);
+         return clockResult.flatMap(clockPair -> {
+            com.mojang.serialization.DataResult<com.mojang.datafixers.util.Pair<Optional<Integer>, T>> periodResult = periodTicksCodec.decode(ops, clockPair.getSecond());
+            return periodResult.flatMap(periodPair -> {
+               com.mojang.serialization.DataResult<com.mojang.datafixers.util.Pair<Map<EnvironmentAttribute<?>, AttributeTrack<?, ?>>, T>> tracksResult = tracksCodec.decode(ops, periodPair.getSecond());
+               return tracksResult.flatMap(tracksPair -> {
+                  com.mojang.serialization.DataResult<com.mojang.datafixers.util.Pair<Map<ResourceKey<ClockTimeMarker>, Timeline.TimeMarkerInfo>, T>> timeMarkersResult = timeMarkersCodec.decode(ops, tracksPair.getSecond());
+                  return timeMarkersResult.map(timeMarkersPair -> com.mojang.datafixers.util.Pair.of(new Timeline(clockPair.getFirst(), periodPair.getFirst(), tracksPair.getFirst(), timeMarkersPair.getFirst()), timeMarkersPair.getSecond()));
+               });
+            });
+         });
+      }
+   }.validate(Timeline::validateInternal);
    public static final Codec<Timeline> NETWORK_CODEC = DIRECT_CODEC.xmap(Timeline::filterSyncableTracks, Timeline::filterSyncableTracks);
    private final Holder<WorldClock> clock;
    private final Optional<Integer> periodTicks;
@@ -127,15 +150,23 @@ public class Timeline {
       return clockManager.getInstance(this.clock).totalTicks();
    }
 
-   public Holder<WorldClock> clock() {
-      return this.clock;
-   }
+public Holder<WorldClock> clock() {
+       return this.clock;
+    }
 
-   public Optional<Integer> periodTicks() {
-      return this.periodTicks;
-   }
+    public Optional<Integer> periodTicks() {
+       return this.periodTicks;
+    }
 
-   public void registerTimeMarkers(final BiConsumer<ResourceKey<ClockTimeMarker>, ClockTimeMarker> output) {
+    public Map<EnvironmentAttribute<?>, AttributeTrack<?, ?>> tracks() {
+       return this.tracks;
+    }
+
+    public Map<ResourceKey<ClockTimeMarker>, Timeline.TimeMarkerInfo> timeMarkers() {
+       return this.timeMarkers;
+    }
+
+    public void registerTimeMarkers(final BiConsumer<ResourceKey<ClockTimeMarker>, ClockTimeMarker> output) {
       for (Entry<ResourceKey<ClockTimeMarker>, Timeline.TimeMarkerInfo> entry : this.timeMarkers.entrySet()) {
          Timeline.TimeMarkerInfo info = entry.getValue();
          output.accept(entry.getKey(), new ClockTimeMarker(this.clock, info.ticks, this.periodTicks, info.showInCommands));

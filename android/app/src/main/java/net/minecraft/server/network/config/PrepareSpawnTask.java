@@ -78,7 +78,7 @@ public class PrepareSpawnTask implements ConfigurationTask {
             }
          }
          case PrepareSpawnTask.Ready ignored -> true;
-         default -> throw new MatchException(null, null);
+         default -> throw new IllegalStateException("MatchException: " + null, null);
       };
    }
 

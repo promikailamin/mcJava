@@ -166,16 +166,16 @@ public class Villager extends AbstractVillager implements VillagerDataHolder, Re
          return activities;
       }
    );
-   public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<Villager, Holder<PoiType>>> POI_MEMORIES = ImmutableMap.of(
-      MemoryModuleType.HOME,
-      (BiPredicate<Villager, Holder>)(villager, poiType) -> poiType.is(PoiTypes.HOME),
-      MemoryModuleType.JOB_SITE,
-      (BiPredicate<Villager, Holder>)(villager, poiType) -> villager.getVillagerData().profession().value().heldJobSite().test(poiType),
-      MemoryModuleType.POTENTIAL_JOB_SITE,
-      (BiPredicate<Villager, Holder>)(villager, poiType) -> VillagerProfession.ALL_ACQUIRABLE_JOBS.test(poiType),
-      MemoryModuleType.MEETING_POINT,
-      (BiPredicate<Villager, Holder>)(villager, poiType) -> poiType.is(PoiTypes.MEETING)
-   );
+public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<Villager, Holder<PoiType>>> POI_MEMORIES = ImmutableMap.<MemoryModuleType<GlobalPos>, BiPredicate<Villager, Holder<PoiType>>>of(
+       MemoryModuleType.HOME,
+       (BiPredicate<Villager, Holder<PoiType>>)(villager, poiType) -> poiType.is(PoiTypes.HOME),
+       MemoryModuleType.JOB_SITE,
+       (BiPredicate<Villager, Holder<PoiType>>)(villager, poiType) -> villager.getVillagerData().profession().value().heldJobSite().test(poiType),
+       MemoryModuleType.POTENTIAL_JOB_SITE,
+       (BiPredicate<Villager, Holder<PoiType>>)(villager, poiType) -> VillagerProfession.ALL_ACQUIRABLE_JOBS.test(poiType),
+       MemoryModuleType.MEETING_POINT,
+       (BiPredicate<Villager, Holder<PoiType>>)(villager, poiType) -> poiType.is(PoiTypes.MEETING)
+    );
 
    public Villager(final EntityType<? extends Villager> entityType, final Level level) {
       super(entityType, level);

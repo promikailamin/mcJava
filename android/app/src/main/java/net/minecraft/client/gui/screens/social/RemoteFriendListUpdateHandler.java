@@ -130,7 +130,7 @@ public final class RemoteFriendListUpdateHandler {
          case UNAUTHORIZED -> RemoteFriendListUpdateHandler.State.UNAUTHORIZED;
          case GENERIC_ERROR, ERROR -> RemoteFriendListUpdateHandler.State.GENERIC_ERROR;
          case SUCCESS -> RemoteFriendListUpdateHandler.State.SUCCESS;
-         default -> throw new MatchException(null, null);
+         default -> throw new IllegalStateException("MatchException: " + null, null);
       };
    }
 

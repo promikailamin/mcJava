@@ -25,6 +25,12 @@ android {
         targetCompatibility JavaVersion.VERSION_21
     }
 
+    tasks.withType(JavaCompile).configureEach {
+        // Use forked javac to avoid compiler API issues
+        options.fork = true
+        options.forkOptions.executable = '/usr/lib/jvm/temurin-21-jdk-amd64/bin/javac'
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -92,7 +98,7 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.2'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 
     // --- Minecraft runtime (pure-Java libraries from the 26.3 library list) ---
     implementation 'com.google.guava:guava:33.6.0-jre'

@@ -64,7 +64,7 @@ public class QuickPlay {
                minecraft.gui.setScreen(new TitleScreen());
                break;
             default:
-               throw new MatchException(null, null);
+               throw new IllegalStateException("MatchException: " + null, null);
          }
       }
    }

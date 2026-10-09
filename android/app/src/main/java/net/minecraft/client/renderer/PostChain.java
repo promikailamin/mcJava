@@ -124,7 +124,7 @@ public class PostChain implements AutoCloseable {
                inputs.add(new PostPass.TargetInput(samplerName, targetId, useDepthBuffer, bilinear));
                break;
             default:
-               throw new MatchException(null, null);
+               throw new IllegalStateException("MatchException: " + null, null);
          }
       }
 
