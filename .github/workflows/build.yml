@@ -31,6 +31,29 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install opencode
+        run: npm i -g opencode-ai@latest
+
+      - name: Restore opencode session
+        run: |
+          mkdir -p ~/.opencode/sessions
+          if [ -f opencode-session.json ]; then
+            cp opencode-session.json ~/.opencode/sessions/latest.json
+            echo "Restored opencode session"
+          else
+            echo "No existing session found"
+          fi
+
+      - name: Configure opencode
+        run: |
+          mkdir -p ~/.config/opencode
+          cat > ~/.config/opencode/opencode.jsonc << 'JSON'
+          {
+            "$schema": "https://opencode.ai/config.json",
+            "model": "opencode/big-pickle"
+          }
+          JSON
+
       - name: Build debug APK
         id: build
         working-directory: android
@@ -53,35 +76,45 @@ jobs:
           path: android/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
 
-      - name: Install opencode
-        if: failure()
-        run: npm i -g opencode-ai@latest
-
-      - name: Configure opencode
-        if: failure()
-        run: |
-          mkdir -p ~/.config/opencode
-          cat > ~/.config/opencode/opencode.jsonc << 'JSON'
-          {
-            "$schema": "https://opencode.ai/config.json",
-            "model": "opencode/big-pickle"
-          }
-          JSON
-
-      - name: Auto-fix build errors
+      - name: Auto-fix build errors with opencode (persistent session)
         if: failure()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd $GITHUB_WORKSPACE
+          
+          # Create prompt with context from previous session
           cat > /tmp/fix_prompt.txt << 'PROMPT'
-          Fix mcJava Android build compilation errors.
+          You are fixing compilation errors in mcJava Android build.
           
-          1. Read android/build.log to see errors
+          Context: This is a persistent opencode session. Previous fixes have been attempted.
+          
+          Task:
+          1. Read android/build.log to see current compilation errors
           2. Fix errors in android/app/src/main/java
-          3. Commit with message: "fix: auto-fix build errors"
-          4. Push to current branch
+          3. Make minimal, targeted fixes
+          4. Commit with message: "fix: auto-fix build errors [session]"
+          5. Push to current branch
           
-          Make minimal targeted fixes.
+          Focus on root cause errors first.
           PROMPT
+          
+          # Run opencode with session persistence
           opencode --model opencode/big-pickle -p "$(cat /tmp/fix_prompt.txt)" --yes
+          
+          # Save session for next run
+          cp ~/.opencode/sessions/latest.json opencode-session.json 2>/dev/null || true
+          
+          # Commit session if changed
+          if git diff --quiet opencode-session.json; then
+            echo "No session changes"
+          else
+            git add opencode-session.json
+            git commit -m "chore: update opencode session" || true
+            git push origin HEAD:$GITHUB_REF_NAME || true
+          fi
+
+      - name: Trigger rebuild
+        if: failure()
+        run: |
+          echo "Fixes attempted. Build will retrigger on push."
