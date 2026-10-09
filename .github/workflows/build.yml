@@ -7,7 +7,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+  actions: write
 
 jobs:
   build:
@@ -15,6 +16,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -22,11 +26,18 @@ jobs:
           distribution: temurin
           java-version: '21'
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Build debug APK
+        id: build
         working-directory: android
         run: |
           ./gradlew :app:assembleDebug --no-daemon 2>&1 | tee build.log
           status=${PIPESTATUS[0]}
+          echo "status=$status" >> $GITHUB_OUTPUT
           if [ "$status" -ne 0 ]; then
             grep -E ": error:" build.log | sed -E 's#.*/app/src/main/java/##; s/:[0-9]+: error: / :: /' | sort -u > errors.txt
             echo "=========== UNIQUE COMPILE ERRORS ($(wc -l < errors.txt)) ==========="
@@ -35,8 +46,42 @@ jobs:
           fi
 
       - name: Upload APK artifact
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: mcJava-debug-apk
           path: android/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
+
+      - name: Install opencode
+        if: failure()
+        run: npm i -g opencode-ai@latest
+
+      - name: Configure opencode
+        if: failure()
+        run: |
+          mkdir -p ~/.config/opencode
+          cat > ~/.config/opencode/opencode.jsonc << 'JSON'
+          {
+            "$schema": "https://opencode.ai/config.json",
+            "model": "opencode/big-pickle"
+          }
+          JSON
+
+      - name: Auto-fix build errors
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd $GITHUB_WORKSPACE
+          cat > /tmp/fix_prompt.txt << 'PROMPT'
+          Fix mcJava Android build compilation errors.
+          
+          1. Read android/build.log to see errors
+          2. Fix errors in android/app/src/main/java
+          3. Commit with message: "fix: auto-fix build errors"
+          4. Push to current branch
+          
+          Make minimal targeted fixes.
+          PROMPT
+          opencode --model opencode/big-pickle -p "$(cat /tmp/fix_prompt.txt)" --yes
