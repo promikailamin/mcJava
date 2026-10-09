@@ -1,25 +1,25 @@
 [0m
 > build · big-pickle
 [0m
-[0m$ [0mls -la
+I'll inspect the repository to understand the project and the build errors.
+[0m$ [0mpwd && ls -la && git log --oneline -10 && git status
+/home/runner/work/mcJava/mcJava
 total 60
-drwxr-xr-x 5 runner runner 4096 Oct  9 14:56 .
-drwxr-xr-x 3 runner runner 4096 Oct  9 14:56 ..
-drwxr-xr-x 7 runner runner 4096 Oct  9 14:57 .git
-drwxr-xr-x 3 runner runner 4096 Oct  9 14:56 .github
--rw-r--r-- 1 runner runner  309 Oct  9 14:56 .gitignore
--rw-r--r-- 1 runner runner  104 Oct  9 14:56 .opencode.jsonc
--rw-r--r-- 1 runner runner 6597 Oct  9 14:56 README.md
-drwxr-xr-x 4 runner runner 4096 Oct  9 14:56 android
--rwxr-xr-x 1 runner runner 2180 Oct  9 14:56 auto_fix.sh
--rw-r--r-- 1 runner runner  985 Oct  9 14:56 issue-prompt.txt
--rw-r--r-- 1 runner runner  598 Oct  9 14:57 issue-query.txt
--rw-r--r-- 1 runner runner  158 Oct  9 14:56 javac.20261009_122832.args
--rwxr-xr-x 1 runner runner 1100 Oct  9 14:56 monitor_and_fix.sh
--rw-r--r-- 1 runner runner   32 Oct  9 14:57 opencode-output.txt
-[0m
-I'll start by exploring the repository to understand its structure and identify the errors.
-[0m$ [0mgit log --oneline -10 2>/dev/null; echo "---"; git status
+drwxr-xr-x 5 runner runner 4096 Oct  9 15:13 .
+drwxr-xr-x 3 runner runner 4096 Oct  9 15:13 ..
+drwxr-xr-x 7 runner runner 4096 Oct  9 15:13 .git
+drwxr-xr-x 3 runner runner 4096 Oct  9 15:13 .github
+-rw-r--r-- 1 runner runner  309 Oct  9 15:13 .gitignore
+-rw-r--r-- 1 runner runner  104 Oct  9 15:13 .opencode.jsonc
+-rw-r--r-- 1 runner runner 6597 Oct  9 15:13 README.md
+drwxr-xr-x 4 runner runner 4096 Oct  9 15:13 android
+-rwxr-xr-x 1 runner runner 2180 Oct  9 15:13 auto_fix.sh
+-rw-r--r-- 1 runner runner  985 Oct  9 15:13 issue-prompt.txt
+-rw-r--r-- 1 runner runner  942 Oct  9 15:13 issue-query.txt
+-rw-r--r-- 1 runner runner  158 Oct  9 15:13 javac.20261009_122832.args
+-rwxr-xr-x 1 runner runner 1100 Oct  9 15:13 monitor_and_fix.sh
+-rw-r--r-- 1 runner runner  108 Oct  9 15:13 opencode-output.txt
+25dbeea Work on issue #9
 fdf8710 Add Java setup and update workspace instructions
 fc41fec Work on issue #8
 18c7f20 Enhance OpenCode workflow with issue comments
@@ -29,8 +29,6 @@ ad4fa95 Fix issue #6
 0a02054 Upgrade Java version from 21 to 25 in build.gradle
 f9f089e Upgrade Gradle wrapper to version 9.1.0
 b6f2bb0 Update build.yml
-d55726f Fix issue #5
----
 On branch main
 Your branch is up to date with 'origin/main'.
 
@@ -42,1646 +40,250 @@ Changes not staged for commit:
 
 no changes added to commit (use "git add" and/or "git commit -a")
 [0m
+[0m$ [0mfind . -path ./.git -prune -o -type f -print | head -100
+./opencode-output.txt
+./javac.20261009_122832.args
+./issue-prompt.txt
+./.github/workflows/build.yml
+./.github/workflows/opencode.yml
+./.gitignore
+./android/build.gradle
+./android/gradlew
+./android/build2.log
+./android/app/build.gradle
+./android/app/javac.20261009_102749.args
+./android/app/javac.20261009_102044.args
+./android/app/javac.20261009_103042.args
+./android/app/javac.20261009_102610.args
+./android/app/src/main/AndroidManifest.xml
+./android/app/src/main/res/values/styles.xml
+./android/app/src/main/res/values/colors.xml
+./android/app/src/main/res/values/strings.xml
+./android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+./android/app/src/main/resources/version.json
+./android/app/src/main/java/stubs/com/mojang/renderpearl/backend/vulkan/VulkanBackend.java
+./android/app/src/main/java/stubs/com/mojang/renderpearl/backend/vulkan/VulkanFeatureSets.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLStdinc.java
+./android/app/src/main/java/org/lwjgl/sdl/SDL_MouseWheelEvent.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLEvents.java
+./android/app/src/main/java/org/lwjgl/sdl/SDL_Event.java
+./android/app/src/main/java/org/lwjgl/sdl/SDL_MessageBoxButtonData.java
+./android/app/src/main/java/org/lwjgl/sdl/SDL_TextEditingEvent.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLVulkan.java
+./android/app/src/main/java/org/lwjgl/sdl/SDL.java
+./android/app/src/main/java/org/lwjgl/sdl/SDL_DisplayMode.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLClipboard.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLTimer.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLVideo.java
+./android/app/src/main/java/org/lwjgl/sdl/SDL_Rect.java
+./android/app/src/main/java/org/lwjgl/sdl/SDL_PixelFormatDetails.java
+./android/app/src/main/java/org/lwjgl/sdl/sdl_text_event.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLPixels.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLInit.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLMisc.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLLog.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLKeyboard.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLPlatform.java
+./android/app/src/main/java/org/lwjgl/sdl/SDL_KeyboardEvent.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLMouse.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLError.java
+./android/app/src/main/java/org/lwjgl/sdl/sdl_buffer.java
+./android/app/src/main/java/org/lwjgl/sdl/SDL_Surface.java
+./android/app/src/main/java/org/lwjgl/sdl/SDL_MouseMotionEvent.java
+./android/app/src/main/java/org/lwjgl/sdl/SDL_MessageBoxData.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLHints.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLMessageBox.java
+./android/app/src/main/java/org/lwjgl/sdl/SDLSurface.java
+./android/app/src/main/java/org/lwjgl/sdl/sdl_struct.java
+./android/app/src/main/java/org/lwjgl/sdl/SDL_MouseButtonEvent.java
+./android/app/src/main/java/org/lwjgl/sdl/SDL_LogOutputFunction.java
+./android/app/src/main/java/org/lwjgl/openal/mixer_state.java
+./android/app/src/main/java/org/lwjgl/openal/AL.java
+./android/app/src/main/java/org/lwjgl/openal/ALC.java
+./android/app/src/main/java/org/lwjgl/openal/ALCCapabilities.java
+./android/app/src/main/java/org/lwjgl/openal/ALC10.java
+./android/app/src/main/java/org/lwjgl/openal/SOFTSystemEventProcI.java
+./android/app/src/main/java/org/lwjgl/openal/ALCapabilities.java
+./android/app/src/main/java/org/lwjgl/openal/AL10.java
+./android/app/src/main/java/org/lwjgl/openal/ALUtil.java
+./android/app/src/main/java/org/lwjgl/openal/ALC11.java
+./android/app/src/main/java/org/lwjgl/openal/SOFTSystemEvents.java
+./android/app/src/main/java/org/lwjgl/stb/STBIWriteCallback.java
+./android/app/src/main/java/org/lwjgl/stb/STBImageWrite.java
+./android/app/src/main/java/org/lwjgl/stb/STBImageResize.java
+./android/app/src/main/java/org/lwjgl/stb/STBImage.java
+./android/app/src/main/java/org/lwjgl/vulkan/VkDrawIndirectCommand.java
+./android/app/src/main/java/org/lwjgl/vulkan/VkDrawIndexedIndirectCommand.java
+./android/app/src/main/java/org/lwjgl/vulkan/VK.java
+./android/app/src/main/java/org/lwjgl/system/Platform.java
+./android/app/src/main/java/org/lwjgl/system/Pointer.java
+./android/app/src/main/java/org/lwjgl/system/Library.java
+./android/app/src/main/java/org/lwjgl/system/FunctionProvider.java
+./android/app/src/main/java/org/lwjgl/system/Configuration.java
+./android/app/src/main/java/org/lwjgl/system/MemoryUtil.java
+./android/app/src/main/java/org/lwjgl/system/NativeType.java
+./android/app/src/main/java/org/lwjgl/system/MemoryStack.java
+./android/app/src/main/java/org/lwjgl/system/Struct.java
+./android/app/src/main/java/org/lwjgl/system/SharedLibrary.java
+./android/app/src/main/java/org/lwjgl/BufferUtils.java
+./android/app/src/main/java/org/lwjgl/util/freetype/FT_Face.java
+./android/app/src/main/java/org/lwjgl/util/freetype/FT_Bitmap.java
+./android/app/src/main/java/org/lwjgl/util/freetype/FT_GlyphSlot.java
+./android/app/src/main/java/org/lwjgl/util/freetype/FT_Vector.java
+./android/app/src/main/java/org/lwjgl/util/freetype/FreeType.java
+./android/app/src/main/java/org/lwjgl/util/spvc/SpvcReflectedResource.java
+./android/app/src/main/java/org/lwjgl/util/spvc/Spvc.java
+./android/app/src/main/java/org/lwjgl/util/shaderc/Shaderc.java
+./android/app/src/main/java/org/lwjgl/util/shaderc/ShadercIncludeResult.java
+./android/app/src/main/java/org/lwjgl/util/shaderc/ShadercIncludeResolve.java
+./android/app/src/main/java/org/lwjgl/util/shaderc/ShadercIncludeResultRelease.java
+./android/app/src/main/java/org/lwjgl/util/vma/Vma.java
+./android/app/src/main/java/org/lwjgl/PointerBuffer.java
+./android/app/src/main/java/org/lwjgl/opengl/KHRDebug.java
+./android/app/src/main/java/org/lwjgl/opengl/GLDebugMessageCallback.java
+[0m
 [0m→ [0mRead README.md
-[0m
-[0m$ [0mfind android -type f | head -100
-android/build.gradle
-android/gradlew
-android/app/build.gradle
-android/app/javac.20261009_102749.args
-android/app/javac.20261009_102044.args
-android/app/javac.20261009_103042.args
-android/app/javac.20261009_102610.args
-android/app/src/main/AndroidManifest.xml
-android/app/src/main/res/values/styles.xml
-android/app/src/main/res/values/colors.xml
-android/app/src/main/res/values/strings.xml
-android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
-android/app/src/main/resources/version.json
-android/app/src/main/java/stubs/com/mojang/renderpearl/backend/vulkan/VulkanBackend.java
-android/app/src/main/java/stubs/com/mojang/renderpearl/backend/vulkan/VulkanFeatureSets.java
-android/app/src/main/java/org/lwjgl/sdl/SDLStdinc.java
-android/app/src/main/java/org/lwjgl/sdl/SDL_MouseWheelEvent.java
-android/app/src/main/java/org/lwjgl/sdl/SDLEvents.java
-android/app/src/main/java/org/lwjgl/sdl/SDL_Event.java
-android/app/src/main/java/org/lwjgl/sdl/SDL_MessageBoxButtonData.java
-android/app/src/main/java/org/lwjgl/sdl/SDL_TextEditingEvent.java
-android/app/src/main/java/org/lwjgl/sdl/SDLVulkan.java
-android/app/src/main/java/org/lwjgl/sdl/SDL.java
-android/app/src/main/java/org/lwjgl/sdl/SDL_DisplayMode.java
-android/app/src/main/java/org/lwjgl/sdl/SDLClipboard.java
-android/app/src/main/java/org/lwjgl/sdl/SDLTimer.java
-android/app/src/main/java/org/lwjgl/sdl/SDLVideo.java
-android/app/src/main/java/org/lwjgl/sdl/SDL_Rect.java
-android/app/src/main/java/org/lwjgl/sdl/SDL_PixelFormatDetails.java
-android/app/src/main/java/org/lwjgl/sdl/sdl_text_event.java
-android/app/src/main/java/org/lwjgl/sdl/SDLPixels.java
-android/app/src/main/java/org/lwjgl/sdl/SDLInit.java
-android/app/src/main/java/org/lwjgl/sdl/SDLMisc.java
-android/app/src/main/java/org/lwjgl/sdl/SDLLog.java
-android/app/src/main/java/org/lwjgl/sdl/SDLKeyboard.java
-android/app/src/main/java/org/lwjgl/sdl/SDLPlatform.java
-android/app/src/main/java/org/lwjgl/sdl/SDL_KeyboardEvent.java
-android/app/src/main/java/org/lwjgl/sdl/SDLMouse.java
-android/app/src/main/java/org/lwjgl/sdl/SDLError.java
-android/app/src/main/java/org/lwjgl/sdl/sdl_buffer.java
-android/app/src/main/java/org/lwjgl/sdl/SDL_Surface.java
-android/app/src/main/java/org/lwjgl/sdl/SDL_MouseMotionEvent.java
-android/app/src/main/java/org/lwjgl/sdl/SDL_MessageBoxData.java
-android/app/src/main/java/org/lwjgl/sdl/SDLHints.java
-android/app/src/main/java/org/lwjgl/sdl/SDLMessageBox.java
-android/app/src/main/java/org/lwjgl/sdl/SDLSurface.java
-android/app/src/main/java/org/lwjgl/sdl/sdl_struct.java
-android/app/src/main/java/org/lwjgl/sdl/SDL_MouseButtonEvent.java
-android/app/src/main/java/org/lwjgl/sdl/SDL_LogOutputFunction.java
-android/app/src/main/java/org/lwjgl/openal/mixer_state.java
-android/app/src/main/java/org/lwjgl/openal/AL.java
-android/app/src/main/java/org/lwjgl/openal/ALC.java
-android/app/src/main/java/org/lwjgl/openal/ALCCapabilities.java
-android/app/src/main/java/org/lwjgl/openal/ALC10.java
-android/app/src/main/java/org/lwjgl/openal/SOFTSystemEventProcI.java
-android/app/src/main/java/org/lwjgl/openal/ALCapabilities.java
-android/app/src/main/java/org/lwjgl/openal/AL10.java
-android/app/src/main/java/org/lwjgl/openal/ALUtil.java
-android/app/src/main/java/org/lwjgl/openal/ALC11.java
-android/app/src/main/java/org/lwjgl/openal/SOFTSystemEvents.java
-android/app/src/main/java/org/lwjgl/stb/STBIWriteCallback.java
-android/app/src/main/java/org/lwjgl/stb/STBImageWrite.java
-android/app/src/main/java/org/lwjgl/stb/STBImageResize.java
-android/app/src/main/java/org/lwjgl/stb/STBImage.java
-android/app/src/main/java/org/lwjgl/vulkan/VkDrawIndirectCommand.java
-android/app/src/main/java/org/lwjgl/vulkan/VkDrawIndexedIndirectCommand.java
-android/app/src/main/java/org/lwjgl/vulkan/VK.java
-android/app/src/main/java/org/lwjgl/system/Platform.java
-android/app/src/main/java/org/lwjgl/system/Pointer.java
-android/app/src/main/java/org/lwjgl/system/Library.java
-android/app/src/main/java/org/lwjgl/system/FunctionProvider.java
-android/app/src/main/java/org/lwjgl/system/Configuration.java
-android/app/src/main/java/org/lwjgl/system/MemoryUtil.java
-android/app/src/main/java/org/lwjgl/system/NativeType.java
-android/app/src/main/java/org/lwjgl/system/MemoryStack.java
-android/app/src/main/java/org/lwjgl/system/Struct.java
-android/app/src/main/java/org/lwjgl/system/SharedLibrary.java
-android/app/src/main/java/org/lwjgl/BufferUtils.java
-android/app/src/main/java/org/lwjgl/util/freetype/FT_Face.java
-android/app/src/main/java/org/lwjgl/util/freetype/FT_Bitmap.java
-android/app/src/main/java/org/lwjgl/util/freetype/FT_GlyphSlot.java
-android/app/src/main/java/org/lwjgl/util/freetype/FT_Vector.java
-android/app/src/main/java/org/lwjgl/util/freetype/FreeType.java
-android/app/src/main/java/org/lwjgl/util/spvc/SpvcReflectedResource.java
-android/app/src/main/java/org/lwjgl/util/spvc/Spvc.java
-android/app/src/main/java/org/lwjgl/util/shaderc/Shaderc.java
-android/app/src/main/java/org/lwjgl/util/shaderc/ShadercIncludeResult.java
-android/app/src/main/java/org/lwjgl/util/shaderc/ShadercIncludeResolve.java
-android/app/src/main/java/org/lwjgl/util/shaderc/ShadercIncludeResultRelease.java
-android/app/src/main/java/org/lwjgl/util/vma/Vma.java
-android/app/src/main/java/org/lwjgl/PointerBuffer.java
-android/app/src/main/java/org/lwjgl/opengl/KHRDebug.java
-android/app/src/main/java/org/lwjgl/opengl/GLDebugMessageCallback.java
-android/app/src/main/java/org/lwjgl/opengl/GL.java
-android/app/src/main/java/org/lwjgl/opengl/ARBBufferStorage.java
-android/app/src/main/java/org/lwjgl/opengl/ARBDirectStateAccess.java
-android/app/src/main/java/org/lwjgl/opengl/ARBBaseInstance.java
-android/app/src/main/java/org/lwjgl/opengl/GLDebugMessageARBCallback.java
-android/app/src/main/java/org/lwjgl/opengl/ARBClipControl.java
-android/app/src/main/java/org/lwjgl/opengl/GL33C.java
-[0m
-[0m→ [0mRead issue-prompt.txt
-[0m→ [0mRead issue-query.txt
-[0m→ [0mRead android/build.gradle
-[0m→ [0mRead android/app/build.gradle
-[0m
-[0m$ [0mfind .github -type f; echo "---"; ls -la android; echo "---"; cat javac.*.args 2>/dev/null | head; echo "---"; cat .opencode.jsonc
-.github/workflows/build.yml
-.github/workflows/opencode.yml
----
-total 44
-drwxr-xr-x 4 runner runner 4096 Oct  9 14:56 .
-drwxr-xr-x 5 runner runner 4096 Oct  9 14:56 ..
-drwxr-xr-x 3 runner runner 4096 Oct  9 14:56 app
--rw-r--r-- 1 runner runner   72 Oct  9 14:56 build.gradle
-drwxr-xr-x 3 runner runner 4096 Oct  9 14:56 gradle
--rw-r--r-- 1 runner runner  158 Oct  9 14:56 gradle.properties
--rwxr-xr-x 1 runner runner 8497 Oct  9 14:56 gradlew
--rw-r--r-- 1 runner runner 2868 Oct  9 14:56 gradlew.bat
--rw-r--r-- 1 runner runner  524 Oct  9 14:56 settings.gradle
----
--source
-21
--target
-21
---system
-/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/jdkImage
-/tmp/test_match.java
----
-{
-  "$schema": "https://opencode.ai/config.json",
-  "model": "opencode/big-pickle",
-  "mode": "build"
-}
-[0m
+[0m→ [0mRead .github/workflows
 [0m→ [0mRead .github/workflows/build.yml
 [0m→ [0mRead .github/workflows/opencode.yml
+[0m→ [0mRead android/build.gradle
+[0m→ [0mRead android/app/build.gradle
+[0m→ [0mRead issue-query.txt
+[0m→ [0mRead opencode-output.txt
 [0m
-[0m$ [0mcat android/settings.gradle android/gradle.properties; echo "--- gradle version ---"; cat android/gradle/wrapper/gradle-wrapper.properties 2>/dev/null; ls -la android/gradle/wrapper 2>/dev/null; echo "--- env ---"; echo "ANDROID_HOME=$ANDROID_HOME ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"; java -version 2>&1; ls /usr/lib/jvm 2>/dev/null
-pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
-
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-        // Mojang's own Maven repo hosting com.mojang artifacts (authlib, brigadier,
-        // datafixerupper, blocklist, logging).
-        maven { url = uri('https://libraries.minecraft.net/') }
-    }
-}
-
-rootProject.name = "minecraft"
-include ':app'org.gradle.jvmargs=-Xmx4g -Dfile.encoding=UTF-8
-android.useAndroidX=true
-android.nonTransitiveRClass=true
-android.enableJetifier=true
-org.gradle.parallel=true--- gradle version ---
+[0m$ [0mjava -version 2>&1; echo "---"; echo "JAVA_HOME=$JAVA_HOME"; echo "ANDROID_HOME=$ANDROID_HOME"; echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"; echo "---"; which gradle; ls -la /usr/lib/jvm 2>/dev/null; echo "---"; ls -la ~/ 2>/dev/null; echo "--- df -h"; df -h . ; echo "--- env"; env | sort | head -50
+openjdk version "21.0.12.1" 2026-08-18 LTS
+OpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)
+OpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)
+---
+JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+ANDROID_HOME=/usr/local/lib/android/sdk
+ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+---
+/usr/bin/gradle
+total 48
+drwxrwxrwx   7 root root 4096 Oct  4 21:42 .
+drwxr-xr-x 107 root root 4096 Oct  4 21:46 ..
+-rwxrwxrwx   1 root root 2071 Sep 16 14:58 .temurin-11-jdk-amd64.jinfo
+-rwxrwxrwx   1 root root 1805 Aug 21 14:24 .temurin-17-jdk-amd64.jinfo
+-rwxrwxrwx   1 root root 1871 Aug 19 17:13 .temurin-21-jdk-amd64.jinfo
+-rwxrwxrwx   1 root root 1871 Aug 21 11:41 .temurin-25-jdk-amd64.jinfo
+-rwxrwxrwx   1 root root 2573 Aug 25 08:15 .temurin-8-jdk-amd64.jinfo
+drwxrwxrwx   9 root root 4096 Oct  4 21:41 temurin-11-jdk-amd64
+drwxrwxrwx   9 root root 4096 Oct  4 21:41 temurin-17-jdk-amd64
+drwxrwxrwx   9 root root 4096 Oct  4 21:42 temurin-21-jdk-amd64
+drwxrwxrwx   8 root root 4096 Oct  4 21:42 temurin-25-jdk-amd64
+drwxrwxrwx   8 root root 4096 Oct  4 21:41 temurin-8-jdk-amd64
+---
+total 76
+drwxr-x---  15 runner runner 4096 Oct  9 15:13 .
+drwxr-xr-x+  5 root   root   4096 Oct  4 22:27 ..
+-rw-r--r--   1 runner runner  220 Mar 31  2024 .bash_logout
+-rw-r--r--   1 runner runner   67 Oct  4 21:44 .bash_profile
+-rw-r--r--   1 runner runner 3771 Mar 31  2024 .bashrc
+drwxr-xr-x   3 runner runner 4096 Oct  9 15:13 .cache
+drwxr-xr-x   3 runner runner 4096 Oct  4 21:47 .cargo
+drwxr-xr-x   2 runner runner 4096 Oct  4 21:46 .composer
+drwxr-xr-x   4 runner runner 4096 Oct  9 15:13 .config
+drwxr-xr-x   2 runner docker 4096 Oct  4 22:30 .docker
+drwxr-xr-x   3 runner runner 4096 Oct  4 21:34 .dotnet
+lrwxrwxrwx   1 runner runner   17 Oct  4 21:41 .ghcup -> /usr/local/.ghcup
+drwxr-xr-x   4 runner runner 4096 Oct  9 15:13 .local
+drwxr-xr-x   2 runner runner 4096 Oct  9 15:13 .m2
+drwxr-xr-x   4 runner runner 4096 Oct  9 15:13 .npm
+drwxr-xr-x   6 runner runner 4096 Oct  4 21:44 .nvm
+-rw-r--r--   1 runner runner  807 Mar 31  2024 .profile
+drwxr-xr-x   6 runner runner 4096 Oct  4 21:47 .rustup
+drwxrwxr-x   3 runner runner 4096 Oct  9 15:11 actions-runner
+drwxr-xr-x   6 runner runner 4096 Oct  9 15:13 work
+--- df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       145G   60G   86G  42% /
+--- env
+ACCEPT_EULA=Y
+ACTIONS_ORCHESTRATION_ID=809ac6e0-0273-8c7a-9194-dc2ac6d834d7.opencode.__default
+ACTIONS_RUNNER_ACTION_ARCHIVE_CACHE=/opt/actionarchivecache
+ACTIONS_RUNNER_RETURN_JOB_RESULT_FOR_HOSTED=1
+AGENT=1
+AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
+ANDROID_HOME=/usr/local/lib/android/sdk
+ANDROID_NDK=/usr/local/lib/android/sdk/ndk/27.3.13750724
+ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/27.3.13750724
+ANDROID_NDK_LATEST_HOME=/usr/local/lib/android/sdk/ndk/30.0.16248370
+ANDROID_NDK_ROOT=/usr/local/lib/android/sdk/ndk/27.3.13750724
+ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+ANT_HOME=/usr/share/ant
+AZURE_EXTENSION_DIR=/opt/az/azcliextensions
+BOOTSTRAP_HASKELL_NONINTERACTIVE=1
+CHROMEWEBDRIVER=/usr/local/share/chromedriver-linux64
+CHROME_BIN=/usr/bin/google-chrome
+CI=true
+CONDA=/usr/share/miniconda
+DEBIAN_FRONTEND=noninteractive
+DOTNET_MULTILEVEL_LOOKUP=0
+DOTNET_NOLOGO=1
+DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
+EDGEWEBDRIVER=/usr/local/share/edge_driver
+ENABLE_RUNNER_TRACING=true
+GECKOWEBDRIVER=/usr/local/share/gecko_driver
+GHCUP_INSTALL_BASE_PREFIX=/usr/local
+GITHUB_ACTION=opencode
+GITHUB_ACTIONS=true
+GITHUB_ACTION_REF=
+GITHUB_ACTION_REPOSITORY=
+GITHUB_ACTOR=promikailamin
+GITHUB_ACTOR_ID=171564804
+GITHUB_API_URL=https://api.github.com
+GITHUB_ARTIFACTS=/home/runner/work/_temp/_runner_file_commands/artifacts_f03131b4-c824-4fa4-935f-7730a4398945
+GITHUB_ARTIFACTS_LIST=/home/runner/work/_temp/_runner_file_commands/artifacts_list_f03131b4-c824-4fa4-935f-7730a4398945
+GITHUB_BASE_REF=
+GITHUB_ENV=/home/runner/work/_temp/_runner_file_commands/set_env_f03131b4-c824-4fa4-935f-7730a4398945
+GITHUB_EVENT_NAME=issues
+GITHUB_EVENT_PATH=/home/runner/work/_temp/_github_workflow/event.json
+GITHUB_GRAPHQL_URL=https://api.github.com/graphql
+GITHUB_HEAD_REF=
+GITHUB_JOB=opencode
+GITHUB_OUTPUT=/home/runner/work/_temp/_runner_file_commands/set_output_f03131b4-c824-4fa4-935f-7730a4398945
+GITHUB_PATH=/home/runner/work/_temp/_runner_file_commands/add_path_f03131b4-c824-4fa4-935f-7730a4398945
+GITHUB_REF=refs/heads/main
+GITHUB_REF_NAME=main
+GITHUB_REF_PROTECTED=false
+GITHUB_REF_TYPE=branch
+GITHUB_REPOSITORY=promikailamin/mcJava
+[0m
+[0m$ [0mls -la android; echo "---"; ls -la android/app; echo "--- gradle wrapper"; cat android/gradle/wrapper/gradle-wrapper.properties 2>/dev/null; echo "--- build2.log tail"; tail -50 android/build2.log
+total 808
+drwxr-xr-x 4 runner runner   4096 Oct  9 15:13 .
+drwxr-xr-x 5 runner runner   4096 Oct  9 15:13 ..
+drwxr-xr-x 3 runner runner   4096 Oct  9 15:13 app
+-rw-r--r-- 1 runner runner     72 Oct  9 15:13 build.gradle
+-rw-r--r-- 1 runner runner 776507 Oct  9 15:13 build.log
+-rw-r--r-- 1 runner runner   2912 Oct  9 15:13 build2.log
+drwxr-xr-x 3 runner runner   4096 Oct  9 15:13 gradle
+-rw-r--r-- 1 runner runner    158 Oct  9 15:13 gradle.properties
+-rwxr-xr-x 1 runner runner   8497 Oct  9 15:13 gradlew
+-rw-r--r-- 1 runner runner   2868 Oct  9 15:13 gradlew.bat
+-rw-r--r-- 1 runner runner    524 Oct  9 15:13 settings.gradle
+---
+total 44
+drwxr-xr-x 3 runner runner 4096 Oct  9 15:13 .
+drwxr-xr-x 4 runner runner 4096 Oct  9 15:13 ..
+-rw-r--r-- 1 runner runner 5890 Oct  9 15:13 build.gradle
+-rw-r--r-- 1 runner runner  104 Oct  9 15:13 javac.20261009_102044.args
+-rw-r--r-- 1 runner runner  104 Oct  9 15:13 javac.20261009_102610.args
+-rw-r--r-- 1 runner runner  104 Oct  9 15:13 javac.20261009_102749.args
+-rw-r--r-- 1 runner runner  104 Oct  9 15:13 javac.20261009_102947.args
+-rw-r--r-- 1 runner runner  104 Oct  9 15:13 javac.20261009_103042.args
+-rw-r--r-- 1 runner runner  104 Oct  9 15:13 javac.20261009_122249.args
+drwxr-xr-x 3 runner runner 4096 Oct  9 15:13 src
+--- gradle wrapper
 distributionBase=GRADLE_USER_HOME
 distributionPath=wrapper/dists
 distributionUrl=https\://services.gradle.org/distributions/gradle-9.1.0-bin.zip
 networkTimeout=10000
 zipStoreBase=GRADLE_USER_HOME
 zipStorePath=wrapper/dists
-total 76
-drwxr-xr-x 2 runner runner  4096 Oct  9 14:56 .
-drwxr-xr-x 3 runner runner  4096 Oct  9 14:56 ..
--rw-r--r-- 1 runner runner 61624 Oct  9 14:56 gradle-wrapper.jar
--rw-r--r-- 1 runner runner   223 Oct  9 14:56 gradle-wrapper.properties
---- env ---
-ANDROID_HOME=/usr/local/lib/android/sdk ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
-openjdk version "21.0.12.1" 2026-08-18 LTS
-OpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)
-OpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)
-temurin-11-jdk-amd64
-temurin-17-jdk-amd64
-temurin-21-jdk-amd64
-temurin-25-jdk-amd64
-temurin-8-jdk-amd64
-[0m
-[0m$ [0mls -la ~/.gradle 2>/dev/null; which gradle; ls android/app/build 2>/dev/null | head; echo "--- network ---"; timeout 10 curl -sI https://services.gradle.org/distributions/gradle-9.1.0-bin.zip 2>&1 | head -3; echo "--- count sources ---"; find android/app/src/main/java -name '*.java' | wc -l
-/usr/bin/gradle
---- network ---
-HTTP/1.1 307 Temporary Redirect
-Date: Fri, 09 Oct 2026 14:57:25 GMT
-Content-Type: text/html; charset=UTF-8
---- count sources ---
-7881
-[0m
-[0m$ [0mcat android/app/javac.20261009_102044.args 2>/dev/null | head -5; echo "..."; wc -l android/app/javac.*.args; echo "--- root javac ---"; wc -l javac.20261009_122832.args; head -3 javac.20261009_122832.args
-@/home/runner/work/mcJava/mcJava/android/app/build/tmp/compileDebugJavaWithJavac/java-compiler-args.txt
-...
-  1 android/app/javac.20261009_102044.args
-  1 android/app/javac.20261009_102610.args
-  1 android/app/javac.20261009_102749.args
-  1 android/app/javac.20261009_102947.args
-  1 android/app/javac.20261009_103042.args
-  1 android/app/javac.20261009_122249.args
-  6 total
---- root javac ---
-7 javac.20261009_122832.args
--source
-21
--target
-[0m
-Let me check the JDK paths and start the build. This is a large project, so I'll run it with an extended timeout.
-[0m$ [0mcat android/app/javac.20261009_103042.args; echo "==="; cat android/app/javac.20261009_122249.args; echo "==="; cat javac.20261009_122832.args
-@/home/runner/work/mcJava/mcJava/android/app/build/tmp/compileDebugJavaWithJavac/java-compiler-args.txt
-===
-@/home/runner/work/mcJava/mcJava/android/app/build/tmp/compileDebugJavaWithJavac/java-compiler-args.txt
-===
--source
-21
--target
-21
---system
-/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/jdkImage
-/tmp/test_match.java
-[0m
-[0m$ [0mls /usr/lib/jvm/temurin-21-jdk-amd64/bin/javac && ls /usr/lib/jvm/temurin-21-jdk-amd64/lib/modules; echo "--- gradle wrapper check ---"; grep -n "distributionUrl" android/gradle/wrapper/gradle-wrapper.properties; echo "--- local gradle ---"; gradle --version 2>&1 | head -8
-/usr/lib/jvm/temurin-21-jdk-amd64/bin/javac
-/usr/lib/jvm/temurin-21-jdk-amd64/lib/modules
---- gradle wrapper check ---
-3:distributionUrl=https\://services.gradle.org/distributions/gradle-9.1.0-bin.zip
---- local gradle ---
-
-Welcome to Gradle 9.8.0!
-
-Here are the highlights of this release:
- - Java 27 support
- - Maven mirror settings reuse
- - Linked problem locations in build output
-[0m
-Now let me run the actual build to see the errors. This will download Gradle and dependencies first.
-[0m$ [0mJAVA_HOME=/usr/lib/jvm/temurin-21-jdk-amd64 ./gradlew :app:assembleDebug --no-daemon 2>&1 | tee build.log
-...output truncated...
-
-Full output saved to: /home/runner/.local/share/opencode/tool-output/tool_1212cb005001qaYDuHFwjEcw7e
-
-        return this.byType.get(type);
-                              ^
-    where T,I are type-variables:
-      T extends Recipe<I> declared in method <I,T>byType(RecipeType<T>)
-      I extends RecipeInput declared in method <I,T>byType(RecipeType<T>)
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/world/level/levelgen/structure/placement/RandomSpreadStructurePlacement.java:26: error: incompatible types: invalid method reference
-        .validate(RandomSpreadStructurePlacement::validate);
-                  ^
-      incompatible types: Object cannot be converted to RandomSpreadStructurePlacement
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java:275: error: incompatible types: invalid method reference
-                 .resultOrPartial(DedicatedServerProperties.LOGGER::error);
-                                  ^
-      no suitable method found for error(Object)
-          method Logger.error(String) is not applicable
-            (argument mismatch; Object cannot be converted to String)
-          method Logger.error(String,Object...) is not applicable
-            (argument mismatch; Object cannot be converted to String)
-          method Logger.error(Marker,String,Object...) is not applicable
-            (argument mismatch; Object cannot be converted to Marker)
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/world/level/levelgen/presets/WorldPreset.java:23: error: incompatible types: invalid method reference
-        .validate(WorldPreset::requireOverworld);
-                  ^
-      incompatible types: Object cannot be converted to WorldPreset
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/server/jsonrpc/api/MethodInfo.java:25: error: incompatible types: inference variable Params#1 has incompatible equality constraints Params#2,Object
-        return ParamInfo.typedCodec().codec().listOf().xmap(MethodInfo::toOptional, MethodInfo::toList);
-                                                           ^
-    where Params#1,Params#2 are type-variables:
-      Params#1 extends Object declared in method <Params#1>toOptional(List<ParamInfo<Params#1>>)
-      Params#2 extends Object declared in method <Params#2>paramsTypedCodec()
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/server/jsonrpc/api/MethodInfo.java:30: error: incompatible types: cannot infer type-variable(s) O
-           i -> i.group(
-                       ^
-      (argument mismatch; bad return type in method reference
-        Optional<ParamInfo<Params>> cannot be converted to Optional<ParamInfo<Object>>)
-    where O,A,Params,Result are type-variables:
-      O extends Object declared in method <O>forGetter(Function<O,A>)
-      A extends Object declared in class MapCodec
-      Params extends Object declared in method <Params,Result>typedCodec()
-      Result extends Object declared in method <Params,Result>typedCodec()
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/server/jsonrpc/api/MethodInfo.java:44: error: incompatible types: no instance(s) of type variable(s) Params,Result exist so that Codec<Named<Params,Result>> conforms to Codec<Named<?,?>>
-        public static final Codec<MethodInfo.Named<?, ?>> CODEC = typedCodec();
-                                                                            ^
-    where Params,Result are type-variables:
-      Params extends Object declared in method <Params,Result>typedCodec()
-      Result extends Object declared in method <Params,Result>typedCodec()
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/server/jsonrpc/api/MethodInfo.java:48: error: incompatible types: cannot infer type-variable(s) O
-              i -> i.group(Identifier.CODEC.fieldOf("name").forGetter(MethodInfo.Named::name), MethodInfo.typedCodec().forGetter(MethodInfo.Named::contents))
-                          ^
-      (argument mismatch; bad return type in method reference
-        MethodInfo<Params,Result> cannot be converted to MethodInfo<Object,Object>)
-    where O,A,Params,Result are type-variables:
-      O extends Object declared in method <O>forGetter(Function<O,A>)
-      A extends Object declared in class MapCodec
-      Params extends Object declared in method <Params,Result>typedCodec()
-      Result extends Object declared in method <Params,Result>typedCodec()
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/server/jsonrpc/api/ParamInfo.java:14: error: incompatible types: cannot infer type-variable(s) O
-           i -> i.group(
-                       ^
-      (argument mismatch; bad return type in method reference
-        Schema<Param> cannot be converted to Schema<Object>)
-    where O,A,Param are type-variables:
-      O extends Object declared in method <O>forGetter(Function<O,A>)
-      A extends Object declared in class MapCodec
-      Param extends Object declared in method <Param>typedCodec()
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/server/jsonrpc/api/ResultInfo.java:9: error: incompatible types: cannot infer type-variable(s) O
-           i -> i.group(Codec.STRING.fieldOf("name").forGetter(ResultInfo::name), Schema.typedCodec().fieldOf("schema").forGetter(ResultInfo::schema))
-                       ^
-      (argument mismatch; bad return type in method reference
-        Schema<Result> cannot be converted to Schema<Object>)
-    where O,A,Result are type-variables:
-      O extends Object declared in method <O>forGetter(Function<O,A>)
-      A extends Object declared in class MapCodec
-      Result extends Object declared in method <Result>typedCodec()
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/server/jsonrpc/api/Schema.java:40: error: incompatible types: cannot infer type-variable(s) O
-              i -> i.group(
-                          ^
-      (argument mismatch; invalid method reference
-        method reference in record Schema<T> cannot be applied to given types
-          required: no arguments
-          found:    Object
-          reason: actual and formal argument lists differ in length)
-    where O,A,T are type-variables:
-      O extends Object declared in method <O>forGetter(Function<O,A>)
-      A extends Object declared in class MapCodec
-      T extends Object declared in record Schema
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/server/jsonrpc/api/Schema.java:50: error: incompatible types: Codec<Object> cannot be converted to Codec<? extends Schema<?>>
-        .validate(schema -> schema == null ? DataResult.error(() -> "Should not deserialize schema") : DataResult.success(schema));
-                 ^
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/server/jsonrpc/methods/DiscoveryService.java:43: error: incompatible types: bad return type in method reference
-              i -> i.group(Codec.unboundedMap(Codec.STRING, Schema.CODEC).fieldOf("schemas").forGetter(DiscoveryService.DiscoverComponents::schemas))
-                                                                                                       ^
-      Map<String,Schema<?>> cannot be converted to Map<String,CAP#1>
-    where CAP#1 is a fresh type-variable:
-      CAP#1 extends Schema<?> from capture of ? extends Schema<?>
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/stats/ServerStatsCounter.java:57: error: incompatible types: inference variable R has incompatible bounds
-        Codec<Stat<?>> statCodec = valueCodec.flatComapMap(
-                                                          ^
-      upper bounds: T,Object
-      lower bounds: Object
-    where R,T are type-variables:
-      R extends Object declared in method <R>success(R)
-      T extends Object declared in method <T>createTypedStatsCodec(StatType<T>)
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java:1029: error: incompatible types: List<Filterable<MutableComponent>> cannot be converted to List<Filterable<Component>>
-           List<Filterable<Component>> pages = contents.stream().map(page -> this.filterableFromOutgoing(page).map(Component::literal)).toList();
-                                                                                                                                              ^
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/world/level/gamerules/GameRuleMap.java:20: error: incompatible types: invalid method reference
-        .xmap(GameRuleMap::ofTrusted, GameRuleMap::map);
-              ^
-      incompatible types: Map<GameRule<?>,CAP#1> cannot be converted to Map<GameRule<?>,Object>
-    where CAP#1 is a fresh type-variable:
-      CAP#1 extends Object from capture of ?
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/network/protocol/common/ClientboundCustomPayloadPacket.java:24: error: incompatible types: invalid constructor reference
-        .map(ClientboundCustomPayloadPacket::new, ClientboundCustomPayloadPacket::payload);
-             ^
-      incompatible types: Object cannot be converted to CustomPacketPayload
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/server/dialog/CommonDialogData.java:34: error: incompatible types: MapCodec<Object> cannot be converted to MapCodec<CommonDialogData>
-        .validate(
-                 ^
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/world/entity/EntityReference.java:130: error: incompatible types: bad type in conditional expression
-           : input.getString(key).map(oldName -> OldUsersConverter.convertMobOwnerIfNecessary(level.getServer(), oldName)).map(EntityReference::new).orElse(null);
-                                                                                                                                                           ^
-      EntityReference<UniquelyIdentifyable> cannot be converted to @org.jspecify.annotations.Nullable EntityReference<StoredEntityType>
-    where StoredEntityType is a type-variable:
-      StoredEntityType extends UniquelyIdentifyable declared in method <StoredEntityType>readWithOldOwnerConversion(ValueInput,String,Level)
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/world/item/AdventureModePredicate.java:120: error: incompatible types: List<MutableComponent> cannot be converted to List<Component>
-           .toList();
-                  ^
-  Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/server/dedicated/Settings.java:116: error: improperly formed type, type arguments given on a raw type
-        return new Settings.MutableValue<>(key, result, serializer);
-                                        ^
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/client/sounds/SoundBufferLibrary.java:12: error: package javax.sound.sampled does not exist
-  import javax.sound.sampled.AudioFormat;
-                            ^
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/com/mojang/blaze3d/audio/Channel.java:7: error: package javax.sound.sampled does not exist
-  import javax.sound.sampled.AudioFormat;
-                            ^
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/client/sounds/AudioStream.java:6: error: package javax.sound.sampled does not exist
-  import javax.sound.sampled.AudioFormat;
-                            ^
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/com/mojang/blaze3d/audio/SoundBuffer.java:5: error: package javax.sound.sampled does not exist
-  import javax.sound.sampled.AudioFormat;
-                            ^
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/com/mojang/blaze3d/audio/OpenAlUtil.java:4: error: package javax.sound.sampled does not exist
-  import javax.sound.sampled.AudioFormat;
-                            ^
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/com/mojang/blaze3d/audio/OpenAlUtil.java:5: error: package javax.sound.sampled.AudioFormat does not exist
-  import javax.sound.sampled.AudioFormat.Encoding;
-                                        ^
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/client/sounds/JOrbisAudioStream.java:14: error: package javax.sound.sampled does not exist
-  import javax.sound.sampled.AudioFormat;
-                            ^
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/client/sounds/LoopingAudioStream.java:8: error: package javax.sound.sampled does not exist
-  import javax.sound.sampled.AudioFormat;
-                            ^
-  100 errors
-  9 warnings
-
-* Try:
-> Check your code and dependencies to fix the compilation error(s)
-> Run with --scan to generate a Build Scan (Powered by Develocity).
-
-Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
-
-You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-
-For more on this, please refer to https://docs.gradle.org/9.1.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-
-BUILD FAILED in 1m 38s
-23 actionable tasks: 23 executed
-[0m
-The build produced 100 errors. Let me examine the full log and categorize them.
-[0m$ [0mgrep -E ": error:" build.log | sed -E 's#.*/app/src/main/java/##' | sort | uniq -c | sort -rn | head -100
-4 net/minecraft/util/ExtraCodecs.java:295: error: incompatible types: cannot infer type-variable(s) O
-      4 net/minecraft/server/dialog/CommonDialogData.java:35: error: cannot find symbol
-      2 net/minecraft/world/timeline/Timeline.java:65: error: method decode in interface MapDecoder<A> cannot be applied to given types;
-      2 net/minecraft/world/timeline/Timeline.java:63: error: method decode in interface MapDecoder<A> cannot be applied to given types;
-      2 net/minecraft/world/timeline/Timeline.java:61: error: method decode in interface MapDecoder<A> cannot be applied to given types;
-      2 net/minecraft/world/timeline/Timeline.java:59: error: method decode in interface MapDecoder<A> cannot be applied to given types;
-      2 net/minecraft/world/timeline/Timeline.java:52: error: method encode in interface MapEncoder<A> cannot be applied to given types;
-      2 net/minecraft/world/timeline/Timeline.java:51: error: method encode in interface MapEncoder<A> cannot be applied to given types;
-      2 net/minecraft/world/timeline/Timeline.java:50: error: method encode in interface MapEncoder<A> cannot be applied to given types;
-      2 net/minecraft/world/timeline/Timeline.java:49: error: method encode in interface MapEncoder<A> cannot be applied to given types;
-      2 net/minecraft/world/scores/Scoreboard.java:65: error: incompatible types: Object cannot be converted to Objective
-      2 net/minecraft/world/level/storage/SavedDataStorage.java:201: error: incompatible types: SavedData cannot be converted to T
-      2 net/minecraft/world/level/levelgen/synth/NormalNoise.java:367: error: incompatible types: invalid method reference
-      2 net/minecraft/world/level/levelgen/synth/NormalNoise.java:358: error: no suitable method found for group(RecordCodecBuilder<Parameters,Double>,RecordCodecBuilder<Parameters,Integer>,RecordCodecBuilder<Parameters,Integer>,RecordCodecBuilder<Parameters,Normalization>,RecordCodecBuilder<Parameters,DoubleList>)
-      2 net/minecraft/world/level/levelgen/structure/structures/JigsawStructure.java:52: error: incompatible types: invalid method reference
-      2 net/minecraft/world/level/levelgen/structure/structures/JigsawStructure.java:48: error: cannot find symbol
-      2 net/minecraft/world/level/levelgen/structure/structures/JigsawStructure.java:47: error: cannot find symbol
-      2 net/minecraft/world/level/levelgen/structure/structures/JigsawStructure.java:46: error: cannot find symbol
-      2 net/minecraft/world/level/levelgen/structure/structures/JigsawStructure.java:45: error: cannot find symbol
-      2 net/minecraft/world/level/levelgen/structure/structures/JigsawStructure.java:44: error: cannot find symbol
-      2 net/minecraft/world/level/levelgen/structure/structures/JigsawStructure.java:43: error: cannot find symbol
-      2 net/minecraft/world/level/levelgen/structure/structures/JigsawStructure.java:42: error: cannot find symbol
-      2 net/minecraft/world/level/levelgen/structure/structures/JigsawStructure.java:41: error: cannot find symbol
-      2 net/minecraft/world/level/levelgen/structure/structures/JigsawStructure.java:40: error: cannot find symbol
-      2 net/minecraft/world/level/levelgen/structure/structures/JigsawStructure.java:39: error: cannot find symbol
-      2 net/minecraft/world/level/levelgen/structure/structures/JigsawStructure.java:37: error: cannot find symbol
-      2 net/minecraft/world/level/levelgen/structure/placement/RandomSpreadStructurePlacement.java:26: error: incompatible types: invalid method reference
-      2 net/minecraft/world/level/levelgen/structure/placement/RandomSpreadStructurePlacement.java:18: error: no suitable method found for group(RecordCodecBuilder<RandomSpreadStructurePlacement,Integer>,RecordCodecBuilder<RandomSpreadStructurePlacement,Integer>,RecordCodecBuilder<RandomSpreadStructurePlacement,RandomSpreadType>)
-      2 net/minecraft/world/level/levelgen/structure/placement/RandomSpreadStructurePlacement.java:16: error: method placementCodec in class AbstractSpreadingStructurePlacement cannot be applied to given types;
-      2 net/minecraft/world/level/levelgen/presets/WorldPreset.java:23: error: incompatible types: invalid method reference
-      2 net/minecraft/world/level/levelgen/presets/WorldPreset.java:20: error: no suitable method found for group(RecordCodecBuilder<WorldPreset,Map<ResourceKey<LevelStem>,LevelStem>>)
-      2 net/minecraft/world/level/levelgen/presets/WorldPreset.java:20: error: cannot find symbol
-      2 net/minecraft/world/level/levelgen/blending/BlendingData.java:417: error: incompatible types: invalid method reference
-      2 net/minecraft/world/level/levelgen/blending/BlendingData.java:410: error: no suitable method found for group(RecordCodecBuilder<Packed,Integer>,RecordCodecBuilder<Packed,Integer>,RecordCodecBuilder<Packed,Optional<float[]>>)
-      2 net/minecraft/world/level/levelgen/NoiseSettings.java:18: error: incompatible types: invalid method reference
-      2 net/minecraft/world/level/levelgen/NoiseSettings.java:12: error: no suitable method found for group(RecordCodecBuilder<NoiseSettings,Integer>,RecordCodecBuilder<NoiseSettings,Integer>)
-      2 net/minecraft/world/level/gamerules/GameRuleMap.java:20: error: incompatible types: invalid method reference
-      2 net/minecraft/world/level/block/state/properties/Property.java:18: error: incompatible types: cannot infer type-variable(s) S
-      2 net/minecraft/world/level/block/entity/TestInstanceBlockEntity.java:109: error: incompatible types: Component cannot be converted to MutableComponent
-      2 net/minecraft/world/level/TicketStorage.java:93: error: incompatible types: Object cannot be converted to Ticket
-      2 net/minecraft/world/level/TicketStorage.java:413: error: incompatible types: Object cannot be converted to Ticket
-      2 net/minecraft/world/level/TicketStorage.java:381: error: incompatible types: Object cannot be converted to Ticket
-      2 net/minecraft/world/level/TicketStorage.java:105: error: incompatible types: Object cannot be converted to Ticket
-      2 net/minecraft/world/item/enchantment/LevelBasedValue.java:77: error: incompatible types: invalid method reference
-      2 net/minecraft/world/item/enchantment/LevelBasedValue.java:70: error: no suitable method found for group(RecordCodecBuilder<Clamped,LevelBasedValue>,RecordCodecBuilder<Clamped,Float>,RecordCodecBuilder<Clamped,Float>)
-      2 net/minecraft/world/item/crafting/RecipeMap.java:37: error: incompatible types: Collection<RecipeHolder<?>> cannot be converted to Collection<RecipeHolder<T>>
-      2 net/minecraft/world/item/AdventureModePredicate.java:120: error: incompatible types: List<MutableComponent> cannot be converted to List<Component>
-      2 net/minecraft/world/entity/ai/village/poi/PoiManager.java:287: error: incompatible types: invalid method reference
-      2 net/minecraft/world/entity/ai/attributes/AttributeMap.java:74: error: cannot find symbol
-      2 net/minecraft/world/entity/EntityReference.java:130: error: incompatible types: bad type in conditional expression
-      2 net/minecraft/world/attribute/EnvironmentAttributeMap.java:28: error: incompatible types: Map<EnvironmentAttribute<?>,Entry<CAP#1,?>> cannot be converted to Map<EnvironmentAttribute<?>,Entry<?,?>>
-      2 net/minecraft/world/attribute/EnvironmentAttributeMap.java:127: error: incompatible types: inference variable L has incompatible bounds
-      2 net/minecraft/util/ExtraCodecs.java:598: error: no suitable method found for encode(CAP#1,V,DynamicOps<T#1>)
-      2 net/minecraft/util/ExtraCodecs.java:298: error: incompatible types: cannot infer type-variable(s) S
-      2 net/minecraft/util/ExtraCodecs.java:292: error: incompatible types: bad return type in lambda expression
-      2 net/minecraft/stats/ServerStatsCounter.java:57: error: incompatible types: inference variable R has incompatible bounds
-      2 net/minecraft/server/network/ServerGamePacketListenerImpl.java:1029: error: incompatible types: List<Filterable<MutableComponent>> cannot be converted to List<Filterable<Component>>
-      2 net/minecraft/server/jsonrpc/methods/DiscoveryService.java:43: error: incompatible types: bad return type in method reference
-      2 net/minecraft/server/jsonrpc/api/Schema.java:50: error: incompatible types: Codec<Object> cannot be converted to Codec<? extends Schema<?>>
-      2 net/minecraft/server/jsonrpc/api/Schema.java:40: error: incompatible types: cannot infer type-variable(s) O
-      2 net/minecraft/server/jsonrpc/api/ResultInfo.java:9: error: incompatible types: cannot infer type-variable(s) O
-      2 net/minecraft/server/jsonrpc/api/ParamInfo.java:14: error: incompatible types: cannot infer type-variable(s) O
-      2 net/minecraft/server/jsonrpc/api/MethodInfo.java:48: error: incompatible types: cannot infer type-variable(s) O
-      2 net/minecraft/server/jsonrpc/api/MethodInfo.java:44: error: incompatible types: no instance(s) of type variable(s) Params,Result exist so that Codec<Named<Params,Result>> conforms to Codec<Named<?,?>>
-      2 net/minecraft/server/jsonrpc/api/MethodInfo.java:30: error: incompatible types: cannot infer type-variable(s) O
-      2 net/minecraft/server/jsonrpc/api/MethodInfo.java:25: error: incompatible types: inference variable Params#1 has incompatible equality constraints Params#2,Object
-      2 net/minecraft/server/dialog/CommonDialogData.java:34: error: incompatible types: MapCodec<Object> cannot be converted to MapCodec<CommonDialogData>
-      2 net/minecraft/server/dialog/CommonDialogData.java:23: error: no suitable method found for group(RecordCodecBuilder<CommonDialogData,Component>,RecordCodecBuilder<CommonDialogData,Optional<Component>>,RecordCodecBuilder<CommonDialogData,Boolean>,RecordCodecBuilder<CommonDialogData,Boolean>,RecordCodecBuilder<CommonDialogData,DialogAction>,RecordCodecBuilder<CommonDialogData,List<DialogBody>>,RecordCodecBuilder<CommonDialogData,List<Input>>)
-      2 net/minecraft/server/dedicated/Settings.java:116: error: improperly formed type, type arguments given on a raw type
-      2 net/minecraft/server/dedicated/DedicatedServerProperties.java:275: error: incompatible types: invalid method reference
-      2 net/minecraft/network/protocol/game/ClientboundGameRuleValuesPacket.java:18: error: incompatible types: bad return type in method reference
-      2 net/minecraft/network/protocol/common/custom/CustomPacketPayload.java:37: error: incompatible types: StreamCodec<CAP#1,CAP#2> cannot be converted to StreamCodec<B,T>
-      2 net/minecraft/network/protocol/common/ServerboundCustomPayloadPacket.java:22: error: incompatible types: invalid constructor reference
-      2 net/minecraft/network/protocol/common/ClientboundCustomPayloadPacket.java:24: error: incompatible types: invalid constructor reference
-      2 net/minecraft/core/component/predicates/DataComponentPredicate.java:27: error: incompatible types: cannot infer type-variable(s) O,R,A,CAP#1,T#2,K,U
-      2 net/minecraft/core/component/predicates/DataComponentPredicate.java:113: error: incompatible types: Codec<T> cannot be converted to Codec<DataComponentPredicate>
-      2 net/minecraft/client/sounds/SoundBufferLibrary.java:77: error: cannot find symbol
-      2 net/minecraft/client/sounds/SoundBufferLibrary.java:70: error: cannot find symbol
-      2 net/minecraft/client/sounds/SoundBufferLibrary.java:12: error: package javax.sound.sampled does not exist
-      2 net/minecraft/client/sounds/LoopingAudioStream.java:8: error: package javax.sound.sampled does not exist
-      2 net/minecraft/client/sounds/LoopingAudioStream.java:23: error: cannot find symbol
-      2 net/minecraft/client/sounds/JOrbisAudioStream.java:71: error: cannot find symbol
-      2 net/minecraft/client/sounds/JOrbisAudioStream.java:32: error: cannot find symbol
-      2 net/minecraft/client/sounds/JOrbisAudioStream.java:14: error: package javax.sound.sampled does not exist
-      2 net/minecraft/client/sounds/AudioStream.java:9: error: cannot find symbol
-      2 net/minecraft/client/sounds/AudioStream.java:6: error: package javax.sound.sampled does not exist
-      2 net/minecraft/advancements/predicates/MinMaxBounds.java:79: error: cannot infer type arguments for Bounds<>
-      2 net/minecraft/advancements/Advancement.java:52: error: incompatible types: invalid method reference
-      2 net/minecraft/advancements/Advancement.java:39: error: no suitable method found for group(RecordCodecBuilder<Advancement,Optional<Identifier>>,RecordCodecBuilder<Advancement,Optional<DisplayInfo>>,RecordCodecBuilder<Advancement,AdvancementRewards>,RecordCodecBuilder<Advancement,Map<String,Criterion<?>>>,RecordCodecBuilder<Advancement,Optional<AdvancementRequirements>>,RecordCodecBuilder<Advancement,Boolean>)
-      2 com/mojang/blaze3d/audio/SoundBuffer.java:65: error: cannot find symbol
-      2 com/mojang/blaze3d/audio/SoundBuffer.java:5: error: package javax.sound.sampled does not exist
-      2 com/mojang/blaze3d/audio/SoundBuffer.java:16: error: cannot find symbol
-      2 com/mojang/blaze3d/audio/SoundBuffer.java:11: error: cannot find symbol
-      2 com/mojang/blaze3d/audio/OpenAlUtil.java:5: error: package javax.sound.sampled.AudioFormat does not exist
-      2 com/mojang/blaze3d/audio/OpenAlUtil.java:55: error: cannot find symbol
-      2 com/mojang/blaze3d/audio/OpenAlUtil.java:4: error: package javax.sound.sampled does not exist
-      2 com/mojang/blaze3d/audio/Channel.java:7: error: package javax.sound.sampled does not exist
-      2 com/mojang/blaze3d/audio/Channel.java:130: error: cannot find symbol
-[0m
-[0m$ [0mfind android/app/build/generated -type f 2>/dev/null | head; echo "--- stub tree ---"; find android/app/build/generated/stub -type f 2>/dev/null; echo "--- java-compiler-args ---"; find android/app/build/tmp -name 'java-compiler-args.txt' -exec cat {} \; 2>/dev/null | head -40
-android/app/build/generated/source/buildConfig/debug/pro/minecraft/BuildConfig.java
-android/app/build/generated/stub/java.desktop/javax/sound/sampled/AudioFormat$Encoding.class
-android/app/build/generated/stub/java.desktop/javax/sound/sampled/AudioFormat.java
-android/app/build/generated/stub/java.desktop/javax/sound/sampled/AudioFormat.class
---- stub tree ---
-android/app/build/generated/stub/java.desktop/javax/sound/sampled/AudioFormat$Encoding.class
-android/app/build/generated/stub/java.desktop/javax/sound/sampled/AudioFormat.java
-android/app/build/generated/stub/java.desktop/javax/sound/sampled/AudioFormat.class
---- java-compiler-args ---
-[0m
-[0m$ [0mfind ~/.gradle/caches -name 'datafixerupper*.jar' 2>/dev/null; echo "---"; find ~/.gradle/caches -path '*datafixerupper*' -name '*.jar' 2>/dev/null | head
-/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/datafixerupper/10.0.21/b6b2ae770c02e0c1eb90f9985b151e9085a38d0b/datafixerupper-10.0.21.jar
----
-/home/runner/.gradle/caches/modules-2/files-2.1/com.mojang/datafixerupper/10.0.21/b6b2ae770c02e0c1eb90f9985b151e9085a38d0b/datafixerupper-10.0.21.jar
-/home/runner/.gradle/caches/9.1.0/transforms/a14c9de49fcb3b11af6d6e3305e76c23/transformed/jetified-datafixerupper-10.0.21.jar
-[0m
-[0m$ [0mgrep -n "patch-module\|bootclasspath\|Compiling with\|javac\|-Xmaxerrs" build.log | head -30
-(no output)
-[0m
-[0m→ [0mRead android/app/src/main/java/net/minecraft/world/level/levelgen/NoiseSettings.java[90m [limit=40][0m
-[0m
-[0m$ [0mgit log --oneline --all | head -30; echo "==== commit #8 ===="; git show --stat fc41fec | head -60
-fdf8710 Add Java setup and update workspace instructions
-fc41fec Work on issue #8
-18c7f20 Enhance OpenCode workflow with issue comments
-8d849d6 Refactor OpenCode workflow for better session management
-afc7055 Update opencode.yml
-ad4fa95 Fix issue #6
-0a02054 Upgrade Java version from 21 to 25 in build.gradle
-f9f089e Upgrade Gradle wrapper to version 9.1.0
-b6f2bb0 Update build.yml
-d55726f Fix issue #5
-5be457e Remove timeout for opencode job in workflow
-e91c8a0 Update model reference in opencode workflow
-8488ba5 Change model in opencode workflow to nemotron-3
-16758ed Rename workflow and enhance opencode process
-ebacba4 Delete .github/workflows/auto-fix.yml
-f09b1b5 Remove opencode setup from build workflow
-65f4610 Add GitHub Actions workflow for issue verification
-4fd4629 update
-a1e3f97 Fix opencode run to use stdin for prompt
-3c3128f Fix opencode command syntax to use 'opencode run'
-f301bad Add persistent opencode session to build workflow
-cddc4ba Add auto-fix with opencode to build workflow
-10f170d Add auto-fix workflow
-2a28458 Fix LevelBasedValue - correct structure with all records and methods
-0da7217 Restore LevelBasedValue to commit 73ded18 style - Constant before CODEC with DISPATCH_CODEC
-4273215 Simplify LevelBasedValue - inline CODEC to avoid forward ref issues
-41e694a Fix references to use LevelBasedValue.CODEC
-876fa93 Restore LevelBasedValue structure similar to original - put CODEC as interface fields
-748f3dc Add LevelBasedValue.CODEC field for compatibility
-e5e412c Revert to use LevelBasedValue.CODEC in records to match original structure
-==== commit #8 ====
-commit fc41fecb831276d2d207402d1c7ec46ee8862865
-Author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-Date:   Fri Oct 9 14:48:39 2026 +0000
-
-    Work on issue #8
-
- android/app/build.gradle |    5 +-
- issue-query.txt          |   14 +
- opencode-output.txt      | 1195 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 1211 insertions(+), 3 deletions(-)
-[0m
-[0m$ [0mgit show --stat d55726f | head -80; echo "==== #6 ===="; git show --stat ad4fa95 | head -80
-commit d55726f751f516991704686b82c8ac8b2d9125f7
-Author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-Date:   Fri Oct 9 11:01:10 2026 +0000
-
-    Fix issue #5
-
- android/app/build.gradle                           |  8 ++-
- android/app/javac.20261009_102044.args             |  1 +
- android/app/javac.20261009_102610.args             |  1 +
- android/app/javac.20261009_102749.args             |  1 +
- android/app/javac.20261009_102947.args             |  1 +
- android/app/javac.20261009_103042.args             |  1 +
- .../backend/opengl/GlCommandEncoder.java           |  2 +-
- .../renderpearl/frontend/FrontendRenderPass.java   |  4 +-
- .../client/gui/screens/friends/FriendEntry.java    |  2 +-
- .../gui/screens/social/PlayerSocialManager.java    |  2 +-
- .../social/RemoteFriendListUpdateHandler.java      |  2 +-
- .../multiplayer/chat/report/AbuseReportSender.java |  2 +-
- .../net/minecraft/client/quickplay/QuickPlay.java  |  2 +-
- .../net/minecraft/client/renderer/PostChain.java   |  2 +-
- .../minecraft/client/renderer/PostChainConfig.java |  2 +-
- .../renderer/feature/TextFeatureRenderer.java      |  2 +-
- .../minecraft/client/resources/SkinManager.java    |  2 +-
- .../resources/model/sprite/TextureSlots.java       |  2 +-
- .../brigadier/StringArgumentSerializer.java        |  4 +-
- .../core/component/DataComponentPatch.java         | 57 +++++++++--------
- .../core/component/DataComponentType.java          | 10 +--
- .../main/java/net/minecraft/locale/Language.java   | 16 ++---
- .../src/main/java/net/minecraft/nbt/NbtOps.java    |  4 +-
- .../server/commands/data/DataCommands.java         |  2 +-
- .../server/network/config/PrepareSpawnTask.java    |  2 +-
- .../src/main/java/net/minecraft/tags/TagEntry.java |  4 +-
- .../main/java/net/minecraft/util/CubicSpline.java  |  6 +-
- .../java/net/minecraft/util/ProblemReporter.java   | 28 ++++----
- .../virtualfilesystem/CopyOnWriteFSProvider.java   |  8 +--
- .../virtualfilesystem/CopyOnWriteFileSystem.java   |  2 +-
- .../world/attribute/EnvironmentAttributeMap.java   | 74 ++++++++++++++--------
- .../world/entity/SteppedInterpolationHandler.java  |  6 +-
- .../java/net/minecraft/world/entity/ai/Brain.java  | 15 +++--
- .../world/entity/ai/memory/MemoryMap.java          | 14 ++--
- .../entity/ai/sensing/VillagerHostilesSensor.java  | 26 ++++----
- .../entity/monster/warden/AngerManagement.java     | 18 +++---
- .../world/entity/npc/villager/Villager.java        | 20 +++---
- .../java/net/minecraft/world/item/BundleItem.java  |  2 +-
- .../world/item/trading/VillagerTrade.java          | 38 +++++------
- .../minecraft/world/level/block/BaseRailBlock.java |  6 +-
- .../net/minecraft/world/level/block/Block.java     |  8 ++-
- .../block/entity/TestInstanceBlockEntity.java      |  1 +
- .../level/dimension/end/EnderDragonFight.java      | 28 ++++----
- .../world/level/storage/TagValueInput.java         |  8 +--
- .../world/level/storage/TagValueOutput.java        |  6 +-
- .../level/storage/loot/FloatRangePredicate.java    |  2 +-
- .../level/storage/loot/IntRangePredicate.java      |  2 +-
- .../providers/number/floats/ResolvableFloat.java   |  2 +-
- .../loot/providers/number/ints/ResolvableInt.java  |  2 +-
- .../net/minecraft/world/timeline/Timeline.java     | 69 ++++++++++++++------
- android/build.gradle                               |  2 +-
- android/gradle/wrapper/gradle-wrapper.properties   |  2 +-
- issue-prompt.txt                                   | 29 +++++++++
- 53 files changed, 335 insertions(+), 227 deletions(-)
-==== #6 ====
-commit ad4fa95ac933e2d0434d18e480f726e9529e2d95
-Author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-Date:   Fri Oct 9 13:04:09 2026 +0000
-
-    Fix issue #6
-
- android/app/build.gradle                           | 47 +++++++++++++----
- android/app/javac.20261009_122249.args             |  1 +
- .../com/mojang/blaze3d/platform/NativeImage.java   | 52 +++++++++---------
- .../core/component/DataComponentPatch.java         | 40 +++++++-------
- .../world/entity/ai/memory/MemoryMap.java          |  2 +-
- .../entity/monster/warden/AngerManagement.java     | 16 +++---
- .../world/item/trading/VillagerTrade.java          | 27 +++++-----
- .../level/dimension/end/EnderDragonFight.java      | 10 +++-
- .../app/src/main/java/org/lwjgl/opengl/GL33C.java  | 61 +++++++++++++++++-----
- .../app/src/main/java/org/lwjgl/stb/STBImage.java  | 11 ++--
- .../main/java/org/lwjgl/system/MemoryStack.java    |  8 +++
- .../src/main/java/org/lwjgl/system/MemoryUtil.java |  6 +++
- issue-prompt.txt                                   |  8 +--
- javac.20261009_122832.args                         |  7 +++
- 14 files changed, 196 insertions(+), 100 deletions(-)
-[0m
-[0m$ [0mcd /tmp/opencode && mkdir -p dfu && cd dfu && unzip -o -q ~/.gradle/caches/modules-2/files-2.1/com.mojang/datafixerupper/10.0.21/*/datafixerupper-10.0.21.jar 'com/mojang/serialization/codecs/RecordCodecBuilder*' 'com/mojang/serialization/Codec.class' 'com/mojang/serialization/MapCodec.class' && /usr/lib/jvm/temurin-21-jdk-amd64/bin/javap -p com/mojang/serialization/codecs/RecordCodecBuilder.class | head -60
-Compiled from "RecordCodecBuilder.java"
-public final class com.mojang.serialization.codecs.RecordCodecBuilder<O, F> implements com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, F> {
-  private final java.util.function.Function<O, F> getter;
-  private final java.util.function.Function<O, com.mojang.serialization.MapEncoder<F>> encoder;
-  private final com.mojang.serialization.MapDecoder<F> decoder;
-  public static <O, F> com.mojang.serialization.codecs.RecordCodecBuilder<O, F> unbox(com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, F>);
-  private com.mojang.serialization.codecs.RecordCodecBuilder(java.util.function.Function<O, F>, java.util.function.Function<O, com.mojang.serialization.MapEncoder<F>>, com.mojang.serialization.MapDecoder<F>);
-  public static <O> com.mojang.serialization.codecs.RecordCodecBuilder$Instance<O> instance();
-  public static <O, F> com.mojang.serialization.codecs.RecordCodecBuilder<O, F> of(java.util.function.Function<O, F>, java.lang.String, com.mojang.serialization.Codec<F>);
-  public static <O, F> com.mojang.serialization.codecs.RecordCodecBuilder<O, F> of(java.util.function.Function<O, F>, com.mojang.serialization.MapCodec<F>);
-  public static <O, F> com.mojang.serialization.codecs.RecordCodecBuilder<O, F> point(F);
-  public static <O, F> com.mojang.serialization.codecs.RecordCodecBuilder<O, F> stable(F);
-  public static <O, F> com.mojang.serialization.codecs.RecordCodecBuilder<O, F> deprecated(F, int);
-  public static <O, F> com.mojang.serialization.codecs.RecordCodecBuilder<O, F> point(F, com.mojang.serialization.Lifecycle);
-  public static <O> com.mojang.serialization.Codec<O> create(java.util.function.Function<com.mojang.serialization.codecs.RecordCodecBuilder$Instance<O>, ? extends com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, O>>);
-  public static <O> com.mojang.serialization.MapCodec<O> mapCodec(java.util.function.Function<com.mojang.serialization.codecs.RecordCodecBuilder$Instance<O>, ? extends com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, O>>);
-  public <E> com.mojang.serialization.codecs.RecordCodecBuilder<O, E> dependent(java.util.function.Function<O, E>, com.mojang.serialization.MapEncoder<E>, java.util.function.Function<? super F, ? extends com.mojang.serialization.MapDecoder<E>>);
-  public static <O> com.mojang.serialization.MapCodec<O> build(com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, O>);
-  private static com.mojang.serialization.MapEncoder lambda$dependent$5(com.mojang.serialization.MapEncoder, java.lang.Object);
-  private static com.mojang.serialization.MapEncoder lambda$point$4(com.mojang.serialization.Lifecycle, java.lang.Object);
-  private static java.lang.Object lambda$point$3(java.lang.Object, java.lang.Object);
-  private static com.mojang.serialization.MapEncoder lambda$point$2(java.lang.Object);
-  private static java.lang.Object lambda$point$1(java.lang.Object, java.lang.Object);
-  private static com.mojang.serialization.MapEncoder lambda$of$0(com.mojang.serialization.MapCodec, java.lang.Object);
-}
-[0m
-[0m$ [0mcat /home/runner/work/mcJava/mcJava/android/build.log | grep -cE ": error:"; echo "--- last lines ---"; tail -30 /home/runner/work/mcJava/mcJava/android/build.log
-200
---- last lines ---
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/com/mojang/blaze3d/audio/SoundBuffer.java:5: error: package javax.sound.sampled does not exist
-  import javax.sound.sampled.AudioFormat;
-                            ^
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/com/mojang/blaze3d/audio/OpenAlUtil.java:4: error: package javax.sound.sampled does not exist
-  import javax.sound.sampled.AudioFormat;
-                            ^
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/com/mojang/blaze3d/audio/OpenAlUtil.java:5: error: package javax.sound.sampled.AudioFormat does not exist
-  import javax.sound.sampled.AudioFormat.Encoding;
-                                        ^
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/client/sounds/JOrbisAudioStream.java:14: error: package javax.sound.sampled does not exist
-  import javax.sound.sampled.AudioFormat;
-                            ^
-  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/client/sounds/LoopingAudioStream.java:8: error: package javax.sound.sampled does not exist
-  import javax.sound.sampled.AudioFormat;
-                            ^
-  100 errors
-  9 warnings
-
-* Try:
-> Check your code and dependencies to fix the compilation error(s)
-> Run with --scan to generate a Build Scan (Powered by Develocity).
-
-Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
-
-You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-
-For more on this, please refer to https://docs.gradle.org/9.1.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-
-BUILD FAILED in 1m 38s
-23 actionable tasks: 23 executed
-[0m
-[0m$ [0mcd /tmp/opencode/dfu && unzip -o -q ~/.gradle/caches/modules-2/files-2.1/com.mojang/datafixerupper/10.0.21/*/datafixerupper-10.0.21.jar 'com/mojang/serialization/codecs/RecordCodecBuilder$*' && /usr/lib/jvm/temurin-21-jdk-amd64/bin/javap -p 'com/mojang/serialization/codecs/RecordCodecBuilder$Instance.class'
-Compiled from "RecordCodecBuilder.java"
-public final class com.mojang.serialization.codecs.RecordCodecBuilder$Instance<O> implements com.mojang.datafixers.kinds.Applicative<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, com.mojang.serialization.codecs.RecordCodecBuilder$Instance$Mu<O>> {
-  public com.mojang.serialization.codecs.RecordCodecBuilder$Instance();
-  public <A> com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, A> stable(A);
-  public <A> com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, A> deprecated(A, int);
-  public <A> com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, A> point(A, com.mojang.serialization.Lifecycle);
-  public <A> com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, A> point(A);
-  public <A, R> java.util.function.Function<com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, A>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, R>> lift1(com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, java.util.function.Function<A, R>>);
-  public <A, B, R> com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, R> ap2(com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, java.util.function.BiFunction<A, B, R>>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, A>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, B>);
-  public <T1, T2, T3, R> com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, R> ap3(com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, com.mojang.datafixers.util.Function3<T1, T2, T3, R>>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, T1>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, T2>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, T3>);
-  public <T1, T2, T3, T4, R> com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, R> ap4(com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, com.mojang.datafixers.util.Function4<T1, T2, T3, T4, R>>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, T1>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, T2>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, T3>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, T4>);
-  public <T, R> com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, R> map(java.util.function.Function<? super T, ? extends R>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, T>);
-  private com.mojang.serialization.MapEncoder lambda$map$9(com.mojang.serialization.codecs.RecordCodecBuilder, java.util.function.Function, java.lang.Object);
-  private com.mojang.serialization.MapEncoder lambda$ap4$8(com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, java.lang.Object);
-  private static java.lang.Object lambda$ap4$7(com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, java.lang.Object);
-  private com.mojang.serialization.MapEncoder lambda$ap3$6(com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, java.lang.Object);
-  private static java.lang.Object lambda$ap3$5(com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, java.lang.Object);
-  private com.mojang.serialization.MapEncoder lambda$ap2$4(com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, java.lang.Object);
-  private static java.lang.Object lambda$ap2$3(com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, java.lang.Object);
-  private com.mojang.datafixers.kinds.App lambda$lift1$2(com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App);
-  private com.mojang.serialization.MapEncoder lambda$lift1$1(com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, java.lang.Object);
-  private static java.lang.Object lambda$lift1$0(com.mojang.serialization.codecs.RecordCodecBuilder, com.mojang.serialization.codecs.RecordCodecBuilder, java.lang.Object);
-}
-[0m
-[0m$ [0mcd /tmp/opencode/dfu && /usr/lib/jvm/temurin-21-jdk-amd64/bin/javap -p 'com/mojang/serialization/codecs/RecordCodecBuilder$GroupBuilder.class' 2>/dev/null | head -40
-(no output)
-[0m
-[0m$ [0mcd /tmp/opencode && rm -rf dfufull && mkdir dfufull && cd dfufull && unzip -o -q ~/.gradle/caches/modules-2/files-2.1/com.mojang/datafixerupper/10.0.21/*/datafixerupper-10.0.21.jar && ls com/mojang/serialization/codecs/ | grep -i record; echo "=== search group in Instance bytecode ==="; /usr/lib/jvm/temurin-21-jdk-amd64/bin/javap -p -c 'com/mojang/serialization/codecs/RecordCodecBuilder$Instance.class' 2>/dev/null | grep -i "group" | head; echo "=== count classes ==="; find . -name '*.class' | wc -l
-RecordCodecBuilder$1.class
-RecordCodecBuilder$2.class
-RecordCodecBuilder$Instance$1.class
-RecordCodecBuilder$Instance$2.class
-RecordCodecBuilder$Instance$3.class
-RecordCodecBuilder$Instance$4.class
-RecordCodecBuilder$Instance$5.class
-RecordCodecBuilder$Instance$6.class
-RecordCodecBuilder$Instance$7.class
-RecordCodecBuilder$Instance$8.class
-RecordCodecBuilder$Instance$9.class
-RecordCodecBuilder$Instance$Mu.class
-RecordCodecBuilder$Instance.class
-RecordCodecBuilder$Mu.class
-RecordCodecBuilder.class
-=== search group in Instance bytecode ===
-=== count classes ===
-484
-[0m
-The DFU `Instance` class appears to lack `group`. Let me verify thoroughly, since that would explain most errors.
-[0m$ [0mcd /tmp/opencode/dfufull && find . -name '*.class' -exec sh -c '/usr/lib/jvm/temurin-21-jdk-amd64/bin/javap -p "$1" 2>/dev/null | grep -l group > /dev/null && echo "$1"' _ {} \; 2>/dev/null | head; echo "=== strings group ==="; grep -rl "group" com/mojang/serialization/codecs/ 2>/dev/null | head
-./com/mojang/datafixers/kinds/Kind1.class
-=== strings group ===
-[0m
-[0m$ [0mcd /tmp/opencode/dfufull && grep -rl "group" . 2>/dev/null | head; echo "=== all known codec build methods in Instance? ==="; /usr/lib/jvm/temurin-21-jdk-amd64/bin/javap -p 'com/mojang/serialization/codecs/RecordCodecBuilder$Instance.class' | grep -v lambda; echo "=== Mu ==="; /usr/lib/jvm/temurin-21-jdk-amd64/bin/javap -p 'com/mojang/serialization/codecs/RecordCodecBuilder$Mu.class'; /usr/lib/jvm/temurin-21-jdk-amd64/bin/javap -p 'com/mojang/serialization/codecs/RecordCodecBuilder$Instance$Mu.class'
-./com/mojang/datafixers/kinds/Kind1.class
-=== all known codec build methods in Instance? ===
-Compiled from "RecordCodecBuilder.java"
-public final class com.mojang.serialization.codecs.RecordCodecBuilder$Instance<O> implements com.mojang.datafixers.kinds.Applicative<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, com.mojang.serialization.codecs.RecordCodecBuilder$Instance$Mu<O>> {
-  public com.mojang.serialization.codecs.RecordCodecBuilder$Instance();
-  public <A> com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, A> stable(A);
-  public <A> com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, A> deprecated(A, int);
-  public <A> com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, A> point(A, com.mojang.serialization.Lifecycle);
-  public <A> com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, A> point(A);
-  public <A, R> java.util.function.Function<com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, A>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, R>> lift1(com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, java.util.function.Function<A, R>>);
-  public <A, B, R> com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, R> ap2(com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, java.util.function.BiFunction<A, B, R>>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, A>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, B>);
-  public <T1, T2, T3, R> com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, R> ap3(com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, com.mojang.datafixers.util.Function3<T1, T2, T3, R>>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, T1>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, T2>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, T3>);
-  public <T1, T2, T3, T4, R> com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, R> ap4(com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, com.mojang.datafixers.util.Function4<T1, T2, T3, T4, R>>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, T1>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, T2>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, T3>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, T4>);
-  public <T, R> com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, R> map(java.util.function.Function<? super T, ? extends R>, com.mojang.datafixers.kinds.App<com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O>, T>);
-}
-=== Mu ===
-Compiled from "RecordCodecBuilder.java"
-public final class com.mojang.serialization.codecs.RecordCodecBuilder$Mu<O> implements com.mojang.datafixers.kinds.K1 {
-  public com.mojang.serialization.codecs.RecordCodecBuilder$Mu();
-}
-Compiled from "RecordCodecBuilder.java"
-final class com.mojang.serialization.codecs.RecordCodecBuilder$Instance$Mu<O> implements com.mojang.datafixers.kinds.Applicative$Mu {
-  private com.mojang.serialization.codecs.RecordCodecBuilder$Instance$Mu();
-}
-[0m
-[0m$ [0mtimeout 30 curl -s https://libraries.minecraft.net/com/mojang/datafixerupper/maven-metadata.xml 2>&1 | head -60
-<?xml version="1.0" encoding="utf-8"?><Error><Code>BlobNotFound</Code><Message>The specified blob does not exist.
-RequestId:0e398fe5-301e-006e-35ff-579d90000000
-Time:2026-10-09T15:02:47.3287644Z</Message></Error>
-[0m
-The bundled DataFixerUpper lacks the `group` method used everywhere. Let me check available versions and the actual API.
-[0m$ [0mcd /tmp/opencode/dfufull && unzip -l ~/.gradle/caches/modules-2/files-2.1/com.mojang/datafixerupper/10.0.21/*/datafixerupper-10.0.21.jar | grep -i "pom\|MANIFEST" ; echo "--- pom ---"; find ~/.gradle/caches -path '*datafixerupper/10.0.21*' -name '*.pom' -exec cat {} \; 2>/dev/null | head -40
-25  2026-05-05 09:24   META-INF/MANIFEST.MF
---- pom ---
-<?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <!-- This module was also published with a richer model, Gradle metadata,  -->
-  <!-- which should be used instead. Do not delete the following line which  -->
-  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
-  <!-- that they should prefer consuming it instead. -->
-  <!-- do_not_remove: published-with-gradle-metadata -->
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.mojang</groupId>
-  <artifactId>datafixerupper</artifactId>
-  <version>10.0.21</version>
-  <dependencies>
-    <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>2.10.1</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>32.1.2-jre</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>it.unimi.dsi</groupId>
-      <artifactId>fastutil</artifactId>
-      <version>8.5.12</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>jsr305</artifactId>
-      <version>3.0.2</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-[0m
-[0m$ [0mcd /tmp/opencode/dfufull && /usr/lib/jvm/temurin-21-jdk-amd64/bin/javap -p 'com/mojang/datafixers/kinds/Kind1.class'; echo "=== Applicative ==="; /usr/lib/jvm/temurin-21-jdk-amd64/bin/javap -p 'com/mojang/datafixers/kinds/Applicative.class'; echo "=== search string group any class ==="; grep -rla "group" . | head -20
-Compiled from "Kind1.java"
-public interface com.mojang.datafixers.kinds.Kind1<F extends com.mojang.datafixers.kinds.K1, Mu extends com.mojang.datafixers.kinds.Kind1$Mu> extends com.mojang.datafixers.kinds.App<Mu, F> {
-  public static <F extends com.mojang.datafixers.kinds.K1, Proof extends com.mojang.datafixers.kinds.Kind1$Mu> com.mojang.datafixers.kinds.Kind1<F, Proof> unbox(com.mojang.datafixers.kinds.App<Proof, F>);
-  public default <T1> com.mojang.datafixers.Products$P1<F, T1> group(com.mojang.datafixers.kinds.App<F, T1>);
-  public default <T1, T2> com.mojang.datafixers.Products$P2<F, T1, T2> group(com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>);
-  public default <T1, T2, T3> com.mojang.datafixers.Products$P3<F, T1, T2, T3> group(com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>);
-  public default <T1, T2, T3, T4> com.mojang.datafixers.Products$P4<F, T1, T2, T3, T4> group(com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>);
-  public default <T1, T2, T3, T4, T5> com.mojang.datafixers.Products$P5<F, T1, T2, T3, T4, T5> group(com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>);
-  public default <T1, T2, T3, T4, T5, T6> com.mojang.datafixers.Products$P6<F, T1, T2, T3, T4, T5, T6> group(com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>);
-  public default <T1, T2, T3, T4, T5, T6, T7> com.mojang.datafixers.Products$P7<F, T1, T2, T3, T4, T5, T6, T7> group(com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8> com.mojang.datafixers.Products$P8<F, T1, T2, T3, T4, T5, T6, T7, T8> group(com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9> com.mojang.datafixers.Products$P9<F, T1, T2, T3, T4, T5, T6, T7, T8, T9> group(com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> com.mojang.datafixers.Products$P10<F, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> group(com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>, com.mojang.datafixers.kinds.App<F, T10>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> com.mojang.datafixers.Products$P11<F, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> group(com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>, com.mojang.datafixers.kinds.App<F, T10>, com.mojang.datafixers.kinds.App<F, T11>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> com.mojang.datafixers.Products$P12<F, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> group(com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>, com.mojang.datafixers.kinds.App<F, T10>, com.mojang.datafixers.kinds.App<F, T11>, com.mojang.datafixers.kinds.App<F, T12>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> com.mojang.datafixers.Products$P13<F, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> group(com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>, com.mojang.datafixers.kinds.App<F, T10>, com.mojang.datafixers.kinds.App<F, T11>, com.mojang.datafixers.kinds.App<F, T12>, com.mojang.datafixers.kinds.App<F, T13>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> com.mojang.datafixers.Products$P14<F, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> group(com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>, com.mojang.datafixers.kinds.App<F, T10>, com.mojang.datafixers.kinds.App<F, T11>, com.mojang.datafixers.kinds.App<F, T12>, com.mojang.datafixers.kinds.App<F, T13>, com.mojang.datafixers.kinds.App<F, T14>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> com.mojang.datafixers.Products$P15<F, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> group(com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>, com.mojang.datafixers.kinds.App<F, T10>, com.mojang.datafixers.kinds.App<F, T11>, com.mojang.datafixers.kinds.App<F, T12>, com.mojang.datafixers.kinds.App<F, T13>, com.mojang.datafixers.kinds.App<F, T14>, com.mojang.datafixers.kinds.App<F, T15>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> com.mojang.datafixers.Products$P16<F, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> group(com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>, com.mojang.datafixers.kinds.App<F, T10>, com.mojang.datafixers.kinds.App<F, T11>, com.mojang.datafixers.kinds.App<F, T12>, com.mojang.datafixers.kinds.App<F, T13>, com.mojang.datafixers.kinds.App<F, T14>, com.mojang.datafixers.kinds.App<F, T15>, com.mojang.datafixers.kinds.App<F, T16>);
-}
-=== Applicative ===
-Compiled from "Applicative.java"
-public interface com.mojang.datafixers.kinds.Applicative<F extends com.mojang.datafixers.kinds.K1, Mu extends com.mojang.datafixers.kinds.Applicative$Mu> extends com.mojang.datafixers.kinds.Functor<F, Mu> {
-  public static <F extends com.mojang.datafixers.kinds.K1, Mu extends com.mojang.datafixers.kinds.Applicative$Mu> com.mojang.datafixers.kinds.Applicative<F, Mu> unbox(com.mojang.datafixers.kinds.App<Mu, F>);
-  public abstract <A> com.mojang.datafixers.kinds.App<F, A> point(A);
-  public abstract <A, R> java.util.function.Function<com.mojang.datafixers.kinds.App<F, A>, com.mojang.datafixers.kinds.App<F, R>> lift1(com.mojang.datafixers.kinds.App<F, java.util.function.Function<A, R>>);
-  public default <A, B, R> java.util.function.BiFunction<com.mojang.datafixers.kinds.App<F, A>, com.mojang.datafixers.kinds.App<F, B>, com.mojang.datafixers.kinds.App<F, R>> lift2(com.mojang.datafixers.kinds.App<F, java.util.function.BiFunction<A, B, R>>);
-  public default <T1, T2, T3, R> com.mojang.datafixers.util.Function3<com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, R>> lift3(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function3<T1, T2, T3, R>>);
-  public default <T1, T2, T3, T4, R> com.mojang.datafixers.util.Function4<com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, R>> lift4(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function4<T1, T2, T3, T4, R>>);
-  public default <T1, T2, T3, T4, T5, R> com.mojang.datafixers.util.Function5<com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, R>> lift5(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function5<T1, T2, T3, T4, T5, R>>);
-  public default <T1, T2, T3, T4, T5, T6, R> com.mojang.datafixers.util.Function6<com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, R>> lift6(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function6<T1, T2, T3, T4, T5, T6, R>>);
-  public default <T1, T2, T3, T4, T5, T6, T7, R> com.mojang.datafixers.util.Function7<com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, R>> lift7(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function7<T1, T2, T3, T4, T5, T6, T7, R>>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, R> com.mojang.datafixers.util.Function8<com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, R>> lift8(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function8<T1, T2, T3, T4, T5, T6, T7, T8, R>>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, R> com.mojang.datafixers.util.Function9<com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>, com.mojang.datafixers.kinds.App<F, R>> lift9(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>>);
-  public default <A, R> com.mojang.datafixers.kinds.App<F, R> ap(com.mojang.datafixers.kinds.App<F, java.util.function.Function<A, R>>, com.mojang.datafixers.kinds.App<F, A>);
-  public default <A, R> com.mojang.datafixers.kinds.App<F, R> ap(java.util.function.Function<A, R>, com.mojang.datafixers.kinds.App<F, A>);
-  public default <A, B, R> com.mojang.datafixers.kinds.App<F, R> ap2(com.mojang.datafixers.kinds.App<F, java.util.function.BiFunction<A, B, R>>, com.mojang.datafixers.kinds.App<F, A>, com.mojang.datafixers.kinds.App<F, B>);
-  public default <T1, T2, T3, R> com.mojang.datafixers.kinds.App<F, R> ap3(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function3<T1, T2, T3, R>>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>);
-  public default <T1, T2, T3, T4, R> com.mojang.datafixers.kinds.App<F, R> ap4(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function4<T1, T2, T3, T4, R>>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>);
-  public default <T1, T2, T3, T4, T5, R> com.mojang.datafixers.kinds.App<F, R> ap5(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function5<T1, T2, T3, T4, T5, R>>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>);
-  public default <T1, T2, T3, T4, T5, T6, R> com.mojang.datafixers.kinds.App<F, R> ap6(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function6<T1, T2, T3, T4, T5, T6, R>>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>);
-  public default <T1, T2, T3, T4, T5, T6, T7, R> com.mojang.datafixers.kinds.App<F, R> ap7(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function7<T1, T2, T3, T4, T5, T6, T7, R>>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, R> com.mojang.datafixers.kinds.App<F, R> ap8(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function8<T1, T2, T3, T4, T5, T6, T7, T8, R>>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, R> com.mojang.datafixers.kinds.App<F, R> ap9(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> com.mojang.datafixers.kinds.App<F, R> ap10(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>, com.mojang.datafixers.kinds.App<F, T10>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R> com.mojang.datafixers.kinds.App<F, R> ap11(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R>>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>, com.mojang.datafixers.kinds.App<F, T10>, com.mojang.datafixers.kinds.App<F, T11>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R> com.mojang.datafixers.kinds.App<F, R> ap12(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R>>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>, com.mojang.datafixers.kinds.App<F, T10>, com.mojang.datafixers.kinds.App<F, T11>, com.mojang.datafixers.kinds.App<F, T12>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, R> com.mojang.datafixers.kinds.App<F, R> ap13(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, R>>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>, com.mojang.datafixers.kinds.App<F, T10>, com.mojang.datafixers.kinds.App<F, T11>, com.mojang.datafixers.kinds.App<F, T12>, com.mojang.datafixers.kinds.App<F, T13>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, R> com.mojang.datafixers.kinds.App<F, R> ap14(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, R>>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>, com.mojang.datafixers.kinds.App<F, T10>, com.mojang.datafixers.kinds.App<F, T11>, com.mojang.datafixers.kinds.App<F, T12>, com.mojang.datafixers.kinds.App<F, T13>, com.mojang.datafixers.kinds.App<F, T14>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, R> com.mojang.datafixers.kinds.App<F, R> ap15(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, R>>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>, com.mojang.datafixers.kinds.App<F, T10>, com.mojang.datafixers.kinds.App<F, T11>, com.mojang.datafixers.kinds.App<F, T12>, com.mojang.datafixers.kinds.App<F, T13>, com.mojang.datafixers.kinds.App<F, T14>, com.mojang.datafixers.kinds.App<F, T15>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, R> com.mojang.datafixers.kinds.App<F, R> ap16(com.mojang.datafixers.kinds.App<F, com.mojang.datafixers.util.Function16<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, R>>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>, com.mojang.datafixers.kinds.App<F, T10>, com.mojang.datafixers.kinds.App<F, T11>, com.mojang.datafixers.kinds.App<F, T12>, com.mojang.datafixers.kinds.App<F, T13>, com.mojang.datafixers.kinds.App<F, T14>, com.mojang.datafixers.kinds.App<F, T15>, com.mojang.datafixers.kinds.App<F, T16>);
-  public default <A, B, R> com.mojang.datafixers.kinds.App<F, R> apply2(java.util.function.BiFunction<A, B, R>, com.mojang.datafixers.kinds.App<F, A>, com.mojang.datafixers.kinds.App<F, B>);
-  public default <T1, T2, T3, R> com.mojang.datafixers.kinds.App<F, R> apply3(com.mojang.datafixers.util.Function3<T1, T2, T3, R>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>);
-  public default <T1, T2, T3, T4, R> com.mojang.datafixers.kinds.App<F, R> apply4(com.mojang.datafixers.util.Function4<T1, T2, T3, T4, R>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>);
-  public default <T1, T2, T3, T4, T5, R> com.mojang.datafixers.kinds.App<F, R> apply5(com.mojang.datafixers.util.Function5<T1, T2, T3, T4, T5, R>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>);
-  public default <T1, T2, T3, T4, T5, T6, R> com.mojang.datafixers.kinds.App<F, R> apply6(com.mojang.datafixers.util.Function6<T1, T2, T3, T4, T5, T6, R>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>);
-  public default <T1, T2, T3, T4, T5, T6, T7, R> com.mojang.datafixers.kinds.App<F, R> apply7(com.mojang.datafixers.util.Function7<T1, T2, T3, T4, T5, T6, T7, R>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, R> com.mojang.datafixers.kinds.App<F, R> apply8(com.mojang.datafixers.util.Function8<T1, T2, T3, T4, T5, T6, T7, T8, R>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>);
-  public default <T1, T2, T3, T4, T5, T6, T7, T8, T9, R> com.mojang.datafixers.kinds.App<F, R> apply9(com.mojang.datafixers.util.Function9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>, com.mojang.datafixers.kinds.App<F, T1>, com.mojang.datafixers.kinds.App<F, T2>, com.mojang.datafixers.kinds.App<F, T3>, com.mojang.datafixers.kinds.App<F, T4>, com.mojang.datafixers.kinds.App<F, T5>, com.mojang.datafixers.kinds.App<F, T6>, com.mojang.datafixers.kinds.App<F, T7>, com.mojang.datafixers.kinds.App<F, T8>, com.mojang.datafixers.kinds.App<F, T9>);
-  private static java.util.function.Function lambda$ap2$10(java.util.function.BiFunction);
-  private static java.util.function.Function lambda$ap2$9(java.util.function.BiFunction, java.lang.Object);
-  private static java.lang.Object lambda$ap2$8(java.util.function.BiFunction, java.lang.Object, java.lang.Object);
-  private com.mojang.datafixers.kinds.App lambda$lift9$7(com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App);
-  private com.mojang.datafixers.kinds.App lambda$lift8$6(com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App);
-  private com.mojang.datafixers.kinds.App lambda$lift7$5(com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App);
-  private com.mojang.datafixers.kinds.App lambda$lift6$4(com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App);
-  private com.mojang.datafixers.kinds.App lambda$lift5$3(com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App);
-  private com.mojang.datafixers.kinds.App lambda$lift4$2(com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App);
-  private com.mojang.datafixers.kinds.App lambda$lift3$1(com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App);
-  private com.mojang.datafixers.kinds.App lambda$lift2$0(com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App, com.mojang.datafixers.kinds.App);
-}
-=== search string group any class ===
-./com/mojang/datafixers/kinds/Kind1.class
-[0m
-[0m$ [0mcd /tmp/opencode/dfufull && /usr/lib/jvm/temurin-21-jdk-amd64/bin/javap -p 'com/mojang/serialization/MapCodec.class' | grep -iE "forGetter|fieldOf|xmap|flatMap|listOf|mapCodec"; echo "=== Codec.fieldOf ==="; /usr/lib/jvm/temurin-21-jdk-amd64/bin/javap -p 'com/mojang/serialization/Codec.class' | grep -iE "fieldOf|listOf|intRange|xmap"
-Compiled from "MapCodec.java"
-public abstract class com.mojang.serialization.MapCodec<A> extends com.mojang.serialization.CompressorHolder implements com.mojang.serialization.MapDecoder<A>, com.mojang.serialization.MapEncoder<A> {
-  public com.mojang.serialization.MapCodec();
-  public static <A> com.mojang.serialization.MapCodec<A> assumeMapUnsafe(com.mojang.serialization.Codec<A>);
-  public final <O> com.mojang.serialization.codecs.RecordCodecBuilder<O, A> forGetter(java.util.function.Function<O, A>);
-  public static <A> com.mojang.serialization.MapCodec<A> of(com.mojang.serialization.MapEncoder<A>, com.mojang.serialization.MapDecoder<A>);
-  public static <A> com.mojang.serialization.MapCodec<A> of(com.mojang.serialization.MapEncoder<A>, com.mojang.serialization.MapDecoder<A>, java.util.function.Supplier<java.lang.String>);
-  public static <A> com.mojang.serialization.MapCodec<A> recursive(java.lang.String, java.util.function.Function<com.mojang.serialization.Codec<A>, com.mojang.serialization.MapCodec<A>>);
-  public com.mojang.serialization.MapCodec<A> fieldOf(java.lang.String);
-  public com.mojang.serialization.MapCodec<A> withLifecycle(com.mojang.serialization.Lifecycle);
-  public com.mojang.serialization.MapCodec<A> stable();
-  public com.mojang.serialization.MapCodec<A> deprecated(int);
-  public <S> com.mojang.serialization.MapCodec<S> xmap(java.util.function.Function<? super A, ? extends S>, java.util.function.Function<? super S, ? extends A>);
-  public <S> com.mojang.serialization.MapCodec<S> flatXmap(java.util.function.Function<? super A, ? extends com.mojang.serialization.DataResult<? extends S>>, java.util.function.Function<? super S, ? extends com.mojang.serialization.DataResult<? extends A>>);
-  public com.mojang.serialization.MapCodec<A> validate(java.util.function.Function<A, com.mojang.serialization.DataResult<A>>);
-  public <E> com.mojang.serialization.MapCodec<A> dependent(com.mojang.serialization.MapCodec<E>, java.util.function.Function<A, com.mojang.datafixers.util.Pair<E, com.mojang.serialization.MapCodec<E>>>, java.util.function.BiFunction<A, E, A>);
-  public <E> com.mojang.serialization.Codec<E> dispatch(java.util.function.Function<? super E, ? extends A>, java.util.function.Function<? super A, ? extends com.mojang.serialization.MapCodec<? extends E>>);
-  public <E> com.mojang.serialization.Codec<E> dispatchStable(java.util.function.Function<? super E, ? extends A>, java.util.function.Function<? super A, ? extends com.mojang.serialization.MapCodec<? extends E>>);
-  public <E> com.mojang.serialization.Codec<E> partialDispatch(java.util.function.Function<? super E, ? extends com.mojang.serialization.DataResult<? extends A>>, java.util.function.Function<? super A, ? extends com.mojang.serialization.DataResult<? extends com.mojang.serialization.MapCodec<? extends E>>>);
-  public <E> com.mojang.serialization.MapCodec<E> dispatchMap(java.util.function.Function<? super E, ? extends A>, java.util.function.Function<? super A, ? extends com.mojang.serialization.MapCodec<? extends E>>);
-  public com.mojang.serialization.MapCodec<A> mapResult(com.mojang.serialization.MapCodec$ResultFunction<A>);
-  public com.mojang.serialization.MapCodec<A> orElse(java.util.function.Consumer<java.lang.String>, A);
-  public com.mojang.serialization.MapCodec<A> orElse(java.util.function.UnaryOperator<java.lang.String>, A);
-  public com.mojang.serialization.MapCodec<A> orElseGet(java.util.function.Consumer<java.lang.String>, java.util.function.Supplier<? extends A>);
-  public com.mojang.serialization.MapCodec<A> orElseGet(java.util.function.UnaryOperator<java.lang.String>, java.util.function.Supplier<? extends A>);
-  public com.mojang.serialization.MapCodec<A> orElse(A);
-  public com.mojang.serialization.MapCodec<A> orElseGet(java.util.function.Supplier<? extends A>);
-  public com.mojang.serialization.MapCodec<A> setPartial(java.util.function.Supplier<A>);
-  public static <A> com.mojang.serialization.MapCodec<A> unit(A);
-  public static <A> com.mojang.serialization.MapCodec<A> unit(java.util.function.Supplier<A>);
-  private java.lang.String lambda$flatXmap$2();
-  private java.lang.String lambda$xmap$1();
-=== Codec.fieldOf ===
-  public default com.mojang.serialization.Codec<java.util.List<A>> listOf();
-  public default com.mojang.serialization.Codec<java.util.List<A>> listOf(int, int);
-  public default com.mojang.serialization.Codec<java.util.List<A>> sizeLimitedListOf(int);
-  public default <S> com.mojang.serialization.Codec<S> xmap(java.util.function.Function<? super A, ? extends S>, java.util.function.Function<? super S, ? extends A>);
-  public default <S> com.mojang.serialization.Codec<S> flatXmap(java.util.function.Function<? super A, ? extends com.mojang.serialization.DataResult<? extends S>>, java.util.function.Function<? super S, ? extends com.mojang.serialization.DataResult<? extends A>>);
-  public default com.mojang.serialization.MapCodec<A> fieldOf(java.lang.String);
-  public default com.mojang.serialization.MapCodec<java.util.Optional<A>> optionalFieldOf(java.lang.String);
-  public default com.mojang.serialization.MapCodec<A> optionalFieldOf(java.lang.String, A);
-  public default com.mojang.serialization.MapCodec<A> optionalFieldOf(java.lang.String, A, com.mojang.serialization.Lifecycle);
-  public default com.mojang.serialization.MapCodec<A> optionalFieldOf(java.lang.String, com.mojang.serialization.Lifecycle, A, com.mojang.serialization.Lifecycle);
-  public default com.mojang.serialization.MapCodec<java.util.Optional<A>> lenientOptionalFieldOf(java.lang.String);
-  public default com.mojang.serialization.MapCodec<A> lenientOptionalFieldOf(java.lang.String, A);
-  public default com.mojang.serialization.MapCodec<A> lenientOptionalFieldOf(java.lang.String, A, com.mojang.serialization.Lifecycle);
-  public default com.mojang.serialization.MapCodec<A> lenientOptionalFieldOf(java.lang.String, com.mojang.serialization.Lifecycle, A, com.mojang.serialization.Lifecycle);
-  private com.mojang.serialization.MapCodec<A> optionalFieldOf(java.lang.String, A, boolean);
-  private com.mojang.serialization.MapCodec<A> optionalFieldOf(java.lang.String, com.mojang.serialization.Lifecycle, A, com.mojang.serialization.Lifecycle, boolean);
-  public static com.mojang.serialization.Codec<java.lang.Integer> intRange(int, int);
-  public default com.mojang.serialization.MapEncoder fieldOf(java.lang.String);
-  public default com.mojang.serialization.MapDecoder fieldOf(java.lang.String);
-  private static com.mojang.serialization.DataResult lambda$optionalFieldOf$15(java.lang.Object, com.mojang.serialization.Lifecycle, com.mojang.serialization.Lifecycle, java.lang.Object);
-  private static com.mojang.serialization.DataResult lambda$optionalFieldOf$14(com.mojang.serialization.Lifecycle, java.lang.Object, com.mojang.serialization.Lifecycle, java.util.Optional);
-  private static com.mojang.serialization.DataResult lambda$optionalFieldOf$13(com.mojang.serialization.Lifecycle, java.lang.Object);
-  private static java.util.Optional lambda$optionalFieldOf$12(java.lang.Object, java.lang.Object);
-  private static java.lang.Object lambda$optionalFieldOf$11(java.lang.Object, java.util.Optional);
-  private java.lang.String lambda$fieldOf$10(java.lang.String);
-[0m
-[0m$ [0mcd /tmp/opencode/dfufull && /usr/lib/jvm/temurin-21-jdk-amd64/bin/javap -p 'com/mojang/serialization/MapCodec.class' | head -40
-Compiled from "MapCodec.java"
-public abstract class com.mojang.serialization.MapCodec<A> extends com.mojang.serialization.CompressorHolder implements com.mojang.serialization.MapDecoder<A>, com.mojang.serialization.MapEncoder<A> {
-  public com.mojang.serialization.MapCodec();
-  public static <A> com.mojang.serialization.MapCodec<A> assumeMapUnsafe(com.mojang.serialization.Codec<A>);
-  public final <O> com.mojang.serialization.codecs.RecordCodecBuilder<O, A> forGetter(java.util.function.Function<O, A>);
-  public static <A> com.mojang.serialization.MapCodec<A> of(com.mojang.serialization.MapEncoder<A>, com.mojang.serialization.MapDecoder<A>);
-  public static <A> com.mojang.serialization.MapCodec<A> of(com.mojang.serialization.MapEncoder<A>, com.mojang.serialization.MapDecoder<A>, java.util.function.Supplier<java.lang.String>);
-  public static <A> com.mojang.serialization.MapCodec<A> recursive(java.lang.String, java.util.function.Function<com.mojang.serialization.Codec<A>, com.mojang.serialization.MapCodec<A>>);
-  public com.mojang.serialization.MapCodec<A> fieldOf(java.lang.String);
-  public com.mojang.serialization.MapCodec<A> withLifecycle(com.mojang.serialization.Lifecycle);
-  public com.mojang.serialization.Codec<A> codec();
-  public com.mojang.serialization.MapCodec<A> stable();
-  public com.mojang.serialization.MapCodec<A> deprecated(int);
-  public <S> com.mojang.serialization.MapCodec<S> xmap(java.util.function.Function<? super A, ? extends S>, java.util.function.Function<? super S, ? extends A>);
-  public <S> com.mojang.serialization.MapCodec<S> flatXmap(java.util.function.Function<? super A, ? extends com.mojang.serialization.DataResult<? extends S>>, java.util.function.Function<? super S, ? extends com.mojang.serialization.DataResult<? extends A>>);
-  public com.mojang.serialization.MapCodec<A> validate(java.util.function.Function<A, com.mojang.serialization.DataResult<A>>);
-  public <E> com.mojang.serialization.MapCodec<A> dependent(com.mojang.serialization.MapCodec<E>, java.util.function.Function<A, com.mojang.datafixers.util.Pair<E, com.mojang.serialization.MapCodec<E>>>, java.util.function.BiFunction<A, E, A>);
-  public <E> com.mojang.serialization.Codec<E> dispatch(java.util.function.Function<? super E, ? extends A>, java.util.function.Function<? super A, ? extends com.mojang.serialization.MapCodec<? extends E>>);
-  public <E> com.mojang.serialization.Codec<E> dispatchStable(java.util.function.Function<? super E, ? extends A>, java.util.function.Function<? super A, ? extends com.mojang.serialization.MapCodec<? extends E>>);
-  public <E> com.mojang.serialization.Codec<E> partialDispatch(java.util.function.Function<? super E, ? extends com.mojang.serialization.DataResult<? extends A>>, java.util.function.Function<? super A, ? extends com.mojang.serialization.DataResult<? extends com.mojang.serialization.MapCodec<? extends E>>>);
-  public <E> com.mojang.serialization.MapCodec<E> dispatchMap(java.util.function.Function<? super E, ? extends A>, java.util.function.Function<? super A, ? extends com.mojang.serialization.MapCodec<? extends E>>);
-  public abstract <T> java.util.stream.Stream<T> keys(com.mojang.serialization.DynamicOps<T>);
-  public com.mojang.serialization.MapCodec<A> mapResult(com.mojang.serialization.MapCodec$ResultFunction<A>);
-  public com.mojang.serialization.MapCodec<A> orElse(java.util.function.Consumer<java.lang.String>, A);
-  public com.mojang.serialization.MapCodec<A> orElse(java.util.function.UnaryOperator<java.lang.String>, A);
-  public com.mojang.serialization.MapCodec<A> orElseGet(java.util.function.Consumer<java.lang.String>, java.util.function.Supplier<? extends A>);
-  public com.mojang.serialization.MapCodec<A> orElseGet(java.util.function.UnaryOperator<java.lang.String>, java.util.function.Supplier<? extends A>);
-  public com.mojang.serialization.MapCodec<A> orElse(A);
-  public com.mojang.serialization.MapCodec<A> orElseGet(java.util.function.Supplier<? extends A>);
-  public com.mojang.serialization.MapCodec<A> setPartial(java.util.function.Supplier<A>);
-  public static <A> com.mojang.serialization.MapCodec<A> unit(A);
-  public static <A> com.mojang.serialization.MapCodec<A> unit(java.util.function.Supplier<A>);
-  public static <A> com.mojang.serialization.Codec<A> unitCodec(A);
-  public static <A> com.mojang.serialization.Codec<A> unitCodec(java.util.function.Supplier<A>);
-  public com.mojang.serialization.MapDecoder withLifecycle(com.mojang.serialization.Lifecycle);
-  public com.mojang.serialization.MapEncoder withLifecycle(com.mojang.serialization.Lifecycle);
-  private static java.lang.Object lambda$unitCodec$6(java.lang.Object);
-  private static java.lang.Object lambda$unit$5(java.lang.Object);
-  private static com.mojang.serialization.DataResult lambda$dispatchStable$4(java.util.function.Function, java.lang.Object);
-  private static com.mojang.serialization.DataResult lambda$dispatchStable$3(java.util.function.Function, java.lang.Object);
-[0m
-[0m$ [0mcd /tmp/opencode/dfufull && ls com/mojang/datafixers/ | grep -i "Products" ; echo "exit: $?"; find . -name 'Products*'; echo "=== total dirs ==="; ls com/mojang/datafixers/
-Products$P1.class
-Products$P10.class
-Products$P11.class
-Products$P12.class
-Products$P13.class
-Products$P14.class
-Products$P15.class
-Products$P16.class
-Products$P2.class
-Products$P3.class
-Products$P4.class
-Products$P5.class
-Products$P6.class
-Products$P7.class
-Products$P8.class
-Products$P9.class
-Products.class
-exit: 0
-./com/mojang/datafixers/Products$P16.class
-./com/mojang/datafixers/Products$P6.class
-./com/mojang/datafixers/Products$P7.class
-./com/mojang/datafixers/Products$P3.class
-./com/mojang/datafixers/Products$P12.class
-./com/mojang/datafixers/Products$P15.class
-./com/mojang/datafixers/Products$P2.class
-./com/mojang/datafixers/Products$P13.class
-./com/mojang/datafixers/Products$P5.class
-./com/mojang/datafixers/Products$P8.class
-./com/mojang/datafixers/Products$P11.class
-./com/mojang/datafixers/Products.class
-./com/mojang/datafixers/Products$P14.class
-./com/mojang/datafixers/Products$P10.class
-./com/mojang/datafixers/Products$P1.class
-./com/mojang/datafixers/Products$P9.class
-./com/mojang/datafixers/Products$P4.class
-=== total dirs ===
-DSL$Instances$TaggedChoiceCacheKey.class
-DSL$Instances.class
-DSL$TypeReference.class
-DSL.class
-DataFix$NamedFunctionWrapper.class
-DataFix.class
-DataFixUtils.class
-DataFixer.class
-DataFixerBuilder$Result.class
-DataFixerBuilder.class
-DataFixerUpper.class
-FamilyOptic.class
-FieldFinder$Matcher.class
-FieldFinder.class
-FunctionType$Instance$Mu$1.class
-FunctionType$Instance$Mu.class
-FunctionType$Instance.class
-FunctionType$Mu.class
-FunctionType$ReaderInstance$Mu.class
-FunctionType$ReaderInstance.class
-FunctionType$ReaderMu.class
-FunctionType.class
-NamedChoiceFinder$Matcher.class
-NamedChoiceFinder.class
-OpticFinder$1.class
-OpticFinder.class
-Products$P1.class
-Products$P10.class
-Products$P11.class
-Products$P12.class
-Products$P13.class
-Products$P14.class
-Products$P15.class
-Products$P16.class
-Products$P2.class
-Products$P3.class
-Products$P4.class
-Products$P5.class
-Products$P6.class
-Products$P7.class
-Products$P8.class
-Products$P9.class
-Products.class
-RewriteResult.class
-TypeRewriteRule$All.class
-TypeRewriteRule$CheckOnce.class
-TypeRewriteRule$Everywhere.class
-TypeRewriteRule$IfSame.class
-TypeRewriteRule$Nop.class
-TypeRewriteRule$One.class
-TypeRewriteRule$OrElse.class
-TypeRewriteRule$Seq.class
-TypeRewriteRule.class
-Typed$1.class
-Typed$2.class
-Typed$3.class
-Typed$4.class
-Typed$5.class
-Typed$6.class
-Typed.class
-TypedOptic$Element.class
-TypedOptic.class
-View$Mu.class
-View.class
-functions
-kinds
-optics
-schemas
-types
-util
-[0m
-[0m$ [0mcd /home/runner/work/mcJava/mcJava/android && grep -n "NoiseSettings.java" build.log | head; echo "==="; grep -n -A15 "NoiseSettings.java:12" build.log | head -30
-930:/home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/world/level/levelgen/NoiseSettings.java:12: error: no suitable method found for group(RecordCodecBuilder<NoiseSettings,Integer>,RecordCodecBuilder<NoiseSettings,Integer>)
-1120:/home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/world/level/levelgen/NoiseSettings.java:18: error: incompatible types: invalid method reference
-2898:  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/world/level/levelgen/NoiseSettings.java:12: error: no suitable method found for group(RecordCodecBuilder<NoiseSettings,Integer>,RecordCodecBuilder<NoiseSettings,Integer>)
-4115:  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/world/level/levelgen/NoiseSettings.java:18: error: incompatible types: invalid method reference
-===
-930:/home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/world/level/levelgen/NoiseSettings.java:12: error: no suitable method found for group(RecordCodecBuilder<NoiseSettings,Integer>,RecordCodecBuilder<NoiseSettings,Integer>)
-931-         i -> i.group(
-932-               ^
-933-    method Kind1.<T1#1>group(App<Mu<Object>,T1#1>) is not applicable
-934-      (cannot infer type-variable(s) T1#1
-935-        (actual and formal argument lists differ in length))
-936-    method Kind1.<T1#2,T2#1>group(App<Mu<Object>,T1#2>,App<Mu<Object>,T2#1>) is not applicable
-937-      (inference variable O has incompatible equality constraints NoiseSettings,Object)
-938-    method Kind1.<T1#3,T2#2,T3#1>group(App<Mu<Object>,T1#3>,App<Mu<Object>,T2#2>,App<Mu<Object>,T3#1>) is not applicable
-939-      (cannot infer type-variable(s) T1#3,T2#2,T3#1
-940-        (actual and formal argument lists differ in length))
-941-    method Kind1.<T1#4,T2#3,T3#2,T4#1>group(App<Mu<Object>,T1#4>,App<Mu<Object>,T2#3>,App<Mu<Object>,T3#2>,App<Mu<Object>,T4#1>) is not applicable
-942-      (cannot infer type-variable(s) T1#4,T2#3,T3#2,T4#1
-943-        (actual and formal argument lists differ in length))
-944-    method Kind1.<T1#5,T2#4,T3#3,T4#2,T5#1>group(App<Mu<Object>,T1#5>,App<Mu<Object>,T2#4>,App<Mu<Object>,T3#3>,App<Mu<Object>,T4#2>,App<Mu<Object>,T5#1>) is not applicable
-945-      (cannot infer type-variable(s) T1#5,T2#4,T3#3,T4#2,T5#1
---
-2898:  /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/world/level/levelgen/NoiseSettings.java:12: error: no suitable method found for group(RecordCodecBuilder<NoiseSettings,Integer>,RecordCodecBuilder<NoiseSettings,Integer>)
-2899-           i -> i.group(
-2900-                 ^
-2901-      method Kind1.<T1#1>group(App<Mu<Object>,T1#1>) is not applicable
-2902-        (cannot infer type-variable(s) T1#1
-2903-          (actual and formal argument lists differ in length))
-2904-      method Kind1.<T1#2,T2#1>group(App<Mu<Object>,T1#2>,App<Mu<Object>,T2#1>) is not applicable
-2905-        (inference variable O has incompatible equality constraints NoiseSettings,Object)
-2906-      method Kind1.<T1#3,T2#2,T3#1>group(App<Mu<Object>,T1#3>,App<Mu<Object>,T2#2>,App<Mu<Object>,T3#1>) is not applicable
-2907-        (cannot infer type-variable(s) T1#3,T2#2,T3#1
-2908-          (actual and formal argument lists differ in length))
-2909-      method Kind1.<T1#4,T2#3,T3#2,T4#1>group(App<Mu<Object>,T1#4>,App<Mu<Object>,T2#3>,App<Mu<Object>,T3#2>,App<Mu<Object>,T4#1>) is not applicable
-2910-        (cannot infer type-variable(s) T1#4,T2#3,T3#2,T4#1
-[0m
-The key issue: type inference collapses `O` to `Object`. Let me reproduce with a minimal test to understand the root cause.
-[0m$ [0mcd /tmp/opencode && find ~/.gradle/caches/modules-2/files-2.1 -name '*.jar' | tr '\n' ':' > cp.txt; wc -c cp.txt; mkdir -p test1 && cat > test1/T.java <<'EOF'
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import java.util.function.Function;
-
-public record T(int minY, int height) {
-   public static final Codec<T> CODEC = RecordCodecBuilder.create(
-         i -> i.group(
-               Codec.intRange(-64, 320).fieldOf("min_y").forGetter((T n) -> n.minY()),
-               Codec.intRange(0, 384).fieldOf("height").forGetter((T n) -> n.height())
-            )
-            .apply(i, T::new)
-      )
-      .comapFlatMap(T::guardY, Function.identity());
-
-   private static DataResult<T> guardY(final T t) {
-       return DataResult.success(t);
-   }
-}
-EOF
-CP=$(cat cp.txt); /usr/lib/jvm/temurin-21-jdk-amd64/bin/javac -cp "$CP" -d test1/out test1/T.java 2>&1 | head -30; echo "=== JDK25 ==="; /usr/lib/jvm/temurin-25-jdk-amd64/bin/javac -cp "$CP" -d test1/out25 test1/T.java 2>&1 | head -20
-26511 cp.txt
-Note: Annotation processing is enabled because one or more processors were found
-  on the class path. A future release of javac may disable annotation processing
-  unless at least one processor is specified by name (-processor), or a search
-  path is specified (--processor-path, --processor-module-path), or annotation
-  processing is enabled explicitly (-proc:only, -proc:full).
-  Use -Xlint:-options to suppress this message.
-  Use -proc:none to disable annotation processing.
-test1/T.java:8: error: no suitable method found for group(RecordCodecBuilder<T,Integer>,RecordCodecBuilder<T,Integer>)
-         i -> i.group(
-               ^
-    method Kind1.<T1#1>group(App<Mu<Object>,T1#1>) is not applicable
-      (cannot infer type-variable(s) T1#1
-        (actual and formal argument lists differ in length))
-    method Kind1.<T1#2,T2#1>group(App<Mu<Object>,T1#2>,App<Mu<Object>,T2#1>) is not applicable
-      (inference variable O has incompatible equality constraints T,Object)
-    method Kind1.<T1#3,T2#2,T3#1>group(App<Mu<Object>,T1#3>,App<Mu<Object>,T2#2>,App<Mu<Object>,T3#1>) is not applicable
-      (cannot infer type-variable(s) T1#3,T2#2,T3#1
-        (actual and formal argument lists differ in length))
-    method Kind1.<T1#4,T2#3,T3#2,T4#1>group(App<Mu<Object>,T1#4>,App<Mu<Object>,T2#3>,App<Mu<Object>,T3#2>,App<Mu<Object>,T4#1>) is not applicable
-      (cannot infer type-variable(s) T1#4,T2#3,T3#2,T4#1
-        (actual and formal argument lists differ in length))
-    method Kind1.<T1#5,T2#4,T3#3,T4#2,T5#1>group(App<Mu<Object>,T1#5>,App<Mu<Object>,T2#4>,App<Mu<Object>,T3#3>,App<Mu<Object>,T4#2>,App<Mu<Object>,T5#1>) is not applicable
-      (cannot infer type-variable(s) T1#5,T2#4,T3#3,T4#2,T5#1
-        (actual and formal argument lists differ in length))
-    method Kind1.<T1#6,T2#5,T3#4,T4#3,T5#2,T6#1>group(App<Mu<Object>,T1#6>,App<Mu<Object>,T2#5>,App<Mu<Object>,T3#4>,App<Mu<Object>,T4#3>,App<Mu<Object>,T5#2>,App<Mu<Object>,T6#1>) is not applicable
-      (cannot infer type-variable(s) T1#6,T2#5,T3#4,T4#3,T5#2,T6#1
-        (actual and formal argument lists differ in length))
-    method Kind1.<T1#7,T2#6,T3#5,T4#4,T5#3,T6#2,T7#1>group(App<Mu<Object>,T1#7>,App<Mu<Object>,T2#6>,App<Mu<Object>,T3#5>,App<Mu<Object>,T4#4>,App<Mu<Object>,T5#3>,App<Mu<Object>,T6#2>,App<Mu<Object>,T7#1>) is not applicable
-      (cannot infer type-variable(s) T1#7,T2#6,T3#5,T4#4,T5#3,T6#2,T7#1
-        (actual and formal argument lists differ in length))
-=== JDK25 ===
-test1/T.java:8: error: no suitable method found for group(RecordCodecBuilder<T,Integer>,RecordCodecBuilder<T,Integer>)
-         i -> i.group(
-               ^
-    method Kind1.<T1#1>group(App<Mu<Object>,T1#1>) is not applicable
-      (cannot infer type-variable(s) T1#1
-        (actual and formal argument lists differ in length))
-    method Kind1.<T1#2,T2#1>group(App<Mu<Object>,T1#2>,App<Mu<Object>,T2#1>) is not applicable
-      (inference variable O has incompatible equality constraints T,Object)
-    method Kind1.<T1#3,T2#2,T3#1>group(App<Mu<Object>,T1#3>,App<Mu<Object>,T2#2>,App<Mu<Object>,T3#1>) is not applicable
-      (cannot infer type-variable(s) T1#3,T2#2,T3#1
-        (actual and formal argument lists differ in length))
-    method Kind1.<T1#4,T2#3,T3#2,T4#1>group(App<Mu<Object>,T1#4>,App<Mu<Object>,T2#3>,App<Mu<Object>,T3#2>,App<Mu<Object>,T4#1>) is not applicable
-      (cannot infer type-variable(s) T1#4,T2#3,T3#2,T4#1
-        (actual and formal argument lists differ in length))
-    method Kind1.<T1#5,T2#4,T3#3,T4#2,T5#1>group(App<Mu<Object>,T1#5>,App<Mu<Object>,T2#4>,App<Mu<Object>,T3#3>,App<Mu<Object>,T4#2>,App<Mu<Object>,T5#1>) is not applicable
-      (cannot infer type-variable(s) T1#5,T2#4,T3#3,T4#2,T5#1
-        (actual and formal argument lists differ in length))
-    method Kind1.<T1#6,T2#5,T3#4,T4#3,T5#2,T6#1>group(App<Mu<Object>,T1#6>,App<Mu<Object>,T2#5>,App<Mu<Object>,T3#4>,App<Mu<Object>,T4#3>,App<Mu<Object>,T5#2>,App<Mu<Object>,T6#1>) is not applicable
-      (cannot infer type-variable(s) T1#6,T2#5,T3#4,T4#3,T5#2,T6#1
-        (actual and formal argument lists differ in length))
-[0m
-The pattern fails with both JDKs, so it's the library. Let me inspect `Products.P2.apply` and test with a known-good DataFixerUpper.
-[0m$ [0mcd /tmp/opencode/dfufull && /usr/lib/jvm/temurin-21-jdk-amd64/bin/javap -p 'com/mojang/datafixers/Products$P2.class' | grep -iE "apply|class"; echo "=== P1 ==="; /usr/lib/jvm/temurin-21-jdk-amd64/bin/javap -p 'com/mojang/datafixers/Products$P1.class' | grep -iE "apply|class"; echo "=== Kind1 Signature ==="; /usr/lib/jvm/temurin-21-jdk-amd64/bin/javap -v 'com/mojang/datafixers/kinds/Kind1.class' 2>/dev/null | grep -A3 "Signature" | head -20
-public final class com.mojang.datafixers.Products$P2<F extends com.mojang.datafixers.kinds.K1, T1, T2> extends java.lang.Record {
-  public <R> com.mojang.datafixers.kinds.App<F, R> apply(com.mojang.datafixers.kinds.Applicative<F, ?>, java.util.function.BiFunction<T1, T2, R>);
-  public <R> com.mojang.datafixers.kinds.App<F, R> apply(com.mojang.datafixers.kinds.Applicative<F, ?>, com.mojang.datafixers.kinds.App<F, java.util.function.BiFunction<T1, T2, R>>);
-=== P1 ===
-public final class com.mojang.datafixers.Products$P1<F extends com.mojang.datafixers.kinds.K1, T1> extends java.lang.Record {
-  public <R> com.mojang.datafixers.kinds.App<F, R> apply(com.mojang.datafixers.kinds.Applicative<F, ?>, java.util.function.Function<T1, R>);
-  public <R> com.mojang.datafixers.kinds.App<F, R> apply(com.mojang.datafixers.kinds.Applicative<F, ?>, com.mojang.datafixers.kinds.App<F, java.util.function.Function<T1, R>>);
-=== Kind1 Signature ===
-   #97 = Utf8               Signature
-   #98 = Utf8               <F::Lcom/mojang/datafixers/kinds/K1;Proof::Lcom/mojang/datafixers/kinds/Kind1$Mu;>(Lcom/mojang/datafixers/kinds/App<TProof;TF;>;)Lcom/mojang/datafixers/kinds/Kind1<TF;TProof;>;
-   #99 = Utf8               group
-  #100 = Utf8               (Lcom/mojang/datafixers/kinds/App;)Lcom/mojang/datafixers/Products$P1;
---
-        Start  Length  Slot  Name   Signature
-            0       5     0 proofBox   Lcom/mojang/datafixers/kinds/App;
-      LocalVariableTypeTable:
-        Start  Length  Slot  Name   Signature
-            0       5     0 proofBox   Lcom/mojang/datafixers/kinds/App<TProof;TF;>;
-    Signature: #98                          // <F::Lcom/mojang/datafixers/kinds/K1;Proof::Lcom/mojang/datafixers/kinds/Kind1$Mu;>(Lcom/mojang/datafixers/kinds/App<TProof;TF;>;)Lcom/mojang/datafixers/kinds/Kind1<TF;TProof;>;
-
-  public default <T1 extends java.lang.Object> com.mojang.datafixers.Products$P1<F, T1> group(com.mojang.datafixers.kinds.App<F, T1>);
-    descriptor: (Lcom/mojang/datafixers/kinds/App;)Lcom/mojang/datafixers/Products$P1;
---
-        Start  Length  Slot  Name   Signature
-            0       9     0  this   Lcom/mojang/datafixers/kinds/Kind1;
-            0       9     1    t1   Lcom/mojang/datafixers/kinds/App;
-      LocalVariableTypeTable:
-        Start  Length  Slot  Name   Signature
-[0m
-[0m$ [0mcd /tmp/opencode && CP=$(cat cp.txt); cat > test1/T2.java <<'EOF'
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-
-public record T2(int minY, int height) {
-   public static final Codec<T2> CODEC = RecordCodecBuilder.<T2>create(
-         i -> i.group(
-               Codec.intRange(-64, 320).fieldOf("min_y").forGetter((T2 n) -> n.minY()),
-               Codec.intRange(0, 384).fieldOf("height").forGetter((T2 n) -> n.height())
-            )
-            .apply(i, T2::new)
-      );
-}
-EOF
-/usr/lib/jvm/temurin-21-jdk-amd64/bin/javac -proc:none -cp "$CP" -d test1/out2 test1/T2.java 2>&1 | head -20; echo "EXIT=$?"
-EXIT=0
-[0m
-[0m$ [0mcd /tmp/opencode && timeout 30 curl -s https://repo1.maven.org/maven2/com/mojang/datafixerupper/maven-metadata.xml | head -40
-<html>
-<head><title>404 Not Found</title></head>
-<body bgcolor="white">
-<center><h1>404 Not Found</h1></center>
-<hr><center>nginx</center>
-</body>
-</html>
-<!-- a padding to disable MSIE and Chrome friendly error page -->
-<!-- a padding to disable MSIE and Chrome friendly error page -->
-<!-- a padding to disable MSIE and Chrome friendly error page -->
-<!-- a padding to disable MSIE and Chrome friendly error page -->
-<!-- a padding to disable MSIE and Chrome friendly error page -->
-<!-- a padding to disable MSIE and Chrome friendly error page -->
-[0m
-[0m$ [0mcd /tmp/opencode && cp.txt >/dev/null; CP=$(cat cp.txt); cat > test1/T3.java <<'EOF'
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import java.util.function.Function;
-
-public record T3(int minY, int height) {
-   public static final Codec<T3> CODEC = RecordCodecBuilder.create(
-         i -> i.group(
-               Codec.intRange(-64, 320).fieldOf("min_y").forGetter((T3 n) -> n.minY()),
-               Codec.intRange(0, 384).fieldOf("height").forGetter((T3 n) -> n.height())
-            ).apply(i, T3::new)
-      );
-   private static DataResult<T3> guardY(final T3 t) { return DataResult.success(t); }
-}
-EOF
-/usr/lib/jvm/temurin-21-jdk-amd64/bin/javac -proc:none -cp "$CP" -d test1/out3 test1/T3.java 2>&1 | head -6; echo "EXIT no-comap=$?"
-/bin/bash: line 1: cp.txt: command not found
-EXIT no-comap=0
-[0m
-[0m$ [0mfind /home/runner/work/mcJava/mcJava/android/app/build -name 'java-compiler-args.txt' 2>/dev/null; echo "---"; find /home/runner/work/mcJava/mcJava/android -name '*.txt' -path '*compile*' 2>/dev/null | head
----
-[0m
-T3 without `comapFlatMap` compiles, T with it fails — a type-inference propagation issue. Let me get the real total error count using the compiler args file with a higher error limit.
-[0m$ [0mcd /tmp/opencode && CP=$(cat cp.txt); cat > test1/T4.java <<'EOF'
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import java.util.function.Function;
-
-public record T4(int minY, int height) {
-   public static final Codec<T4> CODEC = RecordCodecBuilder.<T4>create(
-         i -> i.group(
-               Codec.intRange(-64, 320).fieldOf("min_y").forGetter((T4 n) -> n.minY()),
-               Codec.intRange(0, 384).fieldOf("height").forGetter((T4 n) -> n.height())
-            ).apply(i, T4::new)
-      ).comapFlatMap(T4::guardY, Function.identity());
-   private static DataResult<T4> guardY(final T4 t) { return DataResult.success(t); }
-}
-EOF
-/usr/lib/jvm/temurin-21-jdk-amd64/bin/javac -proc:none -cp "$CP" -d test1/out4 test1/T4.java 2>&1 | head -6; echo "EXIT witness+comap=$?"
-EXIT witness+comap=0
-[0m
-[0m$ [0mfind /home/runner/work/mcJava/mcJava/android/app/build/tmp -type f 2>/dev/null | head -20; echo "=== args files ==="; find /home/runner/work/mcJava/mcJava/android/app/build/tmp -name '*args*' 2>/dev/null
-=== args files ===
-[0m
-Let me examine the AGP-generated compiler args and the JDK image to understand the `javax.sound.sampled` failure.
-[0m$ [0mfind /home/runner/.gradle/caches -type d -name 'jdkImage' 2>/dev/null | head; echo "=== transform dirs ==="; ls /home/runner/.gradle/caches/9.1.0/transforms/ 2>/dev/null | head; find /home/runner/.gradle/caches/9.1.0/transforms -maxdepth 3 -name 'modules' -path '*jdkImage*' 2>/dev/null | head
-/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/jdkImage
-=== transform dirs ===
-0048501b4f122908a87a1e50da09f52d
-009e63cf7d6d2c8ff775a548312b2b52
-0177dfc26f562fec6bbe0f6db346a2a6
-0195b83ce1d0f8710650954e7bb822e0
-0197162b13c2f28068893e5473b021b6
-01ad635d5c55e5d58660048a1e1785f4
-01b1a5e730bdfa1167828b4ef7a77c18
-021cbcf8feaba1dcedf5453607558e98
-0220b23aba31bc055dab1a26f8502c78
-022d3659830bcd2059f89c2ac256725d
-[0m
-[0m$ [0mJDKIMG=/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/jdkImage; ls -la "$JDKIMG" 2>/dev/null; echo "=== modules ==="; ls "$JDKIMG" 2>/dev/null; find "$JDKIMG" -maxdepth 2 -name 'modules' 2>/dev/null; echo "=== release ==="; find "$JDKIMG" -maxdepth 2 -name 'release' -exec cat {} \; 2>/dev/null | head
-total 16
-drwxr-xr-x 3 runner runner 4096 Oct  9 14:58 .
-drwxr-xr-x 3 runner runner 4096 Oct  9 14:58 ..
-drwxr-xr-x 2 runner runner 4096 Oct  9 14:58 lib
--rw-r--r-- 1 runner runner   38 Oct  9 14:58 release
-=== modules ===
-lib
-release
-/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/jdkImage/lib/modules
-=== release ===
-JAVA_VERSION="21"
-MODULES="java.base"
-[0m
-[0m$ [0mfind /home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd -type f 2>/dev/null | head -30; find /home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd -name 'modules' 2>/dev/null
-/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/metadata.bin
-/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/jdkImage/lib/jrt-fs.jar
-/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/jdkImage/lib/modules
-/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/jdkImage/release
-/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/results.bin
-/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/jdkImage/lib/modules
-[0m
-[0m→ [0mRead android/app/src/main/java/javax/sound/sampled/AudioFormat.java
-[0m
-[0m$ [0mcd /home/runner/work/mcJava/mcJava/android/app/src/main/java && grep -rn "javax.sound.sampled" --include=*.java . | grep -v "^./javax/sound" | head -40
-./com/mojang/blaze3d/audio/SoundBuffer.java:5:import javax.sound.sampled.AudioFormat;
-./com/mojang/blaze3d/audio/Channel.java:7:import javax.sound.sampled.AudioFormat;
-./com/mojang/blaze3d/audio/OpenAlUtil.java:4:import javax.sound.sampled.AudioFormat;
-./com/mojang/blaze3d/audio/OpenAlUtil.java:5:import javax.sound.sampled.AudioFormat.Encoding;
-./net/minecraft/client/sounds/AudioStream.java:6:import javax.sound.sampled.AudioFormat;
-./net/minecraft/client/sounds/JOrbisAudioStream.java:14:import javax.sound.sampled.AudioFormat;
-./net/minecraft/client/sounds/SoundBufferLibrary.java:12:import javax.sound.sampled.AudioFormat;
-./net/minecraft/client/sounds/LoopingAudioStream.java:8:import javax.sound.sampled.AudioFormat;
-[0m
-[0m$ [0mcd /home/runner/work/mcJava/mcJava && git log --oneline -- android/app/build.gradle; echo "===== issue#6 diff ====="; git show ad4fa95 -- android/app/build.gradle; echo "===== issue#8 diff ====="; git show fc41fec -- android/app/build.gradle
-fc41fec Work on issue #8
-ad4fa95 Fix issue #6
-0a02054 Upgrade Java version from 21 to 25 in build.gradle
-d55726f Fix issue #5
-8913708 Update CI to print full deduped errors; align slf4j version
-a692fad Fix removed java.* APIs and LwJGL shim compile errors
-0d42085 Compile the 26.3 tree with JDK 21 (record patterns / pattern-matching switch)
-eeefd7e Exclude log4j plugin metadata and native-image from APK merge
-f1920dc Exclude META-INF/io.netty.versions.properties from APK merge
-c8718d4 Exclude META-INF/INDEX.LIST from APK resource merge
-20a697f Add Mojang maven repo; drop bogus jogg dep (jogg is inside jorbis 0.0.17)
-1086ce6 Move coreLibraryDesugaring into dependencies block (fix #2 build)
-a8fe1e9 Minecraft Java 26.3 Android port scaffold
-===== issue#6 diff =====
-commit ad4fa95ac933e2d0434d18e480f726e9529e2d95
-Author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-Date:   Fri Oct 9 13:04:09 2026 +0000
-
-    Fix issue #6
-
-diff --git a/android/app/build.gradle b/android/app/build.gradle
-index 7a679fb..0c442f3 100644
---- a/android/app/build.gradle
-+++ b/android/app/build.gradle
-@@ -5,6 +5,12 @@ plugins {
- def minecraftVersion = "26.3"
- def loaderVersion = "0.19.5"
- 
-+java {
-+    toolchain {
-+        languageVersion = JavaLanguageVersion.of(21)
-+    }
-+}
-+
- android {
-     namespace 'pro.minecraft'
-     compileSdk 35
-@@ -20,15 +26,9 @@ android {
- 
-     compileOptions {
-         // The 26.3 source tree uses record patterns and pattern-matching switch
--        // (sealed Uniform instances, HoverEvent ShowText, ...) -> needs JDK 25.
--        sourceCompatibility JavaVersion.VERSION_25
--        targetCompatibility JavaVersion.VERSION_25
--    }
--
--    tasks.withType(JavaCompile).configureEach {
--        // Use forked javac to avoid compiler API issues
--        options.fork = true
--        options.forkOptions.executable = '/usr/lib/jvm/temurin-25-jdk-amd64/bin/javac'
-+        // (sealed Uniform instances, HoverEvent ShowText, ...) -> needs JDK 21+.
-+        sourceCompatibility JavaVersion.VERSION_21
-+        targetCompatibility JavaVersion.VERSION_21
-     }
- 
-     buildTypes {
-@@ -71,6 +71,33 @@ android {
-         checkReleaseBuilds false
-     }
- 
-+    task compileJavaDesktopStub {
-+        doLast {
-+            def stubDir = file('build/generated/stub/java.desktop')
-+            def srcFile = file('src/main/java/javax/sound/sampled/AudioFormat.java')
-+            stubDir.mkdirs()
-+            copy {
-+                from srcFile.parentFile
-+                into stubDir
-+                include 'AudioFormat.java'
-+            }
-+            def proc = ['/usr/lib/jvm/temurin-21-jdk-amd64/bin/javac', '--patch-module', 'java.desktop=' + stubDir.absolutePath, '-d', stubDir.absolutePath, stubDir.absolutePath + '/javax/sound/sampled/AudioFormat.java'].execute()
-+            proc.waitFor()
-+            if (proc.exitValue() != 0) {
-+                throw new GradleException('Failed to compile java.desktop stub: ' + proc.text)
-+            }
-+        }
-+    }
-+
-+    tasks.withType(JavaCompile).configureEach {
-+        dependsOn compileJavaDesktopStub
-+        options.compilerArgs << "-Xbootclasspath/p:/usr/lib/jvm/temurin-21-jdk-amd64/lib/modules"
-+        options.compilerArgs.remove("--system")
-+        options.compilerArgs.remove("/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/jdkImage")
-+        options.compilerArgs << "--patch-module"
-+        options.compilerArgs << "java.desktop=/home/runner/work/mcJava/mcJava/android/app/build/generated/stub/java.desktop"
-+    }
-+
-     sourceSets {
-         main {
-             java {
-@@ -92,6 +119,8 @@ android {
-                 exclude 'net/minecraft/server/gui/**'
-                 // javax.management JMX registry (JVM-only).
-                 exclude 'net/minecraft/util/monitoring/jmx/**'
-+                // javax.sound.sampled stub provided via --patch-module
-+                exclude 'javax/sound/sampled/**'
-             }
-         }
-     }
-===== issue#8 diff =====
-commit fc41fecb831276d2d207402d1c7ec46ee8862865
-Author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-Date:   Fri Oct 9 14:48:39 2026 +0000
-
-    Work on issue #8
-
-diff --git a/android/app/build.gradle b/android/app/build.gradle
-index 0c442f3..05e1d22 100644
---- a/android/app/build.gradle
-+++ b/android/app/build.gradle
-@@ -77,9 +77,8 @@ android {
-             def srcFile = file('src/main/java/javax/sound/sampled/AudioFormat.java')
-             stubDir.mkdirs()
-             copy {
--                from srcFile.parentFile
--                into stubDir
--                include 'AudioFormat.java'
-+                from srcFile
-+                into new File(stubDir, 'javax/sound/sampled')
-             }
-             def proc = ['/usr/lib/jvm/temurin-21-jdk-amd64/bin/javac', '--patch-module', 'java.desktop=' + stubDir.absolutePath, '-d', stubDir.absolutePath, stubDir.absolutePath + '/javax/sound/sampled/AudioFormat.java'].execute()
-             proc.waitFor()
-[0m
-Let me review the build.gradle history to understand prior attempts at the module hack.
-Now I'll fix the `javax.sound.sampled` approach (compile the stub as a normal source) and raise the error limit to see the full scope.
-[0m← [0mEdit android/app/build.gradle
-Index: /home/runner/work/mcJava/mcJava/android/app/build.gradle
-===================================================================
---- /home/runner/work/mcJava/mcJava/android/app/build.gradle
-+++ /home/runner/work/mcJava/mcJava/android/app/build.gradle
-@@ -70,32 +70,12 @@
-     abortOnError false
-     checkReleaseBuilds false
- }
- 
--task compileJavaDesktopStub {
--    doLast {
--        def stubDir = file('build/generated/stub/java.desktop')
--        def srcFile = file('src/main/java/javax/sound/sampled/AudioFormat.java')
--        stubDir.mkdirs()
--        copy {
--            from srcFile
--            into new File(stubDir, 'javax/sound/sampled')
--        }
--        def proc = ['/usr/lib/jvm/temurin-21-jdk-amd64/bin/javac', '--patch-module', 'java.desktop=' + stubDir.absolutePath, '-d', stubDir.absolutePath, stubDir.absolutePath + '/javax/sound/sampled/AudioFormat.java'].execute()
--        proc.waitFor()
--        if (proc.exitValue() != 0) {
--            throw new GradleException('Failed to compile java.desktop stub: ' + proc.text)
--        }
--    }
--}
--
- tasks.withType(JavaCompile).configureEach {
--    dependsOn compileJavaDesktopStub
--    options.compilerArgs << "-Xbootclasspath/p:/usr/lib/jvm/temurin-21-jdk-amd64/lib/modules"
--    options.compilerArgs.remove("--system")
--    options.compilerArgs.remove("/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/jdkImage")
--    options.compilerArgs << "--patch-module"
--    options.compilerArgs << "java.desktop=/home/runner/work/mcJava/mcJava/android/app/build/generated/stub/java.desktop"
-+    // Keep compiling after the default 100-error cap so the whole error surface
-+    // is visible in a single pass while porting the tree.
-+    options.compilerArgs << "-Xmaxerrs" << "100000"
- }
- 
- sourceSets {
-     main {
-
-[0m
-[0m← [0mEdit android/app/build.gradle
-Index: /home/runner/work/mcJava/mcJava/android/app/build.gradle
-===================================================================
---- /home/runner/work/mcJava/mcJava/android/app/build.gradle
-+++ /home/runner/work/mcJava/mcJava/android/app/build.gradle
-@@ -97,10 +97,8 @@
-                 // javax.swing-based dedicated server admin GUI (desktop-only).
-                 exclude 'net/minecraft/server/gui/**'
-                 // javax.management JMX registry (JVM-only).
-                 exclude 'net/minecraft/util/monitoring/jmx/**'
--                // javax.sound.sampled stub provided via --patch-module
--                exclude 'javax/sound/sampled/**'
-             }
-         }
-     }
- }
-
-[0m
-[0m$ [0mJAVA_HOME=/usr/lib/jvm/temurin-21-jdk-amd64 ./gradlew :app:compileDebugJavaWithJavac --no-daemon 2>&1 | tee build2.log | tail -20
-FAILURE: Build failed with an exception.
-
-* What went wrong:
-Execution failed for task ':app:compileDebugJavaWithJavac'.
-> Compilation failed; see the compiler output below.
-  Note: Recompile with -Xlint:unchecked for details.
-  Note: Some input files use unchecked or unsafe operations.
-
-
-* Try:
-> Run with --scan to generate a Build Scan (Powered by Develocity).
-
-Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
-
-You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-
-For more on this, please refer to https://docs.gradle.org/9.1.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-
-BUILD FAILED in 22s
-16 actionable tasks: 1 executed, 15 up-to-date
-[0m
-[0m$ [0mcd /home/runner/work/mcJava/mcJava/android && echo "error lines: $(grep -cE ': error:' build2.log)"; echo "=== files with errors ==="; grep -oE '/app/src/main/java/[^:]+\.java' build2.log | sed 's#.*/java/##' | sort | uniq -c | sort -rn | wc -l; echo "=== error messages top ==="; grep -E ': error:' build2.log | sed -E 's#.*: error: ##' | sort | uniq -c | sort -rn | head -40
-error lines: 0
-=== files with errors ===
-0
-=== error messages top ===
-[0m
-[0m$ [0mcd /home/runner/work/mcJava/mcJava/android && grep -in "error" build2.log | head -20; echo "=== size ==="; wc -l build2.log; echo "=== tail 60 ==="; tail -60 build2.log
-=== size ===
-56 build2.log
-=== tail 60 ===
-To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.1.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
-Daemon will be stopped at the end of the build 
-
-> Configure project :app
-WARNING: DSL element 'dexOptions' is obsolete and should be removed.
-It will be removed in version 8.0 of the Android Gradle plugin.
+--- build2.log tail
 Using it has no effect, and the AndroidGradle plugin optimizes dexing automatically.
 
 > Task :app:preBuild UP-TO-DATE
@@ -1733,34 +335,159 @@ For more on this, please refer to https://docs.gradle.org/9.1.0/userguide/comman
 BUILD FAILED in 22s
 16 actionable tasks: 1 executed, 15 up-to-date
 [0m
-The compile now crashes on a missing `java.lang.MatchException` in AGP's jdkImage. Let me inspect that image and understand the `--system` flag.
-[0m$ [0mcd /home/runner/work/mcJava/mcJava/android && find build -name 'java-compiler-args.txt' 2>/dev/null; find app/build -name 'java-compiler-args.txt' 2>/dev/null; echo "---"; ls app/build/tmp/compileDebugJavaWithJavac/ 2>/dev/null; cat app/build/tmp/compileDebugJavaWithJavac/java-compiler-args.txt 2>/dev/null | head -50
----
-[0m
-[0m$ [0mJDKIMG=/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/jdkImage; /usr/lib/jvm/temurin-21-jdk-amd64/bin/jimage list "$JDKIMG/lib/modules" 2>/dev/null | grep -c .; echo "--- MatchException? ---"; /usr/lib/jvm/temurin-21-jdk-amd64/bin/jimage list "$JDKIMG/lib/modules" 2>/dev/null | grep -i "MatchException"; echo "--- modules present ---"; /usr/lib/jvm/temurin-21-jdk-amd64/bin/jimage list "$JDKIMG/lib/modules" 2>/dev/null | sed 's#/.*##' | sort -u | head
-1746
---- MatchException? ---
-    java/lang/annotation/AnnotationTypeMismatchException.class
-    java/nio/file/ProviderMismatchException.class
-    java/util/FormatFlagsConversionMismatchException.class
-    java/util/InputMismatchException.class
---- modules present ---
+[0m$ [0mcat android/gradle.properties; echo "---settings"; cat android/settings.gradle; echo "---root .opencode.jsonc"; cat .opencode.jsonc; echo "---auto_fix.sh"; cat auto_fix.sh; echo "---monitor"; cat monitor_and_fix.sh
+org.gradle.jvmargs=-Xmx4g -Dfile.encoding=UTF-8
+android.useAndroidX=true
+android.nonTransitiveRClass=true
+android.enableJetifier=true
+org.gradle.parallel=true---settings
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
 
-    META-INF
-    NOTICES
-    android
-    dalvik
-    java
-    javax
-    module-info.class
-    ojluni
-    org
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        // Mojang's own Maven repo hosting com.mojang artifacts (authlib, brigadier,
+        // datafixerupper, blocklist, logging).
+        maven { url = uri('https://libraries.minecraft.net/') }
+    }
+}
+
+rootProject.name = "minecraft"
+include ':app'---root .opencode.jsonc
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "opencode/big-pickle",
+  "mode": "build"
+}
+---auto_fix.sh
+#!/bin/bash
+set -e
+
+cd /data/data/com.termux/files/home/minec
+
+echo "=== Auto Fix Loop Started ==="
+echo "Timestamp: $(date)"
+
+# Function to check latest run
+check_latest_run() {
+  gh run list --limit 1 --json databaseId,status,conclusion,displayTitle,url 2>/dev/null
+}
+
+# Function to get failed logs
+get_failed_logs() {
+  local run_id=$1
+  gh run view "$run_id" --log-failed > /tmp/failed_logs.txt 2>&1
+  echo "Logs saved to /tmp/failed_logs.txt"
+}
+
+# Main loop
+MAX_ITERATIONS=20
+for i in $(seq 1 $MAX_ITERATIONS); do
+  echo ""
+  echo "=== Iteration $i/$MAX_ITERATIONS ==="
+  
+  # Check latest run
+  LATEST=$(gh run list --limit 1 --json databaseId,status,conclusion 2>/dev/null)
+  RUN_ID=$(echo "$LATEST" | jq -r '.[0].databaseId' 2>/dev/null || echo "")
+  STATUS=$(echo "$LATEST" | jq -r '.[0].status' 2>/dev/null || echo "")
+  CONCLUSION=$(echo "$LATEST" | jq -r '.[0].conclusion' 2>/dev/null || echo "")
+  
+  echo "Run ID: $RUN_ID | Status: $STATUS | Conclusion: $CONCLUSION"
+  
+  if [ "$STATUS" = "in_progress" ]; then
+    echo "Build in progress, waiting..."
+    sleep 120
+    continue
+  fi
+  
+  if [ "$CONCLUSION" = "success" ]; then
+    echo "✅ Build succeeded! All done."
+    exit 0
+  fi
+  
+  if [ "$CONCLUSION" = "failure" ] && [ -n "$RUN_ID" ]; then
+    echo "❌ Build failed. Analyzing and fixing..."
+    get_failed_logs "$RUN_ID"
+    
+    # Create prompt for opencode
+    cat > /tmp/fix_prompt.txt << 'PROMPT'
+You are fixing compilation errors in mcJava (Minecraft Java port to Android).
+
+Task: Fix the compilation errors shown in the failed logs.
+
+Steps:
+1. Read /tmp/failed_logs.txt to understand the errors
+2. Identify the root cause - focus on the earliest errors
+3. Fix the code in android/app/src/main/java
+4. Make minimal, targeted fixes
+5. Commit and push with a descriptive message
+
+Use gh CLI if needed to understand context. Fix errors until they are resolved.
+PROMPT
+    
+    opencode --model opencode/big-pickle -p "$(cat /tmp/fix_prompt.txt)" --yes
+    echo "Fixes committed and pushed. Waiting for next build..."
+    sleep 60
+    continue
+  fi
+  
+  echo "No recent build or unknown state. Waiting..."
+  sleep 60
+done
+
+echo "Max iterations reached"
+---monitor
+#!/bin/bash
+cd /data/data/com.termux/files/home/minec
+
+while true; do
+  # Check latest workflow run
+  LATEST=$(gh run list --limit 1 --json databaseId,status,conclusion,workflowName,headSha 2>/dev/null)
+  RUN_ID=$(echo "$LATEST" | jq -r '.[0].databaseId // empty')
+  STATUS=$(echo "$LATEST" | jq -r '.[0].status // empty')
+  CONCLUSION=$(echo "$LATEST" | jq -r '.[0].conclusion // empty')
+  
+  echo "$(date): Run=$RUN_ID Status=$STATUS Conclusion=$CONCLUSION"
+  
+  if [ "$STATUS" = "completed" ] && [ "$CONCLUSION" = "failure" ]; then
+    echo "Build failed. Triggering opencode fix..."
+    gh run view "$RUN_ID" --log-failed > /tmp/failed_logs.txt 2>&1
+    
+    opencode --model opencode/big-pickle -p "
+      Fix mcJava Android build errors.
+      
+      1. Read /tmp/failed_logs.txt for compilation errors
+      2. Find and fix the errors in android/app/src/main/java
+      3. Commit with message 'fix: auto-fix build errors'
+      4. Push to main
+    " --yes
+  elif [ "$STATUS" = "completed" ] && [ "$CONCLUSION" = "success" ]; then
+    echo "Build successful!"
+    break
+  fi
+  
+  sleep 60
+done
 [0m
-[93m[1m! [0mpermission requested: external_directory (/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/*); auto-rejecting
-[0m✗ [0mcat /home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/metadata.bin 2>/dev/null | strings | grep -iE "android.jar|platform|jdk|core" | head -20; echo "=== transform sibling dirs ==="; ls -la /home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/ failed
-[91m[1mError: [0mThe user rejected permission to use this specific tool call.
-[0m
-[0m$ [0mls $ANDROID_SDK_ROOT/platforms 2>/dev/null; echo "--- android.jar MatchException ---"; for p in $ANDROID_SDK_ROOT/platforms/*/android.jar; do echo "$p"; unzip -l "$p" 2>/dev/null | grep -i "MatchException\|sound/sampled" | head; done
+[0m$ [0mcat javac.20261009_122832.args; echo "---app args"; cat android/app/javac.20261009_122249.args; echo "---"; ls /usr/local/lib/android/sdk/platforms/ 2>/dev/null; echo "--- build-tools"; ls /usr/local/lib/android/sdk/build-tools/ 2>/dev/null; echo "--- ndk"; ls /usr/local/lib/android/sdk/ndk/ 2>/dev/null
+-source
+21
+-target
+21
+--system
+/home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/jdkImage
+/tmp/test_match.java
+---app args
+@/home/runner/work/mcJava/mcJava/android/app/build/tmp/compileDebugJavaWithJavac/java-compiler-args.txt
+---
 android-34
 android-34-ext10
 android-34-ext11
@@ -1779,165 +506,23 @@ android-37.2
 android-37.2-beta1
 android-37.2-beta2
 android-37.2-beta3
---- android.jar MatchException ---
-/usr/local/lib/android/sdk/platforms/android-34-ext10/android.jar
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-      831  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-34-ext11/android.jar
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-      831  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-34-ext12/android.jar
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-      831  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-34-ext8/android.jar
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-      831  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-34/android.jar
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-      831  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-35-ext14/android.jar
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-      831  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-35-ext15/android.jar
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-      831  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-35/android.jar
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-      831  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-36-ext18/android.jar
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-      811  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      479  2008-01-01 00:00   java/lang/MatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-36-ext19/android.jar
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-      811  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      479  2008-01-01 00:00   java/lang/MatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-36.1/android.jar
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-      811  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      479  2008-01-01 00:00   java/lang/MatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-36/android.jar
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-      811  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      479  2008-01-01 00:00   java/lang/MatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-37.0/android.jar
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-     1105  2008-01-01 00:00   android/net/ssl/EchConfigMismatchException.class
-      811  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      479  2008-01-01 00:00   java/lang/MatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-37.1/android.jar
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-     1105  2008-01-01 00:00   android/net/ssl/EchConfigMismatchException.class
-      811  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      479  2008-01-01 00:00   java/lang/MatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-37.2-beta1/android.jar
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-     1105  2008-01-01 00:00   android/net/ssl/EchConfigMismatchException.class
-      931  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      479  2008-01-01 00:00   java/lang/MatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-37.2-beta2/android.jar
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-     1105  2008-01-01 00:00   android/net/ssl/EchConfigMismatchException.class
-      931  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      479  2008-01-01 00:00   java/lang/MatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-37.2-beta3/android.jar
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-     1105  2008-01-01 00:00   android/net/ssl/EchConfigMismatchException.class
-      931  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      479  2008-01-01 00:00   java/lang/MatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
-/usr/local/lib/android/sdk/platforms/android-37.2/android.jar
-      584  2008-01-01 00:00   android/database/sqlite/SQLiteDatatypeMismatchException.class
-     1105  2008-01-01 00:00   android/net/ssl/EchConfigMismatchException.class
-      931  2008-01-01 00:00   android/security/identity/SessionTranscriptMismatchException.class
-     1026  2008-01-01 00:00   android/view/inspector/PropertyReader$PropertyTypeMismatchException.class
-      479  2008-01-01 00:00   java/lang/MatchException.class
-      752  2008-01-01 00:00   java/lang/annotation/AnnotationTypeMismatchException.class
-      539  2008-01-01 00:00   java/nio/file/ProviderMismatchException.class
-      806  2008-01-01 00:00   java/util/FormatFlagsConversionMismatchException.class
-      518  2008-01-01 00:00   java/util/InputMismatchException.class
+--- build-tools
+34.0.0
+35.0.0
+35.0.1
+36.0.0
+36.1.0
+37.0.0
+--- ndk
+27.3.13750724
+29.0.14206865
+30.0.16248370
 [0m
+[93m[1m! [0mpermission requested: external_directory (/tmp/*); auto-rejecting
+[0m✗ [0mcd /tmp && cat > TestMatch.java <<'EOF'
+public class TestMatch {
+  public static void main(String[] a) { System.out.println(java.lang.MatchException.class); }
+}
+EOF
+javac TestMatch.java && echo "MatchException present in JDK"; echo "---android.jar"; unzip -l /usr/local/lib/android/sdk/platforms/android-35/android.jar 2>/dev/null | grep -i MatchException failed
+[91m[1mError: [0mThe user rejected permission to use this specific tool call.
