@@ -99,8 +99,8 @@ jobs:
           Focus on root cause errors first.
           PROMPT
           
-          # Run opencode with correct syntax
-          opencode run --model opencode/big-pickle "$(cat /tmp/fix_prompt.txt)" --yes
+          # Run opencode with prompt from file using stdin
+          opencode run --model opencode/big-pickle --yes < /tmp/fix_prompt.txt
           
           # Save session for next run
           cp ~/.opencode/sessions/latest.json opencode-session.json 2>/dev/null || true
