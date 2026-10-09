@@ -83,9 +83,9 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE
           
-          # Create prompt with context from previous session
+          # Create prompt file
           cat > /tmp/fix_prompt.txt << 'PROMPT'
-          You are fixing compilation errors in mcJava Android build.
+          Fix compilation errors in mcJava Android build.
           
           Context: This is a persistent opencode session. Previous fixes have been attempted.
           
@@ -99,8 +99,8 @@ jobs:
           Focus on root cause errors first.
           PROMPT
           
-          # Run opencode with session persistence
-          opencode --model opencode/big-pickle -p "$(cat /tmp/fix_prompt.txt)" --yes
+          # Run opencode with correct syntax
+          opencode run --model opencode/big-pickle "$(cat /tmp/fix_prompt.txt)" --yes
           
           # Save session for next run
           cp ~/.opencode/sessions/latest.json opencode-session.json 2>/dev/null || true
