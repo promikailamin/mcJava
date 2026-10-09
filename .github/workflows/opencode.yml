@@ -51,7 +51,7 @@ jobs:
                   cat > ~/.config/opencode/opencode.jsonc << 'JSON'
                   {
                     "$schema": "https://opencode.ai/config.json",
-                    "model": "nvidia/nemotron-3-ultra-550b-a55b:free"
+                    "model": "opencode/nemotron-3-ultra-free"
                   }
                   JSON
 
@@ -109,13 +109,13 @@ jobs:
 
                   if [ -f opencode-session.json ]; then
                       opencode run \
-                          --model nvidia/nemotron-3-ultra-550b-a55b:free \
+                          --model opencode/nemotron-3-ultra-free \
                           --auto \
                           --continue \
                           "$prompt"
                   else
                       opencode run \
-                          --model nvidia/nemotron-3-ultra-550b-a55b:free \
+                          --model opencode/nemotron-3-ultra-free \
                           --auto \
                           "$prompt"
                   fi
