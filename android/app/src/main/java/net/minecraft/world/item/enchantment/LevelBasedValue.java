@@ -28,6 +28,16 @@ public interface LevelBasedValue {
       }
    }
 
+   static final class CodecHolder {
+      public static final Codec<LevelBasedValue> DISPATCH_CODEC = BuiltInRegistries.ENCHANTMENT_LEVEL_BASED_VALUE_TYPE.byNameCodec()
+         .dispatch(LevelBasedValue::codec, c -> c);
+      public static final Codec<LevelBasedValue> CODEC = Codec.either(LevelBasedValue.Constant.CODEC, DISPATCH_CODEC)
+         .xmap(
+            either -> (LevelBasedValue)either.map(l -> l, r -> r),
+            levelBasedValue -> levelBasedValue instanceof LevelBasedValue.Constant constant ? Either.left(constant) : Either.right(levelBasedValue)
+         );
+   }
+
    record Clamped(LevelBasedValue value, float min, float max) implements LevelBasedValue {
       public static final MapCodec<LevelBasedValue.Clamped> CODEC = RecordCodecBuilder.mapCodec(
             i -> i.group(
@@ -179,14 +189,4 @@ public interface LevelBasedValue {
    float calculate(int level);
 
    MapCodec<? extends LevelBasedValue> codec();
-
-   static final class CodecHolder {
-      public static final Codec<LevelBasedValue> DISPATCH_CODEC = BuiltInRegistries.ENCHANTMENT_LEVEL_BASED_VALUE_TYPE.byNameCodec()
-         .dispatch(LevelBasedValue::codec, c -> c);
-      public static final Codec<LevelBasedValue> CODEC = Codec.either(LevelBasedValue.Constant.CODEC, DISPATCH_CODEC)
-         .xmap(
-            either -> (LevelBasedValue)either.map(l -> l, r -> r),
-            levelBasedValue -> levelBasedValue instanceof LevelBasedValue.Constant constant ? Either.left(constant) : Either.right(levelBasedValue)
-         );
-   }
 }
