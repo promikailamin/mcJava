@@ -50,7 +50,7 @@ jobs:
                   cat > ~/.config/opencode/opencode.jsonc << 'JSON'
                   {
                     "$schema": "https://opencode.ai/config.json",
-                    "model": "opencode/nemotron-3-ultra-free"
+                    "model": "opencode/big-pickle"
                   }
                   JSON
 
@@ -94,6 +94,8 @@ jobs:
                     Git operations.
                   - If the request is ambiguous, make a reasonable safe attempt
                     and explain any limitations.
+                  - Don't leave this issues unsolved no matter how much efforts
+                    or modify needed for this. You have to do the fix no matter how is it.
                   """
 
                   with open("issue-prompt.txt", "w", encoding="utf-8") as f:
@@ -108,13 +110,13 @@ jobs:
 
                   if [ -f opencode-session.json ]; then
                       opencode run \
-                          --model opencode/nemotron-3-ultra-free \
+                          --model opencode/big-pickle \
                           --auto \
                           --continue \
                           "$prompt"
                   else
                       opencode run \
-                          --model opencode/nemotron-3-ultra-free \
+                          --model opencode/big-pickle\
                           --auto \
                           "$prompt"
                   fi
