@@ -20,15 +20,15 @@ android {
 
     compileOptions {
         // The 26.3 source tree uses record patterns and pattern-matching switch
-        // (sealed Uniform instances, HoverEvent ShowText, ...) -> needs JDK 21.
-        sourceCompatibility JavaVersion.VERSION_21
-        targetCompatibility JavaVersion.VERSION_21
+        // (sealed Uniform instances, HoverEvent ShowText, ...) -> needs JDK 25.
+        sourceCompatibility JavaVersion.VERSION_25
+        targetCompatibility JavaVersion.VERSION_25
     }
 
     tasks.withType(JavaCompile).configureEach {
         // Use forked javac to avoid compiler API issues
         options.fork = true
-        options.forkOptions.executable = '/usr/lib/jvm/temurin-21-jdk-amd64/bin/javac'
+        options.forkOptions.executable = '/usr/lib/jvm/temurin-25-jdk-amd64/bin/javac'
     }
 
     buildTypes {
