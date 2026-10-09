@@ -11,8 +11,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Mth;
 
 public interface LevelBasedValue {
-   Codec<LevelBasedValue> CODEC = CodecHolder.CODEC;
-
    record Constant(float value) implements LevelBasedValue {
       public static final Codec<LevelBasedValue.Constant> CODEC = Codec.FLOAT.xmap(LevelBasedValue.Constant::new, LevelBasedValue.Constant::value);
       public static final MapCodec<LevelBasedValue.Constant> TYPED_CODEC = RecordCodecBuilder.mapCodec(
@@ -28,16 +26,6 @@ public interface LevelBasedValue {
       public MapCodec<LevelBasedValue.Constant> codec() {
          return TYPED_CODEC;
       }
-   }
-
-   static final class CodecHolder {
-      public static final Codec<LevelBasedValue> DISPATCH_CODEC = BuiltInRegistries.ENCHANTMENT_LEVEL_BASED_VALUE_TYPE.byNameCodec()
-         .dispatch(LevelBasedValue::codec, c -> c);
-      public static final Codec<LevelBasedValue> CODEC = Codec.either(LevelBasedValue.Constant.CODEC, DISPATCH_CODEC)
-         .xmap(
-            either -> (LevelBasedValue)either.map(l -> l, r -> r),
-            levelBasedValue -> levelBasedValue instanceof LevelBasedValue.Constant constant ? Either.left(constant) : Either.right(levelBasedValue)
-         );
    }
 
    record Clamped(LevelBasedValue value, float min, float max) implements LevelBasedValue {
@@ -191,4 +179,12 @@ public interface LevelBasedValue {
    float calculate(int level);
 
    MapCodec<? extends LevelBasedValue> codec();
+
+   Codec<LevelBasedValue> DISPATCH_CODEC = BuiltInRegistries.ENCHANTMENT_LEVEL_BASED_VALUE_TYPE.byNameCodec()
+      .dispatch(LevelBasedValue::codec, c -> c);
+   Codec<LevelBasedValue> CODEC = Codec.either(LevelBasedValue.Constant.CODEC, DISPATCH_CODEC)
+      .xmap(
+         either -> (LevelBasedValue)either.map(l -> l, r -> r),
+         levelBasedValue -> levelBasedValue instanceof LevelBasedValue.Constant constant ? Either.left(constant) : Either.right(levelBasedValue)
+      );
 }
