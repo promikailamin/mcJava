@@ -1,289 +1,776 @@
 [0m
 > build · big-pickle
 [0m
-I'll inspect the repository to understand the project and the build errors.
-[0m$ [0mpwd && ls -la && git log --oneline -10 && git status
-/home/runner/work/mcJava/mcJava
+[0m$ [0mcd /home/runner/work/mcJava/mcJava && ls -la
 total 60
-drwxr-xr-x 5 runner runner 4096 Oct  9 15:13 .
-drwxr-xr-x 3 runner runner 4096 Oct  9 15:13 ..
-drwxr-xr-x 7 runner runner 4096 Oct  9 15:13 .git
-drwxr-xr-x 3 runner runner 4096 Oct  9 15:13 .github
--rw-r--r-- 1 runner runner  309 Oct  9 15:13 .gitignore
--rw-r--r-- 1 runner runner  104 Oct  9 15:13 .opencode.jsonc
--rw-r--r-- 1 runner runner 6597 Oct  9 15:13 README.md
-drwxr-xr-x 4 runner runner 4096 Oct  9 15:13 android
--rwxr-xr-x 1 runner runner 2180 Oct  9 15:13 auto_fix.sh
--rw-r--r-- 1 runner runner  985 Oct  9 15:13 issue-prompt.txt
--rw-r--r-- 1 runner runner  942 Oct  9 15:13 issue-query.txt
--rw-r--r-- 1 runner runner  158 Oct  9 15:13 javac.20261009_122832.args
--rwxr-xr-x 1 runner runner 1100 Oct  9 15:13 monitor_and_fix.sh
--rw-r--r-- 1 runner runner  108 Oct  9 15:13 opencode-output.txt
-25dbeea Work on issue #9
-fdf8710 Add Java setup and update workspace instructions
-fc41fec Work on issue #8
-18c7f20 Enhance OpenCode workflow with issue comments
-8d849d6 Refactor OpenCode workflow for better session management
-afc7055 Update opencode.yml
-ad4fa95 Fix issue #6
-0a02054 Upgrade Java version from 21 to 25 in build.gradle
-f9f089e Upgrade Gradle wrapper to version 9.1.0
-b6f2bb0 Update build.yml
-On branch main
-Your branch is up to date with 'origin/main'.
+drwxr-xr-x 5 runner runner 4096 Oct  9 15:17 .
+drwxr-xr-x 3 runner runner 4096 Oct  9 15:17 ..
+drwxr-xr-x 7 runner runner 4096 Oct  9 15:17 .git
+drwxr-xr-x 3 runner runner 4096 Oct  9 15:17 .github
+-rw-r--r-- 1 runner runner  309 Oct  9 15:17 .gitignore
+-rw-r--r-- 1 runner runner  104 Oct  9 15:17 .opencode.jsonc
+-rw-r--r-- 1 runner runner 6597 Oct  9 15:17 README.md
+drwxr-xr-x 4 runner runner 4096 Oct  9 15:17 android
+-rwxr-xr-x 1 runner runner 2180 Oct  9 15:17 auto_fix.sh
+-rw-r--r-- 1 runner runner  985 Oct  9 15:17 issue-prompt.txt
+-rw-r--r-- 1 runner runner  998 Oct  9 15:17 issue-query.txt
+-rw-r--r-- 1 runner runner  158 Oct  9 15:17 javac.20261009_122832.args
+-rwxr-xr-x 1 runner runner 1100 Oct  9 15:17 monitor_and_fix.sh
+-rw-r--r-- 1 runner runner   32 Oct  9 15:18 opencode-output.txt
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava && cat README.md | head -80
+# Minecraft Java 26.3 — Android port (pro.minecraft)
 
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-	modified:   issue-query.txt
-	modified:   opencode-output.txt
+An experimental port of **Minecraft Java Edition 26.3** (with the Fabric Loader 0.19.5
+source tree kept for reference) onto **Android / OpenGL ES 3.2**.
 
-no changes added to commit (use "git add" and/or "git commit -a")
+The game logic is the real decompiled client. The desktop-native layer it depends on
+(LWJGL, SDL3, GLX/GLFW-style windowing, OpenAL, stb, shaderc, SPIRV-Cross, VMA/Vulkan)
+is replaced by a pure-Java **shim layer** that talks to Android's `SurfaceView` + EGL
+and `AudioTrack`.
+
+> Status: **scaffold**. The project is laid out so the full source set compiles and the
+> game boots to window/GL initialization. Rendering beyond that (shader
+> compilation, the framebuffer pipeline) still needs the native libraries described in
+> [NDK roadmap](#ndk-roadmap).
+
+---
+
+## Layout
+
+- `android/` — Android Gradle Project.
+  - `android/app/src/main/java/net/minecraft/` — decompiled client (Minecraft 26.3).
+  - `android/app/src/main/java/com/mojang/` — decompiled Blaze3D / Realms / RenderPearl.
+  - `android/app/src/main/java/net/fabricmc/` — Fabric Loader 0.19.5 sources (reference only, **not compiled**).
+  - `android/app/src/main/java/org/lwjgl/` — **authored** LWJGL shim (GL33C→GLES 3.2 bridge,
+    SDL3 emulation, OpenAL emulation, stb, shaderc/spvc stubs, vulkan/vma stubs).
+  - `android/app/src/main/java/pro/minecraft/` — **authored** Android host: `main_activity`,
+    `host/game_view` (SurfaceView), `host/game_renderer` (EGL owner),
+    `launch/client_launcher` (engine thread + boot), `launch/fabric_bootstrap`.
+  - `android/app/src/main/resources/version.json` — version metadata consumed by
+    `DetectedVersion` at boot.
+- `mcsrc/` — the original Vineflower decompile workspace used to produce `net/` + `com/`.
+- `fabric-loader-0.19.5.jar` / `vineflower-1.12.0.jar` — tool jar inputs.
+
+House rule: everything **authored** for this Android port uses `snake_case` file and
+member names (`game_view`, `client_launcher`, `set_swap_function`); upstream `net.minecraft`
+/ `com.mojang` / LWJGL API names keep their original (camelCase) names so diffs stay small.
+
+## Building
+
+Requires: Android Studio / AGP 8.5.2, `compileSdk 35`, JDK 21 (the 26.3 sources use
+record patterns / pattern-matching switch).
+
+```
+cd android
+./gradlew :app:assembleDebug
+```
+
+Notes:
+- `multiDexEnabled true`; `desugar_jdk_libs 2.1.2` is on for `java.time`/collections.
+- The following source subtrees are **excluded** from compilation because their JVM-only
+  dependencies are not on Android (each has a small port edit that keeps callers compiling):
+  - `net/fabricmc/**` (needs Mixin / TinyRemapper / ASM — a future step).
+  - `com/mojang/renderpearl/backend/vulkan/**` (needs VMA/Vulkan natives).
+  - `net/minecraft/util/profiling/jfr/{event,parse,serialize,stats}/**` + `JfrProfiler.java`
+    (needs `jdk.jfr`; `JvmProfiler.INSTANCE` is hard-wired to the no-op profiler).
+  - `net/minecraft/server/gui/**` (`javax.swing`); `net/minecraft/util/monitoring/jmx/**`
+    (`javax.management`); `DedicatedServer` has the GUI/JMX hooks removed.
+- Shims/stubs shipped in-tree replace desktop imports:
+  - `javax/sound/sampled/AudioFormat.java` (data holder for `JOrbisAudioStream`).
+  - `com/mojang/blaze3d/platform/MacosUtil.java` (Objective-C bridge removed).
+  - `net/minecraft/client/multiplayer/resolver/ServerRedirectHandler.java` (SRV via JNDI
+    disabled).
+  - `net/minecraft/server/network/PlayerSafetyServiceTextFilter.java` (MSAL OAuth removed).
+
+## Bundling the asset index
+
+The launcher needs Minecraft's files. No client jars are bundled/modified; provide the
+asset index from your own Mojang installation:
+
+1. From a desktop install of 26.3, locate `assets/indexes/34.json`.
+2. Create `android/app/src/main/assets/minecraft_assets.zip` containing at least
+   `indexes/34.json` and the `objects/` hash tree, or simply every file under the
+   desktop `assets/` folder.
+3. On startup the port unpacks that zip into `getFilesDir()/minecraft/assets`
+   (`asset_provider`), falling back to asset index `"34"` and empty directories.
+4. If no zip is bundled, the game boots with no textures/translations — expected for a
+   still-wiring renderer.
+
+## What runs / what doesn't
 [0m
-[0m$ [0mfind . -path ./.git -prune -o -type f -print | head -100
-./opencode-output.txt
-./javac.20261009_122832.args
-./issue-prompt.txt
-./.github/workflows/build.yml
-./.github/workflows/opencode.yml
-./.gitignore
-./android/build.gradle
-./android/gradlew
-./android/build2.log
-./android/app/build.gradle
-./android/app/javac.20261009_102749.args
-./android/app/javac.20261009_102044.args
-./android/app/javac.20261009_103042.args
-./android/app/javac.20261009_102610.args
-./android/app/src/main/AndroidManifest.xml
-./android/app/src/main/res/values/styles.xml
-./android/app/src/main/res/values/colors.xml
-./android/app/src/main/res/values/strings.xml
-./android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
-./android/app/src/main/resources/version.json
-./android/app/src/main/java/stubs/com/mojang/renderpearl/backend/vulkan/VulkanBackend.java
-./android/app/src/main/java/stubs/com/mojang/renderpearl/backend/vulkan/VulkanFeatureSets.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLStdinc.java
-./android/app/src/main/java/org/lwjgl/sdl/SDL_MouseWheelEvent.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLEvents.java
-./android/app/src/main/java/org/lwjgl/sdl/SDL_Event.java
-./android/app/src/main/java/org/lwjgl/sdl/SDL_MessageBoxButtonData.java
-./android/app/src/main/java/org/lwjgl/sdl/SDL_TextEditingEvent.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLVulkan.java
-./android/app/src/main/java/org/lwjgl/sdl/SDL.java
-./android/app/src/main/java/org/lwjgl/sdl/SDL_DisplayMode.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLClipboard.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLTimer.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLVideo.java
-./android/app/src/main/java/org/lwjgl/sdl/SDL_Rect.java
-./android/app/src/main/java/org/lwjgl/sdl/SDL_PixelFormatDetails.java
-./android/app/src/main/java/org/lwjgl/sdl/sdl_text_event.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLPixels.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLInit.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLMisc.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLLog.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLKeyboard.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLPlatform.java
-./android/app/src/main/java/org/lwjgl/sdl/SDL_KeyboardEvent.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLMouse.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLError.java
-./android/app/src/main/java/org/lwjgl/sdl/sdl_buffer.java
-./android/app/src/main/java/org/lwjgl/sdl/SDL_Surface.java
-./android/app/src/main/java/org/lwjgl/sdl/SDL_MouseMotionEvent.java
-./android/app/src/main/java/org/lwjgl/sdl/SDL_MessageBoxData.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLHints.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLMessageBox.java
-./android/app/src/main/java/org/lwjgl/sdl/SDLSurface.java
-./android/app/src/main/java/org/lwjgl/sdl/sdl_struct.java
-./android/app/src/main/java/org/lwjgl/sdl/SDL_MouseButtonEvent.java
-./android/app/src/main/java/org/lwjgl/sdl/SDL_LogOutputFunction.java
-./android/app/src/main/java/org/lwjgl/openal/mixer_state.java
-./android/app/src/main/java/org/lwjgl/openal/AL.java
-./android/app/src/main/java/org/lwjgl/openal/ALC.java
-./android/app/src/main/java/org/lwjgl/openal/ALCCapabilities.java
-./android/app/src/main/java/org/lwjgl/openal/ALC10.java
-./android/app/src/main/java/org/lwjgl/openal/SOFTSystemEventProcI.java
-./android/app/src/main/java/org/lwjgl/openal/ALCapabilities.java
-./android/app/src/main/java/org/lwjgl/openal/AL10.java
-./android/app/src/main/java/org/lwjgl/openal/ALUtil.java
-./android/app/src/main/java/org/lwjgl/openal/ALC11.java
-./android/app/src/main/java/org/lwjgl/openal/SOFTSystemEvents.java
-./android/app/src/main/java/org/lwjgl/stb/STBIWriteCallback.java
-./android/app/src/main/java/org/lwjgl/stb/STBImageWrite.java
-./android/app/src/main/java/org/lwjgl/stb/STBImageResize.java
-./android/app/src/main/java/org/lwjgl/stb/STBImage.java
-./android/app/src/main/java/org/lwjgl/vulkan/VkDrawIndirectCommand.java
-./android/app/src/main/java/org/lwjgl/vulkan/VkDrawIndexedIndirectCommand.java
-./android/app/src/main/java/org/lwjgl/vulkan/VK.java
-./android/app/src/main/java/org/lwjgl/system/Platform.java
-./android/app/src/main/java/org/lwjgl/system/Pointer.java
-./android/app/src/main/java/org/lwjgl/system/Library.java
-./android/app/src/main/java/org/lwjgl/system/FunctionProvider.java
-./android/app/src/main/java/org/lwjgl/system/Configuration.java
-./android/app/src/main/java/org/lwjgl/system/MemoryUtil.java
-./android/app/src/main/java/org/lwjgl/system/NativeType.java
-./android/app/src/main/java/org/lwjgl/system/MemoryStack.java
-./android/app/src/main/java/org/lwjgl/system/Struct.java
-./android/app/src/main/java/org/lwjgl/system/SharedLibrary.java
-./android/app/src/main/java/org/lwjgl/BufferUtils.java
-./android/app/src/main/java/org/lwjgl/util/freetype/FT_Face.java
-./android/app/src/main/java/org/lwjgl/util/freetype/FT_Bitmap.java
-./android/app/src/main/java/org/lwjgl/util/freetype/FT_GlyphSlot.java
-./android/app/src/main/java/org/lwjgl/util/freetype/FT_Vector.java
-./android/app/src/main/java/org/lwjgl/util/freetype/FreeType.java
-./android/app/src/main/java/org/lwjgl/util/spvc/SpvcReflectedResource.java
-./android/app/src/main/java/org/lwjgl/util/spvc/Spvc.java
-./android/app/src/main/java/org/lwjgl/util/shaderc/Shaderc.java
-./android/app/src/main/java/org/lwjgl/util/shaderc/ShadercIncludeResult.java
-./android/app/src/main/java/org/lwjgl/util/shaderc/ShadercIncludeResolve.java
-./android/app/src/main/java/org/lwjgl/util/shaderc/ShadercIncludeResultRelease.java
-./android/app/src/main/java/org/lwjgl/util/vma/Vma.java
-./android/app/src/main/java/org/lwjgl/PointerBuffer.java
-./android/app/src/main/java/org/lwjgl/opengl/KHRDebug.java
-./android/app/src/main/java/org/lwjgl/opengl/GLDebugMessageCallback.java
+[0m$ [0mcd /home/runner/work/mcJava/mcJava/android && ./gradlew --version 2>&1 | head -30
+Downloading https://services.gradle.org/distributions/gradle-9.1.0-bin.zip
+............10%.............20%.............30%.............40%.............50%............60%.............70%.............80%.............90%.............100%
+
+Welcome to Gradle 9.1.0!
+
+Here are the highlights of this release:
+ - Full Java 25 support
+ - Native task graph visualization
+ - Enhanced console output
+
+For more details see https://docs.gradle.org/9.1.0/release-notes.html
+
+
+------------------------------------------------------------
+Gradle 9.1.0
+------------------------------------------------------------
+
+Build time:    2025-09-18 13:05:56 UTC
+Revision:      e45a8dbf2470c2e2474ccc25be9f49331406a07e
+
+Kotlin:        2.2.0
+Groovy:        4.0.28
+Ant:           Apache Ant(TM) version 1.10.15 compiled on August 25 2024
+Launcher JVM:  21.0.12.1 (Eclipse Adoptium 21.0.12.1+1-LTS)
+Daemon JVM:    /usr/lib/jvm/temurin-21-jdk-amd64 (no JDK specified, using current Java home)
+OS:            Linux 6.17.0-1022-azure amd64
 [0m
-[0m→ [0mRead README.md
-[0m→ [0mRead .github/workflows
-[0m→ [0mRead .github/workflows/build.yml
-[0m→ [0mRead .github/workflows/opencode.yml
-[0m→ [0mRead android/build.gradle
-[0m→ [0mRead android/app/build.gradle
-[0m→ [0mRead issue-query.txt
-[0m→ [0mRead opencode-output.txt
+[0m$ [0mcd /home/runner/work/mcJava/mcJava/android && ./gradlew :app:assembleDebug 2>&1 | tail -60
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateDebugBuildConfig
+> Task :app:javaPreCompileDebug
+> Task :app:generateDebugResValues
+> Task :app:checkDebugAarMetadata
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:mergeDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:parseDebugLocalResources
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
+> Task :app:processDebugJavaRes
+> Task :app:mergeDebugJniLibFolders
+> Task :app:processDebugManifestForPackage
+> Task :app:checkDebugDuplicateClasses
+> Task :app:processDebugResources
+> Task :app:mergeDebugJavaResource
+> Task :app:mergeExtDexDebug
+
+> Task :app:compileDebugJavaWithJavac
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+An exception has occurred in the compiler (21.0.12.1). Please file a bug against the Java compiler via the Java bug reporting page (https://bugreport.java.com) after checking the Bug Database (https://bugs.java.com) for duplicates. Include your program, the following diagnostic, and the parameters passed to the Java compiler in your report. Thank you.
+com.sun.tools.javac.code.Symbol$CompletionFailure: class file for java.lang.MatchException not found
+
+> Task :app:compileDebugJavaWithJavac FAILED
+
+[Incubating] Problems report is available at: file:///home/runner/work/mcJava/mcJava/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugJavaWithJavac'.
+> Compilation failed; see the compiler output below.
+  Note: Recompile with -Xlint:unchecked for details.
+  Note: Some input files use unchecked or unsafe operations.
+
+
+* Try:
+> Run with --scan to generate a Build Scan (Powered by Develocity).
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.1.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 1m 39s
+25 actionable tasks: 25 executed
 [0m
-[0m$ [0mjava -version 2>&1; echo "---"; echo "JAVA_HOME=$JAVA_HOME"; echo "ANDROID_HOME=$ANDROID_HOME"; echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"; echo "---"; which gradle; ls -la /usr/lib/jvm 2>/dev/null; echo "---"; ls -la ~/ 2>/dev/null; echo "--- df -h"; df -h . ; echo "--- env"; env | sort | head -50
+[0m$ [0mcd /home/runner/work/mcJava/mcJava/android/app && cat build.gradle 2>&1 | head -140
+plugins {
+    id 'com.android.application'
+}
+
+def minecraftVersion = "26.3"
+def loaderVersion = "0.19.5"
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+android {
+    namespace 'pro.minecraft'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "pro.minecraft"
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName "${minecraftVersion}-fabric-${loaderVersion}"
+        multiDexEnabled true
+    }
+
+    compileOptions {
+        // The 26.3 source tree uses record patterns and pattern-matching switch
+        // (sealed Uniform instances, HoverEvent ShowText, ...) -> needs JDK 21+.
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+        }
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    packaging {
+        resources {
+            excludes += [
+                'META-INF/DEPENDENCIES',
+                'META-INF/LICENSE*',
+                'META-INF/NOTICE*',
+                'META-INF/INDEX.LIST',
+                'META-INF/io.netty.versions.properties',
+                'META-INF/org/apache/logging/log4j/**',
+                'META-INF/native-image/**',
+                'META-INF/AL2.0',
+                'META-INF/LGPL2.1',
+                'META-INF/versions/**',
+                'module-info.class'
+            ]
+            merges += 'META-INF/services/**'
+        }
+    }
+
+    dexOptions {
+        preDexLibraries true
+        jumboMode true
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        // Keep compiling after the default 100-error cap so the whole error surface
+        // is visible in a single pass while porting the tree.
+        options.compilerArgs << "-Xmaxerrs" << "100000"
+    }
+
+    sourceSets {
+        main {
+            java {
+                // Fabric Loader decompiled sources: kept for reference, not compiled until
+                // their JVM dependencies (Mixin, TinyRemapper, ASM) are shipped on Android.
+                exclude 'net/fabricmc/**'
+                // Vulkan backend requires the VMA/Vulkan natives; the OpenGL ES backend is the shim target.
+                exclude 'com/mojang/renderpearl/backend/vulkan/**'
+                // JFR (jdk.jfr) is not present on Android; the profiler entries are compiled
+                // out. JvmProfiler.INSTANCE is reduced to the no-op profiler accordingly.
+                exclude 'net/minecraft/util/profiling/jfr/event/**'
+                exclude 'net/minecraft/util/profiling/jfr/parse/**'
+                exclude 'net/minecraft/util/profiling/jfr/serialize/**'
+                exclude 'net/minecraft/util/profiling/jfr/stats/**'
+                exclude 'net/minecraft/util/profiling/jfr/JfrProfiler.java'
+                // SummaryReporter imports the excluded jfr/parse package.
+                exclude 'net/minecraft/util/profiling/jfr/SummaryReporter.java'
+                // javax.swing-based dedicated server admin GUI (desktop-only).
+                exclude 'net/minecraft/server/gui/**'
+                // javax.management JMX registry (JVM-only).
+                exclude 'net/minecraft/util/monitoring/jmx/**'
+            }
+        }
+    }
+}
+
+dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
+
+    // --- Minecraft runtime (pure-Java libraries from the 26.3 library list) ---
+    implementation 'com.google.guava:guava:33.6.0-jre'
+    implementation 'com.google.code.gson:gson:2.14.0'
+    implementation 'io.netty:netty-buffer:4.2.16.Final'
+    implementation 'io.netty:netty-codec-base:4.2.16.Final'
+    implementation 'io.netty:netty-codec-compression:4.2.16.Final'
+    implementation 'io.netty:netty-codec-http:4.2.16.Final'
+    implementation 'io.netty:netty-common:4.2.16.Final'
+    implementation 'io.netty:netty-handler:4.2.16.Final'
+    implementation 'io.netty:netty-resolver:4.2.16.Final'
+    implementation 'io.netty:netty-transport:4.2.16.Final'
+    implementation 'io.netty:netty-transport-classes-epoll:4.2.16.Final'
+    implementation 'io.netty:netty-transport-classes-kqueue:4.2.16.Final'
+    implementation 'it.unimi.dsi:fastutil:8.5.18'
+    implementation 'org.joml:joml:1.10.9'
+    implementation 'org.apache.commons:commons-lang3:3.20.0'
+    implementation 'org.apache.commons:commons-compress:1.28.0'
+    implementation 'commons-codec:commons-codec:1.22.0'
+    implementation 'commons-io:commons-io:2.20.0'
+    implementation 'at.yawk.lz4:lz4-java:1.10.1'
+    implementation 'com.ibm.icu:icu4j:78.3'
+    implementation 'com.github.oshi:oshi-core:6.9.0'
+    implementation 'net.java.dev.jna:jna:5.17.0'
+    implementation 'net.java.dev.jna:jna-platform:5.17.0'
+    implementation 'org.jcraft:jorbis:0.0.17'
+    implementation 'org.jspecify:jspecify:1.0.0'
+    implementation 'org.jetbrains:annotations:26.0.2'
+    // javax.annotation.* and javax.annotation.concurrent.* referenced by the
+    // decompiled sources (BlockPos, BlockableEventLoop, ...).
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
+    implementation 'com.mojang:brigadier:1.3.11'
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava/android && ./gradlew :app:compileDebugJavaWithJavac 2>&1 | grep -B 5 -A 80 "error:" | head -100
+(no output)
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava/android && ./gradlew :app:compileDebugJavaWithJavac 2>&1 | head -200
+> Configure project :app
+WARNING: DSL element 'dexOptions' is obsolete and should be removed.
+It will be removed in version 8.0 of the Android Gradle plugin.
+Using it has no effect, and the AndroidGradle plugin optimizes dexing automatically.
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+
+> Task :app:compileDebugJavaWithJavac FAILED
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+An exception has occurred in the compiler (21.0.12.1). Please file a bug against the Java compiler via the Java bug reporting page (https://bugreport.java.com) after checking the Bug Database (https://bugs.java.com) for duplicates. Include your program, the following diagnostic, and the parameters passed to the Java compiler in your report. Thank you.
+com.sun.tools.javac.code.Symbol$CompletionFailure: class file for java.lang.MatchException not found
+
+[Incubating] Problems report is available at: file:///home/runner/work/mcJava/mcJava/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugJavaWithJavac'.
+> Compilation failed; see the compiler output below.
+  Note: Recompile with -Xlint:unchecked for details.
+  Note: Some input files use unchecked or unsafe operations.
+
+
+* Try:
+> Run with --scan to generate a Build Scan (Powered by Develocity).
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.1.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 4s
+16 actionable tasks: 1 executed, 15 up-to-date
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava && find . -name "*.java" | grep -i matchException | head -3
+(no output)
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava && grep -rn "MatchException" android/app/src 2>&1 | head -20
+android/app/src/main/java/com/mojang/renderpearl/backend/opengl/GlCommandEncoder.java:599:                        throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/com/mojang/renderpearl/frontend/FrontendRenderPass.java:590:                        throw new IllegalStateException("MatchException: " + var18.toString(), var18);
+android/app/src/main/java/com/mojang/renderpearl/frontend/FrontendRenderPass.java:600:                        throw new IllegalStateException("MatchException: " + var17.toString(), var17);
+android/app/src/main/java/net/minecraft/server/network/config/PrepareSpawnTask.java:81:         default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/server/commands/data/DataCommands.java:383:         default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/nbt/NbtOps.java:61:         default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/nbt/NbtOps.java:310:            default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/client/quickplay/QuickPlay.java:67:               throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/client/multiplayer/chat/report/AbuseReportSender.java:78:            default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/client/gui/screens/social/RemoteFriendListUpdateHandler.java:133:         default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/client/gui/screens/social/PlayerSocialManager.java:189:         default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/client/gui/screens/friends/FriendEntry.java:79:         default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/client/renderer/PostChainConfig.java:34:               default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/client/renderer/feature/TextFeatureRenderer.java:36:               throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/client/renderer/PostChain.java:127:               throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/client/resources/SkinManager.java:167:            default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/client/resources/model/sprite/TextureSlots.java:122:                     throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/commands/synchronization/brigadier/StringArgumentSerializer.java:25:         default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/commands/synchronization/brigadier/StringArgumentSerializer.java:45:            default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/world/entity/SteppedInterpolationHandler.java:131:                  throw new IllegalStateException("MatchException: " + var17.toString(), var17);
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava && grep -rn "MatchException" android/app/src/main/java/net/minecraft/server/network/config/PrepareSpawnTask.java 2>&1 | head -15
+81:         default -> throw new IllegalStateException("MatchException: " + null, null);
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava && cat android/app/src/main/java/net/minecraft/server/network/config/PrepareSpawnTask.java 2>&1 | head -120
+package net.minecraft.server.network.config;
+
+import com.mojang.logging.LogUtils;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ChunkLoadCounter;
+import net.minecraft.server.level.PlayerSpawnFinder;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.TicketType;
+import net.minecraft.server.level.progress.LevelLoadListener;
+import net.minecraft.server.network.CommonListenerCookie;
+import net.minecraft.server.network.ConfigurationTask;
+import net.minecraft.server.players.NameAndId;
+import net.minecraft.util.ProblemReporter;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.storage.LevelData;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
+
+public class PrepareSpawnTask implements ConfigurationTask {
+   private static final Logger LOGGER = LogUtils.getLogger();
+   public static final ConfigurationTask.Type TYPE = new ConfigurationTask.Type("prepare_spawn");
+   public static final int PREPARE_CHUNK_RADIUS = 3;
+   private final MinecraftServer server;
+   private final NameAndId nameAndId;
+   private final LevelLoadListener loadListener;
+   private PrepareSpawnTask.@Nullable State state;
+
+   public PrepareSpawnTask(final MinecraftServer server, final NameAndId nameAndId) {
+      this.server = server;
+      this.nameAndId = nameAndId;
+      this.loadListener = server.getLevelLoadListener();
+   }
+
+   @Override
+   public void start(final Consumer<Packet<?>> connection) {
+      try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(LOGGER)) {
+         Optional<ValueInput> loadedData = this.server
+            .getPlayerList()
+            .loadPlayerData(this.nameAndId)
+            .map(tag -> TagValueInput.create(reporter, this.server.registryAccess(), tag));
+         ServerPlayer.SavedPosition loadedPosition = loadedData.<ServerPlayer.SavedPosition>flatMap(tag -> tag.read(ServerPlayer.SavedPosition.MAP_CODEC))
+            .orElse(ServerPlayer.SavedPosition.EMPTY);
+         LevelData.RespawnData respawnData = this.server.getWorldData().overworldData().getRespawnData();
+         ServerLevel spawnLevel = loadedPosition.dimension().map(this.server::getLevel).orElseGet(() -> {
+            ServerLevel spawnDataLevel = this.server.getLevel(respawnData.dimension());
+            return spawnDataLevel != null ? spawnDataLevel : this.server.overworld();
+         });
+         CompletableFuture<Vec3> spawnPosition = loadedPosition.position()
+            .map(CompletableFuture::completedFuture)
+            .orElseGet(() -> PlayerSpawnFinder.findSpawn(spawnLevel, respawnData.pos()));
+         Vec2 spawnAngle = loadedPosition.rotation().orElse(new Vec2(respawnData.yaw(), respawnData.pitch()));
+         this.state = new PrepareSpawnTask.Preparing(spawnLevel, spawnPosition, spawnAngle);
+      }
+   }
+
+   @Override
+   public boolean tick() {
+      return switch (this.state) {
+         case null -> false;
+         case PrepareSpawnTask.Preparing preparing -> {
+            PrepareSpawnTask.Ready ready = preparing.tick();
+            if (ready != null) {
+               this.state = ready;
+               yield true;
+            } else {
+               yield false;
+            }
+         }
+         case PrepareSpawnTask.Ready ignored -> true;
+         default -> throw new IllegalStateException("MatchException: " + null, null);
+      };
+   }
+
+   public ServerPlayer spawnPlayer(final Connection connection, final CommonListenerCookie cookie) {
+      if (this.state instanceof PrepareSpawnTask.Ready ready) {
+         return ready.spawn(connection, cookie);
+      } else {
+         throw new IllegalStateException("Player spawn was not ready");
+      }
+   }
+
+   public void keepAlive() {
+      if (this.state instanceof PrepareSpawnTask.Ready ready) {
+         ready.keepAlive();
+      }
+   }
+
+   public void close() {
+      if (this.state instanceof PrepareSpawnTask.Preparing preparing) {
+         preparing.cancel();
+      }
+
+      this.state = null;
+   }
+
+   @Override
+   public ConfigurationTask.Type type() {
+      return TYPE;
+   }
+
+   private final class Preparing implements PrepareSpawnTask.State {
+      private final ServerLevel spawnLevel;
+      private final CompletableFuture<Vec3> spawnPosition;
+      private final Vec2 spawnAngle;
+      private @Nullable CompletableFuture<?> chunkLoadFuture;
+      private final ChunkLoadCounter chunkLoadCounter = new ChunkLoadCounter();
+
+      private Preparing(final ServerLevel spawnLevel, final CompletableFuture<Vec3> spawnPosition, final Vec2 spawnAngle) {
+         this.spawnLevel = spawnLevel;
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava/android && ./gradlew :app:compileDebugJavaWithJavac --rerun-tasks 2>&1 | grep -B 2 -A 40 "class file for java.lang.MatchException" | head -50
+Note: Recompile with -Xlint:unchecked for details.
+An exception has occurred in the compiler (21.0.12.1). Please file a bug against the Java compiler via the Java bug reporting page (https://bugreport.java.com) after checking the Bug Database (https://bugs.java.com) for duplicates. Include your program, the following diagnostic, and the parameters passed to the Java compiler in your report. Thank you.
+com.sun.tools.javac.code.Symbol$CompletionFailure: class file for java.lang.MatchException not found
+
+[Incubating] Problems report is available at: file:///home/runner/work/mcJava/mcJava/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugJavaWithJavac'.
+> Compilation failed; see the compiler output below.
+  Note: Recompile with -Xlint:unchecked for details.
+  Note: Some input files use unchecked or unsafe operations.
+
+
+* Try:
+> Run with --scan to generate a Build Scan (Powered by Develocity).
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.1.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 4s
+16 actionable tasks: 16 executed
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava/android && find /usr/lib/jvm -name "rt.jar" 2>&1 | head -2
+/usr/lib/jvm/temurin-8-jdk-amd64/jre/lib/rt.jar
+[0m
+[0m$ [0mfind /usr/lib/jvm/temurin-21* -name "java.base*" -path "*lib*" 2>&1 | head -5
+/usr/lib/jvm/temurin-21-jdk-amd64/legal/java.base
+/usr/lib/jvm/temurin-21-jdk-amd64/jmods/java.base.jmod
+[0m
+[0m$ [0mjar tf /usr/lib/jvm/temurin-21-jdk-amd64/jmods/java.base.jmod | grep MatchException 2>&1 | head -2
+classes/java/lang/MatchException.class
+[0m
+[0m$ [0mcat /home/runner/work/mcJava/mcJava/android/build/reports/problems/problems-report.html 2>&1 | head -80
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+                    <style type="text/css">
+                /*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */
+html {
+    line-height: 1.15;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%
+}
+
+body {
+    margin: 0
+}
+
+article, aside, footer, header, nav, section {
+    display: block
+}
+
+h1 {
+    font-size: 2em;
+    margin: .67em 0
+}
+
+figcaption, figure, main {
+    display: block
+}
+
+figure {
+    margin: 1em 40px
+}
+
+hr {
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible
+}
+
+pre {
+    font-family: monospace, monospace;
+    font-size: 1em
+}
+
+a {
+    background-color: transparent;
+    -webkit-text-decoration-skip: objects
+}
+
+abbr[title] {
+    border-bottom: none;
+    text-decoration: underline;
+    text-decoration: underline dotted
+}
+
+b, strong {
+    font-weight: inherit
+}
+
+b, strong {
+    font-weight: bolder
+}
+
+code, kbd, samp {
+    font-family: monospace, monospace;
+    font-size: 1em
+}
+
+dfn {
+    font-style: italic
+}
+
+mark {
+    background-color: #ff0;
+    color: #000
+}
+[0m
+[0m$ [0mgrep -B 10 -A 60 "MatchException" /home/runner/work/mcJava/mcJava/android/build/reports/problems/problems-report.html 2>&1 | head -50
+(no output)
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava/android && ./gradlew --no-build-cache :app:compileDebugJavaWithJavac 2>&1 | head -40
+> Configure project :app
+WARNING: DSL element 'dexOptions' is obsolete and should be removed.
+It will be removed in version 8.0 of the Android Gradle plugin.
+Using it has no effect, and the AndroidGradle plugin optimizes dexing automatically.
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+
+> Task :app:compileDebugJavaWithJavac FAILED
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+An exception has occurred in the compiler (21.0.12.1). Please file a bug against the Java compiler via the Java bug reporting page (https://bugreport.java.com) after checking the Bug Database (https://bugs.java.com) for duplicates. Include your program, the following diagnostic, and the parameters passed to the Java compiler in your report. Thank you.
+com.sun.tools.javac.code.Symbol$CompletionFailure: class file for java.lang.MatchException not found
+
+[Incubating] Problems report is available at: file:///home/runner/work/mcJava/mcJava/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugJavaWithJavac'.
+> Compilation failed; see the compiler output below.
+  Note: Recompile with -Xlint:unchecked for details.
+  Note: Some input files use unchecked or unsafe operations.
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava/android && ./gradlew :app:compileDebugJavaWithJavac --info 2>&1 | grep -B 5 -A 120 "MatchException" | head -120
+file or directory '/home/runner/work/mcJava/mcJava/android/app/src/debug/java', not found
+Compiling with JDK Java compiler API.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+An exception has occurred in the compiler (21.0.12.1). Please file a bug against the Java compiler via the Java bug reporting page (https://bugreport.java.com) after checking the Bug Database (https://bugs.java.com) for duplicates. Include your program, the following diagnostic, and the parameters passed to the Java compiler in your report. Thank you.
+com.sun.tools.javac.code.Symbol$CompletionFailure: class file for java.lang.MatchException not found
+
+> Task :app:compileDebugJavaWithJavac FAILED
+
+[Incubating] Problems report is available at: file:///home/runner/work/mcJava/mcJava/android/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugJavaWithJavac'.
+> Compilation failed; see the compiler output below.
+  Note: Recompile with -Xlint:unchecked for details.
+  Note: Some input files use unchecked or unsafe operations.
+
+
+* Try:
+> Run with --scan to generate a Build Scan (Powered by Develocity).
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.1.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 3s
+16 actionable tasks: 1 executed, 15 up-to-date
+[0m
+[0m$ [0mfind / -name "rt.jar" 2>&1 | head -3
+find: ‘/etc/sudoers.d’: Permission denied
+find: ‘/etc/polkit-1/rules.d’: Permission denied
+find: ‘/etc/credstore.encrypted’: Permission denied
+[0m
+[0m$ [0mfind /usr -name "rt.jar" 2>&1 | head -5
+/usr/lib/jvm/temurin-8-jdk-amd64/jre/lib/rt.jar
+[0m
+[0m$ [0mupdate-java-alternatives --list 2>&1 | head -5
+temurin-11-jdk-amd64           1111       /usr/lib/jvm/temurin-11-jdk-amd64
+temurin-17-jdk-amd64           1711       /usr/lib/jvm/temurin-17-jdk-amd64
+temurin-21-jdk-amd64           2111       /usr/lib/jvm/temurin-21-jdk-amd64
+temurin-25-jdk-amd64           2511       /usr/lib/jvm/temurin-25-jdk-amd64
+temurin-8-jdk-amd64            1081       /usr/lib/jvm/temurin-8-jdk-amd64
+[0m
+[0m$ [0mecho $JAVA_HOME 2>&1; java -version 2>&1 | head -1
+/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
 openjdk version "21.0.12.1" 2026-08-18 LTS
-OpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)
-OpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)
----
-JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
-ANDROID_HOME=/usr/local/lib/android/sdk
-ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
----
-/usr/bin/gradle
-total 48
-drwxrwxrwx   7 root root 4096 Oct  4 21:42 .
-drwxr-xr-x 107 root root 4096 Oct  4 21:46 ..
--rwxrwxrwx   1 root root 2071 Sep 16 14:58 .temurin-11-jdk-amd64.jinfo
--rwxrwxrwx   1 root root 1805 Aug 21 14:24 .temurin-17-jdk-amd64.jinfo
--rwxrwxrwx   1 root root 1871 Aug 19 17:13 .temurin-21-jdk-amd64.jinfo
--rwxrwxrwx   1 root root 1871 Aug 21 11:41 .temurin-25-jdk-amd64.jinfo
--rwxrwxrwx   1 root root 2573 Aug 25 08:15 .temurin-8-jdk-amd64.jinfo
-drwxrwxrwx   9 root root 4096 Oct  4 21:41 temurin-11-jdk-amd64
-drwxrwxrwx   9 root root 4096 Oct  4 21:41 temurin-17-jdk-amd64
-drwxrwxrwx   9 root root 4096 Oct  4 21:42 temurin-21-jdk-amd64
-drwxrwxrwx   8 root root 4096 Oct  4 21:42 temurin-25-jdk-amd64
-drwxrwxrwx   8 root root 4096 Oct  4 21:41 temurin-8-jdk-amd64
----
-total 76
-drwxr-x---  15 runner runner 4096 Oct  9 15:13 .
-drwxr-xr-x+  5 root   root   4096 Oct  4 22:27 ..
--rw-r--r--   1 runner runner  220 Mar 31  2024 .bash_logout
--rw-r--r--   1 runner runner   67 Oct  4 21:44 .bash_profile
--rw-r--r--   1 runner runner 3771 Mar 31  2024 .bashrc
-drwxr-xr-x   3 runner runner 4096 Oct  9 15:13 .cache
-drwxr-xr-x   3 runner runner 4096 Oct  4 21:47 .cargo
-drwxr-xr-x   2 runner runner 4096 Oct  4 21:46 .composer
-drwxr-xr-x   4 runner runner 4096 Oct  9 15:13 .config
-drwxr-xr-x   2 runner docker 4096 Oct  4 22:30 .docker
-drwxr-xr-x   3 runner runner 4096 Oct  4 21:34 .dotnet
-lrwxrwxrwx   1 runner runner   17 Oct  4 21:41 .ghcup -> /usr/local/.ghcup
-drwxr-xr-x   4 runner runner 4096 Oct  9 15:13 .local
-drwxr-xr-x   2 runner runner 4096 Oct  9 15:13 .m2
-drwxr-xr-x   4 runner runner 4096 Oct  9 15:13 .npm
-drwxr-xr-x   6 runner runner 4096 Oct  4 21:44 .nvm
--rw-r--r--   1 runner runner  807 Mar 31  2024 .profile
-drwxr-xr-x   6 runner runner 4096 Oct  4 21:47 .rustup
-drwxrwxr-x   3 runner runner 4096 Oct  9 15:11 actions-runner
-drwxr-xr-x   6 runner runner 4096 Oct  9 15:13 work
---- df -h
-Filesystem      Size  Used Avail Use% Mounted on
-/dev/root       145G   60G   86G  42% /
---- env
-ACCEPT_EULA=Y
-ACTIONS_ORCHESTRATION_ID=809ac6e0-0273-8c7a-9194-dc2ac6d834d7.opencode.__default
-ACTIONS_RUNNER_ACTION_ARCHIVE_CACHE=/opt/actionarchivecache
-ACTIONS_RUNNER_RETURN_JOB_RESULT_FOR_HOSTED=1
-AGENT=1
-AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
-ANDROID_HOME=/usr/local/lib/android/sdk
-ANDROID_NDK=/usr/local/lib/android/sdk/ndk/27.3.13750724
-ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/27.3.13750724
-ANDROID_NDK_LATEST_HOME=/usr/local/lib/android/sdk/ndk/30.0.16248370
-ANDROID_NDK_ROOT=/usr/local/lib/android/sdk/ndk/27.3.13750724
-ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
-ANT_HOME=/usr/share/ant
-AZURE_EXTENSION_DIR=/opt/az/azcliextensions
-BOOTSTRAP_HASKELL_NONINTERACTIVE=1
-CHROMEWEBDRIVER=/usr/local/share/chromedriver-linux64
-CHROME_BIN=/usr/bin/google-chrome
-CI=true
-CONDA=/usr/share/miniconda
-DEBIAN_FRONTEND=noninteractive
-DOTNET_MULTILEVEL_LOOKUP=0
-DOTNET_NOLOGO=1
-DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
-EDGEWEBDRIVER=/usr/local/share/edge_driver
-ENABLE_RUNNER_TRACING=true
-GECKOWEBDRIVER=/usr/local/share/gecko_driver
-GHCUP_INSTALL_BASE_PREFIX=/usr/local
-GITHUB_ACTION=opencode
-GITHUB_ACTIONS=true
-GITHUB_ACTION_REF=
-GITHUB_ACTION_REPOSITORY=
-GITHUB_ACTOR=promikailamin
-GITHUB_ACTOR_ID=171564804
-GITHUB_API_URL=https://api.github.com
-GITHUB_ARTIFACTS=/home/runner/work/_temp/_runner_file_commands/artifacts_f03131b4-c824-4fa4-935f-7730a4398945
-GITHUB_ARTIFACTS_LIST=/home/runner/work/_temp/_runner_file_commands/artifacts_list_f03131b4-c824-4fa4-935f-7730a4398945
-GITHUB_BASE_REF=
-GITHUB_ENV=/home/runner/work/_temp/_runner_file_commands/set_env_f03131b4-c824-4fa4-935f-7730a4398945
-GITHUB_EVENT_NAME=issues
-GITHUB_EVENT_PATH=/home/runner/work/_temp/_github_workflow/event.json
-GITHUB_GRAPHQL_URL=https://api.github.com/graphql
-GITHUB_HEAD_REF=
-GITHUB_JOB=opencode
-GITHUB_OUTPUT=/home/runner/work/_temp/_runner_file_commands/set_output_f03131b4-c824-4fa4-935f-7730a4398945
-GITHUB_PATH=/home/runner/work/_temp/_runner_file_commands/add_path_f03131b4-c824-4fa4-935f-7730a4398945
-GITHUB_REF=refs/heads/main
-GITHUB_REF_NAME=main
-GITHUB_REF_PROTECTED=false
-GITHUB_REF_TYPE=branch
-GITHUB_REPOSITORY=promikailamin/mcJava
 [0m
-[0m$ [0mls -la android; echo "---"; ls -la android/app; echo "--- gradle wrapper"; cat android/gradle/wrapper/gradle-wrapper.properties 2>/dev/null; echo "--- build2.log tail"; tail -50 android/build2.log
-total 808
-drwxr-xr-x 4 runner runner   4096 Oct  9 15:13 .
-drwxr-xr-x 5 runner runner   4096 Oct  9 15:13 ..
-drwxr-xr-x 3 runner runner   4096 Oct  9 15:13 app
--rw-r--r-- 1 runner runner     72 Oct  9 15:13 build.gradle
--rw-r--r-- 1 runner runner 776507 Oct  9 15:13 build.log
--rw-r--r-- 1 runner runner   2912 Oct  9 15:13 build2.log
-drwxr-xr-x 3 runner runner   4096 Oct  9 15:13 gradle
--rw-r--r-- 1 runner runner    158 Oct  9 15:13 gradle.properties
--rwxr-xr-x 1 runner runner   8497 Oct  9 15:13 gradlew
--rw-r--r-- 1 runner runner   2868 Oct  9 15:13 gradlew.bat
--rw-r--r-- 1 runner runner    524 Oct  9 15:13 settings.gradle
----
-total 44
-drwxr-xr-x 3 runner runner 4096 Oct  9 15:13 .
-drwxr-xr-x 4 runner runner 4096 Oct  9 15:13 ..
--rw-r--r-- 1 runner runner 5890 Oct  9 15:13 build.gradle
--rw-r--r-- 1 runner runner  104 Oct  9 15:13 javac.20261009_102044.args
--rw-r--r-- 1 runner runner  104 Oct  9 15:13 javac.20261009_102610.args
--rw-r--r-- 1 runner runner  104 Oct  9 15:13 javac.20261009_102749.args
--rw-r--r-- 1 runner runner  104 Oct  9 15:13 javac.20261009_102947.args
--rw-r--r-- 1 runner runner  104 Oct  9 15:13 javac.20261009_103042.args
--rw-r--r-- 1 runner runner  104 Oct  9 15:13 javac.20261009_122249.args
-drwxr-xr-x 3 runner runner 4096 Oct  9 15:13 src
---- gradle wrapper
-distributionBase=GRADLE_USER_HOME
-distributionPath=wrapper/dists
-distributionUrl=https\://services.gradle.org/distributions/gradle-9.1.0-bin.zip
-networkTimeout=10000
-zipStoreBase=GRADLE_USER_HOME
-zipStorePath=wrapper/dists
---- build2.log tail
+[0m$ [0mfind /opt/hostedtoolcache -name "*rt.jar*" 2>&1 | head -3
+(no output)
+[0m
+[0m$ [0mls /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64/lib 2>&1 | head -10
+classlist
+ct.sym
+jexec
+jfr
+jrt-fs.jar
+jspawnhelper
+jvm.cfg
+libattach.so
+libawt.so
+libawt_headless.so
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava/android && ./gradlew :app:compileDebugJavaWithJavac --stacktrace 2>&1 | head -80
+> Configure project :app
+WARNING: DSL element 'dexOptions' is obsolete and should be removed.
+It will be removed in version 8.0 of the Android Gradle plugin.
 Using it has no effect, and the AndroidGradle plugin optimizes dexing automatically.
 
 > Task :app:preBuild UP-TO-DATE
@@ -326,48 +813,154 @@ Execution failed for task ':app:compileDebugJavaWithJavac'.
 * Try:
 > Run with --scan to generate a Build Scan (Powered by Develocity).
 
-Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
-
-You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-
-For more on this, please refer to https://docs.gradle.org/9.1.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-
-BUILD FAILED in 22s
-16 actionable tasks: 1 executed, 15 up-to-date
+* Exception is:
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileDebugJavaWithJavac'.
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:135)
+	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:288)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:133)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:121)
+	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:41)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:45)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:355)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:342)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:338)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:84)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:338)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:327)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:47)
 [0m
-[0m$ [0mcat android/gradle.properties; echo "---settings"; cat android/settings.gradle; echo "---root .opencode.jsonc"; cat .opencode.jsonc; echo "---auto_fix.sh"; cat auto_fix.sh; echo "---monitor"; cat monitor_and_fix.sh
-org.gradle.jvmargs=-Xmx4g -Dfile.encoding=UTF-8
-android.useAndroidX=true
-android.nonTransitiveRClass=true
-android.enableJetifier=true
-org.gradle.parallel=true---settings
-pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
+[0m$ [0mcd /home/runner/work/mcJava/mcJava && grep -rn "MatchException" android/app/src/main/java 2>&1 | wc -l
+45
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava && grep -rn "default -> throw new IllegalStateException(\"MatchException" android/app/src/main/java 2>&1 | head -10
+android/app/src/main/java/net/minecraft/server/network/config/PrepareSpawnTask.java:81:         default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/server/commands/data/DataCommands.java:383:         default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/nbt/NbtOps.java:61:         default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/nbt/NbtOps.java:310:            default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/client/multiplayer/chat/report/AbuseReportSender.java:78:            default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/client/gui/screens/social/RemoteFriendListUpdateHandler.java:133:         default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/client/gui/screens/social/PlayerSocialManager.java:189:         default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/client/gui/screens/friends/FriendEntry.java:79:         default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/client/renderer/PostChainConfig.java:34:               default -> throw new IllegalStateException("MatchException: " + null, null);
+android/app/src/main/java/net/minecraft/client/resources/SkinManager.java:167:            default -> throw new IllegalStateException("MatchException: " + null, null);
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava/android/app/src/main/java/net/minecraft/server/network/config && cat PrepareSpawnTask.java | grep -B 30 -A 40 'default -> throw' | head -40
+.map(tag -> TagValueInput.create(reporter, this.server.registryAccess(), tag));
+         ServerPlayer.SavedPosition loadedPosition = loadedData.<ServerPlayer.SavedPosition>flatMap(tag -> tag.read(ServerPlayer.SavedPosition.MAP_CODEC))
+            .orElse(ServerPlayer.SavedPosition.EMPTY);
+         LevelData.RespawnData respawnData = this.server.getWorldData().overworldData().getRespawnData();
+         ServerLevel spawnLevel = loadedPosition.dimension().map(this.server::getLevel).orElseGet(() -> {
+            ServerLevel spawnDataLevel = this.server.getLevel(respawnData.dimension());
+            return spawnDataLevel != null ? spawnDataLevel : this.server.overworld();
+         });
+         CompletableFuture<Vec3> spawnPosition = loadedPosition.position()
+            .map(CompletableFuture::completedFuture)
+            .orElseGet(() -> PlayerSpawnFinder.findSpawn(spawnLevel, respawnData.pos()));
+         Vec2 spawnAngle = loadedPosition.rotation().orElse(new Vec2(respawnData.yaw(), respawnData.pitch()));
+         this.state = new PrepareSpawnTask.Preparing(spawnLevel, spawnPosition, spawnAngle);
+      }
+   }
 
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-        // Mojang's own Maven repo hosting com.mojang artifacts (authlib, brigadier,
-        // datafixerupper, blocklist, logging).
-        maven { url = uri('https://libraries.minecraft.net/') }
-    }
-}
+   @Override
+   public boolean tick() {
+      return switch (this.state) {
+         case null -> false;
+         case PrepareSpawnTask.Preparing preparing -> {
+            PrepareSpawnTask.Ready ready = preparing.tick();
+            if (ready != null) {
+               this.state = ready;
+               yield true;
+            } else {
+               yield false;
+            }
+         }
+         case PrepareSpawnTask.Ready ignored -> true;
+         default -> throw new IllegalStateException("MatchException: " + null, null);
+      };
+   }
 
-rootProject.name = "minecraft"
-include ':app'---root .opencode.jsonc
-{
-  "$schema": "https://opencode.ai/config.json",
-  "model": "opencode/big-pickle",
-  "mode": "build"
+   public ServerPlayer spawnPlayer(final Connection connection, final CommonListenerCookie cookie) {
+      if (this.state instanceof PrepareSpawnTask.Ready ready) {
+         return ready.spawn(connection, cookie);
+      } else {
+         throw new IllegalStateException("Player spawn was not ready");
+      }
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava && grep -rn "sealed class State" android/app/src/main/java/net/minecraft/server/network/config/PrepareSpawnTask.java
+(no output)
+[0m
+[0m$ [0mgrep -rn "State" android/app/src/main/java/net/minecraft/server/network/config/PrepareSpawnTask.java | head -5
+37:   private PrepareSpawnTask.@Nullable State state;
+81:         default -> throw new IllegalStateException("MatchException: " + null, null);
+89:         throw new IllegalStateException("Player spawn was not ready");
+112:   private final class Preparing implements PrepareSpawnTask.State {
+157:   private final class Ready implements PrepareSpawnTask.State {
+[0m
+[0m$ [0mtail -30 android/app/src/main/java/net/minecraft/server/network/config/PrepareSpawnTask.java
+public void keepAlive() {
+         this.spawnLevel.getChunkSource().addTicketWithRadius(TicketType.PLAYER_SPAWN, ChunkPos.containing(BlockPos.containing(this.spawnPosition)), 3);
+      }
+
+      public ServerPlayer spawn(final Connection connection, final CommonListenerCookie cookie) {
+         ChunkPos spawnChunk = ChunkPos.containing(BlockPos.containing(this.spawnPosition));
+         this.spawnLevel.waitForEntities(spawnChunk, 3);
+         ServerPlayer player = new ServerPlayer(PrepareSpawnTask.this.server, this.spawnLevel, cookie.gameProfile(), cookie.clientInformation());
+
+         try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(player.problemPath(), PrepareSpawnTask.LOGGER)) {
+            Optional<ValueInput> input = PrepareSpawnTask.this.server
+               .getPlayerList()
+               .loadPlayerData(PrepareSpawnTask.this.nameAndId)
+               .map(tag -> TagValueInput.create(reporter, PrepareSpawnTask.this.server.registryAccess(), tag));
+            input.ifPresent(player::load);
+            player.snapTo(this.spawnPosition, this.spawnAngle.x, this.spawnAngle.y);
+            PrepareSpawnTask.this.server.getPlayerList().placeNewPlayer(connection, player, cookie);
+            input.ifPresent(tag -> {
+               player.loadAndSpawnEnderPearls(tag);
+               player.loadAndSpawnParentVehicle(tag);
+            });
+            return player;
+         }
+      }
+   }
+
+   private sealed interface State permits PrepareSpawnTask.Preparing, PrepareSpawnTask.Ready {
+   }
 }
----auto_fix.sh
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava/android && cat build.gradle 2>&1 | head -30
+plugins {
+    id 'com.android.application' version '8.9.0' apply false
+}
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava/android && find . -name "build.gradle*" | xargs grep -l "MatchException" 2>&1 | head -2
+(no output)
+[0m
+[0m$ [0mgrep -rn "MatchException" /home/runner/work/mcJava/mcJava/android/build 2>&1 | head -5
+(no output)
+[0m
+[0m$ [0mcd /home/runner/work/mcJava/mcJava && ./auto_fix.sh 2>&1 | tail -60
+./auto_fix.sh: line 4: cd: /data/data/com.termux/files/home/minec: No such file or directory
+[0m
+[0m$ [0mcat /home/runner/work/mcJava/mcJava/auto_fix.sh 2>&1 | head -40
 #!/bin/bash
 set -e
 
@@ -407,77 +1000,8 @@ for i in $(seq 1 $MAX_ITERATIONS); do
     sleep 120
     continue
   fi
-  
-  if [ "$CONCLUSION" = "success" ]; then
-    echo "✅ Build succeeded! All done."
-    exit 0
-  fi
-  
-  if [ "$CONCLUSION" = "failure" ] && [ -n "$RUN_ID" ]; then
-    echo "❌ Build failed. Analyzing and fixing..."
-    get_failed_logs "$RUN_ID"
-    
-    # Create prompt for opencode
-    cat > /tmp/fix_prompt.txt << 'PROMPT'
-You are fixing compilation errors in mcJava (Minecraft Java port to Android).
-
-Task: Fix the compilation errors shown in the failed logs.
-
-Steps:
-1. Read /tmp/failed_logs.txt to understand the errors
-2. Identify the root cause - focus on the earliest errors
-3. Fix the code in android/app/src/main/java
-4. Make minimal, targeted fixes
-5. Commit and push with a descriptive message
-
-Use gh CLI if needed to understand context. Fix errors until they are resolved.
-PROMPT
-    
-    opencode --model opencode/big-pickle -p "$(cat /tmp/fix_prompt.txt)" --yes
-    echo "Fixes committed and pushed. Waiting for next build..."
-    sleep 60
-    continue
-  fi
-  
-  echo "No recent build or unknown state. Waiting..."
-  sleep 60
-done
-
-echo "Max iterations reached"
----monitor
-#!/bin/bash
-cd /data/data/com.termux/files/home/minec
-
-while true; do
-  # Check latest workflow run
-  LATEST=$(gh run list --limit 1 --json databaseId,status,conclusion,workflowName,headSha 2>/dev/null)
-  RUN_ID=$(echo "$LATEST" | jq -r '.[0].databaseId // empty')
-  STATUS=$(echo "$LATEST" | jq -r '.[0].status // empty')
-  CONCLUSION=$(echo "$LATEST" | jq -r '.[0].conclusion // empty')
-  
-  echo "$(date): Run=$RUN_ID Status=$STATUS Conclusion=$CONCLUSION"
-  
-  if [ "$STATUS" = "completed" ] && [ "$CONCLUSION" = "failure" ]; then
-    echo "Build failed. Triggering opencode fix..."
-    gh run view "$RUN_ID" --log-failed > /tmp/failed_logs.txt 2>&1
-    
-    opencode --model opencode/big-pickle -p "
-      Fix mcJava Android build errors.
-      
-      1. Read /tmp/failed_logs.txt for compilation errors
-      2. Find and fix the errors in android/app/src/main/java
-      3. Commit with message 'fix: auto-fix build errors'
-      4. Push to main
-    " --yes
-  elif [ "$STATUS" = "completed" ] && [ "$CONCLUSION" = "success" ]; then
-    echo "Build successful!"
-    break
-  fi
-  
-  sleep 60
-done
 [0m
-[0m$ [0mcat javac.20261009_122832.args; echo "---app args"; cat android/app/javac.20261009_122249.args; echo "---"; ls /usr/local/lib/android/sdk/platforms/ 2>/dev/null; echo "--- build-tools"; ls /usr/local/lib/android/sdk/build-tools/ 2>/dev/null; echo "--- ndk"; ls /usr/local/lib/android/sdk/ndk/ 2>/dev/null
+[0m$ [0mcd /home/runner/work/mcJava/mcJava && cat javac.20261009_122832.args 2>&1 | head -40
 -source
 21
 -target
@@ -485,44 +1009,7 @@ done
 --system
 /home/runner/.gradle/caches/9.1.0/transforms/3376636dc2a9cdf88df33c6de4c7f6cd/transformed/output/jdkImage
 /tmp/test_match.java
----app args
-@/home/runner/work/mcJava/mcJava/android/app/build/tmp/compileDebugJavaWithJavac/java-compiler-args.txt
----
-android-34
-android-34-ext10
-android-34-ext11
-android-34-ext12
-android-34-ext8
-android-35
-android-35-ext14
-android-35-ext15
-android-36
-android-36-ext18
-android-36-ext19
-android-36.1
-android-37.0
-android-37.1
-android-37.2
-android-37.2-beta1
-android-37.2-beta2
-android-37.2-beta3
---- build-tools
-34.0.0
-35.0.0
-35.0.1
-36.0.0
-36.1.0
-37.0.0
---- ndk
-27.3.13750724
-29.0.14206865
-30.0.16248370
 [0m
 [93m[1m! [0mpermission requested: external_directory (/tmp/*); auto-rejecting
-[0m✗ [0mcd /tmp && cat > TestMatch.java <<'EOF'
-public class TestMatch {
-  public static void main(String[] a) { System.out.println(java.lang.MatchException.class); }
-}
-EOF
-javac TestMatch.java && echo "MatchException present in JDK"; echo "---android.jar"; unzip -l /usr/local/lib/android/sdk/platforms/android-35/android.jar 2>/dev/null | grep -i MatchException failed
+[0m✗ [0mcat /tmp/test_match.java 2>&1 | head -20 failed
 [91m[1mError: [0mThe user rejected permission to use this specific tool call.
