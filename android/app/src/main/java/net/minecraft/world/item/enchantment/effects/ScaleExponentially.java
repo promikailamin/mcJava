@@ -8,8 +8,8 @@ import net.minecraft.world.item.enchantment.LevelBasedValue;
 public record ScaleExponentially(LevelBasedValue base, LevelBasedValue exponent) implements EnchantmentValueEffect {
    public static final MapCodec<ScaleExponentially> CODEC = RecordCodecBuilder.mapCodec(
       i -> i.group(
-            LevelBasedValue.CodecHolder.CODEC.fieldOf("base").forGetter(ScaleExponentially::base),
-            LevelBasedValue.CodecHolder.CODEC.fieldOf("exponent").forGetter(ScaleExponentially::exponent)
+            LevelBasedValue.CODEC.fieldOf("base").forGetter(ScaleExponentially::base),
+            LevelBasedValue.CODEC.fieldOf("exponent").forGetter(ScaleExponentially::exponent)
          )
          .apply(i, ScaleExponentially::new)
    );

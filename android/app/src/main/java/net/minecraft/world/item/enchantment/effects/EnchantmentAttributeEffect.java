@@ -22,7 +22,7 @@ public record EnchantmentAttributeEffect(Identifier id, Holder<Attribute> attrib
       i -> i.group(
             Identifier.CODEC.fieldOf("id").forGetter(EnchantmentAttributeEffect::id),
             Attribute.CODEC.fieldOf("attribute").forGetter(EnchantmentAttributeEffect::attribute),
-            LevelBasedValue.CodecHolder.CODEC.fieldOf("amount").forGetter(EnchantmentAttributeEffect::amount),
+            LevelBasedValue.CODEC.fieldOf("amount").forGetter(EnchantmentAttributeEffect::amount),
             AttributeModifier.Operation.CODEC.fieldOf("operation").forGetter(EnchantmentAttributeEffect::operation)
          )
          .apply(i, EnchantmentAttributeEffect::new)

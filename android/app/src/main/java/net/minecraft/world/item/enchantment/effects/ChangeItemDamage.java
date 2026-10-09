@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 
 public record ChangeItemDamage(LevelBasedValue amount) implements EnchantmentEntityEffect {
    public static final MapCodec<ChangeItemDamage> CODEC = RecordCodecBuilder.mapCodec(
-      i -> i.group(LevelBasedValue.CodecHolder.CODEC.fieldOf("amount").forGetter(e -> e.amount)).apply(i, ChangeItemDamage::new)
+      i -> i.group(LevelBasedValue.CODEC.fieldOf("amount").forGetter(e -> e.amount)).apply(i, ChangeItemDamage::new)
    );
 
    @Override

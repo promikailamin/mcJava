@@ -24,10 +24,10 @@ public record ApplyMobEffect(
    public static final MapCodec<ApplyMobEffect> CODEC = RecordCodecBuilder.mapCodec(
       i -> i.group(
             RegistryCodecs.holderSet(Registries.MOB_EFFECT).fieldOf("to_apply").forGetter(ApplyMobEffect::toApply),
-            LevelBasedValue.CodecHolder.CODEC.fieldOf("min_duration").forGetter(ApplyMobEffect::minDuration),
-            LevelBasedValue.CodecHolder.CODEC.fieldOf("max_duration").forGetter(ApplyMobEffect::maxDuration),
-            LevelBasedValue.CodecHolder.CODEC.fieldOf("min_amplifier").forGetter(ApplyMobEffect::minAmplifier),
-            LevelBasedValue.CodecHolder.CODEC.fieldOf("max_amplifier").forGetter(ApplyMobEffect::maxAmplifier)
+            LevelBasedValue.CODEC.fieldOf("min_duration").forGetter(ApplyMobEffect::minDuration),
+            LevelBasedValue.CODEC.fieldOf("max_duration").forGetter(ApplyMobEffect::maxDuration),
+            LevelBasedValue.CODEC.fieldOf("min_amplifier").forGetter(ApplyMobEffect::minAmplifier),
+            LevelBasedValue.CODEC.fieldOf("max_amplifier").forGetter(ApplyMobEffect::maxAmplifier)
          )
          .apply(i, ApplyMobEffect::new)
    );

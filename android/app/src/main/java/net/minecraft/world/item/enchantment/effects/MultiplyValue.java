@@ -7,7 +7,7 @@ import net.minecraft.world.item.enchantment.LevelBasedValue;
 
 public record MultiplyValue(LevelBasedValue factor) implements EnchantmentValueEffect {
    public static final MapCodec<MultiplyValue> CODEC = RecordCodecBuilder.mapCodec(
-      i -> i.group(LevelBasedValue.CodecHolder.CODEC.fieldOf("factor").forGetter(MultiplyValue::factor)).apply(i, MultiplyValue::new)
+      i -> i.group(LevelBasedValue.CODEC.fieldOf("factor").forGetter(MultiplyValue::factor)).apply(i, MultiplyValue::new)
    );
 
    @Override

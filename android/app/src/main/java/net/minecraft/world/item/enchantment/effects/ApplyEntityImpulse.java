@@ -18,7 +18,7 @@ public record ApplyEntityImpulse(Vec3 direction, Vec3 coordinateScale, LevelBase
       i -> i.group(
             Vec3.CODEC.fieldOf("direction").forGetter(ApplyEntityImpulse::direction),
             Vec3.CODEC.fieldOf("coordinate_scale").forGetter(ApplyEntityImpulse::coordinateScale),
-            LevelBasedValue.CodecHolder.CODEC.fieldOf("magnitude").forGetter(ApplyEntityImpulse::magnitude)
+            LevelBasedValue.CODEC.fieldOf("magnitude").forGetter(ApplyEntityImpulse::magnitude)
          )
          .apply(i, ApplyEntityImpulse::new)
    );

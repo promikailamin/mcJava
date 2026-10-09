@@ -7,7 +7,7 @@ import net.minecraft.world.item.enchantment.LevelBasedValue;
 
 public record SetValue(LevelBasedValue value) implements EnchantmentValueEffect {
    public static final MapCodec<SetValue> CODEC = RecordCodecBuilder.mapCodec(
-      i -> i.group(LevelBasedValue.CodecHolder.CODEC.fieldOf("value").forGetter(SetValue::value)).apply(i, SetValue::new)
+      i -> i.group(LevelBasedValue.CODEC.fieldOf("value").forGetter(SetValue::value)).apply(i, SetValue::new)
    );
 
    @Override

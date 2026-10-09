@@ -10,7 +10,7 @@ import net.minecraft.world.phys.Vec3;
 
 public record Ignite(LevelBasedValue duration) implements EnchantmentEntityEffect {
    public static final MapCodec<Ignite> CODEC = RecordCodecBuilder.mapCodec(
-      i -> i.group(LevelBasedValue.CodecHolder.CODEC.fieldOf("duration").forGetter(e -> e.duration)).apply(i, Ignite::new)
+      i -> i.group(LevelBasedValue.CODEC.fieldOf("duration").forGetter(e -> e.duration)).apply(i, Ignite::new)
    );
 
    @Override
