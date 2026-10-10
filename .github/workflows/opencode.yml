@@ -63,7 +63,7 @@ jobs:
                   {
                     "$schema": "https://opencode.ai/config.json",
                     "permission": "allow",
-                    "model": "opencode/big-pickle"
+                    "model": "opencode/nemotron-3-ultra-free"
                   }
                   JSON
 
@@ -202,14 +202,14 @@ jobs:
                       printf '%s' "$session_id" > "$session_id_file"
 
                       opencode run \
-                          --model opencode/big-pickle \
+                          --model opencode/nemotron-3-ultra-free \
                           --session "$session_id" \
                           "$prompt" 2>&1 | tee opencode-output.txt
                   else
                       echo "Starting a new session."
 
                       opencode run \
-                          --model opencode/big-pickle \
+                          --model opencode/nemotron-3-ultra-free \
                           --format json \
                           "$prompt" 2>&1 | tee opencode-output.txt
                   fi
