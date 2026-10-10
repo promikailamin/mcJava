@@ -15,7 +15,8 @@ public class PathfindingContext {
 
    public PathfindingContext(final CollisionGetter level, final Mob mob) {
       this.level = level;
-      if (mob.level() instanceof ServerLevel serverLevel) {
+      if (mob.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) mob.level();
          this.cache = serverLevel.getPathTypeCache();
       } else {
          this.cache = null;

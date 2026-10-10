@@ -16,7 +16,7 @@ public class LootItemFunctions {
       () -> Codec.either(TYPED_CODEC, SequenceFunction.INLINE_CODEC)
          .xmap(
             typedOrList -> (LootItemFunction)typedOrList.map(f -> f, f -> f),
-            function -> function instanceof SequenceFunction sequence && sequence.canUseInlineCodec() ? Either.right(sequence) : Either.left(function)
+            function -> function instanceof SequenceFunction && sequence.canUseInlineCodec() ? Either.right(sequence) : Either.left(function)
          )
    );
    public static final Codec<Holder<LootItemFunction>> CODEC = RegistryCodecs.holder(Registries.ITEM_MODIFIER, DIRECT_CODEC);

@@ -34,7 +34,8 @@ public record ApplyMobEffect(
 
    @Override
    public void apply(final ServerLevel serverLevel, final int enchantmentLevel, final EnchantedItemInUse item, final Entity entity, final Vec3 position) {
-      if (entity instanceof LivingEntity living) {
+      if (entity instanceof LivingEntity) {
+          LivingEntity living = (LivingEntity) entity;
          RandomSource random = living.getRandom();
          Optional<Holder<MobEffect>> selected = this.toApply.getRandomElement(random);
          if (selected.isPresent()) {

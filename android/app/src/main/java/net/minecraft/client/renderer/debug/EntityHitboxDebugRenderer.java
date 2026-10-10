@@ -98,7 +98,8 @@ public class EntityHitboxDebugRenderer implements DebugRenderer.SimpleDebugRende
          );
       }
 
-      if (entity instanceof EnderDragon dragon) {
+      if (entity instanceof EnderDragon) {
+          EnderDragon dragon = (EnderDragon) entity;
          for (EnderDragonPart subEntity : dragon.getSubEntities()) {
             Vec3 latestSubPosition = subEntity.position();
             Vec3 currentSubPosition = subEntity.getPosition(partialTicks);

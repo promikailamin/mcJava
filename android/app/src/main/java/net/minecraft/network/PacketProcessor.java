@@ -50,7 +50,7 @@ public class PacketProcessor implements AutoCloseable {
             try {
                this.packet.handle(this.listener);
             } catch (Exception e) {
-               if (e instanceof ReportedException re && re.getCause() instanceof OutOfMemoryError) {
+               if (e instanceof ReportedException && re.getCause() instanceof OutOfMemoryError) {
                   throw PacketUtils.makeReportedException(e, this.packet, this.listener);
                }
 

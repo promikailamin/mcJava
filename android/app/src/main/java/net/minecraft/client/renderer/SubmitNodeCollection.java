@@ -176,8 +176,7 @@ public class SubmitNodeCollection implements OrderedSubmitNodeCollector {
    }
 
    private static boolean canRenderAsSolid(final TextFeatureRenderer.Content content) {
-      return content instanceof TextFeatureRenderer.Content.Text text
-         && ARGB.alpha(text.color()) == 255
+      return content instanceof TextFeatureRenderer.Content.Text && ARGB.alpha(text.color()) == 255
          && ARGB.alpha(text.backgroundColor()) == 0
          && RenderSystem.isRenderingLevel;
    }

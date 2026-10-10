@@ -69,10 +69,11 @@ public class LlamaSpit extends Projectile {
    @Override
    protected void onHitEntity(final EntityHitResult hitResult) {
       super.onHitEntity(hitResult);
-      if (this.getOwner() instanceof LivingEntity livingOwner) {
+      if (this.getOwner() instanceof LivingEntity) {
+          LivingEntity livingOwner = (LivingEntity) this.getOwner();
          Entity target = hitResult.getEntity();
          DamageSource damageSource = this.damageSources().spit(this, livingOwner);
-         if (this.level() instanceof ServerLevel serverLevel && target.hurtServer(serverLevel, damageSource, 1.0F)) {
+         if (this.level() instanceof ServerLevel && target.hurtServer(serverLevel, damageSource, 1.0F)) {
             EnchantmentHelper.doPostAttackEffects(serverLevel, target, damageSource);
          }
       }

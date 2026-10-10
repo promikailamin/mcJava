@@ -121,7 +121,8 @@ public class SculkSensorBlockEntity extends BlockEntity implements GameEventList
             int eventFrequency = VibrationSystem.getGameEventFrequency(event);
             SculkSensorBlockEntity.this.setLastVibrationFrequency(eventFrequency);
             int calculatedPower = VibrationSystem.getRedstoneStrengthForDistance(receivingDistance, this.getListenerRadius());
-            if (state.getBlock() instanceof SculkSensorBlock sculkSensorBlock) {
+            if (state.getBlock() instanceof SculkSensorBlock) {
+                SculkSensorBlock sculkSensorBlock = (SculkSensorBlock) state.getBlock();
                sculkSensorBlock.activate(sourceEntity, level, this.blockPos, state, calculatedPower, eventFrequency);
             }
          }

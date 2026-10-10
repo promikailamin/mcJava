@@ -19,7 +19,8 @@ public class BlindnessFogEnvironment extends MobEffectFogEnvironment {
 
    @Override
    public void setupFog(final FogData fog, final Camera camera, final ClientLevel level, final float renderDistance, final DeltaTracker deltaTracker) {
-      if (camera.entity() instanceof LivingEntity livingEntity) {
+      if (camera.entity() instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) camera.entity();
          MobEffectInstance effect = livingEntity.getEffect(this.getMobEffect());
          if (effect != null) {
             float distance = effect.isInfiniteDuration() ? 5.0F : Mth.lerp(Math.min(1.0F, effect.getDuration() / 20.0F), renderDistance, 5.0F);

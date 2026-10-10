@@ -29,7 +29,8 @@ public class CaveSpider extends Spider {
    @Override
    public boolean doHurtTarget(final ServerLevel level, final Entity target) {
       if (super.doHurtTarget(level, target)) {
-         if (target instanceof LivingEntity livingEntity) {
+         if (target instanceof LivingEntity) {
+             LivingEntity livingEntity = (LivingEntity) target;
             int poisonTime = 0;
             if (this.level().getDifficulty() == Difficulty.NORMAL) {
                poisonTime = 7;

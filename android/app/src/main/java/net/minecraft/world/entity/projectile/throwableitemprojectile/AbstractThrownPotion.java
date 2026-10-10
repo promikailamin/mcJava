@@ -69,7 +69,8 @@ public abstract class AbstractThrownPotion extends ThrowableItemProjectile {
    @Override
    protected void onHit(final HitResult hitResult) {
       super.onHit(hitResult);
-      if (this.level() instanceof ServerLevel level) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.level();
          ItemStack potionItemStack = this.getItem();
          PotionContents potion = potionItemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
          this.affectEntitiesAround(level, potion);

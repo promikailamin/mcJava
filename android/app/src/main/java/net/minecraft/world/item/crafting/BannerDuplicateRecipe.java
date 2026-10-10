@@ -42,7 +42,7 @@ public class BannerDuplicateRecipe extends CustomRecipe {
       for (int slot = 0; slot < input.size(); slot++) {
          ItemStack itemStack = input.getItem(slot);
          if (!itemStack.isEmpty()) {
-            if (!this.banner.test(itemStack) || !(itemStack.getItem() instanceof BannerItem banner)) {
+            if (!this.banner.test(itemStack) || !(itemStack.getItem() instanceof BannerItem)) {
                return false;
             }
 

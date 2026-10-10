@@ -91,7 +91,8 @@ public class RealmsWorldUpload {
             } catch (RealmsUploadException e) {
                throw e;
             } catch (Throwable e) {
-               if (e instanceof Error error) {
+               if (e instanceof Error) {
+                   Error error = (Error) e;
                   throw error;
                }
 

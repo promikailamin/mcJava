@@ -30,7 +30,7 @@ public class TextureUtil {
 
    public static ByteBuffer readResource(final InputStream inputStream) throws IOException {
       ReadableByteChannel channel = Channels.newChannel(inputStream);
-      return channel instanceof SeekableByteChannel seekableChannel ? readResource(channel, (int)seekableChannel.size() + 1) : readResource(channel, 8192);
+      return channel instanceof SeekableByteChannel ? readResource(channel, (int)((SeekableByteChannel) channel).size() + 1)  : readResource(channel, 8192);
    }
 
    private static ByteBuffer readResource(final ReadableByteChannel channel, final int expectedSize) throws IOException {

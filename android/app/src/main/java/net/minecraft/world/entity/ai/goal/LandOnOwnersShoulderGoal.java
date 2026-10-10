@@ -13,7 +13,7 @@ public class LandOnOwnersShoulderGoal extends Goal {
 
    @Override
    public boolean canUse() {
-      if (!(this.entity.getOwner() instanceof ServerPlayer owner)) {
+      if (!(this.entity.getOwner() instanceof ServerPlayer)) {
          return false;
       } else {
          boolean ownerThatCanBeSatOn = !owner.isSpectator() && !owner.getAbilities().flying && !owner.isInWater() && !owner.isInPowderSnow;
@@ -34,7 +34,7 @@ public class LandOnOwnersShoulderGoal extends Goal {
    @Override
    public void tick() {
       if (!this.isSittingOnShoulder && !this.entity.isInSittingPose() && !this.entity.isLeashed()) {
-         if (this.entity.getOwner() instanceof ServerPlayer owner && this.entity.getBoundingBox().intersects(owner.getBoundingBox())) {
+         if (this.entity.getOwner() instanceof ServerPlayer && this.entity.getBoundingBox().intersects(owner.getBoundingBox())) {
             this.isSittingOnShoulder = this.entity.setEntityOnShoulder(owner);
          }
       }

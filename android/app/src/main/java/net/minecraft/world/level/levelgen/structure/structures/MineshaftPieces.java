@@ -423,7 +423,8 @@ public class MineshaftPieces {
                   if (chunkBB.isInside(pos) && this.isInterior(level, 1, 0, newZ, chunkBB)) {
                      this.hasPlacedSpider = true;
                      level.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 2);
-                     if (level.getBlockEntity(pos) instanceof SpawnerBlockEntity spawner) {
+                     if (level.getBlockEntity(pos) instanceof SpawnerBlockEntity) {
+                         SpawnerBlockEntity spawner = (SpawnerBlockEntity) level.getBlockEntity(pos);
                         spawner.setEntityId(EntityTypes.CAVE_SPIDER, random);
                      }
                   }

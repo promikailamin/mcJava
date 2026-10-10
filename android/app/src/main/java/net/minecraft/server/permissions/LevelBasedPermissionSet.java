@@ -12,7 +12,8 @@ public interface LevelBasedPermissionSet extends PermissionSet {
 
    @Override
    default boolean hasPermission(final Permission permission) {
-      if (permission instanceof Permission.HasCommandLevel levelCheck) {
+      if (permission instanceof Permission.HasCommandLevel) {
+          Permission.HasCommandLevel levelCheck = (Permission.HasCommandLevel) permission;
          return this.level().isEqualOrHigherThan(levelCheck.level());
       } else {
          return permission.equals(Permissions.COMMANDS_ENTITY_SELECTORS) ? this.level().isEqualOrHigherThan(PermissionLevel.GAMEMASTERS) : false;
@@ -21,7 +22,8 @@ public interface LevelBasedPermissionSet extends PermissionSet {
 
    @Override
    default PermissionSet union(final PermissionSet other) {
-      if (other instanceof LevelBasedPermissionSet otherSet) {
+      if (other instanceof LevelBasedPermissionSet) {
+          LevelBasedPermissionSet otherSet = (LevelBasedPermissionSet) other;
          return this.level().isEqualOrHigherThan(otherSet.level()) ? otherSet : this;
       } else {
          return PermissionSet.super.union(other);

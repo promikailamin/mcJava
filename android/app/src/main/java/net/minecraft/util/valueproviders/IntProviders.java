@@ -13,7 +13,7 @@ public class IntProviders {
    );
    public static final Codec<IntProvider> CODEC = CONSTANT_OR_DISPATCH_CODEC.xmap(
       either -> (IntProvider)either.map(ConstantInt::of, f -> f),
-      f -> f instanceof ConstantInt constantInt ? Either.left(constantInt.value()) : Either.right(f)
+      f -> f instanceof ConstantInt ? Either.left(((ConstantInt) f).value())  : Either.right(f)
    );
    public static final Codec<IntProvider> NON_NEGATIVE_CODEC = codec(0, Integer.MAX_VALUE);
    public static final Codec<IntProvider> POSITIVE_CODEC = codec(1, Integer.MAX_VALUE);

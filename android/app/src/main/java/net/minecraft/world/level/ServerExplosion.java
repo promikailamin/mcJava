@@ -192,15 +192,14 @@ public class ServerExplosion implements Explosion {
                      entity.hurtServer(this.level, this.damageSource, this.damageCalculator.getEntityDamageAmount(this, entity, exposure));
                   }
 
-                  double knockbackResistance = entity instanceof LivingEntity livingEntity
-                     ? livingEntity.getAttributeValue(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE)
-                     : 0.0;
+                  double knockbackResistance = entity instanceof LivingEntity ? getAttributeValue(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE) : 0.0;
                   double knockbackPower = (1.0 - dist) * exposure * knockbackMultiplier * (1.0 - knockbackResistance);
                   Vec3 knockback = direction.scale(knockbackPower);
                   entity.pushFromExplosion(knockback);
-                  if (entity.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entity instanceof Projectile projectile) {
+                  if (entity.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entity instanceof Projectile) {
+                      Projectile projectile = (Projectile) entity.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entity;
                      projectile.setOwner(this.damageSource.getEntity());
-                  } else if (entity instanceof Player player && !player.isSpectator() && (!player.isCreative() || !player.getAbilities().flying)) {
+                  } else if (entity instanceof Player && !player.isSpectator() && (!player.isCreative() || !player.getAbilities().flying)) {
                      this.hitPlayers.put(player, knockback);
                   }
 

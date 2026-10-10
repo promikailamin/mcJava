@@ -102,7 +102,8 @@ public class FunctionCommand {
 
    private static CompoundTag getArgumentTag(final NbtPathArgument.NbtPath path, final DataAccessor accessor) throws CommandSyntaxException {
       Tag tag = DataCommands.getSingleTag(path, accessor);
-      if (tag instanceof CompoundTag compoundTag) {
+      if (tag instanceof CompoundTag) {
+          CompoundTag compoundTag = (CompoundTag) tag;
          return compoundTag;
       } else {
          throw ERROR_ARGUMENT_NOT_COMPOUND.create(tag.getType().getName());

@@ -20,7 +20,8 @@ public class DebugEntryLocalDifficulty implements DebugScreenEntry {
    ) {
       Minecraft minecraft = Minecraft.getInstance();
       Entity entity = minecraft.getCameraEntity();
-      if (entity != null && serverChunk != null && serverOrClientLevel instanceof ServerLevel serverLevel) {
+      if (entity != null && serverChunk != null && serverOrClientLevel instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) entity != null && serverChunk != null && serverOrClientLevel;
          BlockPos feetPos = entity.blockPosition();
          if (serverLevel.isInsideBuildHeight(feetPos.getY())) {
             float moonBrightness = serverLevel.getMoonBrightness(feetPos);

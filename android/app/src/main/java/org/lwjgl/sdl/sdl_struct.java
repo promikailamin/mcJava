@@ -38,22 +38,22 @@ public abstract class sdl_struct {
 
     protected int int_(String name) {
         Object v = fields.get(prefix + name);
-        return v instanceof Number n ? n.intValue() : 0;
+        return v instanceof Number ? intValue() : 0;
     }
 
     protected double double_(String name) {
         Object v = fields.get(prefix + name);
-        return v instanceof Number n ? n.doubleValue() : 0d;
+        return v instanceof Number ? doubleValue() : 0d;
     }
 
     protected float float_(String name) {
         Object v = fields.get(prefix + name);
-        return v instanceof Number n ? n.floatValue() : 0f;
+        return v instanceof Number ? floatValue() : 0f;
     }
 
     protected String string_(String name) {
         Object v = fields.get(prefix + name);
-        return v instanceof String s ? s : null;
+        return v instanceof String ? s  : null;
     }
 
     protected byte[] bytes_(String name) {

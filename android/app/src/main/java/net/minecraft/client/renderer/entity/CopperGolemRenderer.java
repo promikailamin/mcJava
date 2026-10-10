@@ -66,7 +66,8 @@ public class CopperGolemRenderer extends MobRenderer<CopperGolem, CopperGolemRen
       state.interactionDropItem.copyFrom(entity.getInteractionDropItemAnimationState());
       state.interactionDropNoItem.copyFrom(entity.getInteractionDropNoItemAnimationState());
       ItemStack antennaItem = entity.getItemBySlot(CopperGolem.EQUIPMENT_SLOT_ANTENNA);
-      if (antennaItem.getItem() instanceof BlockItem blockItem) {
+      if (antennaItem.getItem() instanceof BlockItem) {
+          BlockItem blockItem = (BlockItem) antennaItem.getItem();
          BlockItemStateProperties blockItemState = antennaItem.getOrDefault(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY);
          BlockState blockState = blockItemState.apply(blockItem.getBlock().defaultBlockState());
          this.blockModelResolver.update(state.blockOnAntenna, blockState, BLOCK_DISPLAY_CONTEXT);

@@ -43,7 +43,8 @@ public class UnconfiguredPipelineHandler {
       }
 
       public void write(final ChannelHandlerContext ctx, final Object msg, final ChannelPromise promise) throws Exception {
-         if (msg instanceof UnconfiguredPipelineHandler.InboundConfigurationTask configurationTask) {
+         if (msg instanceof UnconfiguredPipelineHandler.InboundConfigurationTask) {
+             UnconfiguredPipelineHandler.InboundConfigurationTask configurationTask = (UnconfiguredPipelineHandler.InboundConfigurationTask) msg;
             try {
                configurationTask.run(ctx);
             } finally {
@@ -76,7 +77,8 @@ public class UnconfiguredPipelineHandler {
             throw new EncoderException("Pipeline has no outbound protocol configured, can't process packet " + msg);
          }
 
-         if (msg instanceof UnconfiguredPipelineHandler.OutboundConfigurationTask configurationTask) {
+         if (msg instanceof UnconfiguredPipelineHandler.OutboundConfigurationTask) {
+             UnconfiguredPipelineHandler.OutboundConfigurationTask configurationTask = (UnconfiguredPipelineHandler.OutboundConfigurationTask) msg;
             try {
                configurationTask.run(ctx);
             } finally {

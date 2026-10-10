@@ -172,7 +172,8 @@ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T>, 
       T entity = this.create(level, postSpawnConfig, spawnPos, spawnReason, tryMoveDown, movedUp);
       if (entity != null) {
          level.addFreshEntityWithPassengers(entity);
-         if (entity instanceof Mob mob) {
+         if (entity instanceof Mob) {
+             Mob mob = (Mob) entity;
             mob.playAmbientSound();
          }
       }
@@ -202,7 +203,8 @@ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T>, 
       }
 
       entity.snapTo(spawnPos.getX() + 0.5, spawnPos.getY() + yOff, spawnPos.getZ() + 0.5, Mth.wrapDegrees(level.getRandom().nextFloat() * 360.0F), 0.0F);
-      if (entity instanceof Mob mob) {
+      if (entity instanceof Mob) {
+          Mob mob = (Mob) entity;
          mob.yHeadRot = mob.getYRot();
          mob.yBodyRot = mob.getYRot();
          mob.finalizeSpawn(level, level.getCurrentDifficultyAt(mob.blockPosition()), spawnReason, null);
@@ -231,7 +233,7 @@ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T>, 
       MinecraftServer server = level.getServer();
       if (server != null && entity != null) {
          if (entity.getType() == entityData.type()) {
-            if (level.isClientSide() || !entity.getType().onlyOpCanSetNbt() || user instanceof Player player && server.getPlayerList().isOp(player.nameAndId())
+            if (level.isClientSide() || !entity.getType().onlyOpCanSetNbt() || user instanceof Player && server.getPlayerList().isOp(player.nameAndId())
                )
              {
                entityData.loadInto(entity);

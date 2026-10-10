@@ -322,7 +322,7 @@ public class PiglinAi {
       }
 
       Entity vehicle = body.getVehicle();
-      return vehicle instanceof Piglin riddenPiglin && riddenPiglin.isBaby() || vehicle instanceof Hoglin riddenHoglin && riddenHoglin.isBaby();
+      return vehicle instanceof Piglin && riddenPiglin.isBaby() || vehicle instanceof Hoglin && riddenHoglin.isBaby();
    }
 
    protected static void pickUpItem(final ServerLevel level, final Piglin body, final ItemEntity itemEntity) {
@@ -476,7 +476,7 @@ public class PiglinAi {
    }
 
    private static boolean wantsToStopRiding(final Piglin body, final Entity entityBeingRidden) {
-      return !(entityBeingRidden instanceof Mob mobBeingRidden)
+      return !(entityBeingRidden instanceof Mob)
          ? false
          : !mobBeingRidden.isBaby()
             || !mobBeingRidden.isAlive()
@@ -665,7 +665,7 @@ public class PiglinAi {
 
    protected static void broadcastAngerTarget(final ServerLevel level, final AbstractPiglin body, final LivingEntity target) {
       getAdultPiglins(body).forEach(piglin -> {
-         if (!(target instanceof Hoglin hoglin && (!piglin.canHunt() || !hoglin.canBeHunted()))) {
+         if (!(target instanceof Hoglin && (!piglin.canHunt() || !hoglin.canBeHunted()))) {
             setAngerTargetIfCloserThanCurrent(level, piglin, target);
          }
       });
@@ -724,7 +724,8 @@ public class PiglinAi {
 
    private static void broadcastRetreat(final Piglin body, final LivingEntity target) {
       getVisibleAdultPiglins(body).forEach(abstractPiglin -> {
-         if (abstractPiglin instanceof Piglin piglin) {
+         if (abstractPiglin instanceof Piglin) {
+             Piglin piglin = (Piglin) abstractPiglin;
             retreatFromNearestTarget(piglin, target);
          }
       });
@@ -852,7 +853,7 @@ public class PiglinAi {
       List<AbstractPiglin> adultPiglins = new ArrayList<>();
 
       for (LivingEntity entity : livingEntities) {
-         if (entity instanceof AbstractPiglin piglin && piglin.isAdult()) {
+         if (entity instanceof AbstractPiglin && piglin.isAdult()) {
             adultPiglins.add(piglin);
          }
       }

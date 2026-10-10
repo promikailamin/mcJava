@@ -83,7 +83,8 @@ public class PrepareSpawnTask implements ConfigurationTask {
    }
 
    public ServerPlayer spawnPlayer(final Connection connection, final CommonListenerCookie cookie) {
-      if (this.state instanceof PrepareSpawnTask.Ready ready) {
+      if (this.state instanceof PrepareSpawnTask.Ready) {
+          PrepareSpawnTask.Ready ready = (PrepareSpawnTask.Ready) this.state;
          return ready.spawn(connection, cookie);
       } else {
          throw new IllegalStateException("Player spawn was not ready");
@@ -91,13 +92,15 @@ public class PrepareSpawnTask implements ConfigurationTask {
    }
 
    public void keepAlive() {
-      if (this.state instanceof PrepareSpawnTask.Ready ready) {
+      if (this.state instanceof PrepareSpawnTask.Ready) {
+          PrepareSpawnTask.Ready ready = (PrepareSpawnTask.Ready) this.state;
          ready.keepAlive();
       }
    }
 
    public void close() {
-      if (this.state instanceof PrepareSpawnTask.Preparing preparing) {
+      if (this.state instanceof PrepareSpawnTask.Preparing) {
+          PrepareSpawnTask.Preparing preparing = (PrepareSpawnTask.Preparing) this.state;
          preparing.cancel();
       }
 

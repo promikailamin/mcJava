@@ -264,7 +264,8 @@ public abstract class FlowingFluid extends Fluid {
    protected abstract boolean canConvertToSource(ServerLevel level);
 
    protected void spreadTo(final LevelAccessor level, final BlockPos pos, final BlockState state, final Direction direction, final FluidState target) {
-      if (state.getBlock() instanceof LiquidBlockContainer container) {
+      if (state.getBlock() instanceof LiquidBlockContainer) {
+          LiquidBlockContainer container = (LiquidBlockContainer) state.getBlock();
          container.placeLiquid(level, pos, state, target);
       } else {
          if (!state.isAir()) {
@@ -414,7 +415,7 @@ public abstract class FlowingFluid extends Fluid {
    }
 
    private static boolean canHoldSpecificFluid(final BlockGetter level, final BlockPos pos, final BlockState state, final Fluid newFluid) {
-      return state.getBlock() instanceof LiquidBlockContainer container ? container.canPlaceLiquid(null, level, pos, state, newFluid) : true;
+      return state.getBlock() instanceof LiquidBlockContainer ? canPlaceLiquid(null, level, pos, state, newFluid) : true;
    }
 
    protected abstract int getDropOff(LevelReader level);
@@ -474,7 +475,7 @@ public abstract class FlowingFluid extends Fluid {
    private record BlockStatePairKey(BlockState first, BlockState second, Direction direction) {
       @Override
       public boolean equals(final Object o) {
-         return o instanceof FlowingFluid.BlockStatePairKey that && this.first == that.first && this.second == that.second && this.direction == that.direction;
+         return o instanceof FlowingFluid.BlockStatePairKey && this.first == that.first && this.second == that.second && this.direction == that.direction;
       }
 
       @Override

@@ -85,7 +85,8 @@ public class BlockItem extends Item {
          updateCustomBlockEntityTag(level, player, pos, itemStack);
          updateBlockEntityComponents(level, pos, itemStack);
          placedState.getBlock().setPlacedBy(level, pos, placedState, player, itemStack);
-         if (player instanceof ServerPlayer serverPlayer) {
+         if (player instanceof ServerPlayer) {
+             ServerPlayer serverPlayer = (ServerPlayer) player;
             CriteriaTriggers.PLACED_BLOCK.trigger(serverPlayer, pos, itemStack);
          }
       }

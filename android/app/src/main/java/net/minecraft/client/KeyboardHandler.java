@@ -467,7 +467,7 @@ public class KeyboardHandler {
          }
 
          if (action != 1
-            || screen instanceof KeyBindsScreen keyBindsScreen && keyBindsScreen.lastKeySelection > Util.getMillis() - 20L
+            || screen instanceof KeyBindsScreen && keyBindsScreen.lastKeySelection > Util.getMillis() - 20L
             || !this.minecraft.handleGlobalKeyPress(InputConstants.getKey(event), event.hasControlDownWithQuirk())) {
             if (action != 0) {
                boolean hasNoEditboxFocused = screen == null || !(screen.getFocused() instanceof EditBox) || !((EditBox)screen.getFocused()).canConsumeInput();
@@ -521,7 +521,7 @@ public class KeyboardHandler {
             InputConstants.Key key = InputConstants.getKey(event);
             boolean handlesGameInput = this.minecraft.gui.screen() == null;
             boolean handlesGlobalInput = handlesGameInput
-               || this.minecraft.gui.screen() instanceof PauseScreen pauseScreen && !pauseScreen.showsPauseMenu()
+               || this.minecraft.gui.screen() instanceof PauseScreen && !pauseScreen.showsPauseMenu()
                || this.minecraft.gui.screen() instanceof GameModeSwitcherScreen;
             if (modifierAndOverlayIsSame && options.keyDebugModifier.matches(event) && action == 0) {
                if (this.usedDebugKeyAsModifier) {
@@ -542,7 +542,8 @@ public class KeyboardHandler {
                   didDebugAction = debugModifierDown;
                } else if (debugModifierDown) {
                   didDebugAction = this.handleDebugKeys(event);
-                  if (didDebugAction && screen instanceof DebugOptionsScreen debugOptionsScreen) {
+                  if (didDebugAction && screen instanceof DebugOptionsScreen) {
+                      DebugOptionsScreen debugOptionsScreen = (DebugOptionsScreen) didDebugAction && screen;
                      DebugOptionsScreen.OptionList optionList = debugOptionsScreen.getOptionList();
                      if (optionList != null) {
                         optionList.children().forEach(DebugOptionsScreen.AbstractOptionEntry::refreshEntry);

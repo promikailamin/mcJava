@@ -20,7 +20,7 @@ public class WebBlock extends Block {
       final BlockState state, final Level level, final BlockPos pos, final Entity entity, final InsideBlockEffectApplier effectApplier, final boolean isPrecise
    ) {
       Vec3 speedMultiplier = new Vec3(0.25, 0.05F, 0.25);
-      if (entity instanceof LivingEntity livingEntity && livingEntity.hasEffect(MobEffects.WEAVING)) {
+      if (entity instanceof LivingEntity && livingEntity.hasEffect(MobEffects.WEAVING)) {
          speedMultiplier = new Vec3(0.5, 0.25, 0.5);
       }
 

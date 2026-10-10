@@ -157,7 +157,7 @@ public class FallingBlockEntity extends Entity {
          this.move(MoverType.SELF, this.getDeltaMovement());
          this.applyEffectsFromBlocks();
          this.handlePortal();
-         if (this.level() instanceof ServerLevel serverLevel && (this.isAlive() || this.forceTickAfterTeleportToDuplicate)) {
+         if (this.level() instanceof ServerLevel && (this.isAlive() || this.forceTickAfterTeleportToDuplicate)) {
             BlockPos pos = this.blockPosition();
             boolean isConcrete = this.blockState.getBlock() instanceof ConcretePowderBlock;
             boolean isStuckInWater = isConcrete && this.level().getFluidState(pos).is(FluidTags.WATER);
@@ -202,7 +202,8 @@ public class FallingBlockEntity extends Entity {
                               .chunkMap
                               .sendToTrackingPlayers(this, new ClientboundAddTransientBlockPacket(pos, this.level().getBlockState(pos)));
                            this.discard();
-                           if (block instanceof Fallable fallable) {
+                           if (block instanceof Fallable) {
+                               Fallable fallable = (Fallable) block;
                               fallable.onLand(this.level(), pos, this.blockState, currentState, this);
                            }
 
@@ -249,7 +250,8 @@ public class FallingBlockEntity extends Entity {
    }
 
    public void callOnBrokenAfterFall(final Block block, final BlockPos pos) {
-      if (block instanceof Fallable fallable) {
+      if (block instanceof Fallable) {
+          Fallable fallable = (Fallable) block;
          fallable.onBrokenAfterFall(this.level(), pos, this);
       }
    }
@@ -266,9 +268,7 @@ public class FallingBlockEntity extends Entity {
       }
 
       Predicate<Entity> entitySelector = EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(EntitySelector.LIVING_ENTITY_STILL_ALIVE);
-      DamageSource actualDamageSource = this.blockState.getBlock() instanceof Fallable fallable
-         ? fallable.getFallDamageSource(this)
-         : this.damageSources().fallingBlock(this);
+      DamageSource actualDamageSource = this.blockState.getBlock() instanceof Fallable ? getFallDamageSource(this) : this.damageSources().fallingBlock(this);
       float damage = Math.min(Mth.floor(fallDistanceInt * this.fallDamagePerDistance), this.fallDamageMax);
       this.level().getEntities(this, this.getBoundingBox(), entitySelector).forEach(entity -> entity.hurt(actualDamageSource, damage));
       boolean isAnvil = this.blockState.is(BlockTags.ANVIL);

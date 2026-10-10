@@ -143,7 +143,7 @@ public class DataCommands {
                               throw NbtPathArgument.ERROR_DATA_TOO_DEEP.create();
                            }
 
-                           if (!(sourceTag instanceof CompoundTag tag)) {
+                           if (!(sourceTag instanceof CompoundTag)) {
                               throw ERROR_EXPECTED_OBJECT.create(sourceTag);
                            }
 
@@ -154,7 +154,7 @@ public class DataCommands {
                         int changedCount = 0;
 
                         for (Tag targetTag : targets) {
-                           if (!(targetTag instanceof CompoundTag targetObject)) {
+                           if (!(targetTag instanceof CompoundTag)) {
                               throw ERROR_EXPECTED_OBJECT.create(targetTag);
                            }
 
@@ -387,7 +387,8 @@ public class DataCommands {
    }
 
    private static int getNumeric(final CommandSourceStack source, final DataAccessor accessor, final NbtPathArgument.NbtPath path, final double scale) throws CommandSyntaxException {
-      if (getSingleTag(path, accessor) instanceof NumericTag numericTag) {
+      if (getSingleTag(path, accessor) instanceof NumericTag) {
+          NumericTag numericTag = (NumericTag) getSingleTag(path, accessor);
          int result = Mth.floor(numericTag.doubleValue() * scale);
          source.sendSuccess(() -> accessor.getPrintSuccess(path, scale, result), false);
          return result;

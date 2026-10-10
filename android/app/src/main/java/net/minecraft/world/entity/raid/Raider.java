@@ -85,7 +85,7 @@ public abstract class Raider extends PatrollingMonster {
 
    @Override
    public void aiStep() {
-      if (this.level() instanceof ServerLevel level && this.isAlive()) {
+      if (this.level() instanceof ServerLevel && this.isAlive()) {
          Raid currentRaid = this.getCurrentRaid();
          if (this.canJoinRaid()) {
             if (currentRaid == null) {
@@ -114,7 +114,8 @@ public abstract class Raider extends PatrollingMonster {
 
    @Override
    public void die(final DamageSource source) {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          Entity killer = source.getEntity();
          Raid raidWhenKilled = this.getCurrentRaid();
          if (raidWhenKilled != null) {
@@ -155,7 +156,7 @@ public abstract class Raider extends PatrollingMonster {
    }
 
    public boolean hasRaid() {
-      return !(this.level() instanceof ServerLevel serverLevel) ? false : this.getCurrentRaid() != null || serverLevel.getRaidAt(this.blockPosition()) != null;
+      return !(this.level() instanceof ServerLevel) ? false : this.getCurrentRaid() != null || serverLevel.getRaidAt(this.blockPosition()) != null;
    }
 
    public boolean hasActiveRaid() {
@@ -183,7 +184,8 @@ public abstract class Raider extends PatrollingMonster {
       super.addAdditionalSaveData(output);
       output.putInt("Wave", this.wave);
       output.putBoolean("CanJoinRaid", this.canJoinRaid);
-      if (this.raid != null && this.level() instanceof ServerLevel level) {
+      if (this.raid != null && this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.raid != null && this.level();
          level.getRaids().getId(this.raid).ifPresent(id -> output.putInt("RaidId", id));
       }
    }
@@ -193,7 +195,8 @@ public abstract class Raider extends PatrollingMonster {
       super.readAdditionalSaveData(input);
       this.wave = input.getIntOr("Wave", 0);
       this.canJoinRaid = input.getBooleanOr("CanJoinRaid", false);
-      if (this.level() instanceof ServerLevel level) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.level();
          input.getInt("RaidId").ifPresent(raidId -> {
             this.raid = level.getRaids().get(raidId);
             if (this.raid != null) {

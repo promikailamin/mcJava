@@ -113,7 +113,8 @@ public class IglooPieces {
       ) {
          if ("chest".equals(markerId)) {
             level.setBlockAndUpdate(position, Blocks.AIR.defaultBlockState());
-            if (level.getBlockEntity(position.below()) instanceof ChestBlockEntity chestBlockEntity) {
+            if (level.getBlockEntity(position.below()) instanceof ChestBlockEntity) {
+                ChestBlockEntity chestBlockEntity = (ChestBlockEntity) level.getBlockEntity(position.below());
                chestBlockEntity.setLootTable(BuiltInLootTables.IGLOO_CHEST, random.nextLong());
             }
          }

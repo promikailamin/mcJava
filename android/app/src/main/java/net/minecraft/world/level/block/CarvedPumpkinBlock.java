@@ -88,9 +88,7 @@ public class CarvedPumpkinBlock extends HorizontalDirectionalBlock {
 
    private WeatheringCopper.WeatherState getWeatherStateFromPattern(final BlockPattern.BlockPatternMatch copperGolemMatch) {
       BlockState state = copperGolemMatch.getBlock(0, 1, 0).getState();
-      return state.getBlock() instanceof WeatheringCopper copper
-         ? copper.getAge()
-         : Optional.ofNullable((Block)HoneycombItem.WAX_OFF_BY_BLOCK.get().get(state.getBlock()))
+      return state.getBlock() instanceof WeatheringCopper ? getAge() : Optional.ofNullable((Block)HoneycombItem.WAX_OFF_BY_BLOCK.get().get(state.getBlock()))
             .filter(weatheringCopper -> weatheringCopper instanceof WeatheringCopper)
             .map(weatheringCopper -> (WeatheringCopper)weatheringCopper)
             .orElse((WeatheringCopper)Blocks.COPPER_BLOCK.weathering().unaffected())

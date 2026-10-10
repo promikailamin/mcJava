@@ -60,7 +60,8 @@ public class SignBlockEntity extends BlockEntity {
    }
 
    public SignTextSlot getSlotPlayerIsFacing(final Player player) {
-      if (this.getBlockState().getBlock() instanceof SignBlock sign) {
+      if (this.getBlockState().getBlock() instanceof SignBlock) {
+          SignBlock sign = (SignBlock) this.getBlockState().getBlock();
          Vec3 signPositionOffset = sign.getSignHitboxCenterPosition(this.getBlockState());
          double xd = player.getX() - (this.getBlockPos().getX() + signPositionOffset.x);
          double zd = player.getZ() - (this.getBlockPos().getZ() + signPositionOffset.z);
@@ -113,7 +114,8 @@ public class SignBlockEntity extends BlockEntity {
    }
 
    private Component resolveLine(final Component component) {
-      if (this.level instanceof ServerLevel serverLevel) {
+      if (this.level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level;
          try {
             return ComponentUtils.resolve(ResolutionContext.create(createCommandSourceStack(null, serverLevel, this.worldPosition)), component);
          } catch (CommandSyntaxException var4) {

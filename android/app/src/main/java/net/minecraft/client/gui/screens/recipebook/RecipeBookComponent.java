@@ -392,7 +392,8 @@ public abstract class RecipeBookComponent<T extends RecipeBookMenu> implements G
    }
 
    private void onTabButtonPress(final Button button) {
-      if (this.selectedTab != button && button instanceof RecipeBookTabButton recipeBookTabButton) {
+      if (this.selectedTab != button && button instanceof RecipeBookTabButton) {
+          RecipeBookTabButton recipeBookTabButton = (RecipeBookTabButton) this.selectedTab != button && button;
          this.replaceSelected(recipeBookTabButton);
          this.updateCollections(true, this.isFiltering());
       }

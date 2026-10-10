@@ -67,7 +67,7 @@ public interface BlockStateModel {
             List<Weighted<Variant>> result = new ArrayList<>(entries.size());
 
             for (Weighted<BlockStateModel.Unbaked> entry : entries) {
-               if (!(entry.value() instanceof SingleVariant.Unbaked singleVariant)) {
+               if (!(entry.value() instanceof SingleVariant.Unbaked)) {
                   return DataResult.error(() -> "Only single variants are supported");
                }
 

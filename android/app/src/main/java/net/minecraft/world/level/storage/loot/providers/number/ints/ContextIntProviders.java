@@ -31,7 +31,7 @@ public class ContextIntProviders {
       () -> {
          Codec<ContextIntProvider> typedCodec = BuiltInRegistries.CONTEXT_INT_PROVIDER_TYPE.byNameCodec().dispatch(ContextIntProvider::codec, c -> c);
          return Codec.either(ConstantValue.INLINE_CODEC, typedCodec)
-            .xmap(Either::unwrap, provider -> provider instanceof ConstantValue constant ? Either.left(constant) : Either.right(provider));
+            .xmap(Either::unwrap, provider -> provider instanceof ConstantValue ? Either.left(constant)  : Either.right(provider));
       }
    );
    public static final Codec<Holder<ContextIntProvider>> CODEC = RegistryCodecs.holder(Registries.CONTEXT_INT_PROVIDER, DIRECT_CODEC);

@@ -25,7 +25,7 @@ public class LavaFogEnvironment extends FogEnvironment {
       if (camera.entity().isSpectator()) {
          fog.environmentalStart = -8.0F;
          fog.environmentalEnd = renderDistance * 0.5F;
-      } else if (camera.entity() instanceof LivingEntity livingEntity && livingEntity.hasEffect(MobEffects.FIRE_RESISTANCE)) {
+      } else if (camera.entity() instanceof LivingEntity && livingEntity.hasEffect(MobEffects.FIRE_RESISTANCE)) {
          fog.environmentalStart = 0.0F;
          fog.environmentalEnd = 5.0F;
       } else {

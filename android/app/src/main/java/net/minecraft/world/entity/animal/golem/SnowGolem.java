@@ -90,7 +90,8 @@ public class SnowGolem extends AbstractGolem implements RangedAttackMob, Shearab
    @Override
    public void aiStep() {
       super.aiStep();
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          if (serverLevel.environmentAttributes().getValue(EnvironmentAttributes.SNOW_GOLEM_MELTS, this.position())) {
             this.hurtServer(serverLevel, this.damageSources().onFire(), 1.0F);
          }
@@ -120,7 +121,8 @@ public class SnowGolem extends AbstractGolem implements RangedAttackMob, Shearab
       double yd = target.getEyeY() - 1.1F;
       double zd = target.getZ() - this.getZ();
       double yo = Math.sqrt(xd * xd + zd * zd) * 0.2F;
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          ItemStack itemStack = new ItemStack(Items.SNOWBALL);
          Projectile.spawnProjectile(
             new Snowball(serverLevel, this, itemStack),
@@ -142,7 +144,8 @@ public class SnowGolem extends AbstractGolem implements RangedAttackMob, Shearab
    protected InteractionResult mobInteract(final Player player, final InteractionHand hand) {
       ItemStack itemStack = player.getItemInHand(hand);
       if (itemStack.is(Items.SHEARS) && this.readyForShearing()) {
-         if (this.level() instanceof ServerLevel level) {
+         if (this.level() instanceof ServerLevel) {
+             ServerLevel level = (ServerLevel) this.level();
             this.shear(level, SoundSource.PLAYERS, itemStack);
             this.gameEvent(GameEvent.SHEAR, player);
             itemStack.hurtAndBreak(1, player, hand.asEquipmentSlot());

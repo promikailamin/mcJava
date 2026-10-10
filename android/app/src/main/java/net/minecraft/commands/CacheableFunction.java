@@ -32,7 +32,7 @@ public class CacheableFunction {
 
    @Override
    public boolean equals(final Object obj) {
-      return obj == this ? true : obj instanceof CacheableFunction cacheableFunction && this.getId().equals(cacheableFunction.getId());
+      return obj == this ? true : obj instanceof CacheableFunction && this.getId().equals(cacheableFunction.getId());
    }
 
    @Override

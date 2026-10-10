@@ -45,7 +45,8 @@ public class WeatheringCopperGolemStatueBlock extends CopperGolemStatueBlock imp
       final InteractionHand hand,
       final BlockHitResult hitResult
    ) {
-      if (level.getBlockEntity(pos) instanceof CopperGolemStatueBlockEntity copperGolemStatueBlockEntity) {
+      if (level.getBlockEntity(pos) instanceof CopperGolemStatueBlockEntity) {
+          CopperGolemStatueBlockEntity copperGolemStatueBlockEntity = (CopperGolemStatueBlockEntity) level.getBlockEntity(pos);
          if (!itemStack.is(ItemTags.AXES)) {
             if (itemStack.is(Items.HONEYCOMB)) {
                return InteractionResult.PASS;

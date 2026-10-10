@@ -13,7 +13,7 @@ public class FloatProviders {
    );
    public static final Codec<FloatProvider> CODEC = CONSTANT_OR_DISPATCH_CODEC.xmap(
       either -> (FloatProvider)either.map(ConstantFloat::of, f -> f),
-      f -> f instanceof ConstantFloat constantFloat ? Either.left(constantFloat.value()) : Either.right(f)
+      f -> f instanceof ConstantFloat ? Either.left(((ConstantFloat) f).value())  : Either.right(f)
    );
 
    public static Codec<FloatProvider> codec(final float minValue, final float maxValue) {

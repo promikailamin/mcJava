@@ -10,11 +10,11 @@ public record HiddenByteBuf(ByteBuf contents) implements ReferenceCounted {
    }
 
    public static Object pack(final Object msg) {
-      return msg instanceof ByteBuf buf ? new HiddenByteBuf(buf) : msg;
+      return msg instanceof ByteBuf ? new HiddenByteBuf(buf)  : msg;
    }
 
    public static Object unpack(final Object msg) {
-      return msg instanceof HiddenByteBuf buf ? ByteBufUtil.ensureAccessible(buf.contents) : msg;
+      return msg instanceof HiddenByteBuf ? ByteBufUtil.ensureAccessible(((HiddenByteBuf) msg).contents)  : msg;
    }
 
    public int refCnt() {

@@ -106,7 +106,7 @@ public class IOWorker implements AutoCloseable, ChunkScanAccess {
                         return;
                      }
 
-                     if (collectFields.getResult() instanceof CompoundTag chunkTag && this.isOldChunk(chunkTag)) {
+                     if (collectFields.getResult() instanceof CompoundTag && this.isOldChunk(chunkTag)) {
                         int chunkIndex = pos.getRegionLocalZ() * 32 + pos.getRegionLocalX();
                         resultSet.set(chunkIndex);
                      }

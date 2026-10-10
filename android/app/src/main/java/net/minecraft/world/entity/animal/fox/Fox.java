@@ -124,7 +124,7 @@ public class Fox extends Animal {
       Fox.class, EntityDataSerializers.OPTIONAL_LIVING_ENTITY_REFERENCE
    );
    private static final Predicate<ItemEntity> ALLOWED_ITEMS = e -> !e.hasPickUpDelay() && e.isAlive();
-   private static final Predicate<Entity> TRUSTED_TARGET_SELECTOR = entity -> !(entity instanceof LivingEntity livingEntity)
+   private static final Predicate<Entity> TRUSTED_TARGET_SELECTOR = entity -> !(entity instanceof LivingEntity)
       ? false
       : livingEntity.getLastHurtMob() != null && livingEntity.getLastHurtMobTimestamp() < livingEntity.tickCount + 600;
    private static final Predicate<Entity> STALKABLE_PREY = entity -> entity instanceof Chicken || entity instanceof Rabbit;
@@ -322,7 +322,9 @@ public class Fox extends Animal {
    public @Nullable Fox getBreedOffspring(final ServerLevel level, final AgeableMob partner) {
       Fox baby = EntityTypes.FOX.create(level, EntitySpawnReason.BREEDING);
       if (baby != null) {
-         baby.setVariant(this.random.nextBoolean() ? this.getVariant() : ((Fox)partner).getVariant());
+         if (partner instanceof Fox) {
+            baby.setVariant(this.random.nextBoolean() ? this.getVariant() : ((Fox)partner).getVariant());
+         }
       }
 
       return baby;
@@ -341,7 +343,8 @@ public class Fox extends Animal {
       Holder<Biome> biome = level.getBiome(this.blockPosition());
       Fox.Variant variant = Fox.Variant.byBiome(biome);
       boolean isBaby = false;
-      if (groupData instanceof Fox.FoxGroupData foxGroupData) {
+      if (groupData instanceof Fox.FoxGroupData) {
+          Fox.FoxGroupData foxGroupData = (Fox.FoxGroupData) groupData;
          variant = foxGroupData.variant;
          if (foxGroupData.getGroupSize() >= 2) {
             isBaby = true;
@@ -826,9 +829,10 @@ public class Fox extends Animal {
             return false;
          } else if (target instanceof Chicken || target instanceof Rabbit || target instanceof Monster) {
             return true;
-         } else if (target instanceof TamableAnimal tamableAnimal) {
+         else if (target instanceof TamableAnimal) {
+             TamableAnimal tamableAnimal = (TamableAnimal) target;
             return !tamableAnimal.isTame();
-         } else if (target instanceof Player player && (player.isSpectator() || player.isCreative())) {
+         } else if (target instanceof Player && (player.isSpectator() || player.isCreative())) {
             return false;
          } else {
             return Fox.this.trusts(target) ? false : !target.isSleeping() && !target.isDiscrete();

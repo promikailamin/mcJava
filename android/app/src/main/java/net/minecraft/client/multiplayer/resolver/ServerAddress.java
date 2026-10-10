@@ -77,7 +77,7 @@ public final class ServerAddress {
       if (this == o) {
          return true;
       } else {
-         return o instanceof ServerAddress serverAddress ? this.hostAndPort.equals(serverAddress.hostAndPort) : false;
+         return o instanceof ServerAddress ? this.hostAndPort.equals(((ServerAddress) o).hostAndPort)  : false;
       }
    }
 

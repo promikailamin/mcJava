@@ -45,7 +45,8 @@ public class HolderSetCodec<E> implements Codec<HolderSet<E>> {
                DataResult<HolderSet<E>> result = (DataResult<HolderSet<E>>)((Either)tagKeyOrValues.getFirst())
                   .map(
                      tagKey -> {
-                        if (ops instanceof RegistryOps<T> registryOps) {
+                        if (ops instanceof RegistryOps<T>) {
+                            RegistryOps<T> registryOps = (RegistryOps<T>) ops;
                            Optional<HolderGetter<E>> maybeRegistry = registryOps.getter(this.registryKey);
                            return maybeRegistry.isPresent()
                               ? lookupTag(maybeRegistry.get(), tagKey)
@@ -68,7 +69,8 @@ public class HolderSetCodec<E> implements Codec<HolderSet<E>> {
    }
 
    public <T> DataResult<T> encode(final HolderSet<E> input, final DynamicOps<T> ops, final T prefix) {
-      if (input instanceof HolderSet.Named<E> named && ops instanceof RegistryOps<T> registryOps) {
+      if (input instanceof HolderSet.Named<E> && ops instanceof RegistryOps<T>) {
+          RegistryOps<T> registryOps = (RegistryOps<T>) input instanceof HolderSet.Named<E> && ops;
          Optional<? extends HolderOwner<E>> maybeOwner = registryOps.getter(this.registryKey);
          if (!maybeOwner.isPresent()) {
             return DataResult.error(() -> "Registry " + this.registryKey.identifier() + " is not available in this context");

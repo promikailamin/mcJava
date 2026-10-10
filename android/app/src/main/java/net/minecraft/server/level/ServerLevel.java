@@ -873,7 +873,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
 
    @Override
    public boolean mayInteract(final Entity entity, final BlockPos pos) {
-      return !(entity instanceof Player player && (this.server.isUnderSpawnProtection(this, pos, player) || !this.getWorldBorder().isWithinBounds(pos)));
+      return !(entity instanceof Player && (this.server.isUnderSpawnProtection(this, pos, player) || !this.getWorldBorder().isWithinBounds(pos)));
    }
 
    public void save(final @Nullable ProgressListener progressListener, final boolean flush, final boolean noSave) {
@@ -969,7 +969,8 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
    }
 
    public void addDuringTeleport(final Entity entity) {
-      if (entity instanceof ServerPlayer player) {
+      if (entity instanceof ServerPlayer) {
+          ServerPlayer player = (ServerPlayer) entity;
          this.addPlayer(player);
       } else {
          this.addEntity(entity);
@@ -1052,7 +1053,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
       this.server
          .getPlayerList()
          .broadcast(
-            except instanceof Player player ? player : null,
+            except instanceof Player ? player  : null,
             x,
             y,
             z,
@@ -1075,7 +1076,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
       this.server
          .getPlayerList()
          .broadcast(
-            except instanceof Player player ? player : null,
+            except instanceof Player ? player  : null,
             sourceEntity.getX(),
             sourceEntity.getY(),
             sourceEntity.getZ(),
@@ -1114,7 +1115,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
       this.server
          .getPlayerList()
          .broadcast(
-            source instanceof Player player ? player : null,
+            source instanceof Player ? player  : null,
             pos.getX(),
             pos.getY(),
             pos.getZ(),
@@ -2012,13 +2013,14 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
 
    private final class EntityCallbacks implements LevelCallback<Entity> {
       public void onCreated(final Entity entity) {
-         if (entity instanceof WaypointTransmitter waypoint && waypoint.isTransmittingWaypoint()) {
+         if (entity instanceof WaypointTransmitter && waypoint.isTransmittingWaypoint()) {
             ServerLevel.this.getWaypointManager().trackWaypoint(waypoint);
          }
       }
 
       public void onDestroyed(final Entity entity) {
-         if (entity instanceof WaypointTransmitter waypoint) {
+         if (entity instanceof WaypointTransmitter) {
+             WaypointTransmitter waypoint = (WaypointTransmitter) entity;
             ServerLevel.this.getWaypointManager().untrackWaypoint(waypoint);
          }
 
@@ -2035,7 +2037,8 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
 
       public void onTrackingStart(final Entity entity) {
          ServerLevel.this.getChunkSource().addEntity(entity);
-         if (entity instanceof ServerPlayer player) {
+         if (entity instanceof ServerPlayer) {
+             ServerPlayer player = (ServerPlayer) entity;
             ServerLevel.this.players.add(player);
             if (player.isReceivingWaypoints()) {
                ServerLevel.this.getWaypointManager().addPlayer(player);
@@ -2044,11 +2047,12 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
             ServerLevel.this.updateSleepingPlayerList();
          }
 
-         if (entity instanceof WaypointTransmitter waypoint && waypoint.isTransmittingWaypoint()) {
+         if (entity instanceof WaypointTransmitter && waypoint.isTransmittingWaypoint()) {
             ServerLevel.this.getWaypointManager().trackWaypoint(waypoint);
          }
 
-         if (entity instanceof Mob mob) {
+         if (entity instanceof Mob) {
+             Mob mob = (Mob) entity;
             if (ServerLevel.this.isUpdatingNavigations) {
                String message = "onTrackingStart called during navigation iteration";
                Util.logAndPauseIfInIde(
@@ -2059,7 +2063,8 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
             ServerLevel.this.navigatingMobs.add(mob);
          }
 
-         if (entity instanceof EnderDragon dragon) {
+         if (entity instanceof EnderDragon) {
+             EnderDragon dragon = (EnderDragon) entity;
             for (EnderDragonPart subEntity : dragon.getSubEntities()) {
                ServerLevel.this.dragonParts.put(subEntity.getId(), subEntity);
             }
@@ -2070,13 +2075,15 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
 
       public void onTrackingEnd(final Entity entity) {
          ServerLevel.this.getChunkSource().removeEntity(entity);
-         if (entity instanceof ServerPlayer player) {
+         if (entity instanceof ServerPlayer) {
+             ServerPlayer player = (ServerPlayer) entity;
             ServerLevel.this.players.remove(player);
             ServerLevel.this.getWaypointManager().removePlayer(player);
             ServerLevel.this.updateSleepingPlayerList();
          }
 
-         if (entity instanceof Mob mob) {
+         if (entity instanceof Mob) {
+             Mob mob = (Mob) entity;
             if (ServerLevel.this.isUpdatingNavigations) {
                String message = "onTrackingStart called during navigation iteration";
                Util.logAndPauseIfInIde(
@@ -2087,7 +2094,8 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
             ServerLevel.this.navigatingMobs.remove(mob);
          }
 
-         if (entity instanceof EnderDragon dragon) {
+         if (entity instanceof EnderDragon) {
+             EnderDragon dragon = (EnderDragon) entity;
             for (EnderDragonPart subEntity : dragon.getSubEntities()) {
                ServerLevel.this.dragonParts.remove(subEntity.getId());
             }

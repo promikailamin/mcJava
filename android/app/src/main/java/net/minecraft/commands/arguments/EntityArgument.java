@@ -124,7 +124,8 @@ public class EntityArgument implements ArgumentType<EntitySelector> {
    }
 
    public <S> CompletableFuture<Suggestions> listSuggestions(final CommandContext<S> contextBuilder, final SuggestionsBuilder builder) {
-      if (contextBuilder.getSource() instanceof SharedSuggestionProvider source) {
+      if (contextBuilder.getSource() instanceof SharedSuggestionProvider) {
+          SharedSuggestionProvider source = (SharedSuggestionProvider) contextBuilder.getSource();
          StringReader reader = new StringReader(builder.getInput());
          reader.setCursor(builder.getStart());
          EntitySelectorParser parser = new EntitySelectorParser(reader, source.permissions().hasPermission(Permissions.COMMANDS_ENTITY_SELECTORS));

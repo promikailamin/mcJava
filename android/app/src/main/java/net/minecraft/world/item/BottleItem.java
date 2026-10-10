@@ -37,7 +37,8 @@ public class BottleItem extends Item {
          cloud.setRadius(cloud.getRadius() - 0.5F);
          level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BOTTLE_FILL_DRAGONBREATH, SoundSource.NEUTRAL, 1.0F, 1.0F);
          level.gameEvent(player, GameEvent.FLUID_PICKUP, player.position());
-         if (player instanceof ServerPlayer serverPlayer) {
+         if (player instanceof ServerPlayer) {
+             ServerPlayer serverPlayer = (ServerPlayer) player;
             CriteriaTriggers.PLAYER_INTERACTED_WITH_ENTITY.trigger(serverPlayer, itemStack, cloud);
          }
 

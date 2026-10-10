@@ -408,7 +408,8 @@ public class CommandSourceStack implements SharedSuggestionProvider, ExecutionCo
    }
 
    public ServerPlayer getPlayerOrException() throws CommandSyntaxException {
-      if (this.entity instanceof ServerPlayer player) {
+      if (this.entity instanceof ServerPlayer) {
+          ServerPlayer player = (ServerPlayer) this.entity;
          return player;
       } else {
          throw ERROR_NOT_PLAYER.create();
@@ -416,7 +417,7 @@ public class CommandSourceStack implements SharedSuggestionProvider, ExecutionCo
    }
 
    public @Nullable ServerPlayer getPlayer() {
-      return this.entity instanceof ServerPlayer player ? player : null;
+      return this.entity instanceof ServerPlayer ? player  : null;
    }
 
    public boolean isPlayer() {

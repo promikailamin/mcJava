@@ -105,7 +105,8 @@ public class EnchantmentHelper {
    }
 
    public static int processMobExperience(final ServerLevel serverLevel, final @Nullable Entity killer, final Entity killed, final int amount) {
-      if (killer instanceof LivingEntity livingKiller) {
+      if (killer instanceof LivingEntity) {
+          LivingEntity livingKiller = (LivingEntity) killer;
          MutableFloat modifiedAmount = new MutableFloat(amount);
          runIterationOnEquipment(
             livingKiller, (enchantment, level, item) -> enchantment.value().modifyMobExperience(serverLevel, level, item.itemStack(), killed, modifiedAmount)
@@ -207,7 +208,8 @@ public class EnchantmentHelper {
    }
 
    public static void doPostAttackEffects(final ServerLevel serverLevel, final Entity victim, final DamageSource damageSource) {
-      if (damageSource.getEntity() instanceof LivingEntity attacker) {
+      if (damageSource.getEntity() instanceof LivingEntity) {
+          LivingEntity attacker = (LivingEntity) damageSource.getEntity();
          doPostAttackEffectsWithItemSource(serverLevel, victim, damageSource, attacker.getWeaponItem());
       } else {
          doPostAttackEffectsWithItemSource(serverLevel, victim, damageSource, null);
@@ -236,7 +238,8 @@ public class EnchantmentHelper {
       final @Nullable ItemStack source,
       final @Nullable Consumer<ItemStack> attackerlessOnBreak
    ) {
-      if (victim instanceof LivingEntity livingVictim) {
+      if (victim instanceof LivingEntity) {
+          LivingEntity livingVictim = (LivingEntity) victim;
          runIterationOnEquipment(
             livingVictim,
             (enchantment, level, item) -> enchantment.value().doPostAttack(serverLevel, level, item, EnchantmentTarget.VICTIM, victim, damageSource)
@@ -244,7 +247,8 @@ public class EnchantmentHelper {
       }
 
       if (source != null) {
-         if (damageSource.getEntity() instanceof LivingEntity attacker) {
+         if (damageSource.getEntity() instanceof LivingEntity) {
+             LivingEntity attacker = (LivingEntity) damageSource.getEntity();
             runIterationOnItem(
                source,
                EquipmentSlot.MAINHAND,
@@ -315,7 +319,7 @@ public class EnchantmentHelper {
    public static void onProjectileSpawned(
       final ServerLevel serverLevel, final ItemStack weapon, final Projectile projectileEntity, final Consumer<ItemStack> onBreak
    ) {
-      LivingEntity owner = projectileEntity.getOwner() instanceof LivingEntity le ? le : null;
+      LivingEntity owner = projectileEntity.getOwner() instanceof LivingEntity ? le  : null;
       EnchantedItemInUse item = new EnchantedItemInUse(weapon, null, owner, onBreak);
       runIterationOnItem(weapon, (enchantment, level) -> enchantment.value().onProjectileSpawned(serverLevel, level, item, projectileEntity));
    }
@@ -360,7 +364,8 @@ public class EnchantmentHelper {
                );
          }
       );
-      if (killingBlow.getEntity() instanceof LivingEntity livingAttacker) {
+      if (killingBlow.getEntity() instanceof LivingEntity) {
+          LivingEntity livingAttacker = (LivingEntity) killingBlow.getEntity();
          runIterationOnEquipment(
             livingAttacker,
             (enchantment, level, item) -> {

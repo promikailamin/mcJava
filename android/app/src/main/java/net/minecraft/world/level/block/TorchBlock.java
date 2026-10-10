@@ -15,7 +15,7 @@ public class TorchBlock extends BaseTorchBlock {
    protected static final MapCodec<SimpleParticleType> PARTICLE_OPTIONS_FIELD = BuiltInRegistries.PARTICLE_TYPE
       .byNameCodec()
       .comapFlatMap(
-         type -> type instanceof SimpleParticleType simple ? DataResult.success(simple) : DataResult.error(() -> "Not a SimpleParticleType: " + type),
+         type -> type instanceof SimpleParticleType ? DataResult.success(simple)  : DataResult.error(() -> "Not a SimpleParticleType: " + type),
          type -> type
       )
       .fieldOf("particle_options");

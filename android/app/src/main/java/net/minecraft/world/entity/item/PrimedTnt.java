@@ -125,7 +125,7 @@ public class PrimedTnt extends Entity implements TraceableEntity {
    }
 
    private void explode() {
-      if (this.level() instanceof ServerLevel level && level.getGameRules().get(GameRules.TNT_EXPLODES)) {
+      if (this.level() instanceof ServerLevel && level.getGameRules().get(GameRules.TNT_EXPLODES)) {
          this.level()
             .explode(
                this,
@@ -167,7 +167,8 @@ public class PrimedTnt extends Entity implements TraceableEntity {
    @Override
    public void restoreFrom(final Entity oldEntity) {
       super.restoreFrom(oldEntity);
-      if (oldEntity instanceof PrimedTnt primedTnt) {
+      if (oldEntity instanceof PrimedTnt) {
+          PrimedTnt primedTnt = (PrimedTnt) oldEntity;
          this.owner = primedTnt.owner;
       }
    }
@@ -199,7 +200,8 @@ public class PrimedTnt extends Entity implements TraceableEntity {
    @Override
    public @Nullable Entity teleport(final TeleportTransition transition) {
       Entity newEntity = super.teleport(transition);
-      if (newEntity instanceof PrimedTnt tnt) {
+      if (newEntity instanceof PrimedTnt) {
+          PrimedTnt tnt = (PrimedTnt) newEntity;
          tnt.setUsedPortal(true);
       }
 

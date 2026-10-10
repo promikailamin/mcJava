@@ -283,7 +283,7 @@ public class Sniffer extends Animal {
    }
 
    private void dropSeed() {
-      if (this.level() instanceof ServerLevel level && this.entityData.get(DATA_DROP_SEED_AT_TICK) == this.tickCount) {
+      if (this.level() instanceof ServerLevel && this.entityData.get(DATA_DROP_SEED_AT_TICK) == this.tickCount) {
          BlockPos head = this.getHeadBlock();
          this.dropFromGiftLootTable(level, BuiltInLootTables.SNIFFER_DIGGING, (l, itemStack) -> {
             ItemEntity entity = new ItemEntity(this.level(), head.getX(), head.getY(), head.getZ(), itemStack);
@@ -425,7 +425,7 @@ public class Sniffer extends Animal {
 
    @Override
    public boolean canMate(final Animal partner) {
-      if (!(partner instanceof Sniffer snifferPartner)) {
+      if (!(partner instanceof Sniffer)) {
          return false;
       } else {
          Set<Sniffer.State> states = Set.of(Sniffer.State.IDLING, Sniffer.State.SCENTING, Sniffer.State.FEELING_HAPPY);

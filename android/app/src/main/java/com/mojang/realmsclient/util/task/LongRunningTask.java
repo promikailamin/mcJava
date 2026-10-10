@@ -36,7 +36,8 @@ public abstract class LongRunningTask implements Runnable {
    }
 
    protected void error(final Exception ex) {
-      if (ex instanceof RealmsServiceException rsx) {
+      if (ex instanceof RealmsServiceException) {
+          RealmsServiceException rsx = (RealmsServiceException) ex;
          this.error(rsx.realmsError.errorMessage());
       } else {
          this.error(Component.literal(ex.getMessage()));

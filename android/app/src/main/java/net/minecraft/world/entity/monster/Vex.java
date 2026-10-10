@@ -116,7 +116,8 @@ public class Vex extends Monster implements TraceableEntity, OwnableEntity {
    @Override
    public void restoreFrom(final Entity oldEntity) {
       super.restoreFrom(oldEntity);
-      if (oldEntity instanceof Vex vex) {
+      if (oldEntity instanceof Vex) {
+          Vex vex = (Vex) oldEntity;
          this.owner = vex.owner;
       }
    }
@@ -286,12 +287,12 @@ public class Vex extends Monster implements TraceableEntity, OwnableEntity {
 
       @Override
       public boolean canUse() {
-         return Vex.this.getOwner() instanceof Targeting owner && owner.getTarget() != null && this.canAttack(owner.getTarget(), this.copyOwnerTargeting);
+         return Vex.this.getOwner() instanceof Targeting && owner.getTarget() != null && this.canAttack(owner.getTarget(), this.copyOwnerTargeting);
       }
 
       @Override
       public void start() {
-         Vex.this.setTarget(Vex.this.getOwner() instanceof Targeting owner ? owner.getTarget() : null);
+         Vex.this.setTarget(Vex.this.getOwner() instanceof Targeting ? getTarget() : null);
          super.start();
       }
    }

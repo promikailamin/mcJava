@@ -364,7 +364,7 @@ public final class ItemStack implements DataComponentHolder, ItemInstance {
          ItemStack stackBeforeUse = this.copy();
          Item usedItem = this.getItem();
          InteractionResult result = usedItem.useOn(context);
-         if (player != null && result instanceof InteractionResult.Success success && success.wasItemInteraction()) {
+         if (player != null && result instanceof InteractionResult.Success && success.wasItemInteraction()) {
             player.awardStat(Stats.ITEM_USED.get(usedItem));
             ItemStack transformTo = success.heldItemTransformedTo() == null ? this : success.heldItemTransformedTo();
             ItemStack resultItemStack = transformTo.applyAfterUseComponentSideEffects(player, stackBeforeUse);
@@ -383,7 +383,8 @@ public final class ItemStack implements DataComponentHolder, ItemInstance {
       ItemStack stackBeforeUse = this.copy();
       boolean isInstantlyUsed = this.getUseDuration(player) <= 0;
       InteractionResult result = this.getItem().use(level, player, hand);
-      if (isInstantlyUsed && result instanceof InteractionResult.Success success) {
+      if (isInstantlyUsed && result instanceof InteractionResult.Success) {
+          InteractionResult.Success success = (InteractionResult.Success) isInstantlyUsed && result;
          ItemStack transformTo = success.heldItemTransformedTo() == null ? this : success.heldItemTransformedTo();
          ItemStack resultItemStack = transformTo.applyAfterUseComponentSideEffects(player, stackBeforeUse);
          return success.heldItemTransformedTo(resultItemStack);
@@ -477,7 +478,8 @@ public final class ItemStack implements DataComponentHolder, ItemInstance {
    }
 
    public void hurtWithoutBreaking(final int amount, final Player player) {
-      if (player instanceof ServerPlayer serverPlayer) {
+      if (player instanceof ServerPlayer) {
+          ServerPlayer serverPlayer = (ServerPlayer) player;
          int newAmount = this.processDurabilityChange(amount, serverPlayer.level(), serverPlayer);
          if (newAmount == 0) {
             return;
@@ -493,9 +495,10 @@ public final class ItemStack implements DataComponentHolder, ItemInstance {
    }
 
    public void hurtAndBreak(final int amount, final LivingEntity owner, final EquipmentSlot slot) {
-      if (owner.level() instanceof ServerLevel serverLevel) {
+      if (owner.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) owner.level();
          this.hurtAndBreak(
-            amount, serverLevel, owner instanceof ServerPlayer player ? player : null, brokenItem -> owner.onEquippedItemBroken(brokenItem, slot)
+            amount, serverLevel, owner instanceof ServerPlayer ? player  : null, brokenItem -> owner.onEquippedItemBroken(brokenItem, slot)
          );
       }
    }
@@ -540,7 +543,8 @@ public final class ItemStack implements DataComponentHolder, ItemInstance {
       Item usedItem = this.getItem();
       usedItem.hurtEnemy(this, mob, attacker);
       if (this.has(DataComponents.WEAPON)) {
-         if (attacker instanceof Player player) {
+         if (attacker instanceof Player) {
+             Player player = (Player) attacker;
             player.awardStat(Stats.ITEM_USED.get(usedItem));
          }
 
@@ -719,7 +723,8 @@ public final class ItemStack implements DataComponentHolder, ItemInstance {
          this.popTime--;
       }
 
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          this.getItem().inventoryTick(this, serverLevel, owner, slot);
       }
    }

@@ -77,7 +77,7 @@ public class Minecart extends AbstractMinecart {
    @Override
    protected void positionRider(final Entity passenger, final Entity.MoveFunction moveFunction) {
       super.positionRider(passenger, moveFunction);
-      if (this.level().isClientSide() && passenger instanceof Player player && player.shouldRotateWithMinecart() && useExperimentalMovement(this.level())) {
+      if (this.level().isClientSide() && passenger instanceof Player && player.shouldRotateWithMinecart() && useExperimentalMovement(this.level())) {
          float yRot = (float)Mth.rotLerp(0.5, this.playerRotationOffset, this.rotationOffset);
          player.setYRot(player.getYRot() - (yRot - this.playerRotationOffset));
          this.playerRotationOffset = yRot;

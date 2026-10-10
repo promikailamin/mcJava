@@ -156,7 +156,8 @@ public class CrossbowItem extends ProjectileWeaponItem {
       }
 
       Projectile projectileEntity = super.createProjectile(level, shooter, heldItem, projectile, isCrit);
-      if (projectileEntity instanceof AbstractArrow arrow) {
+      if (projectileEntity instanceof AbstractArrow) {
+          AbstractArrow arrow = (AbstractArrow) projectileEntity;
          arrow.setSoundEvent(SoundEvents.CROSSBOW_HIT);
       }
 
@@ -177,12 +178,14 @@ public class CrossbowItem extends ProjectileWeaponItem {
       final float uncertainty,
       final @Nullable LivingEntity targetOverride
    ) {
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          ChargedProjectiles charged = weapon.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.EMPTY);
          if (charged != null && !charged.isEmpty()) {
             List<ItemStack> projectiles = charged.itemCopies().toList();
             this.shoot(serverLevel, shooter, hand, weapon, projectiles, power, uncertainty, shooter instanceof Player, targetOverride);
-            if (shooter instanceof ServerPlayer player) {
+            if (shooter instanceof ServerPlayer) {
+                ServerPlayer player = (ServerPlayer) shooter;
                CriteriaTriggers.SHOT_CROSSBOW.trigger(player, weapon);
                player.awardStat(Stats.ITEM_USED.get(weapon.getItem()));
             }

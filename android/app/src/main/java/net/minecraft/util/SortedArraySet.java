@@ -180,7 +180,7 @@ public class SortedArraySet<T> extends AbstractSet<T> {
       if (this == o) {
          return true;
       } else {
-         return o instanceof SortedArraySet<?> that && this.comparator.equals(that.comparator)
+         return o instanceof SortedArraySet<?> && this.comparator.equals(that.comparator)
             ? this.size == that.size && Arrays.equals(this.contents, that.contents)
             : super.equals(o);
       }

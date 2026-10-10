@@ -225,7 +225,8 @@ public class EntitySelectorOptions {
 
             parser.setIncludesEntities(false);
             parser.addPredicate(e -> {
-               if (e instanceof ServerPlayer player) {
+               if (e instanceof ServerPlayer) {
+                   ServerPlayer player = (ServerPlayer) e;
                   GameType current = player.gameMode();
                   return current == expected ^ inverted;
                } else {
@@ -328,7 +329,8 @@ public class EntitySelectorOptions {
                try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(e.problemPath(), LOGGER)) {
                   TagValueOutput output = TagValueOutput.createWithContext(reporter, e.registryAccess());
                   e.saveWithoutId(output);
-                  if (e instanceof ServerPlayer player) {
+                  if (e instanceof ServerPlayer) {
+                      ServerPlayer player = (ServerPlayer) e;
                      ItemStack selected = player.getInventory().getSelectedItem();
                      if (!selected.isEmpty()) {
                         output.store("SelectedItem", ItemStack.CODEC, selected);
@@ -445,7 +447,7 @@ public class EntitySelectorOptions {
             reader.expect('}');
             if (!expected.isEmpty()) {
                parser.addPredicate(e -> {
-                  if (!(e instanceof ServerPlayer player)) {
+                  if (!(e instanceof ServerPlayer)) {
                      return false;
                   } else {
                      PlayerAdvancements advancements = player.getAdvancements();
@@ -473,7 +475,8 @@ public class EntitySelectorOptions {
                ResourceKey<LootItemCondition> id = ResourceKey.create(Registries.PREDICATE, Identifier.read(parser.getReader()));
                parser.addPredicate(
                   entity -> {
-                     if (entity.level() instanceof ServerLevel level) {
+                     if (entity.level() instanceof ServerLevel) {
+                         ServerLevel level = (ServerLevel) entity.level();
                         Optional<LootItemCondition> condition = level.getServer().reloadableRegistries().lookup().get(id).map(Holder::value);
                         if (condition.isEmpty()) {
                            return false;

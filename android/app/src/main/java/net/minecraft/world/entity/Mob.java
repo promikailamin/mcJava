@@ -178,7 +178,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
 
    public float getPathfindingMalus(final PathType pathType) {
       Mob inheritFrom;
-      if (this.getControlledVehicle() instanceof Mob riding && riding.shouldPassengersInheritMalus()) {
+      if (this.getControlledVehicle() instanceof Mob && riding.shouldPassengersInheritMalus()) {
          inheritFrom = riding;
       } else {
          inheritFrom = this;
@@ -207,7 +207,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
    }
 
    public MoveControl getMoveControl() {
-      return this.getControlledVehicle() instanceof Mob riding ? riding.getMoveControl() : this.moveControl;
+      return this.getControlledVehicle() instanceof Mob ? getMoveControl() : this.moveControl;
    }
 
    public JumpControl getJumpControl() {
@@ -215,13 +215,13 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
    }
 
    public PathNavigation getNavigation() {
-      return this.getControlledVehicle() instanceof Mob riding ? riding.getNavigation() : this.navigation;
+      return this.getControlledVehicle() instanceof Mob ? getNavigation() : this.navigation;
    }
 
    @Override
    public @Nullable LivingEntity getControllingPassenger() {
       Entity firstPassenger = this.getFirstPassenger();
-      return !this.isNoAi() && firstPassenger instanceof Mob passenger && firstPassenger.canControlVehicle() ? passenger : null;
+      return !this.isNoAi() && firstPassenger instanceof Mob && firstPassenger.canControlVehicle() ? passenger : null;
    }
 
    public Sensing getSensing() {
@@ -238,7 +238,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
    }
 
    protected @Nullable LivingEntity asValidTarget(final @Nullable LivingEntity target) {
-      if (target instanceof Player player && (player.isCreative() || player.isSpectator())) {
+      if (target instanceof Player && (player.isCreative() || player.isSpectator())) {
          return null;
       } else {
          return target != null && !this.canAttack(target) ? null : target;
@@ -461,8 +461,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
 
       ProfilerFiller profiler = Profiler.get();
       profiler.push("looting");
-      if (this.level() instanceof ServerLevel serverLevel
-         && this.canPickUpLoot()
+      if (this.level() instanceof ServerLevel && this.canPickUpLoot()
          && this.isAlive()
          && !this.dead
          && serverLevel.getGameRules().get(GameRules.MOB_GRIEFING)) {
@@ -588,7 +587,8 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
       Vec3 equipmentSpawnOffset = this.getAttachments().getAverage(EntityAttachment.PASSENGER);
       this.setItemSlot(slot, ItemStack.EMPTY);
       this.gameEvent(GameEvent.SHEAR, player);
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          this.spawnAtLocation(serverLevel, itemStackToShear, equipmentSpawnOffset);
          CriteriaTriggers.PLAYER_SHEARED_EQUIPMENT.trigger((ServerPlayer)player, itemStackToShear, this);
       }
@@ -776,7 +776,8 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
       double xd = entity.getX() - this.getX();
       double zd = entity.getZ() - this.getZ();
       double yd;
-      if (entity instanceof LivingEntity mob) {
+      if (entity instanceof LivingEntity) {
+          LivingEntity mob = (LivingEntity) entity;
          yd = mob.getEyeY() - this.getEyeY();
       } else {
          yd = (entity.getBoundingBox().minY + entity.getBoundingBox().maxY) / 2.0 - this.getEyeY();
@@ -892,7 +893,8 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
          float dropChance = this.dropChances.byEquipment(slot);
          if (dropChance != 0.0F) {
             boolean preserve = this.dropChances.isPreserved(slot);
-            if (source.getEntity() instanceof LivingEntity livingSource && this.level() instanceof ServerLevel serverLevel) {
+            if (source.getEntity() instanceof LivingEntity && this.level() instanceof ServerLevel) {
+                ServerLevel serverLevel = (ServerLevel) source.getEntity() instanceof LivingEntity && this.level();
                dropChance = EnchantmentHelper.processEquipmentDropChance(serverLevel, livingSource, source, dropChance);
             }
 
@@ -949,7 +951,8 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
    }
 
    public void equip(final ResourceKey<LootTable> lootTable, final Map<EquipmentSlot, Float> dropChances) {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          this.equip(lootTable, this.createEquipmentParams(serverLevel), dropChances);
       }
    }
@@ -1153,7 +1156,8 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
       }
 
       if (itemStack.getItem() instanceof SpawnEggItem) {
-         if (this.level() instanceof ServerLevel serverLevel) {
+         if (this.level() instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) this.level();
             Optional<Mob> offspring = SpawnEggItem.spawnOffspringFromSpawnEgg(
                player, this, (EntityType<? extends Mob>)this.getType(), serverLevel, this.position(), itemStack
             );
@@ -1238,7 +1242,8 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
 
       params.type().convert(this, newMob, params);
       afterConversion.finalizeConversion(newMob);
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          serverLevel.addFreshEntity(newMob);
       }
 
@@ -1387,7 +1392,8 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
       boolean wasHurt = target.hurtServer(level, damageSource, dmg);
       if (wasHurt) {
          this.causeExtraKnockback(target, this.getKnockback(target, damageSource), oldMovement, damageSource, dmg, true);
-         if (target instanceof LivingEntity livingTarget) {
+         if (target instanceof LivingEntity) {
+             LivingEntity livingTarget = (LivingEntity) target;
             weaponItem.hurtEnemy(livingTarget, this);
          }
 

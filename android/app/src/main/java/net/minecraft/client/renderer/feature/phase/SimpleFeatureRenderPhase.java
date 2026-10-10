@@ -122,7 +122,7 @@ public class SimpleFeatureRenderPhase implements FeatureRenderPhase<SubmitNode> 
       }
 
       private static @Nullable Object batchKey(final SubmitNode submit) {
-         return submit instanceof BatchableSubmit batchable ? batchable.batchKey() : null;
+         return submit instanceof BatchableSubmit ? batchKey() : null;
       }
 
       public boolean isEmpty() {

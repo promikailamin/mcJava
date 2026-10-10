@@ -61,7 +61,7 @@ public class BucketItem extends Item implements DispensibleContainerItem {
          BlockPos placePos = clicked.getBlock() instanceof LiquidBlockContainer && this.content == Fluids.WATER ? pos : directionOffsetPos;
          if (this.emptyContents(player, level, placePos, hitResult)) {
             this.checkExtraContent(player, level, itemStack, placePos);
-            if (player instanceof ServerPlayer serverPlayer && this.content != Fluids.EMPTY) {
+            if (player instanceof ServerPlayer && this.content != Fluids.EMPTY) {
                CriteriaTriggers.PLACED_BLOCK.trigger(serverPlayer, placePos, itemStack);
             }
 
@@ -71,7 +71,8 @@ public class BucketItem extends Item implements DispensibleContainerItem {
          } else {
             if (this.content == Fluids.EMPTY) {
                BlockState blockState = level.getBlockState(pos);
-               if (blockState.getBlock() instanceof BucketPickup bucketPickupBlock) {
+               if (blockState.getBlock() instanceof BucketPickup) {
+                   BucketPickup bucketPickupBlock = (BucketPickup) blockState.getBlock();
                   ItemStack taken = bucketPickupBlock.pickupBlock(player, level, pos, blockState);
                   if (!taken.isEmpty()) {
                      player.awardStat(Stats.ITEM_USED.get(this));
@@ -108,7 +109,7 @@ public class BucketItem extends Item implements DispensibleContainerItem {
 
    @Override
    public boolean emptyContents(final @Nullable LivingEntity user, final Level level, final BlockPos pos, final @Nullable BlockHitResult hitResult) {
-      if (!(this.content instanceof FlowingFluid flowingFluid)) {
+      if (!(this.content instanceof FlowingFluid)) {
          return false;
       } else {
          BlockState blockState = level.getBlockState(pos);
@@ -116,7 +117,7 @@ public class BucketItem extends Item implements DispensibleContainerItem {
          boolean mayReplace = blockState.canBeReplaced(this.content);
          boolean shiftKeyDown = user != null && user.isShiftKeyDown();
          boolean placeLiquid = mayReplace
-            || block instanceof LiquidBlockContainer container && container.canPlaceLiquid(user, level, pos, blockState, this.content);
+            || block instanceof LiquidBlockContainer && container.canPlaceLiquid(user, level, pos, blockState, this.content);
          boolean canPlaceFluidInsideBlock = blockState.isAir() || placeLiquid && (!shiftKeyDown || hitResult == null);
          if (canPlaceFluidInsideBlock) {
             if (level.environmentAttributes().getValue(EnvironmentAttributes.WATER_EVAPORATES, pos) && this.content.is(FluidTags.WATER)) {
@@ -125,14 +126,15 @@ public class BucketItem extends Item implements DispensibleContainerItem {
                int z = pos.getZ();
                RandomSource random = level.getRandom();
                level.playSound(user, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.5F, 2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F);
-               if (level instanceof ServerLevel serverLevel) {
+               if (level instanceof ServerLevel) {
+                   ServerLevel serverLevel = (ServerLevel) level;
                   serverLevel.sendParticles(
                      ParticleTypes.LARGE_SMOKE, x, y, z, 8, 1.0, 1.0, 1.0, 0.0, ClientboundLevelParticlesPacket.RandomizationType.ALTERNATIVE
                   );
                }
 
                return true;
-            } else if (block instanceof LiquidBlockContainer container && this.content == Fluids.WATER) {
+            } else if (block instanceof LiquidBlockContainer && this.content == Fluids.WATER) {
                container.placeLiquid(level, pos, blockState, flowingFluid.getSource(false));
                this.playEmptySound(user, level, pos);
                return true;

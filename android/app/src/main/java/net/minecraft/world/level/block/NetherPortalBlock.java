@@ -112,11 +112,10 @@ public class NetherPortalBlock extends Block implements Portal {
 
    @Override
    public int getPortalTransitionTime(final ServerLevel level, final Entity entity) {
-      return entity instanceof Player player
-         ? Math.max(
+      return entity instanceof Player ? Math.max(
             0,
             level.getGameRules()
-               .get(player.getAbilities().invulnerable ? GameRules.PLAYERS_NETHER_PORTAL_CREATIVE_DELAY : GameRules.PLAYERS_NETHER_PORTAL_DEFAULT_DELAY)
+               .get(((Player) entity).getAbilities().invulnerable ? GameRules.PLAYERS_NETHER_PORTAL_CREATIVE_DELAY  : GameRules.PLAYERS_NETHER_PORTAL_DEFAULT_DELAY)
          )
          : 0;
    }

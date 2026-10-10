@@ -31,14 +31,16 @@ public record ApplyEntityImpulse(Vec3 direction, Vec3 coordinateScale, LevelBase
          .mul(this.coordinateScale.x, this.coordinateScale.y, this.coordinateScale.z)
          .mul(this.magnitude.calculate(enchantmentLevel));
       entity.addDeltaMovement(new Vec3(direction.x, direction.y, direction.z));
-      if (entity instanceof ServerPlayer player) {
+      if (entity instanceof ServerPlayer) {
+          ServerPlayer player = (ServerPlayer) entity;
          player.connection.send(new ClientboundSetEntityMotionPacket(entity));
          entity.syncVelocity = false;
       } else {
          entity.syncVelocity = true;
       }
 
-      if (entity instanceof LivingEntity livingEntity) {
+      if (entity instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) entity;
          livingEntity.applyPostImpulseGraceTime(10);
       }
    }

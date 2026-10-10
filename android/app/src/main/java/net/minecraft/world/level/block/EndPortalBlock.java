@@ -55,7 +55,7 @@ public class EndPortalBlock extends BaseEntityBlock implements Portal {
       final BlockState state, final Level level, final BlockPos pos, final Entity entity, final InsideBlockEffectApplier effectApplier, final boolean isPrecise
    ) {
       if (entity.canUsePortal(false)) {
-         if (!level.isClientSide() && level.dimension() == Level.END && entity instanceof ServerPlayer player && !player.seenCredits) {
+         if (!level.isClientSide() && level.dimension() == Level.END && entity instanceof ServerPlayer && !player.seenCredits) {
             player.showEndCredits();
          } else {
             entity.setAsInsidePortal(this, pos);
@@ -91,7 +91,8 @@ public class EndPortalBlock extends BaseEntityBlock implements Portal {
          yRot = respawnData.yaw();
          xRot = respawnData.pitch();
          relatives = Relative.union(Relative.DELTA, Relative.ROTATION);
-         if (entity instanceof ServerPlayer serverPlayer) {
+         if (entity instanceof ServerPlayer) {
+             ServerPlayer serverPlayer = (ServerPlayer) entity;
             return serverPlayer.findRespawnPositionAndUseSpawnBlock(false, TeleportTransition.DO_NOTHING);
          }
 

@@ -610,7 +610,8 @@ public abstract class AbstractContainerMenu {
    }
 
    private static void dropOrPlaceInInventory(final Player player, final ItemStack carried) {
-      if (player instanceof ServerPlayer serverPlayer) {
+      if (player instanceof ServerPlayer) {
+          ServerPlayer serverPlayer = (ServerPlayer) player;
          boolean playerRemovedNotChangingDimension = serverPlayer.isRemoved() && serverPlayer.getRemovalReason() != Entity.RemovalReason.CHANGED_DIMENSION;
          if (!playerRemovedNotChangingDimension && !serverPlayer.hasDisconnected()) {
             serverPlayer.getInventory().placeItemBackInInventory(carried, Prediction.SERVER_ONLY);
@@ -760,7 +761,7 @@ public abstract class AbstractContainerMenu {
    }
 
    public static int getRedstoneSignalFromBlockEntity(final @Nullable BlockEntity blockEntity) {
-      return blockEntity instanceof Container container ? getRedstoneSignalFromContainer(container) : 0;
+      return blockEntity instanceof Container ? getRedstoneSignalFromContainer(container)  : 0;
    }
 
    public static int getRedstoneSignalFromContainer(final @Nullable Container container) {
@@ -812,8 +813,8 @@ public abstract class AbstractContainerMenu {
             this.lastSlots.set(slotIndex, otherContainer.lastSlots.get(otherSlotIndex));
             RemoteSlot sourceRemoteSlot = otherContainer.remoteSlots.get(otherSlotIndex);
             RemoteSlot targetRemoteSlot = this.remoteSlots.get(slotIndex);
-            if (sourceRemoteSlot instanceof RemoteSlot.Synchronized synchronizedSource
-               && targetRemoteSlot instanceof RemoteSlot.Synchronized synchronizedTarget) {
+            if (sourceRemoteSlot instanceof RemoteSlot.Synchronized && targetRemoteSlot instanceof RemoteSlot.Synchronized) {
+                RemoteSlot.Synchronized synchronizedTarget = (RemoteSlot.Synchronized) sourceRemoteSlot instanceof RemoteSlot.Synchronized && targetRemoteSlot;
                synchronizedTarget.copyFrom(synchronizedSource);
             }
          }

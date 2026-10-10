@@ -172,7 +172,7 @@ public class Painting extends HangingEntity {
    public void dropItem(final ServerLevel level, final @Nullable Entity causedBy) {
       if (level.getGameRules().get(GameRules.ENTITY_DROPS)) {
          this.playSound(SoundEvents.PAINTING_BREAK, 1.0F, 1.0F);
-         if (!(causedBy instanceof Player player && player.hasInfiniteMaterials())) {
+         if (!(causedBy instanceof Player && player.hasInfiniteMaterials())) {
             ItemStack itemStack = new ItemStack(Items.PAINTING);
             itemStack.set(DataComponents.CUSTOM_NAME, this.getCustomName());
             this.spawnAtLocation(level, itemStack);

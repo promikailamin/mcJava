@@ -32,7 +32,8 @@ public class FireworkRocketItem extends Item implements ProjectileItem {
          return InteractionResult.PASS;
       }
 
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          ItemStack itemStack = context.getItemInHand();
          Vec3 clickLocation = context.getClickLocation();
          Direction direction = context.getClickedFace();
@@ -58,7 +59,8 @@ public class FireworkRocketItem extends Item implements ProjectileItem {
    public InteractionResult use(final Level level, final Player player, final InteractionHand hand) {
       if (player.isFallFlying()) {
          ItemStack itemStack = player.getItemInHand(hand);
-         if (level instanceof ServerLevel serverLevel) {
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
             if (player.dropAllLeashConnections(null)) {
                level.playSound(null, player, SoundEvents.LEAD_BREAK, SoundSource.NEUTRAL, 1.0F, 1.0F);
             }

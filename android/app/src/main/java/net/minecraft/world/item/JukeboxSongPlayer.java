@@ -80,7 +80,8 @@ public class JukeboxSongPlayer {
    }
 
    private static void spawnMusicParticles(final LevelAccessor level, final BlockPos blockPos) {
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          Vec3 pos = Vec3.atBottomCenterOf(blockPos).add(0.0, 1.2F, 0.0);
          float randomColor = level.getRandom().nextInt(4) / 24.0F;
          serverLevel.sendParticles(ParticleTypes.NOTE, pos.x(), pos.y(), pos.z(), 0, randomColor, 0.0, 0.0, 1.0);

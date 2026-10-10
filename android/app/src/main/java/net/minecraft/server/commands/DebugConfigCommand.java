@@ -65,7 +65,8 @@ public class DebugConfigCommand {
       Set<String> result = new HashSet<>();
 
       for (Connection connection : server.getConnection().getConnections()) {
-         if (connection.getPacketListener() instanceof ServerConfigurationPacketListenerImpl configListener) {
+         if (connection.getPacketListener() instanceof ServerConfigurationPacketListenerImpl) {
+             ServerConfigurationPacketListenerImpl configListener = (ServerConfigurationPacketListenerImpl) connection.getPacketListener();
             result.add(configListener.getOwner().id().toString());
          }
       }
@@ -82,7 +83,7 @@ public class DebugConfigCommand {
 
    private static @Nullable ServerConfigurationPacketListenerImpl findConfigPlayer(final MinecraftServer server, final UUID target) {
       for (Connection connection : server.getConnection().getConnections()) {
-         if (connection.getPacketListener() instanceof ServerConfigurationPacketListenerImpl configListener && configListener.getOwner().id().equals(target)) {
+         if (connection.getPacketListener() instanceof ServerConfigurationPacketListenerImpl && configListener.getOwner().id().equals(target)) {
             return configListener;
          }
       }

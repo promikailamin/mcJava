@@ -276,7 +276,8 @@ public class ExperienceOrb extends Entity {
 
    @Override
    public void playerTouch(final Player player) {
-      if (player instanceof ServerPlayer serverPlayer) {
+      if (player instanceof ServerPlayer) {
+          ServerPlayer serverPlayer = (ServerPlayer) player;
          if (player.takeXpDelay == 0) {
             player.takeXpDelay = 2;
             player.take(this, 1);

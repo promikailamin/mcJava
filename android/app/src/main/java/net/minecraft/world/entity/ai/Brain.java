@@ -453,7 +453,7 @@ public void forEach(final Brain.Visitor visitor) {
    }
 
    private static boolean isEmptyCollection(final Object object) {
-      return object instanceof Collection<?> collection && collection.isEmpty();
+      return object instanceof Collection<?> && collection.isEmpty();
    }
 
    public boolean isBrainDead() {

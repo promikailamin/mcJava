@@ -14,14 +14,25 @@ public interface Explosion {
       return level.damageSources().explosion(source, getIndirectSourceEntity(source));
    }
 
-   static @Nullable LivingEntity getIndirectSourceEntity(final @Nullable Entity source) {
-      return switch (source) {
-         case PrimedTnt primedTnt -> primedTnt.getOwner();
-         case LivingEntity livingEntity -> livingEntity;
-         case Projectile projectile when projectile.getOwner() instanceof LivingEntity livingEntity -> livingEntity;
-         case null, default -> null;
-      };
-   }
+static @Nullable LivingEntity getIndirectSourceEntity(final @Nullable Entity source) {
+       if (source instanceof PrimedTnt) {
+          PrimedTnt primedTnt = (PrimedTnt) source;
+          return primedTnt.getOwner();
+       } else if (source instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) source;
+          return livingEntity;
+       } else if (source instanceof Projectile) {
+          Projectile projectile = (Projectile) source;
+          Entity owner = projectile.getOwner();
+          if (owner instanceof LivingEntity) {
+             LivingEntity livingEntity = (LivingEntity) owner;
+             return livingEntity;
+          }
+          return null;
+       } else {
+          return null;
+       }
+    }
 
    ServerLevel level();
 

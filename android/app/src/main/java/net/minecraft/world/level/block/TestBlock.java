@@ -59,7 +59,8 @@ public class TestBlock extends BaseEntityBlock implements GameMasterBlock {
    protected InteractionResult useWithoutItem(
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
-      if (level.getBlockEntity(pos) instanceof TestBlockEntity testBlockEntity) {
+      if (level.getBlockEntity(pos) instanceof TestBlockEntity) {
+          TestBlockEntity testBlockEntity = (TestBlockEntity) level.getBlockEntity(pos);
          if (!player.canUseGameMasterBlocks()) {
             return InteractionResult.PASS;
          }
@@ -102,14 +103,21 @@ public class TestBlock extends BaseEntityBlock implements GameMasterBlock {
    }
 
    private static @Nullable TestBlockEntity getServerTestBlockEntity(final Level level, final BlockPos pos) {
-      return level instanceof ServerLevel serverLevel && serverLevel.getBlockEntity(pos) instanceof TestBlockEntity testBlockEntity ? testBlockEntity : null;
+      if (level instanceof ServerLevel serverLevel) {
+         BlockEntity blockEntity = serverLevel.getBlockEntity(pos);
+         if (blockEntity instanceof TestBlockEntity testBlockEntity) {
+            return testBlockEntity;
+         }
+      }
+      return null;
    }
 
    @Override
    public int ownSignal(final BlockState state, final BlockGetter level, final BlockPos pos) {
       if (state.getValue(MODE) != TestBlockMode.START) {
          return 0;
-      } else if (level.getBlockEntity(pos) instanceof TestBlockEntity testBlock) {
+      } else if (level.getBlockEntity(pos) instanceof TestBlockEntity) {
+         TestBlockEntity testBlock = (TestBlockEntity) level.getBlockEntity(pos);
          return testBlock.isPowered() ? 15 : 0;
       } else {
          return 0;

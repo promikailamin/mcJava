@@ -114,7 +114,8 @@ public record KineticWeapon(
             )
             .map(a -> List.of(), e -> e)) {
             Entity otherEntity = hitResult.getEntity();
-            if (otherEntity instanceof EnderDragonPart dragonPart) {
+            if (otherEntity instanceof EnderDragonPart) {
+                EnderDragonPart dragonPart = (EnderDragonPart) otherEntity;
                otherEntity = dragonPart.parentMob;
             }
 
@@ -138,7 +139,8 @@ public record KineticWeapon(
 
          if (affected) {
             livingEntity.level().broadcastEntityEvent(livingEntity, (byte)2);
-            if (livingEntity instanceof ServerPlayer player) {
+            if (livingEntity instanceof ServerPlayer) {
+                ServerPlayer player = (ServerPlayer) livingEntity;
                CriteriaTriggers.SPEAR_MOBS_TRIGGER.trigger(player, livingEntity.stabbedEntities(e -> e instanceof LivingEntity));
             }
          }

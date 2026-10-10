@@ -41,7 +41,7 @@ public class DebugEntryPosition implements DebugScreenEntry {
             case EAST -> "Towards positive X";
             default -> "Invalid";
          };
-         LongSet chunks = (LongSet)(serverOrClientLevel instanceof ServerLevel serverLevel ? serverLevel.getForceLoadedChunks() : LongSets.EMPTY_SET);
+         LongSet chunks = (LongSet)(serverOrClientLevel instanceof ServerLevel ? getForceLoadedChunks() : LongSets.EMPTY_SET);
          displayer.addToGroup(
             GROUP,
             List.of(

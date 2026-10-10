@@ -147,7 +147,7 @@ public class CropBlock extends VegetationBlock implements BonemealableBlock {
    protected void entityInside(
       final BlockState state, final Level level, final BlockPos pos, final Entity entity, final InsideBlockEffectApplier effectApplier, final boolean isPrecise
    ) {
-      if (level instanceof ServerLevel serverLevel && entity instanceof Ravager && serverLevel.getGameRules().get(GameRules.MOB_GRIEFING)) {
+      if (level instanceof ServerLevel && entity instanceof Ravager && serverLevel.getGameRules().get(GameRules.MOB_GRIEFING)) {
          serverLevel.destroyBlock(pos, true, entity);
       }
 

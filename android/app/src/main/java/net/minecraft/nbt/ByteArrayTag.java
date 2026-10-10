@@ -86,7 +86,7 @@ public final class ByteArrayTag implements CollectionTag {
 
    @Override
    public boolean equals(final Object obj) {
-      return this == obj ? true : obj instanceof ByteArrayTag byteArrayTag && Arrays.equals(this.data, byteArrayTag.data);
+      return this == obj ? true : obj instanceof ByteArrayTag && Arrays.equals(this.data, byteArrayTag.data);
    }
 
    @Override
@@ -114,7 +114,8 @@ public final class ByteArrayTag implements CollectionTag {
 
    @Override
    public boolean setTag(final int index, final Tag tag) {
-      if (tag instanceof NumericTag numeric) {
+      if (tag instanceof NumericTag) {
+          NumericTag numeric = (NumericTag) tag;
          this.data[index] = numeric.byteValue();
          return true;
       } else {
@@ -124,7 +125,8 @@ public final class ByteArrayTag implements CollectionTag {
 
    @Override
    public boolean addTag(final int index, final Tag tag) {
-      if (tag instanceof NumericTag numeric) {
+      if (tag instanceof NumericTag) {
+          NumericTag numeric = (NumericTag) tag;
          this.data = ArrayUtils.add(this.data, index, numeric.byteValue());
          return true;
       } else {

@@ -65,7 +65,8 @@ public class SpearAttack extends Behavior<PathfinderMob> {
       double targetDistSqr = mob.distanceToSqr(target.getX(), target.getY(), target.getZ());
       Entity mount = mob.getRootVehicle();
       float speedModifier = 1.0F;
-      if (mount instanceof Mob vehicleMob) {
+      if (mount instanceof Mob) {
+          Mob vehicleMob = (Mob) mount;
          speedModifier = vehicleMob.chargeSpeedModifier();
       }
 

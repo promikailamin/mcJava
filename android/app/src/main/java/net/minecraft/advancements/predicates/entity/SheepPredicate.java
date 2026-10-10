@@ -16,7 +16,7 @@ public record SheepPredicate(Optional<Boolean> sheared) implements EntitySubPred
 
    @Override
    public boolean matches(final Entity entity, final ServerLevel level, final @Nullable Vec3 position) {
-      return entity instanceof Sheep sheep ? !this.sheared.isPresent() || sheep.isSheared() == this.sheared.get() : false;
+      return entity instanceof Sheep ? !this.sheared.isPresent() || ((Sheep) entity).isSheared() == this.sheared.get()  : false;
    }
 
    public static SheepPredicate hasWool() {

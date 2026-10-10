@@ -43,7 +43,7 @@ public record VibrationInfo(
    }
 
    private static @Nullable UUID getProjectileOwner(final @Nullable Entity entity) {
-      return entity instanceof Projectile projectile && projectile.getOwner() != null ? projectile.getOwner().getUUID() : null;
+      return entity instanceof Projectile && projectile.getOwner() != null ? projectile.getOwner().getUUID() : null;
    }
 
    public Optional<Entity> getEntity(final ServerLevel level) {

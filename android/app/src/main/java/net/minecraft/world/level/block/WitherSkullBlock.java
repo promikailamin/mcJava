@@ -36,7 +36,8 @@ public class WitherSkullBlock extends SkullBlock {
    }
 
    public static void checkSpawn(final Level level, final BlockPos pos) {
-      if (level.getBlockEntity(pos) instanceof SkullBlockEntity placedSkull) {
+      if (level.getBlockEntity(pos) instanceof SkullBlockEntity) {
+          SkullBlockEntity placedSkull = (SkullBlockEntity) level.getBlockEntity(pos);
          checkSpawn(level, pos, placedSkull);
       }
    }

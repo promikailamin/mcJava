@@ -242,7 +242,8 @@ public class ChestBlock extends AbstractChestBlock<ChestBlockEntity> implements 
    protected InteractionResult useWithoutItem(
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          MenuProvider menuProvider = this.getMenuProvider(state, level, pos);
          if (menuProvider != null) {
             player.openMenu(menuProvider);
@@ -369,7 +370,8 @@ public class ChestBlock extends AbstractChestBlock<ChestBlockEntity> implements 
 
    @Override
    protected void tick(final BlockState state, final ServerLevel level, final BlockPos pos, final RandomSource random) {
-      if (level.getBlockEntity(pos) instanceof ChestBlockEntity chestBlockEntity) {
+      if (level.getBlockEntity(pos) instanceof ChestBlockEntity) {
+          ChestBlockEntity chestBlockEntity = (ChestBlockEntity) level.getBlockEntity(pos);
          chestBlockEntity.recheckOpen();
       }
    }

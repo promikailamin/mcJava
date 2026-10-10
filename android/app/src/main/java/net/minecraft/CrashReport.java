@@ -225,7 +225,8 @@ public class CrashReport {
       }
 
       CrashReport report;
-      if (t instanceof ReportedException reportedException) {
+      if (t instanceof ReportedException) {
+          ReportedException reportedException = (ReportedException) t;
          report = reportedException.getReport();
       } else {
          report = new CrashReport(title, t);

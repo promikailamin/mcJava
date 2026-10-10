@@ -477,7 +477,7 @@ public class SectionOcclusionGraph {
 
       @Override
       public boolean equals(final Object obj) {
-         return obj instanceof SectionOcclusionGraph.Node other ? this.section.getSectionNode() == other.section.getSectionNode() : false;
+         return obj instanceof SectionOcclusionGraph.Node ? this.section.getSectionNode() == ((SectionOcclusionGraph.Node) obj).section.getSectionNode()  : false;
       }
    }
 

@@ -45,7 +45,8 @@ public class NewMinecartBehavior extends MinecartBehavior {
 
    @Override
    public void tick() {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          BlockPos var5 = this.minecart.getCurrentBlockPosOrRailBelow();
          BlockState state = this.level().getBlockState(var5);
          if (this.minecart.isFirstTick()) {
@@ -368,7 +369,8 @@ public class NewMinecartBehavior extends MinecartBehavior {
    }
 
    private Vec3 calculatePlayerInputSpeed(final Vec3 deltaMovement) {
-      if (this.minecart.getFirstPassenger() instanceof ServerPlayer player) {
+      if (this.minecart.getFirstPassenger() instanceof ServerPlayer) {
+          ServerPlayer player = (ServerPlayer) this.minecart.getFirstPassenger();
          Vec3 moveIntent = player.getLastClientMoveIntent();
          if (moveIntent.lengthSqr() > 0.0) {
             Vec3 riderMovement = moveIntent.normalize();

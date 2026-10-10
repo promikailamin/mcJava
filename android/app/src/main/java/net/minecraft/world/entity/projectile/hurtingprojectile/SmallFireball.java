@@ -33,7 +33,8 @@ public class SmallFireball extends Fireball {
    @Override
    protected void onHitEntity(final EntityHitResult hitResult) {
       super.onHitEntity(hitResult);
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          Entity var7 = hitResult.getEntity();
          Entity owner = this.getOwner();
          int remainingFireTicks = var7.getRemainingFireTicks();
@@ -50,7 +51,8 @@ public class SmallFireball extends Fireball {
    @Override
    protected void onHitBlock(final BlockHitResult hitResult) {
       super.onHitBlock(hitResult);
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          Entity owner = this.getOwner();
          if (!(owner instanceof Mob) || serverLevel.getGameRules().get(GameRules.MOB_GRIEFING)) {
             BlockPos pos = hitResult.getBlockPos().relative(hitResult.getDirection());

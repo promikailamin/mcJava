@@ -19,14 +19,16 @@ public class RestrictSunGoal extends Goal {
 
    @Override
    public void start() {
-      if (this.mob.getNavigation() instanceof GroundPathNavigation pathNavigation) {
+      if (this.mob.getNavigation() instanceof GroundPathNavigation) {
+          GroundPathNavigation pathNavigation = (GroundPathNavigation) this.mob.getNavigation();
          pathNavigation.setAvoidSun(true);
       }
    }
 
    @Override
    public void stop() {
-      if (GoalUtils.hasGroundPathNavigation(this.mob) && this.mob.getNavigation() instanceof GroundPathNavigation pathNavigation) {
+      if (GoalUtils.hasGroundPathNavigation(this.mob) && this.mob.getNavigation() instanceof GroundPathNavigation) {
+          GroundPathNavigation pathNavigation = (GroundPathNavigation) GoalUtils.hasGroundPathNavigation(this.mob) && this.mob.getNavigation();
          pathNavigation.setAvoidSun(false);
       }
    }

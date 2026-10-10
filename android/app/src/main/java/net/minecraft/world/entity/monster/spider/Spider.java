@@ -164,7 +164,8 @@ public class Spider extends Monster {
          }
       }
 
-      if (groupData instanceof Spider.SpiderEffectsGroupData spiderEffectsGroupData) {
+      if (groupData instanceof Spider.SpiderEffectsGroupData) {
+          Spider.SpiderEffectsGroupData spiderEffectsGroupData = (Spider.SpiderEffectsGroupData) groupData;
          Holder<MobEffect> effect = spiderEffectsGroupData.effect;
          if (effect != null) {
             this.addEffect(new MobEffectInstance(effect, -1));

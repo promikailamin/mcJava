@@ -18,7 +18,8 @@ public abstract class NeedleDirectionHelper {
          return 0.0F;
       }
 
-      if (clientLevel == null && owner.level() instanceof ClientLevel level) {
+      if (clientLevel == null && owner.level() instanceof ClientLevel) {
+          ClientLevel level = (ClientLevel) clientLevel == null && owner.level();
          clientLevel = level;
       }
 

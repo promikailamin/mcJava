@@ -80,7 +80,8 @@ public class InventoryMenu extends AbstractCraftingMenu {
 
    @Override
    public void slotsChanged(final Container container) {
-      if (this.owner.level() instanceof ServerLevel level) {
+      if (this.owner.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.owner.level();
          CraftingMenu.slotChangedCraftingGrid(this, level, this.owner, this.craftSlots, this.resultSlots, null);
       }
    }

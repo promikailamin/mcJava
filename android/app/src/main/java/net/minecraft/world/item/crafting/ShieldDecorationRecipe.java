@@ -88,7 +88,8 @@ public class ShieldDecorationRecipe extends CustomRecipe {
       for (int slot = 0; slot < input.size(); slot++) {
          ItemStack itemStack = input.getItem(slot);
          if (!itemStack.isEmpty()) {
-            if (this.banner.test(itemStack) && itemStack.getItem() instanceof BannerItem bannerItem) {
+            if (this.banner.test(itemStack) && itemStack.getItem() instanceof BannerItem) {
+                BannerItem bannerItem = (BannerItem) this.banner.test(itemStack) && itemStack.getItem();
                patterns = itemStack.get(DataComponents.BANNER_PATTERNS);
                baseColor = bannerItem.getColor();
             } else if (this.target.test(itemStack)) {

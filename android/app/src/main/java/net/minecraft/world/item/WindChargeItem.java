@@ -26,7 +26,8 @@ public class WindChargeItem extends Item implements ProjectileItem {
    @Override
    public InteractionResult use(final Level level, final Player player, final InteractionHand hand) {
       ItemStack stack = player.getItemInHand(hand);
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          Projectile.spawnProjectileFromRotation(
             (source, l, itemStack) -> new WindCharge(player, level, player.position().x(), player.getEyePosition().y(), player.position().z()),
             serverLevel,

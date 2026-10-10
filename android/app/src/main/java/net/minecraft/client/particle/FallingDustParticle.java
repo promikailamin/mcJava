@@ -89,7 +89,8 @@ public class FallingDustParticle extends SingleQuadParticle {
 
          BlockPos pos = BlockPos.containing(x, y, z);
          int tintColor;
-         if (blockState.getBlock() instanceof FallingBlock fallingBlock) {
+         if (blockState.getBlock() instanceof FallingBlock) {
+             FallingBlock fallingBlock = (FallingBlock) blockState.getBlock();
             tintColor = fallingBlock.getDustColor(blockState, level, pos);
          } else {
             BlockTintSource tintSource = Minecraft.getInstance().getBlockColors().getTintSource(blockState, 0);

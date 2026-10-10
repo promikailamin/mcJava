@@ -72,7 +72,8 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
 
    @Override
    public void extractSlot(final GuiGraphicsExtractor graphics, final Slot slot, final int mouseX, final int mouseY) {
-      if (slot instanceof CrafterSlot crafterSlot) {
+      if (slot instanceof CrafterSlot) {
+          CrafterSlot crafterSlot = (CrafterSlot) slot;
          if (this.menu.isSlotDisabled(slot.index)) {
             this.extractDisabledSlot(graphics, crafterSlot);
          } else {

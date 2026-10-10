@@ -33,7 +33,8 @@ public record UseCooldown(float seconds, Optional<Identifier> cooldownGroup) {
    }
 
    public void apply(final ItemStack stack, final LivingEntity user) {
-      if (user instanceof Player player) {
+      if (user instanceof Player) {
+          Player player = (Player) user;
          player.getCooldowns().addCooldown(stack, this.ticks());
       }
    }

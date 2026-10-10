@@ -70,7 +70,7 @@ public class SpearRetreat extends Behavior<PathfinderMob> {
 
    protected void tick(final ServerLevel level, final PathfinderMob mob, final long timestamp) {
       LivingEntity target = this.getTarget(mob);
-      float speedModifier = mob.getRootVehicle() instanceof Mob vehicleMob ? vehicleMob.chargeSpeedModifier() : 1.0F;
+      float speedModifier = mob.getRootVehicle() instanceof Mob ? chargeSpeedModifier() : 1.0F;
       mob.getBrain().setMemory(MemoryModuleType.LOOK_TARGET, new EntityTracker(target, true));
       mob.getBrain().setMemory(MemoryModuleType.SPEAR_FLEEING_TIME, mob.getBrain().getMemory(MemoryModuleType.SPEAR_FLEEING_TIME).orElse(0) + 1);
       mob.getBrain()

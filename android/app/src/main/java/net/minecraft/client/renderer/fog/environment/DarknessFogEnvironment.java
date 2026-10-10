@@ -19,7 +19,8 @@ public class DarknessFogEnvironment extends MobEffectFogEnvironment {
 
    @Override
    public void setupFog(final FogData fog, final Camera camera, final ClientLevel level, final float renderDistance, final DeltaTracker deltaTracker) {
-      if (camera.entity() instanceof LivingEntity livingEntity) {
+      if (camera.entity() instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) camera.entity();
          MobEffectInstance effect = livingEntity.getEffect(this.getMobEffect());
          if (effect != null) {
             float distance = Mth.lerp(effect.getBlendFactor(livingEntity, deltaTracker.getGameTimeDeltaPartialTick(false)), renderDistance, 15.0F);

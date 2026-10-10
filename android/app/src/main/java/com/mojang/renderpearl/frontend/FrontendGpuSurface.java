@@ -78,7 +78,8 @@ public class FrontendGpuSurface implements GpuSurface {
 
    @Override
    public void blitFromTexture(final CommandEncoder commandEncoder, final GpuTextureView textureView) {
-      if (commandEncoder instanceof FrontendCommandEncoder frontendCommandEncoder) {
+      if (commandEncoder instanceof FrontendCommandEncoder) {
+          FrontendCommandEncoder frontendCommandEncoder = (FrontendCommandEncoder) commandEncoder;
          if (frontendCommandEncoder.isInRenderPass()) {
             throw new IllegalStateException("Close the existing render pass before presenting with a command encoder");
          }

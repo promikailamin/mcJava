@@ -221,7 +221,8 @@ public class Piglin extends AbstractPiglin implements CrossbowAttackMob, Invento
       InteractionResult interactionResult = super.mobInteract(player, hand);
       if (interactionResult.consumesAction()) {
          return interactionResult;
-      } else if (this.level() instanceof ServerLevel level) {
+      } else if (this.level() instanceof ServerLevel) {
+         ServerLevel level = (ServerLevel) this.level();
          return PiglinAi.mobInteract(level, this, player, hand);
       } else {
          boolean canAdmire = PiglinAi.canAdmire(this, player.getItemInHand(hand)) && this.getArmPose() != PiglinArmPose.ADMIRING_ITEM;
@@ -333,7 +334,8 @@ public class Piglin extends AbstractPiglin implements CrossbowAttackMob, Invento
    @Override
    public boolean hurtServer(final ServerLevel level, final DamageSource source, final float damage) {
       boolean wasHurt = super.hurtServer(level, source, damage);
-      if (wasHurt && source.getEntity() instanceof LivingEntity sourceEntity) {
+      if (wasHurt && source.getEntity() instanceof LivingEntity) {
+          LivingEntity sourceEntity = (LivingEntity) wasHurt && source.getEntity();
          PiglinAi.wasHurtBy(level, this, sourceEntity);
       }
 

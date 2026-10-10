@@ -121,7 +121,8 @@ public class InventoryScreen extends AbstractRecipeBookScreen<InventoryMenu> {
       Quaternionf xRotation = new Quaternionf().rotateX(yAngle * 20.0F * (float) (Math.PI / 180.0));
       rotation.mul(xRotation);
       EntityRenderState renderState = extractRenderState(entity);
-      if (renderState instanceof LivingEntityRenderState livingRenderState) {
+      if (renderState instanceof LivingEntityRenderState) {
+          LivingEntityRenderState livingRenderState = (LivingEntityRenderState) renderState;
          livingRenderState.bodyRot = 180.0F + xAngle * 20.0F;
          livingRenderState.yRot = xAngle * 20.0F;
          if (livingRenderState.pose != Pose.FALL_FLYING) {

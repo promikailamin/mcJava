@@ -66,7 +66,7 @@ public class MinecartTNT extends AbstractMinecart {
 
    @Override
    public boolean hurtServer(final ServerLevel level, final DamageSource source, final float damage) {
-      if (source.getDirectEntity() instanceof AbstractArrow projectile && projectile.isOnFire()) {
+      if (source.getDirectEntity() instanceof AbstractArrow && projectile.isOnFire()) {
          DamageSource damageSource = this.damageSources().explosion(this, source.getEntity());
          this.explode(damageSource, projectile.getDeltaMovement().lengthSqr());
       }
@@ -98,7 +98,8 @@ public class MinecartTNT extends AbstractMinecart {
    }
 
    protected void explode(final @Nullable DamageSource damageSource, final double speedSqr) {
-      if (this.level() instanceof ServerLevel level) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.level();
          if (level.getGameRules().get(GameRules.TNT_EXPLODES)) {
             double speed = Math.min(Math.sqrt(speedSqr), 5.0);
             level.explode(
@@ -146,7 +147,7 @@ public class MinecartTNT extends AbstractMinecart {
    }
 
    public void primeFuse(final @Nullable DamageSource source) {
-      if (!(this.level() instanceof ServerLevel serverLevel && !serverLevel.getGameRules().get(GameRules.TNT_EXPLODES))) {
+      if (!(this.level() instanceof ServerLevel && !serverLevel.getGameRules().get(GameRules.TNT_EXPLODES))) {
          this.fuse = 80;
          if (!this.level().isClientSide()) {
             if (source != null && this.ignitionSource == null) {
@@ -212,8 +213,6 @@ public class MinecartTNT extends AbstractMinecart {
    }
 
    private static boolean damageSourceIgnitesTnt(final DamageSource source) {
-      return source.getDirectEntity() instanceof Projectile projectile
-         ? projectile.isOnFire()
-         : source.is(DamageTypeTags.IS_FIRE) || source.is(DamageTypeTags.IS_EXPLOSION);
+      return source.getDirectEntity() instanceof Projectile ? isOnFire() : source.is(DamageTypeTags.IS_FIRE) || source.is(DamageTypeTags.IS_EXPLOSION);
    }
 }

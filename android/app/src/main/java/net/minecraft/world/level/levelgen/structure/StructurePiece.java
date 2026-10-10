@@ -462,7 +462,8 @@ public abstract class StructurePiece {
          }
 
          level.setBlock(pos, blockState, 2);
-         if (level.getBlockEntity(pos) instanceof ChestBlockEntity chestBlockEntity) {
+         if (level.getBlockEntity(pos) instanceof ChestBlockEntity) {
+             ChestBlockEntity chestBlockEntity = (ChestBlockEntity) level.getBlockEntity(pos);
             chestBlockEntity.setLootTable(lootTable, random.nextLong());
          }
 
@@ -485,7 +486,8 @@ public abstract class StructurePiece {
       BlockPos pos = this.getWorldPos(x, y, z);
       if (chunkBB.isInside(pos) && !level.getBlockState(pos).is(Blocks.DISPENSER)) {
          this.placeBlock(level, Blocks.DISPENSER.defaultBlockState().setValue(DispenserBlock.FACING, facing), x, y, z, chunkBB);
-         if (level.getBlockEntity(pos) instanceof DispenserBlockEntity dispenserBlockEntity) {
+         if (level.getBlockEntity(pos) instanceof DispenserBlockEntity) {
+             DispenserBlockEntity dispenserBlockEntity = (DispenserBlockEntity) level.getBlockEntity(pos);
             dispenserBlockEntity.setLootTable(lootTable, random.nextLong());
          }
 

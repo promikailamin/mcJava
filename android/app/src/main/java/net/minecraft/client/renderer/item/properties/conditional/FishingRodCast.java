@@ -17,7 +17,7 @@ public record FishingRodCast() implements ConditionalItemModelProperty {
    public boolean get(
       final ItemStack itemStack, final @Nullable ClientLevel level, final @Nullable LivingEntity owner, final int seed, final ItemDisplayContext displayContext
    ) {
-      if (owner instanceof Player player && player.fishing != null) {
+      if (owner instanceof Player && player.fishing != null) {
          HumanoidArm holdingArm = FishingHookRenderer.getHoldingArm(player);
          return owner.getItemHeldByArm(holdingArm) == itemStack;
       } else {

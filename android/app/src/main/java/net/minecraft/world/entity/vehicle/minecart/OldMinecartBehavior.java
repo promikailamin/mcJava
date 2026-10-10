@@ -48,7 +48,8 @@ public class OldMinecartBehavior extends MinecartBehavior {
 
    @Override
    public void tick() {
-      if (this.level() instanceof ServerLevel level) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.level();
          this.minecart.applyGravity();
          BlockPos var11 = this.minecart.getCurrentBlockPosOrRailBelow();
          BlockState state = this.level().getBlockState(var11);
@@ -152,7 +153,8 @@ public class OldMinecartBehavior extends MinecartBehavior {
       this.setDeltaMovement(movement);
       Entity controllingPassenger = this.minecart.getFirstPassenger();
       Vec3 moveIntent;
-      if (this.minecart.getFirstPassenger() instanceof ServerPlayer player) {
+      if (this.minecart.getFirstPassenger() instanceof ServerPlayer) {
+          ServerPlayer player = (ServerPlayer) this.minecart.getFirstPassenger();
          moveIntent = player.getLastClientMoveIntent();
       } else {
          moveIntent = Vec3.ZERO;

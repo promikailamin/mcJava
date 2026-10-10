@@ -55,7 +55,8 @@ public class EndCrystal extends Entity {
       this.time++;
       this.applyEffectsFromBlocks();
       this.handlePortal();
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          BlockPos pos = this.blockPosition();
          if (serverLevel.getDragonFight() != null && serverLevel.getBlockState(pos).isAir()) {
             serverLevel.setBlockAndUpdate(pos, BaseFireBlock.getState(serverLevel, pos));

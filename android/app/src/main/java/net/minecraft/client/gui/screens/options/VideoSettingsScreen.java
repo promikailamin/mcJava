@@ -170,7 +170,8 @@ public class VideoSettingsScreen extends OptionsSubScreen {
 
    @Override
    public void tick() {
-      if (this.list != null && this.list.findOption(this.options.maxAnisotropyBit()) instanceof AbstractSliderButton maxAnisotropy) {
+      if (this.list != null && this.list.findOption(this.options.maxAnisotropyBit()) instanceof AbstractSliderButton) {
+          AbstractSliderButton maxAnisotropy = (AbstractSliderButton) this.list != null && this.list.findOption(this.options.maxAnisotropyBit());
          maxAnisotropy.active = this.options.textureFiltering().get() == TextureFilteringMethod.ANISOTROPIC;
       }
 
@@ -262,7 +263,8 @@ public class VideoSettingsScreen extends OptionsSubScreen {
    public boolean mouseScrolled(final double x, final double y, final double scrollX, final double scrollY) {
       if (this.minecraft.hasControlDown()) {
          OptionInstance<Integer> guiScale = this.options.guiScale();
-         if (guiScale.values() instanceof OptionInstance.ClampingLazyMaxIntRange clampingLazyMaxIntRange) {
+         if (guiScale.values() instanceof OptionInstance.ClampingLazyMaxIntRange) {
+             OptionInstance.ClampingLazyMaxIntRange clampingLazyMaxIntRange = (OptionInstance.ClampingLazyMaxIntRange) guiScale.values();
             int oldValue = guiScale.get();
             int adjustedOldValue = oldValue == 0 ? clampingLazyMaxIntRange.maxInclusive() + 1 : oldValue;
             int newValue = adjustedOldValue + (int)Math.signum(scrollY);

@@ -22,7 +22,7 @@ public interface ChunkTrackingView {
 
    static void difference(final ChunkTrackingView from, final ChunkTrackingView to, final Consumer<ChunkPos> onEnter, final Consumer<ChunkPos> onLeave) {
       if (!from.equals(to)) {
-         if (from instanceof ChunkTrackingView.Positioned last && to instanceof ChunkTrackingView.Positioned next && last.squareIntersects(next)) {
+         if (from instanceof ChunkTrackingView.Positioned && to instanceof ChunkTrackingView.Positioned && last.squareIntersects(next)) {
             int minX = Math.min(last.minX(), next.minX());
             int minZ = Math.min(last.minZ(), next.minZ());
             int maxX = Math.max(last.maxX(), next.maxX());

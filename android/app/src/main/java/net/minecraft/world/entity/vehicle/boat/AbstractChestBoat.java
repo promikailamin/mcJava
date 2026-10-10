@@ -88,7 +88,8 @@ public abstract class AbstractChestBoat extends AbstractBoat implements HasCusto
       }
 
       InteractionResult result = this.interactWithContainerVehicle(player);
-      if (result.consumesAction() && player.level() instanceof ServerLevel serverLevel) {
+      if (result.consumesAction() && player.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) result.consumesAction() && player.level();
          this.gameEvent(GameEvent.CONTAINER_OPEN, player);
          PiglinAi.angerNearbyPiglins(serverLevel, player, true);
       }
@@ -99,7 +100,8 @@ public abstract class AbstractChestBoat extends AbstractBoat implements HasCusto
    @Override
    public void openCustomInventoryScreen(final Player player) {
       player.openMenu(this);
-      if (player.level() instanceof ServerLevel level) {
+      if (player.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) player.level();
          this.gameEvent(GameEvent.CONTAINER_OPEN, player);
          PiglinAi.angerNearbyPiglins(level, player, true);
       }

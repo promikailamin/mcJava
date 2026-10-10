@@ -62,7 +62,7 @@ public class KeyMapping implements Comparable<KeyMapping> {
 
    public static void restoreToggleStatesOnScreenClosed() {
       for (KeyMapping keyMapping : ALL.values()) {
-         if (keyMapping instanceof ToggleKeyMapping toggleKeyMapping && toggleKeyMapping.shouldRestoreStateOnScreenClosed()) {
+         if (keyMapping instanceof ToggleKeyMapping && toggleKeyMapping.shouldRestoreStateOnScreenClosed()) {
             toggleKeyMapping.setDown(true);
          }
       }
@@ -70,7 +70,8 @@ public class KeyMapping implements Comparable<KeyMapping> {
 
    public static void resetToggleKeys() {
       for (KeyMapping keyMapping : ALL.values()) {
-         if (keyMapping instanceof ToggleKeyMapping toggleKeyMapping) {
+         if (keyMapping instanceof ToggleKeyMapping) {
+             ToggleKeyMapping toggleKeyMapping = (ToggleKeyMapping) keyMapping;
             toggleKeyMapping.reset();
          }
       }

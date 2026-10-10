@@ -52,7 +52,8 @@ public class CommandBlock extends BaseEntityBlock implements GameMasterBlock {
       final BlockState state, final Level level, final BlockPos pos, final Block block, final @Nullable Orientation orientation, final boolean movedByPiston
    ) {
       if (!level.isClientSide()) {
-         if (level.getBlockEntity(pos) instanceof CommandBlockEntity commandBlock) {
+         if (level.getBlockEntity(pos) instanceof CommandBlockEntity) {
+             CommandBlockEntity commandBlock = (CommandBlockEntity) level.getBlockEntity(pos);
             this.setPoweredAndUpdate(level, pos, commandBlock, level.hasNeighborSignal(pos));
          }
       }
@@ -75,7 +76,8 @@ public class CommandBlock extends BaseEntityBlock implements GameMasterBlock {
 
    @Override
    protected void tick(final BlockState state, final ServerLevel level, final BlockPos pos, final RandomSource random) {
-      if (level.getBlockEntity(pos) instanceof CommandBlockEntity commandBlock) {
+      if (level.getBlockEntity(pos) instanceof CommandBlockEntity) {
+          CommandBlockEntity commandBlock = (CommandBlockEntity) level.getBlockEntity(pos);
          BaseCommandBlock baseCommandBlock = commandBlock.getCommandBlock();
          boolean commandSet = !StringUtil.isNullOrEmpty(baseCommandBlock.getCommand());
          CommandBlockEntity.Mode mode = commandBlock.getMode();
@@ -117,7 +119,7 @@ public class CommandBlock extends BaseEntityBlock implements GameMasterBlock {
    protected InteractionResult useWithoutItem(
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
-      if (level.getBlockEntity(pos) instanceof CommandBlockEntity commandBlockEntity && player.canUseGameMasterBlocks()) {
+      if (level.getBlockEntity(pos) instanceof CommandBlockEntity && player.canUseGameMasterBlocks()) {
          player.openCommandBlock(commandBlockEntity);
          return InteractionResult.SUCCESS;
       } else {
@@ -132,14 +134,16 @@ public class CommandBlock extends BaseEntityBlock implements GameMasterBlock {
 
    @Override
    protected int getAnalogOutputSignal(final BlockState state, final Level level, final BlockPos pos, final Direction direction) {
-      return level.getBlockEntity(pos) instanceof CommandBlockEntity commandBlockEntity ? commandBlockEntity.getCommandBlock().getSuccessCount() : 0;
+      return level.getBlockEntity(pos) instanceof CommandBlockEntity ? ((CommandBlockEntity) level.getBlockEntity(pos)).getCommandBlock().getSuccessCount()  : 0;
    }
 
    @Override
    public void setPlacedBy(final Level level, final BlockPos pos, final BlockState state, final @Nullable LivingEntity by, final ItemStack itemStack) {
-      if (level.getBlockEntity(pos) instanceof CommandBlockEntity commandBlockEntity) {
+      if (level.getBlockEntity(pos) instanceof CommandBlockEntity) {
+          CommandBlockEntity commandBlockEntity = (CommandBlockEntity) level.getBlockEntity(pos);
          BaseCommandBlock commandBlock = commandBlockEntity.getCommandBlock();
-         if (level instanceof ServerLevel serverLevel) {
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
             if (!itemStack.has(DataComponents.BLOCK_ENTITY_DATA)) {
                commandBlock.setTrackOutput(serverLevel.getGameRules().get(GameRules.SEND_COMMAND_FEEDBACK));
                commandBlockEntity.setAutomatic(this.automatic);
@@ -181,7 +185,7 @@ public class CommandBlock extends BaseEntityBlock implements GameMasterBlock {
          BlockState state = level.getBlockState(pos);
          Block block = state.getBlock();
          if (!state.is(Blocks.CHAIN_COMMAND_BLOCK)
-            || !(level.getBlockEntity(pos) instanceof CommandBlockEntity commandBlock)
+            || !(level.getBlockEntity(pos) instanceof CommandBlockEntity)
             || commandBlock.getMode() != CommandBlockEntity.Mode.SEQUENCE) {
             break;
          }

@@ -67,7 +67,8 @@ public class LightningBolt extends Entity {
    private void powerLightningRod() {
       BlockPos strikePosition = this.getStrikePosition();
       BlockState stateBelow = this.level().getBlockState(strikePosition);
-      if (stateBelow.getBlock() instanceof LightningRodBlock lightningRodBlock) {
+      if (stateBelow.getBlock() instanceof LightningRodBlock) {
+          LightningRodBlock lightningRodBlock = (LightningRodBlock) stateBelow.getBlock();
          lightningRodBlock.onLightningStrike(stateBelow, this.level(), strikePosition);
       }
    }
@@ -167,7 +168,8 @@ public class LightningBolt extends Entity {
    }
 
    private void spawnFire(final int additionalSources) {
-      if (!this.visualOnly && this.level() instanceof ServerLevel level) {
+      if (!this.visualOnly && this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) !this.visualOnly && this.level();
          BlockPos var7 = this.blockPosition();
          if (level.canSpreadFireAround(var7)) {
             BlockState fire = BaseFireBlock.getState(level, var7);

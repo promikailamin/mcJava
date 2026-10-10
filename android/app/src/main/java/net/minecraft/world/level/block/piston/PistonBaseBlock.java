@@ -103,8 +103,7 @@ public class PistonBaseBlock extends DirectionalBlock {
          int event = 1;
          if (pushedState.is(Blocks.MOVING_PISTON)
             && pushedState.getValue(FACING) == direction
-            && level.getBlockEntity(pushedPos) instanceof PistonMovingBlockEntity pistonEntity
-            && pistonEntity.isExtending()
+            && level.getBlockEntity(pushedPos) instanceof PistonMovingBlockEntity && pistonEntity.isExtending()
             && (pistonEntity.getProgress(0.0F) < 0.5F || level.getGameTime() == pistonEntity.getLastTicked() || ((ServerLevel)level).isHandlingTick())) {
             event = 2;
          }
@@ -161,7 +160,8 @@ public class PistonBaseBlock extends DirectionalBlock {
          level.playSound(null, pos, SoundEvents.PISTON_EXTEND, SoundSource.BLOCKS, 0.5F, random.nextFloat() * 0.25F + 0.6F);
          level.gameEvent(GameEvent.BLOCK_ACTIVATE, pos, GameEvent.Context.of(extendedState));
       } else if (b0 == 1 || b0 == 2) {
-         if (level.getBlockEntity(pos.relative(direction)) instanceof PistonMovingBlockEntity pistonMovingBlockEntity) {
+         if (level.getBlockEntity(pos.relative(direction)) instanceof PistonMovingBlockEntity) {
+             PistonMovingBlockEntity pistonMovingBlockEntity = (PistonMovingBlockEntity) level.getBlockEntity(pos.relative(direction));
             pistonMovingBlockEntity.finalTick();
          }
 
@@ -182,8 +182,7 @@ public class PistonBaseBlock extends DirectionalBlock {
             BlockState movingState = level.getBlockState(twoPos);
             boolean pistonPiece = false;
             if (movingState.is(Blocks.MOVING_PISTON)
-               && level.getBlockEntity(twoPos) instanceof PistonMovingBlockEntity entity
-               && entity.getDirection() == direction
+               && level.getBlockEntity(twoPos) instanceof PistonMovingBlockEntity && entity.getDirection() == direction
                && entity.isExtending()) {
                entity.finalTick();
                pistonPiece = true;
@@ -337,7 +336,8 @@ public class PistonBaseBlock extends DirectionalBlock {
       for (int i = toDestroy.size() - 1; i >= 0; i--) {
          BlockState state = toUpdate[updateIndex++];
          BlockPos pos = toDestroy.get(i);
-         if (level instanceof ServerLevel serverLevel) {
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
             state.affectNeighborsAfterRemoval(serverLevel, pos, false);
          }
 

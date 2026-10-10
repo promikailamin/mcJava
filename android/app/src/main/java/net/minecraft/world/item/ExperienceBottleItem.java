@@ -31,7 +31,8 @@ public class ExperienceBottleItem extends Item implements ProjectileItem {
          0.5F,
          0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F)
       );
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          Projectile.spawnProjectileFromRotation(ThrownExperienceBottle::new, serverLevel, itemStack, player, -20.0F, 0.7F, 1.0F);
       }
 

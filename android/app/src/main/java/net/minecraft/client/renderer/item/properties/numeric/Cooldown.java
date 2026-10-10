@@ -12,7 +12,7 @@ public record Cooldown() implements RangeSelectItemModelProperty {
 
    @Override
    public float get(final ItemStack itemStack, final @Nullable ClientLevel level, final @Nullable ItemOwner owner, final int seed) {
-      return owner != null && owner.asLivingEntity() instanceof Player player ? player.getCooldowns().getCooldownPercent(itemStack, 0.0F) : 0.0F;
+      return owner != null && owner.asLivingEntity() instanceof Player ? ((Player) owner.asLivingEntity()).getCooldowns().getCooldownPercent(itemStack, 0.0F)  : 0.0F;
    }
 
    @Override

@@ -191,7 +191,8 @@ public class CopyOnWriteFSPath implements Path {
    }
 
    protected static CopyOnWriteFSPath asCow(final Path other) {
-      if (other instanceof CopyOnWriteFSPath copyOnWriteFSPath) {
+      if (other instanceof CopyOnWriteFSPath) {
+          CopyOnWriteFSPath copyOnWriteFSPath = (CopyOnWriteFSPath) other;
          return copyOnWriteFSPath;
       } else {
          throw new CowFSIllegalArgumentException("Other path is of mismatching file system");

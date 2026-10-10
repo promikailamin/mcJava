@@ -100,7 +100,8 @@ public abstract class AbstractArrow extends Projectile {
       }
 
       this.setPos(x, y, z);
-      if (firedFromWeapon != null && level instanceof ServerLevel serverLevel) {
+      if (firedFromWeapon != null && level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) firedFromWeapon != null && level;
          if (firedFromWeapon.isEmpty()) {
             throw new IllegalArgumentException("Invalid weapon firing an arrow");
          }
@@ -427,7 +428,8 @@ public abstract class AbstractArrow extends Projectile {
       double arrowDamage = this.baseDamage;
       Entity currentOwner = this.getOwner();
       DamageSource damageSource = this.damageSources().arrow(this, currentOwner != null ? currentOwner : this);
-      if (this.getWeaponItem() != null && this.level() instanceof ServerLevel serverLevel) {
+      if (this.getWeaponItem() != null && this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.getWeaponItem() != null && this.level();
          arrowDamage = EnchantmentHelper.modifyDamage(serverLevel, this.getWeaponItem(), entity, damageSource, (float)arrowDamage);
       }
 
@@ -454,7 +456,8 @@ public abstract class AbstractArrow extends Projectile {
          damage = (int)Math.min(dmgIncrease + damage, 2147483647L);
       }
 
-      if (currentOwner instanceof LivingEntity livingOwner) {
+      if (currentOwner instanceof LivingEntity) {
+          LivingEntity livingOwner = (LivingEntity) currentOwner;
          livingOwner.setLastHurtMob(entity);
       }
 
@@ -464,18 +467,20 @@ public abstract class AbstractArrow extends Projectile {
       }
 
       if (entity.hurtOrSimulate(damageSource, damage)) {
-         if (entity instanceof LivingEntity mob) {
+         if (entity instanceof LivingEntity) {
+             LivingEntity mob = (LivingEntity) entity;
             if (!this.level().isClientSide() && this.getPierceLevel() <= 0) {
                mob.setArrowCount(mob.getArrowCount() + 1);
             }
 
             this.doKnockback(mob, damageSource);
-            if (this.level() instanceof ServerLevel serverLevel) {
+            if (this.level() instanceof ServerLevel) {
+                ServerLevel serverLevel = (ServerLevel) this.level();
                EnchantmentHelper.doPostAttackEffectsWithItemSource(serverLevel, mob, damageSource, this.getWeaponItem());
             }
 
             this.doPostHurtEffects(mob);
-            if (mob instanceof Player && currentOwner instanceof ServerPlayer ownerPlayer && !this.isSilent() && mob != ownerPlayer) {
+            if (mob instanceof Player && currentOwner instanceof ServerPlayer && !this.isSilent() && mob != ownerPlayer) {
                ownerPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.PLAY_ARROW_HIT_SOUND, 0.0F));
             }
 
@@ -483,7 +488,8 @@ public abstract class AbstractArrow extends Projectile {
                this.piercedAndKilledEntities.add(mob);
             }
 
-            if (!this.level().isClientSide() && currentOwner instanceof ServerPlayer player) {
+            if (!this.level().isClientSide() && currentOwner instanceof ServerPlayer) {
+                ServerPlayer player = (ServerPlayer) !this.level().isClientSide() && currentOwner;
                if (this.piercedAndKilledEntities != null) {
                   CriteriaTriggers.KILLED_BY_ARROW.trigger(player, this.piercedAndKilledEntities, this.firedFromWeapon);
                } else if (!entity.isAlive()) {
@@ -499,7 +505,7 @@ public abstract class AbstractArrow extends Projectile {
       } else if (entity.projectileReceivesSideEffectsOnHit(false)) {
          entity.setRemainingFireTicks(remainingFireTicks);
          this.deflect(ProjectileDeflection.REVERSE, entity, this.owner, false, 0.2);
-         if (this.level() instanceof ServerLevel level && this.getDeltaMovement().lengthSqr() < 1.0E-7) {
+         if (this.level() instanceof ServerLevel && this.getDeltaMovement().lengthSqr() < 1.0E-7) {
             if (this.pickup == AbstractArrow.Pickup.ALLOWED) {
                this.spawnAtLocation(level, this.getPickupItem(), 0.1F);
             }
@@ -510,9 +516,8 @@ public abstract class AbstractArrow extends Projectile {
    }
 
    protected void doKnockback(final LivingEntity mob, final DamageSource damageSource) {
-      double knockback = this.firedFromWeapon != null && this.level() instanceof ServerLevel serverLevel
-         ? EnchantmentHelper.modifyKnockback(serverLevel, this.firedFromWeapon, mob, damageSource, 0.0F)
-         : 0.0F;
+      double knockback = this.firedFromWeapon != null && this.level() instanceof ServerLevel ? EnchantmentHelper.modifyKnockback(serverLevel, this.firedFromWeapon, mob, damageSource, 0.0F)
+          : 0.0F;
       if (knockback > 0.0) {
          double knockbackResistance = Math.max(0.0, 1.0 - mob.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
          Vec3 movement = this.getDeltaMovement().multiply(1.0, 0.0, 1.0).normalize().scale(knockback * 0.6 * knockbackResistance);
@@ -527,7 +532,7 @@ public abstract class AbstractArrow extends Projectile {
       this.lastState = this.level().getBlockState(hitResult.getBlockPos());
       super.onHitBlock(hitResult);
       ItemStack weaponItem = this.getWeaponItem();
-      if (this.level() instanceof ServerLevel serverLevel && weaponItem != null) {
+      if (this.level() instanceof ServerLevel && weaponItem != null) {
          this.hitBlockEnchantmentEffects(serverLevel, hitResult, weaponItem);
       }
 
@@ -550,7 +555,7 @@ public abstract class AbstractArrow extends Projectile {
       EnchantmentHelper.onHitBlock(
          serverLevel,
          weapon,
-         this.getOwner() instanceof LivingEntity livingOwner ? livingOwner : null,
+         this.getOwner() instanceof LivingEntity ? livingOwner  : null,
          this,
          null,
          compensatedHitPosition,
@@ -589,7 +594,7 @@ public abstract class AbstractArrow extends Projectile {
 
    @Override
    protected boolean canHitEntity(final Entity entity) {
-      return entity instanceof Player playerEntity && this.getOwner() instanceof Player player && !player.canHarmPlayer(playerEntity)
+      return entity instanceof Player && this.getOwner() instanceof Player && !player.canHarmPlayer(playerEntity)
          ? false
          : super.canHitEntity(entity) && (this.piercingIgnoreEntityIds == null || !this.piercingIgnoreEntityIds.contains(entity.getId()));
    }

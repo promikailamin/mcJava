@@ -535,7 +535,7 @@ public class FishingHook extends Projectile {
    }
 
    public @Nullable Player getPlayerOwner() {
-      return this.getOwner() instanceof Player player ? player : null;
+      return this.getOwner() instanceof Player ? player  : null;
    }
 
    public @Nullable Entity getHookedIn() {

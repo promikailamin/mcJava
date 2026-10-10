@@ -201,9 +201,8 @@ public final class TreeGrower {
       }
 
       Holder<Feature> featureHolder = level.registryAccess().lookupOrThrow(Registries.FEATURE).get(featureKey).orElse(null);
-      return featureHolder != null && featureHolder.value() instanceof TreeFeature treeFeature
-         ? OptionalInt.of(treeFeature.trunkPlacer().getBaseHeight())
-         : OptionalInt.empty();
+      return featureHolder != null && featureHolder.value() instanceof TreeFeature ? OptionalInt.of(((TreeFeature) featureHolder.value()).trunkPlacer().getBaseHeight())
+          : OptionalInt.empty();
    }
 
    public boolean canGrow(final ServerLevel level, final BlockPos pos, final BlockState state) {

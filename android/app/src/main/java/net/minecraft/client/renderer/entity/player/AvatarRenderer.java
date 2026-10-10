@@ -283,7 +283,7 @@ public class AvatarRenderer<AvatarlikeEntity extends Avatar & ClientAvatarEntity
 
    public boolean isEntityUpsideDown(final AvatarlikeEntity mob) {
       if (mob.isModelPartShown(PlayerModelPart.CAPE)) {
-         return mob instanceof Player player ? isPlayerUpsideDown(player) : super.isEntityUpsideDown(mob);
+         return mob instanceof Player ? isPlayerUpsideDown(player)  : super.isEntityUpsideDown(mob);
       } else {
          return false;
       }

@@ -265,7 +265,8 @@ public class SectionRenderDispatcher {
       }
 
       public void resortTransparency() {
-         if (this.getSectionMesh() instanceof CompiledSectionMesh mesh) {
+         if (this.getSectionMesh() instanceof CompiledSectionMesh) {
+             CompiledSectionMesh mesh = (CompiledSectionMesh) this.getSectionMesh();
             this.lastResortTransparencyTask = new SectionRenderDispatcher.RenderSection.ResortTransparencyTask(mesh);
             SectionRenderDispatcher.this.schedule(this.lastResortTransparencyTask);
          }

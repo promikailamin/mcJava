@@ -35,7 +35,8 @@ public class EntityTracker implements PositionTracker {
 
    @Override
    public boolean isVisibleBy(final LivingEntity body) {
-      if (this.entity instanceof LivingEntity livingEntity) {
+      if (this.entity instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) this.entity;
          if (!livingEntity.isAlive()) {
             return false;
          }

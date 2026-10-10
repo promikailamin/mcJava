@@ -263,6 +263,6 @@ public class DoorBlock extends Block {
    }
 
    public static boolean isWoodenDoor(final BlockState state) {
-      return state.getBlock() instanceof DoorBlock door && door.type().canOpenByHand();
+      return state.getBlock() instanceof DoorBlock && door.type().canOpenByHand();
    }
 }

@@ -198,7 +198,8 @@ public final class OverworldBiomeBuilder {
          }
       }
 
-      if (TerrainProvider.overworldOffset(continents, erosion, ridges, false) instanceof CubicSpline.Multipoint<?> multipoint) {
+      if (TerrainProvider.overworldOffset(continents, erosion, ridges, false) instanceof CubicSpline.Multipoint<?>) {
+          CubicSpline.Multipoint<?> multipoint = (CubicSpline.Multipoint<?>) TerrainProvider.overworldOffset(continents, erosion, ridges, false);
          for (float location : multipoint.locations()) {
             biomes.accept(
                Pair.of(

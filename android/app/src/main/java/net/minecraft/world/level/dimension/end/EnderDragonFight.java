@@ -366,11 +366,11 @@ Codec.list(Codec.INT).lenientOptionalFieldOf("gateways", new ArrayList()).forGet
 
       for (int x = -8 + chunkOrigin.x(); x <= 8 + chunkOrigin.x(); x++) {
          for (int z = 8 + chunkOrigin.z(); z <= 8 + chunkOrigin.z(); z++) {
-            if (!(this.level.getChunk(x, z, ChunkStatus.FULL, false) instanceof LevelChunk levelChunk)) {
-               return false;
-            }
+if (!(this.level.getChunk(x, z, ChunkStatus.FULL, false) instanceof LevelChunk)) {
+                return false;
+             }
 
-            FullChunkStatus status = levelChunk.getFullStatus();
+             LevelChunk levelChunk = (LevelChunk) this.level.getChunk(x, z, ChunkStatus.FULL, false);
             if (!status.isOrAfter(FullChunkStatus.BLOCK_TICKING)) {
                return false;
             }
@@ -506,7 +506,8 @@ Codec.list(Codec.INT).lenientOptionalFieldOf("gateways", new ArrayList()).forGet
          this.abortRespawnSequence();
       } else {
          this.updateCrystalCount();
-         if (this.level.getEntity(this.dragonUUID) instanceof EnderDragon actuallyDragon) {
+         if (this.level.getEntity(this.dragonUUID) instanceof EnderDragon) {
+             EnderDragon actuallyDragon = (EnderDragon) this.level.getEntity(this.dragonUUID);
             actuallyDragon.onCrystalDestroyed(this.level, crystal, crystal.blockPosition(), source);
          }
       }

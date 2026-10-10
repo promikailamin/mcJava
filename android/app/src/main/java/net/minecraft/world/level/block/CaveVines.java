@@ -22,7 +22,8 @@ public interface CaveVines {
 
    static InteractionResult use(final Entity sourceEntity, final BlockState state, final Level level, final BlockPos pos) {
       if (state.getValue(BERRIES)) {
-         if (level instanceof ServerLevel serverLevel) {
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
             Block.dropFromBlockInteractLootTable(
                serverLevel,
                BuiltInLootTables.HARVEST_CAVE_VINE,

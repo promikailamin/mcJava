@@ -260,7 +260,8 @@ public class Wolf extends TamableAnimal implements NeutralMob {
    public @Nullable SpawnGroupData finalizeSpawn(
       final ServerLevelAccessor level, final DifficultyInstance difficulty, final EntitySpawnReason spawnReason, @Nullable SpawnGroupData groupData
    ) {
-      if (groupData instanceof Wolf.WolfPackData wolfGroupData) {
+      if (groupData instanceof Wolf.WolfPackData) {
+          Wolf.WolfPackData wolfGroupData = (Wolf.WolfPackData) groupData;
          this.setVariant(wolfGroupData.type);
       } else {
          Optional<? extends Holder<WolfVariant>> selectedVariant = VariantUtils.selectVariantToSpawn(
@@ -591,7 +592,8 @@ public class Wolf extends TamableAnimal implements NeutralMob {
 
    public @Nullable Wolf getBreedOffspring(final ServerLevel level, final AgeableMob partner) {
       Wolf baby = EntityTypes.WOLF.create(level, EntitySpawnReason.BREEDING);
-      if (baby != null && partner instanceof Wolf partnerWolf) {
+      if (baby != null && partner instanceof Wolf) {
+         Wolf partnerWolf = (Wolf) partner;
          if (this.random.nextBoolean()) {
             baby.setVariant(this.getVariant());
          } else {
@@ -622,7 +624,7 @@ public class Wolf extends TamableAnimal implements NeutralMob {
          return false;
       } else if (!this.isTame()) {
          return false;
-      } else if (!(partner instanceof Wolf wolf)) {
+      } else if (!(partner instanceof Wolf)) {
          return false;
       } else if (!wolf.isTame()) {
          return false;
@@ -639,12 +641,15 @@ public class Wolf extends TamableAnimal implements NeutralMob {
    public boolean wantsToAttack(final LivingEntity target, final LivingEntity owner) {
       if (target instanceof Creeper || target instanceof Ghast || target instanceof ArmorStand) {
          return false;
-      } else if (target instanceof Wolf wolfTarget) {
+      } else if (target instanceof Wolf) {
+         Wolf wolfTarget = (Wolf) target;
          return !wolfTarget.isTame() || wolfTarget.getOwner() != owner;
-      } else if (target instanceof Player playerTarget && owner instanceof Player playerOwner && !playerOwner.canHarmPlayer(playerTarget)) {
-         return false;
+      } else if (target instanceof Player && owner instanceof Player) {
+         Player playerTarget = (Player) target;
+         Player playerOwner = (Player) owner;
+         return !playerOwner.canHarmPlayer(playerTarget);
       } else {
-         return target instanceof AbstractHorse horse && horse.isTamed() ? false : !(target instanceof TamableAnimal animal && animal.isTame());
+         return !(target instanceof AbstractHorse horse && horse.isTamed()) && !(target instanceof TamableAnimal animal && animal.isTame());
       }
    }
 

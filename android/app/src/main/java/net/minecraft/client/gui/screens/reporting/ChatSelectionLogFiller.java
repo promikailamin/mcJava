@@ -38,7 +38,7 @@ public class ChatSelectionLogFiller {
          }
 
          int eventId = this.eventId--;
-         if (event instanceof LoggedChatMessage.Player message && !message.message().equals(this.lastMessage)) {
+         if (event instanceof LoggedChatMessage.Player && !message.message().equals(this.lastMessage)) {
             if (this.acceptMessage(output, message)) {
                if (this.missedCount > 0) {
                   output.acceptDivider(Component.translatable("gui.chatSelection.fold", this.missedCount));

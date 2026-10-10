@@ -98,9 +98,11 @@ public class Interaction extends Entity implements Attackable, Targeting {
 
    @Override
    public boolean skipAttackInteraction(final Entity source) {
-      if (source instanceof Player player) {
+      if (source instanceof Player) {
+          Player player = (Player) source;
          this.attack = new Interaction.PlayerAction(player.getUUID(), this.level().getGameTime());
-         if (player instanceof ServerPlayer serverPlayer) {
+         if (player instanceof ServerPlayer) {
+             ServerPlayer serverPlayer = (ServerPlayer) player;
             CriteriaTriggers.PLAYER_HURT_ENTITY.trigger(serverPlayer, this, player.damageSources().generic(), 1.0F, 1.0F, false);
          }
 

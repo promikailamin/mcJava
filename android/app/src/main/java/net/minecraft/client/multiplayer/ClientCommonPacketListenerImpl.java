@@ -158,7 +158,8 @@ public abstract class ClientCommonPacketListenerImpl implements ClientCommonPack
       CustomPacketPayload payload = packet.payload();
       if (!(payload instanceof DiscardedPayload)) {
          PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
-         if (payload instanceof BrandPayload brand) {
+         if (payload instanceof BrandPayload) {
+             BrandPayload brand = (BrandPayload) payload;
             this.serverBrand = brand.brand();
             this.telemetryManager.onServerBrandReceived(brand.brand());
          } else {
@@ -267,9 +268,10 @@ public abstract class ClientCommonPacketListenerImpl implements ClientCommonPack
    }
 
    protected void showDialog(final Holder<Dialog> dialog, final DialogConnectionAccess connectionAccess, final @Nullable Screen activeScreen) {
-      if (activeScreen instanceof DialogScreen.WarningScreen existingWarningScreen) {
+      if (activeScreen instanceof DialogScreen.WarningScreen) {
+         DialogScreen.WarningScreen existingWarningScreen = (DialogScreen.WarningScreen) activeScreen;
          Screen hiddenScreen = existingWarningScreen.returnScreen();
-         Screen previousScreen = hiddenScreen instanceof DialogScreen<?> hiddenDialog ? hiddenDialog.previousScreen() : hiddenScreen;
+         Screen previousScreen = hiddenScreen instanceof DialogScreen<?> ? previousScreen() : hiddenScreen;
          DialogScreen<?> newDialogScreen = DialogScreens.createFromData(dialog.value(), previousScreen, connectionAccess);
          if (newDialogScreen != null) {
             existingWarningScreen.updateReturnScreen(newDialogScreen);
@@ -278,9 +280,11 @@ public abstract class ClientCommonPacketListenerImpl implements ClientCommonPack
          }
       } else {
          Screen previousScreen;
-         if (activeScreen instanceof DialogScreen<?> existingDialog) {
+         if (activeScreen instanceof DialogScreen<?>) {
+            DialogScreen<?> existingDialog = (DialogScreen<?>) activeScreen;
             previousScreen = existingDialog.previousScreen();
-         } else if (activeScreen instanceof WaitingForResponseScreen waitScreen) {
+         } else if (activeScreen instanceof WaitingForResponseScreen) {
+            WaitingForResponseScreen waitScreen = (WaitingForResponseScreen) activeScreen;
             previousScreen = waitScreen.previousScreen();
          } else {
             previousScreen = activeScreen;
@@ -302,11 +306,14 @@ public abstract class ClientCommonPacketListenerImpl implements ClientCommonPack
    }
 
    public void clearDialog() {
-      if (this.minecraft.gui.screen() instanceof DialogScreen.WarningScreen existingWarningScreen) {
-         if (existingWarningScreen.returnScreen() instanceof DialogScreen<?> dialogScreen) {
+      if (this.minecraft.gui.screen() instanceof DialogScreen.WarningScreen) {
+         DialogScreen.WarningScreen existingWarningScreen = (DialogScreen.WarningScreen) this.minecraft.gui.screen();
+         if (existingWarningScreen.returnScreen() instanceof DialogScreen<?>) {
+            DialogScreen<?> dialogScreen = (DialogScreen<?>) existingWarningScreen.returnScreen();
             existingWarningScreen.updateReturnScreen(dialogScreen.previousScreen());
          }
-      } else if (this.minecraft.gui.screen() instanceof DialogScreen<?> dialog) {
+      } else if (this.minecraft.gui.screen() instanceof DialogScreen<?>) {
+         DialogScreen<?> dialog = (DialogScreen<?>) this.minecraft.gui.screen();
          this.minecraft.gui.setScreen(dialog.previousScreen());
       }
    }
@@ -397,9 +404,7 @@ public abstract class ClientCommonPacketListenerImpl implements ClientCommonPack
 
    private Screen addOrUpdatePackPrompt(final UUID packId, final URL url, final String hash, final boolean required, final @Nullable Component prompt) {
       Screen currentScreen = this.minecraft.gui.screen();
-      return currentScreen instanceof ClientCommonPacketListenerImpl.PackConfirmScreen promptScreen
-         ? promptScreen.update(this.minecraft, packId, url, hash, required, prompt)
-         : new ClientCommonPacketListenerImpl.PackConfirmScreen(
+      return currentScreen instanceof ClientCommonPacketListenerImpl.PackConfirmScreen ? update(this.minecraft, packId, url, hash, required, prompt) : new ClientCommonPacketListenerImpl.PackConfirmScreen(
             this.minecraft, currentScreen, List.of(new ClientCommonPacketListenerImpl.PackConfirmScreen.PendingRequest(packId, url, hash)), required, prompt
          );
    }

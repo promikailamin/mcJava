@@ -1103,7 +1103,8 @@ public class NetherFortressPieces {
             if (chunkBB.isInside(pos)) {
                this.hasPlacedSpawner = true;
                level.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 2);
-               if (level.getBlockEntity(pos) instanceof SpawnerBlockEntity spawner) {
+               if (level.getBlockEntity(pos) instanceof SpawnerBlockEntity) {
+                   SpawnerBlockEntity spawner = (SpawnerBlockEntity) level.getBlockEntity(pos);
                   spawner.setEntityId(EntityTypes.BLAZE, random);
                }
             }

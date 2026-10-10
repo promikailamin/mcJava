@@ -45,20 +45,22 @@ public class EuclideanGameEventListenerRegistry implements GameEventListenerRegi
       sendDebugInfo(this.level, listener);
    }
 
-   private static void sendDebugInfo(final ServerLevel level, final GameEventListener listener) {
-      if (level.debugSynchronizers().hasAnySubscriberFor(DebugSubscriptions.GAME_EVENT_LISTENERS)) {
-         DebugGameEventListenerInfo info = new DebugGameEventListenerInfo(listener.getListenerRadius());
-         PositionSource listenerSource = listener.getListenerSource();
-         if (listenerSource instanceof BlockPositionSource blockSource) {
-            level.debugSynchronizers().sendBlockValue(blockSource.pos(), DebugSubscriptions.GAME_EVENT_LISTENERS, info);
-         } else if (listenerSource instanceof EntityPositionSource entitySource) {
-            Entity entity = level.getEntity(entitySource.getUuid());
-            if (entity != null) {
-               level.debugSynchronizers().sendEntityValue(entity, DebugSubscriptions.GAME_EVENT_LISTENERS, info);
-            }
-         }
-      }
-   }
+private static void sendDebugInfo(final ServerLevel level, final GameEventListener listener) {
+       if (level.debugSynchronizers().hasAnySubscriberFor(DebugSubscriptions.GAME_EVENT_LISTENERS)) {
+          DebugGameEventListenerInfo info = new DebugGameEventListenerInfo(listener.getListenerRadius());
+          PositionSource listenerSource = listener.getListenerSource();
+          if (listenerSource instanceof BlockPositionSource) {
+             BlockPositionSource blockSource = (BlockPositionSource) listenerSource;
+             level.debugSynchronizers().sendBlockValue(blockSource.pos(), DebugSubscriptions.GAME_EVENT_LISTENERS, info);
+          } else if (listenerSource instanceof EntityPositionSource) {
+             EntityPositionSource entitySource = (EntityPositionSource) listenerSource;
+             Entity entity = level.getEntity(entitySource.getUuid());
+             if (entity != null) {
+                level.debugSynchronizers().sendEntityValue(entity, DebugSubscriptions.GAME_EVENT_LISTENERS, info);
+             }
+          }
+       }
+    }
 
    @Override
    public void unregister(final GameEventListener listener) {

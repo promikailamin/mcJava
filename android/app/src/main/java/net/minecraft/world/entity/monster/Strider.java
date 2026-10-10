@@ -206,7 +206,7 @@ public class Strider extends Animal implements ItemSteerable {
 
    @Override
    public @Nullable LivingEntity getControllingPassenger() {
-      return this.isSaddled() && this.getFirstPassenger() instanceof Player player && player.isHolding(Items.WARPED_FUNGUS_ON_A_STICK)
+      return this.isSaddled() && this.getFirstPassenger() instanceof Player && player.isHolding(Items.WARPED_FUNGUS_ON_A_STICK)
          ? player
          : super.getControllingPassenger();
    }
@@ -312,7 +312,7 @@ public class Strider extends Animal implements ItemSteerable {
          boolean inWarmBlocks = stateInside.is(BlockTags.STRIDER_WARM_BLOCKS)
             || stateOn.is(BlockTags.STRIDER_WARM_BLOCKS)
             || this.getFluidHeight(FluidTags.LAVA) > 0.0;
-         boolean onWarmStrider = this.getVehicle() instanceof Strider strider && !strider.isSuffocating();
+         boolean onWarmStrider = this.getVehicle() instanceof Strider && !strider.isSuffocating();
          this.setSuffocating(!inWarmBlocks && !onWarmStrider);
       }
 

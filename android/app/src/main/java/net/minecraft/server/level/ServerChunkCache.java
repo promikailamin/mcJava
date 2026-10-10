@@ -182,7 +182,7 @@ public class ServerChunkCache extends ChunkSource {
 
       for (int i = 0; i < 4; i++) {
          if (pos == this.lastChunkPos[i] && this.lastChunkStatus[i] == ChunkStatus.FULL) {
-            return this.lastChunk[i] instanceof LevelChunk levelChunk ? levelChunk : null;
+            return this.lastChunk[i]  instanceof LevelChunk ? (LevelChunk) this.lastChunk[i]  : null;
          }
       }
 
@@ -194,7 +194,8 @@ public class ServerChunkCache extends ChunkSource {
       ChunkAccess chunk = chunkHolder.getChunkIfPresent(ChunkStatus.FULL);
       if (chunk != null) {
          this.storeInCache(pos, chunk, ChunkStatus.FULL);
-         if (chunk instanceof LevelChunk levelChunk) {
+         if (chunk instanceof LevelChunk) {
+             LevelChunk levelChunk = (LevelChunk) chunk;
             return levelChunk;
          }
       }

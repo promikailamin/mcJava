@@ -55,9 +55,7 @@ public class CopperGolemStatueBlockRenderer implements BlockEntityRenderer<Coppe
       BlockState blockState = blockEntity.getBlockState();
       state.direction = blockState.getValue(CopperGolemStatueBlock.FACING);
       state.pose = blockState.getValue(CopperGolemStatueBlock.POSE);
-      state.oxidationState = blockState.getBlock() instanceof CopperGolemStatueBlock copperGolemStatueBlock
-         ? copperGolemStatueBlock.getWeatheringState()
-         : WeatheringCopper.WeatherState.UNAFFECTED;
+      state.oxidationState = blockState.getBlock() instanceof CopperGolemStatueBlock ? getWeatheringState() : WeatheringCopper.WeatherState.UNAFFECTED;
    }
 
    public void submit(

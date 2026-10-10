@@ -35,7 +35,7 @@ public final class TranslucencyPointOfView {
       if (other == this) {
          return true;
       } else {
-         return !(other instanceof TranslucencyPointOfView otherPerspective)
+         return !(other instanceof TranslucencyPointOfView)
             ? false
             : this.x == otherPerspective.x && this.y == otherPerspective.y && this.z == otherPerspective.z;
       }

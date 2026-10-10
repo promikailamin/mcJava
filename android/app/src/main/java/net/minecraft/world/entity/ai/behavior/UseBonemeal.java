@@ -69,7 +69,7 @@ public class UseBonemeal extends Behavior<Villager> {
 
    private boolean validPos(final BlockPos blockPos, final ServerLevel level) {
       BlockState state = level.getBlockState(blockPos);
-      return state.getBlock() instanceof CropBlock cropBlock && !cropBlock.isMaxAge(state);
+      return state.getBlock() instanceof CropBlock && !cropBlock.isMaxAge(state);
    }
 
    protected void start(final ServerLevel level, final Villager body, final long timestamp) {

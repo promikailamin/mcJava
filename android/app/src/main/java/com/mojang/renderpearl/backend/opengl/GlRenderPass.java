@@ -56,7 +56,7 @@ class GlRenderPass implements RenderPassBackend {
 
    @Override
    public void setPipeline(final BackendRenderPipeline pipeline) {
-      if (!(pipeline instanceof GlRenderPipeline glRenderPipeline)) {
+      if (!(pipeline instanceof GlRenderPipeline)) {
          throw new IllegalArgumentException("Pipeline must be instance of GlRenderPipeline");
       } else {
          if (this.pipeline == null || this.pipeline != pipeline) {

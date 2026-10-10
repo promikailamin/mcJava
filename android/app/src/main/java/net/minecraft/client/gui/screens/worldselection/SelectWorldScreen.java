@@ -114,7 +114,7 @@ public class SelectWorldScreen extends Screen {
                   String levelName = "DEBUG world";
                   if (this.list != null && !this.list.children().isEmpty()) {
                      WorldSelectionList.Entry entry = (WorldSelectionList.Entry)this.list.children().getFirst();
-                     if (entry instanceof WorldSelectionList.WorldListEntry worldEntry && worldEntry.getLevelName().equals("DEBUG world")) {
+                     if (entry instanceof WorldSelectionList.WorldListEntry && worldEntry.getLevelName().equals("DEBUG world")) {
                         worldEntry.doDeleteWorld();
                      }
                   }

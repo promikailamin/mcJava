@@ -36,20 +36,24 @@ public record Grammar<T>(Dictionary<StringReader> rules, NamedRule<StringReader,
 
       List<ErrorEntry<StringReader>> errorEntries = errorCollector.entries();
       List<Exception> exceptions = errorEntries.stream().<Exception>mapMulti((entry, output) -> {
-         if (entry.reason() instanceof DelayedException<?> delayedException) {
+         if (entry.reason() instanceof DelayedException<?>) {
+             DelayedException<?> delayedException = (DelayedException<?>) entry.reason();
             output.accept(delayedException.create(reader.getString(), entry.cursor()));
-         } else if (entry.reason() instanceof Exception exceptionx) {
+         else if (entry.reason() instanceof Exception) {
+             Exception exceptionx = (Exception) entry.reason();
             output.accept(exceptionx);
          }
       }).toList();
 
       for (Exception exception : exceptions) {
-         if (exception instanceof CommandSyntaxException cse) {
+         if (exception instanceof CommandSyntaxException) {
+             CommandSyntaxException cse = (CommandSyntaxException) exception;
             throw cse;
          }
       }
 
-      if (exceptions.size() == 1 && exceptions.get(0) instanceof RuntimeException re) {
+      if (exceptions.size() == 1 && exceptions.get(0) instanceof RuntimeException) {
+          RuntimeException re = (RuntimeException) exceptions.size() == 1 && exceptions.get(0);
          throw re;
       } else {
          throw new IllegalStateException("Failed to parse: " + errorEntries.stream().map(ErrorEntry::toString).collect(Collectors.joining(", ")));
@@ -71,7 +75,8 @@ public record Grammar<T>(Dictionary<StringReader> rules, NamedRule<StringReader,
       SuggestionsBuilder offsetBuilder = suggestionsBuilder.createOffset(errorCollector.cursor());
 
       for (ErrorEntry<StringReader> entry : errorEntries) {
-         if (entry.suggestions() instanceof ResourceSuggestion resourceSuggestionTerm) {
+         if (entry.suggestions() instanceof ResourceSuggestion) {
+             ResourceSuggestion resourceSuggestionTerm = (ResourceSuggestion) entry.suggestions();
             SharedSuggestionProvider.suggestResource(resourceSuggestionTerm.possibleResources(), offsetBuilder);
          } else {
             SharedSuggestionProvider.suggest(entry.suggestions().possibleValues(state), offsetBuilder);

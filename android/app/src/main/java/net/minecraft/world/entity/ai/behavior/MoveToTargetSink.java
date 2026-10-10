@@ -144,6 +144,6 @@ public class MoveToTargetSink extends Behavior<Mob> {
    }
 
    private static boolean isWalkTargetSpectator(final WalkTarget walkTarget) {
-      return walkTarget.getTarget() instanceof EntityTracker entityTracker ? entityTracker.getEntity().isSpectator() : false;
+      return walkTarget.getTarget() instanceof EntityTracker ? ((EntityTracker) walkTarget.getTarget()).getEntity().isSpectator()  : false;
    }
 }

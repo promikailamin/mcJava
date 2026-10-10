@@ -263,7 +263,8 @@ public class JigsawPlacement {
          StructurePiecesBuilder builder = stub.get().getPiecesBuilder();
 
          for (StructurePiece piece : builder.build().pieces()) {
-            if (piece instanceof PoolElementStructurePiece poolPiece) {
+            if (piece instanceof PoolElementStructurePiece) {
+                PoolElementStructurePiece poolPiece = (PoolElementStructurePiece) piece;
                poolPiece.place(level, structureManager, generator, random, BoundingBox.infinite(), position, keepJigsaws);
             }
          }

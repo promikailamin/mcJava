@@ -251,13 +251,13 @@ public class WorldSelectionList extends ObjectSelectionList<WorldSelectionList.E
    public void setSelected(final WorldSelectionList.@Nullable Entry selected) {
       super.setSelected(selected);
       if (this.onEntrySelect != null) {
-         this.onEntrySelect.accept(selected instanceof WorldSelectionList.WorldListEntry entry ? entry.summary : null);
+         this.onEntrySelect.accept(selected instanceof WorldSelectionList.WorldListEntry ? ((WorldSelectionList.WorldListEntry) selected).summary  : null);
       }
    }
 
    public Optional<WorldSelectionList.WorldListEntry> getSelectedOpt() {
       WorldSelectionList.Entry selected = this.getSelected();
-      return selected instanceof WorldSelectionList.WorldListEntry worldEntry ? Optional.of(worldEntry) : Optional.empty();
+      return selected instanceof WorldSelectionList.WorldListEntry ? Optional.of(worldEntry)  : Optional.empty();
    }
 
    public void returnToScreen() {

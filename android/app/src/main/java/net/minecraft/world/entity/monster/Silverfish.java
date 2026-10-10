@@ -211,7 +211,8 @@ public class Silverfish extends Monster {
                   for (int zOff = 0; zOff <= 10 && zOff >= -10; zOff = (zOff <= 0 ? 1 : 0) - zOff) {
                      BlockPos testPos = basePos.offset(xOff, yOff, zOff);
                      BlockState blockState = level.getBlockState(testPos);
-                     if (blockState.getBlock() instanceof InfestedBlock infestedBlock) {
+                     if (blockState.getBlock() instanceof InfestedBlock) {
+                         InfestedBlock infestedBlock = (InfestedBlock) blockState.getBlock();
                         if (getServerLevel(level).getGameRules().get(GameRules.MOB_GRIEFING)) {
                            level.destroyBlock(testPos, true, this.silverfish);
                         } else {

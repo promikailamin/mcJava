@@ -20,7 +20,7 @@ public record ChangeItemDamage(LevelBasedValue amount) implements EnchantmentEnt
    public void apply(final ServerLevel serverLevel, final int enchantmentLevel, final EnchantedItemInUse item, final Entity entity, final Vec3 position) {
       ItemStack itemStack = item.itemStack();
       if (itemStack.has(DataComponents.MAX_DAMAGE) && itemStack.has(DataComponents.DAMAGE)) {
-         ServerPlayer player = item.owner() instanceof ServerPlayer sp ? sp : null;
+         ServerPlayer player = item.owner() instanceof ServerPlayer ? sp  : null;
          int change = (int)this.amount.calculate(enchantmentLevel);
          itemStack.hurtAndBreak(change, serverLevel, player, item.onBreak());
       }

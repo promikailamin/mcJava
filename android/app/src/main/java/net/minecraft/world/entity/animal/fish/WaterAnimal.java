@@ -52,7 +52,8 @@ public abstract class WaterAnimal extends PathfinderMob {
    public void baseTick() {
       int airSupply = this.getAirSupply();
       super.baseTick();
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          this.handleAirSupply(serverLevel, airSupply);
       }
    }

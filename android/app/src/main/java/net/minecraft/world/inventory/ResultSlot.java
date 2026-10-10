@@ -60,7 +60,8 @@ public class ResultSlot extends Slot {
          carried.onCraftedBy(this.player, this.removeCount);
       }
 
-      if (this.container instanceof RecipeCraftingHolder recipeCraftingHolder) {
+      if (this.container instanceof RecipeCraftingHolder) {
+          RecipeCraftingHolder recipeCraftingHolder = (RecipeCraftingHolder) this.container;
          recipeCraftingHolder.awardUsedRecipes(this.player, this.craftSlots.getItems());
       }
 
@@ -78,12 +79,11 @@ public class ResultSlot extends Slot {
    }
 
    private NonNullList<ItemStack> getRemainingItems(final CraftingInput input, final Level level) {
-      return level instanceof ServerLevel serverLevel
-         ? serverLevel.recipeAccess()
+      return level instanceof ServerLevel ? ((ServerLevel) level).recipeAccess()
             .getRecipeFor(RecipeType.CRAFTING, input, serverLevel)
             .map(recipe -> recipe.value().getRemainingItems(input))
             .orElseGet(() -> copyAllInputItems(input))
-         : CraftingRecipe.defaultCraftingReminder(input);
+          : CraftingRecipe.defaultCraftingReminder(input);
    }
 
    @Override

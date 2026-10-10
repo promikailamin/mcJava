@@ -219,11 +219,13 @@ public abstract class Screen extends AbstractContainerEventHandler implements Re
    }
 
    protected void removeWidget(final GuiEventListener widget) {
-      if (widget instanceof Renderable renderable) {
+      if (widget instanceof Renderable) {
+          Renderable renderable = (Renderable) widget;
          this.renderables.remove(renderable);
       }
 
-      if (widget instanceof NarratableEntry narratableEntry) {
+      if (widget instanceof NarratableEntry) {
+          NarratableEntry narratableEntry = (NarratableEntry) widget;
          this.narratables.remove(narratableEntry);
       }
 
@@ -354,7 +356,8 @@ public abstract class Screen extends AbstractContainerEventHandler implements Re
 
    protected void fadeWidgets(final float widgetFade) {
       for (GuiEventListener button : this.children()) {
-         if (button instanceof AbstractWidget widget) {
+         if (button instanceof AbstractWidget) {
+             AbstractWidget widget = (AbstractWidget) button;
             widget.setAlpha(widgetFade);
          }
       }

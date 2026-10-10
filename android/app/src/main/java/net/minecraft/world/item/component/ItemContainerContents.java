@@ -163,7 +163,7 @@ public final class ItemContainerContents implements ContainerComponent<ItemConta
 
    @Override
    public boolean equals(final Object obj) {
-      return this == obj ? true : obj instanceof ItemContainerContents contents && this.items.equals(contents.items);
+      return this == obj ? true : obj instanceof ItemContainerContents && this.items.equals(contents.items);
    }
 
    @Override

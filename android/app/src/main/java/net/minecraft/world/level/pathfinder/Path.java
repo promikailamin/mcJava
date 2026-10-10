@@ -127,7 +127,7 @@ public final class Path {
 
    @Override
    public boolean equals(final Object obj) {
-      return !(obj instanceof Path path)
+      return !(obj instanceof Path)
          ? false
          : this.nextNodeIndex == path.nextNodeIndex
             && this.debugData == path.debugData

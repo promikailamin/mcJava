@@ -112,14 +112,15 @@ public class BehaviorUtils {
          .orElse(center);
    }
 
-   public static boolean isWithinAttackRange(final Mob body, final LivingEntity target, final int projectileAttackRangeMargin) {
-      if (body.getMainHandItem().getItem() instanceof ProjectileWeaponItem weapon && body.canUseNonMeleeWeapon(body.getMainHandItem())) {
-         int maxAllowedDistance = weapon.getDefaultProjectileRange() - projectileAttackRangeMargin;
-         return body.closerThan(target, maxAllowedDistance);
-      } else {
-         return body.isWithinMeleeAttackRange(target);
-      }
-   }
+public static boolean isWithinAttackRange(final Mob body, final LivingEntity target, final int projectileAttackRangeMargin) {
+       Item item = body.getMainHandItem().getItem();
+       if (item instanceof ProjectileWeaponItem && body.canUseNonMeleeWeapon(body.getMainHandItem())) {
+          int maxAllowedDistance = weapon.getDefaultProjectileRange() - projectileAttackRangeMargin;
+          return body.closerThan(target, maxAllowedDistance);
+       } else {
+          return body.isWithinMeleeAttackRange(target);
+       }
+    }
 
    public static boolean isOtherTargetMuchFurtherAwayThanCurrentAttackTarget(
       final LivingEntity body, final LivingEntity otherTarget, final double howMuchFurtherAway
@@ -153,7 +154,7 @@ public class BehaviorUtils {
 
    public static Optional<LivingEntity> getLivingEntityFromUUIDMemory(final LivingEntity body, final MemoryModuleType<UUID> memoryType) {
       Optional<UUID> uuidMemory = body.getBrain().getMemory(memoryType);
-      return uuidMemory.<Entity>map(uuid -> body.level().getEntity(uuid)).map(entity -> entity instanceof LivingEntity livingEntity ? livingEntity : null);
+      return uuidMemory.<Entity>map(uuid -> body.level().getEntity(uuid)).map(entity -> entity instanceof LivingEntity ? livingEntity  : null);
    }
 
    public static @Nullable Vec3 getRandomSwimmablePos(final PathfinderMob body, final int maxHorizontalDistance, final int maxVerticalDistance) {

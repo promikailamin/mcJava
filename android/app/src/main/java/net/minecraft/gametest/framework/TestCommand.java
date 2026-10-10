@@ -136,7 +136,7 @@ public class TestCommand {
       for (Iterator<GlobalPos> iterator = finder.findTestPos().iterator(); iterator.hasNext(); count++) {
          GlobalPos pos = iterator.next();
          ServerLevel level = source.getServer().getLevel(pos.dimension());
-         if (!(level.getBlockEntity(pos.pos()) instanceof TestInstanceBlockEntity blockEntity)) {
+         if (!(level.getBlockEntity(pos.pos()) instanceof TestInstanceBlockEntity)) {
             throw TEST_INSTANCE_COULD_NOT_BE_FOUND.create();
          }
 
@@ -248,7 +248,8 @@ public class TestCommand {
          .distinct()
          .forEach(
             structurePos -> {
-               if (server.getLevel(structurePos.dimension()).getBlockEntity(structurePos.pos()) instanceof TestInstanceBlockEntity testBlock) {
+               if (server.getLevel(structurePos.dimension()).getBlockEntity(structurePos.pos()) instanceof TestInstanceBlockEntity) {
+                   TestInstanceBlockEntity testBlock = (TestInstanceBlockEntity) server.getLevel(structurePos.dimension()).getBlockEntity(structurePos.pos());
                   foundTestDimensions.add(structurePos.dimension());
                   Direction var17 = testBlock.getRotation().rotate(Direction.NORTH);
                   BlockPos teleportPosition = testBlock.getBlockPos().relative(var17, 3);
@@ -570,7 +571,8 @@ public class TestCommand {
 
    private static Optional<GameTestInfo> createGameTestInfo(final GlobalPos testBlockPos, final CommandSourceStack source, final RetryOptions retryOptions) {
       ServerLevel level = source.getServer().getLevel(testBlockPos.dimension());
-      if (level.getBlockEntity(testBlockPos.pos()) instanceof TestInstanceBlockEntity blockEntity) {
+      if (level.getBlockEntity(testBlockPos.pos()) instanceof TestInstanceBlockEntity) {
+          TestInstanceBlockEntity blockEntity = (TestInstanceBlockEntity) level.getBlockEntity(testBlockPos.pos());
          Optional<Holder.Reference<GameTestInstance>> maybeTest = blockEntity.test()
             .flatMap(source.registryAccess().lookupOrThrow(Registries.TEST_INSTANCE)::get);
          if (maybeTest.isEmpty()) {
@@ -619,7 +621,8 @@ public class TestCommand {
 
       if (testBlockPos.isEmpty()) {
          throw NO_TEST_CONTAINING.create(targetPosAbsolute.getX(), targetPosAbsolute.getY(), targetPosAbsolute.getZ());
-      } else if (level.getBlockEntity(testBlockPos.get()) instanceof TestInstanceBlockEntity testBlockEntity) {
+      else if (level.getBlockEntity(testBlockPos.get()) instanceof TestInstanceBlockEntity) {
+          TestInstanceBlockEntity testBlockEntity = (TestInstanceBlockEntity) level.getBlockEntity(testBlockPos.get());
          BlockPos var13 = testBlockEntity.getStructurePos();
          BlockPos targetPosRelative = targetPosAbsolute.subtract(var13);
          String targetPosDescription = targetPosRelative.getX() + ", " + targetPosRelative.getY() + ", " + targetPosRelative.getZ();

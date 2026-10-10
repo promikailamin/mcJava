@@ -138,7 +138,7 @@ public class Node {
 
    @Override
    public boolean equals(final Object o) {
-      return !(o instanceof Node no) ? false : this.hash == no.hash && this.x == no.x && this.y == no.y && this.z == no.z;
+      return !(o instanceof Node) ? false : this.hash == no.hash && this.x == no.x && this.y == no.y && this.z == no.z;
    }
 
    @Override

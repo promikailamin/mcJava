@@ -15,7 +15,8 @@ public class ShulkerBoxDispenseBehavior extends OptionalDispenseItemBehavior {
    @Override
    protected ItemStack execute(final BlockSource source, final ItemStack dispensed) {
       this.setSuccess(false);
-      if (dispensed.getItem() instanceof BlockItem blockItem) {
+      if (dispensed.getItem() instanceof BlockItem) {
+          BlockItem blockItem = (BlockItem) dispensed.getItem();
          Direction facing = source.state().getValue(DispenserBlock.FACING);
          BlockPos relativePos = source.pos().relative(facing);
          Direction clickedFace = source.level().isEmptyBlock(relativePos.below()) ? facing : Direction.UP;

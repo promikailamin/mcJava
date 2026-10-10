@@ -363,7 +363,8 @@ public class UpgradeData {
                   if (facing == Direction.NORTH || facing == Direction.EAST) {
                      BlockEntity one = level.getBlockEntity(pos);
                      BlockEntity two = level.getBlockEntity(neighbourPos);
-                     if (one instanceof ChestBlockEntity firstChestBlockEntity && two instanceof ChestBlockEntity secondChestBlockEntity) {
+                     if (one instanceof ChestBlockEntity && two instanceof ChestBlockEntity) {
+                         ChestBlockEntity secondChestBlockEntity = (ChestBlockEntity) one instanceof ChestBlockEntity && two;
                         ChestBlockEntity.swapContents(firstChestBlockEntity, secondChestBlockEntity);
                      }
                   }

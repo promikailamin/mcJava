@@ -123,7 +123,7 @@ public class StatsScreen extends Screen {
 
    private void setTabActiveStateAndTooltip(final int index) {
       if (this.tabNavigationBar != null) {
-         boolean active = this.tabNavigationBar.getTabs().get(index) instanceof StatsScreen.StatisticsTab statsTab && !statsTab.list.children().isEmpty();
+         boolean active = this.tabNavigationBar.getTabs().get(index) instanceof StatsScreen.StatisticsTab && !statsTab.list.children().isEmpty();
          this.tabNavigationBar.setTabActiveState(index, active);
          if (active) {
             this.tabNavigationBar.setTabTooltip(index, null);
@@ -342,7 +342,8 @@ public class StatsScreen extends Screen {
       private List<StatsScreen.ItemStatisticsList.ItemRow> getItemRows() {
          List<StatsScreen.ItemStatisticsList.ItemRow> itemRows = new ArrayList<>();
          this.children().forEach(entry -> {
-            if (entry instanceof StatsScreen.ItemStatisticsList.ItemRow itemRow) {
+            if (entry instanceof StatsScreen.ItemStatisticsList.ItemRow) {
+                StatsScreen.ItemStatisticsList.ItemRow itemRow = (StatsScreen.ItemStatisticsList.ItemRow) entry;
                itemRows.add(itemRow);
             }
          });
@@ -458,7 +459,8 @@ public class StatsScreen extends Screen {
 
             for (int col = 0; col < itemStatsList.blockColumns.size(); col++) {
                Stat<Block> stat;
-               if (this.item instanceof BlockItem blockItem) {
+               if (this.item instanceof BlockItem) {
+                   BlockItem blockItem = (BlockItem) this.item;
                   stat = itemStatsList.blockColumns.get(col).get(blockItem.getBlock());
                } else {
                   stat = null;
@@ -522,8 +524,8 @@ public class StatsScreen extends Screen {
                key2 = 0;
             } else if (ItemStatisticsList.this.blockColumns.contains(ItemStatisticsList.this.sortColumn)) {
                StatType<Block> type = (StatType<Block>)ItemStatisticsList.this.sortColumn;
-               key1 = item1 instanceof BlockItem blockItem ? StatsScreen.this.stats.getValue(type, blockItem.getBlock()) : -1;
-               key2 = item2 instanceof BlockItem blockItem ? StatsScreen.this.stats.getValue(type, blockItem.getBlock()) : -1;
+               key1 = item1 instanceof BlockItem ? StatsScreen.this.stats.getValue(type, ((BlockItem) item1).getBlock())  : -1;
+               key2 = item2 instanceof BlockItem ? StatsScreen.this.stats.getValue(type, ((BlockItem) item2).getBlock())  : -1;
             } else {
                StatType<Item> type = (StatType<Item>)ItemStatisticsList.this.sortColumn;
                key1 = StatsScreen.this.stats.getValue(type, item1);

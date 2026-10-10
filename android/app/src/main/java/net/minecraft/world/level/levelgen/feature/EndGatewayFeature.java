@@ -41,7 +41,8 @@ public record EndGatewayFeature(Optional<BlockPos> exit, boolean exact) implemen
             BlockPos immutable = pos.immutable();
             this.setBlock(level, immutable, Blocks.END_GATEWAY.defaultBlockState());
             this.exit.ifPresent(targetPos -> {
-               if (level.getBlockEntity(immutable) instanceof TheEndGatewayBlockEntity exitGateway) {
+               if (level.getBlockEntity(immutable) instanceof TheEndGatewayBlockEntity) {
+                   TheEndGatewayBlockEntity exitGateway = (TheEndGatewayBlockEntity) level.getBlockEntity(immutable);
                   exitGateway.setExitPosition(targetPos, this.exact);
                }
             });

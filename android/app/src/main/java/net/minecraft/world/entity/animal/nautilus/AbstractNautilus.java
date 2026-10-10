@@ -168,7 +168,7 @@ public abstract class AbstractNautilus extends TamableAnimal implements PlayerRi
 
    @Override
    public @Nullable LivingEntity getControllingPassenger() {
-      return this.isSaddled() && this.getFirstPassenger() instanceof Player player ? player : super.getControllingPassenger();
+      return this.isSaddled() && this.getFirstPassenger() instanceof Player ? player  : super.getControllingPassenger();
    }
 
    @Override
@@ -258,7 +258,8 @@ public abstract class AbstractNautilus extends TamableAnimal implements PlayerRi
    }
 
    private void applyEffects(final Level level) {
-      if (this.getFirstPassenger() instanceof Player player) {
+      if (this.getFirstPassenger() instanceof Player) {
+          Player player = (Player) this.getFirstPassenger();
          boolean hasEffect = player.hasEffect(MobEffects.BREATH_OF_THE_NAUTILUS);
          boolean shouldRefresh = level.getGameTime() % 40L == 0L;
          if (!hasEffect || shouldRefresh) {
@@ -451,7 +452,8 @@ public abstract class AbstractNautilus extends TamableAnimal implements PlayerRi
    @Override
    public boolean hurtServer(final ServerLevel level, final DamageSource source, final float damage) {
       boolean wasHurt = super.hurtServer(level, source, damage);
-      if (wasHurt && source.getEntity() instanceof LivingEntity sourceEntity) {
+      if (wasHurt && source.getEntity() instanceof LivingEntity) {
+          LivingEntity sourceEntity = (LivingEntity) wasHurt && source.getEntity();
          NautilusAi.setAngerTarget(level, this, sourceEntity);
       }
 

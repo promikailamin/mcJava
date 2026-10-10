@@ -189,7 +189,8 @@ public abstract class ChunkGenerator {
 
       for (Entry<StructurePlacement, Set<Holder<Structure>>> entry : placementScans.entrySet()) {
          StructurePlacement placement = entry.getKey();
-         if (placement instanceof ConcentricRingsStructurePlacement rings) {
+         if (placement instanceof ConcentricRingsStructurePlacement) {
+             ConcentricRingsStructurePlacement rings = (ConcentricRingsStructurePlacement) placement;
             Pair<BlockPos, Holder<Structure>> generating = this.getNearestGeneratedStructure(
                entry.getValue(), level, structureManager, pos, createReference, rings
             );

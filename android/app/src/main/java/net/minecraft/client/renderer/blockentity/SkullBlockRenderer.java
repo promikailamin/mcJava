@@ -53,7 +53,8 @@ public class SkullBlockRenderer implements BlockEntityRenderer<SkullBlockEntity,
    private final PlayerSkinRenderCache playerSkinRenderCache;
 
    public static @Nullable SkullModelBase createModel(final EntityModelSet modelSet, final SkullBlock.Type type) {
-      if (type instanceof SkullBlock.Types vanillaType) {
+      if (type instanceof SkullBlock.Types) {
+          SkullBlock.Types vanillaType = (SkullBlock.Types) type;
          return switch (vanillaType) {
             case SKELETON -> new SkullModel(modelSet.bakeLayer(ModelLayers.SKELETON_SKULL));
             case WITHER_SKELETON -> new SkullModel(modelSet.bakeLayer(ModelLayers.WITHER_SKELETON_SKULL));

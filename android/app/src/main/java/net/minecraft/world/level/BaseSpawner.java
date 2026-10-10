@@ -157,7 +157,8 @@ public abstract class BaseSpawner {
                      }
 
                      entity.snapTo(entity.getX(), entity.getY(), entity.getZ(), random.nextFloat() * 360.0F, 0.0F);
-                     if (entity instanceof Mob mob) {
+                     if (entity instanceof Mob) {
+                         Mob mob = (Mob) entity;
                         if (nextSpawnData.getCustomSpawnRules().isEmpty() && !mob.checkSpawnRules(level, EntitySpawnReason.SPAWNER)
                            || !mob.checkSpawnObstruction(level)) {
                            continue;
@@ -179,7 +180,8 @@ public abstract class BaseSpawner {
 
                      level.levelEvent(2004, pos, 0);
                      level.gameEvent(entity, GameEvent.ENTITY_PLACE, spawnBlockPos);
-                     if (entity instanceof Mob mob) {
+                     if (entity instanceof Mob) {
+                         Mob mob = (Mob) entity;
                         mob.spawnAnim();
                      }
 

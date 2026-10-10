@@ -77,7 +77,8 @@ public class RemoveBlockGoal extends MoveToBlockGoal {
          if (this.ticksSinceReachedGoal > 0) {
             Vec3 movement = this.removerMob.getDeltaMovement();
             this.removerMob.setDeltaMovement(movement.x, 0.3, movement.z);
-            if (level instanceof ServerLevel serverLevel) {
+            if (level instanceof ServerLevel) {
+                ServerLevel serverLevel = (ServerLevel) level;
                serverLevel.sendParticles(
                   new ItemParticleOption(ParticleTypes.ITEM, Items.EGG),
                   eatPos.getX() + 0.5,

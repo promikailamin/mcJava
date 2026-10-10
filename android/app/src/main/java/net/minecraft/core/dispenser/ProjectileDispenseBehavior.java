@@ -14,7 +14,8 @@ public class ProjectileDispenseBehavior extends DefaultDispenseItemBehavior {
    private final ProjectileItem.DispenseConfig dispenseConfig;
 
    public ProjectileDispenseBehavior(final Item item) {
-      if (item instanceof ProjectileItem projectileItem) {
+      if (item instanceof ProjectileItem) {
+          ProjectileItem projectileItem = (ProjectileItem) item;
          this.projectileItem = projectileItem;
          this.dispenseConfig = projectileItem.createDispenseConfig();
       } else {

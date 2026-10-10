@@ -117,7 +117,8 @@ public class InWorldGameRulesScreen extends AbstractGameRulesScreen implements H
    public void onGamemasterPermissionChanged(final boolean hasGamemasterPermission) {
       if (!hasGamemasterPermission) {
          this.minecraft.gui.setScreen(this.lastScreen);
-         if (this.minecraft.gui.screen() instanceof HasGamemasterPermissionReaction screen) {
+         if (this.minecraft.gui.screen() instanceof HasGamemasterPermissionReaction) {
+             HasGamemasterPermissionReaction screen = (HasGamemasterPermissionReaction) this.minecraft.gui.screen();
             screen.onGamemasterPermissionChanged(hasGamemasterPermission);
          }
       }

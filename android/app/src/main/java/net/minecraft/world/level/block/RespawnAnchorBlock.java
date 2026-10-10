@@ -97,13 +97,15 @@ public class RespawnAnchorBlock extends Block {
          return InteractionResult.PASS;
       }
 
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          if (!canSetSpawn(serverLevel, pos)) {
             this.explode(state, serverLevel, pos);
             return InteractionResult.SUCCESS_SERVER;
          }
 
-         if (player instanceof ServerPlayer serverPlayer) {
+         if (player instanceof ServerPlayer) {
+             ServerPlayer serverPlayer = (ServerPlayer) player;
             ServerPlayer.RespawnConfig respawnConfig = serverPlayer.getRespawnConfig();
             ServerPlayer.RespawnConfig newRespawnConfig = new ServerPlayer.RespawnConfig(
                LevelData.RespawnData.of(serverLevel.dimension(), pos, 0.0F, 0.0F), false

@@ -117,7 +117,8 @@ public class ChunkStatusTasks {
          )
          .thenApply(
             generatedChunk -> {
-               if (generatedChunk instanceof ProtoChunk protoChunk) {
+               if (generatedChunk instanceof ProtoChunk) {
+                   ProtoChunk protoChunk = (ProtoChunk) generatedChunk;
                   BelowZeroRetrogen belowZeroRetrogen = protoChunk.getBelowZeroRetrogen();
                   if (belowZeroRetrogen != null) {
                      BelowZeroRetrogen.replaceOldBedrock(protoChunk);
@@ -187,7 +188,8 @@ public class ChunkStatusTasks {
          ProtoChunk protoChunk = (ProtoChunk)chunk;
          ServerLevel level = context.level();
          LevelChunk levelChunk;
-         if (protoChunk instanceof ImposterProtoChunk imposter) {
+         if (protoChunk instanceof ImposterProtoChunk) {
+             ImposterProtoChunk imposter = (ImposterProtoChunk) protoChunk;
             levelChunk = imposter.getWrapped();
          } else {
             levelChunk = new LevelChunk(level, protoChunk, lc -> {

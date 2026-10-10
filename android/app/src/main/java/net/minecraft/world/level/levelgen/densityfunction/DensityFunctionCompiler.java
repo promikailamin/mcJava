@@ -17,7 +17,7 @@ public class DensityFunctionCompiler {
       @Override
       public DensityFunction rewrite(DensityFunction function) {
          function = DfRewriteRule.INLINE_REFERENCE.rewrite(function);
-         return function instanceof CacheFunction cache ? DensityFunctionCompiler.this.reuseOrPrepareCache(cache) : function.rewriteChildren(this);
+         return function instanceof CacheFunction ? DensityFunctionCompiler.this.reuseOrPrepareCache(cache)  : function.rewriteChildren(this);
       }
    }, DfRewriteRule.SLICE_UNIFORM_AXES);
    private final ReentrantLock compileLock = new ReentrantLock();

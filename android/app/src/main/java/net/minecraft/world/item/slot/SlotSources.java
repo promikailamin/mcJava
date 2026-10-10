@@ -16,7 +16,7 @@ public interface SlotSources {
       () -> Codec.either(TYPED_CODEC, GroupSlotSource.INLINE_CODEC)
          .xmap(
             typedOrInline -> (SlotSource)typedOrInline.map(e -> e, e -> e),
-            slotSource -> slotSource instanceof GroupSlotSource composite ? Either.right(composite) : Either.left(slotSource)
+            slotSource -> slotSource instanceof GroupSlotSource ? Either.right(composite)  : Either.left(slotSource)
          )
    );
    Codec<Holder<SlotSource>> CODEC = RegistryCodecs.holder(Registries.SLOT_SOURCE, DIRECT_CODEC);

@@ -298,7 +298,8 @@ public abstract class AbstractSelectionList<E extends AbstractSelectionList.Entr
    @Override
    public void setFocused(final @Nullable GuiEventListener focused) {
       E oldFocus = this.getFocused();
-      if (oldFocus != focused && oldFocus instanceof ContainerEventHandler oldFocusContainer) {
+      if (oldFocus != focused && oldFocus instanceof ContainerEventHandler) {
+          ContainerEventHandler oldFocusContainer = (ContainerEventHandler) oldFocus != focused && oldFocus;
          oldFocusContainer.setFocused(null);
       }
 

@@ -12,7 +12,7 @@ public interface Permission {
    Codec<Permission> CODEC = Codec.either(FULL_CODEC, Identifier.CODEC)
       .xmap(
          e -> (Permission)e.map(permission -> permission, Permission.Atom::create),
-         permission -> permission instanceof Permission.Atom atom ? Either.right(atom.id()) : Either.left(permission)
+         permission -> permission instanceof Permission.Atom ? Either.right(((Permission.Atom) permission).id())  : Either.left(permission)
       );
 
    MapCodec<? extends Permission> codec();

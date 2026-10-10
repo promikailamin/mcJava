@@ -450,7 +450,7 @@ public class Phantom extends Mob implements Enemy {
             return false;
          } else if (!target.isAlive()) {
             return false;
-         } else if (target instanceof Player player && (target.isSpectator() || player.isCreative())) {
+         } else if (target instanceof Player && (target.isSpectator() || player.isCreative())) {
             return false;
          } else {
             if (!this.canUse()) {

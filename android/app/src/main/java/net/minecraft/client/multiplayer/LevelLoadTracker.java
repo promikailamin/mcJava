@@ -94,9 +94,8 @@ public class LevelLoadTracker implements LevelLoadListener {
    }
 
    public @Nullable Runnable getPlayerCompiledSectionCallback() {
-      return this.clientState instanceof LevelLoadTracker.WaitingForPlayerChunk waitingForPlayerChunk
-         ? () -> waitingForPlayerChunk.playerSectionReady().set(true)
-         : null;
+      return this.clientState instanceof LevelLoadTracker.WaitingForPlayerChunk ? () -> ((LevelLoadTracker.WaitingForPlayerChunk) this.clientState).playerSectionReady().set(true)
+          : null;
    }
 
    private record ClientLevelReady(long readyAt) implements LevelLoadTracker.ClientState {

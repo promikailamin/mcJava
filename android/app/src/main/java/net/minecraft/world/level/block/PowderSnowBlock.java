@@ -58,7 +58,8 @@ public class PowderSnowBlock extends Block implements BucketPickup {
    ) {
       if (!(entity instanceof LivingEntity) || entity.getInBlockState().is(this)) {
          entity.makeStuckInBlock(state, new Vec3(0.9F, 1.5, 0.9F));
-         if (level instanceof ServerLevel serverLevel) {
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
             RandomSource random = level.getRandom();
             Vec3 knownMovement = entity.getKnownMovement();
             boolean isMoving = knownMovement.x() != 0.0 || knownMovement.z() != 0.0;
@@ -85,8 +86,7 @@ public class PowderSnowBlock extends Block implements BucketPickup {
       effectApplier.runBefore(
          InsideBlockEffectType.EXTINGUISH,
          e -> {
-            if (level instanceof ServerLevel serverLevel
-               && e.isOnFire()
+            if (level instanceof ServerLevel && e.isOnFire()
                && (serverLevel.getGameRules().get(GameRules.MOB_GRIEFING) || e instanceof Player)
                && e.mayInteract(serverLevel, position)) {
                level.destroyBlock(position, false);
@@ -99,7 +99,8 @@ public class PowderSnowBlock extends Block implements BucketPickup {
 
    @Override
    public void fallOn(final Level level, final BlockState state, final BlockPos pos, final Entity entity, final double fallDistance) {
-      if (!(fallDistance < 4.0) && entity instanceof LivingEntity livingEntity) {
+      if (!(fallDistance < 4.0) && entity instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) !(fallDistance < 4.0) && entity;
          LivingEntity.Fallsounds entityFallsounds = livingEntity.getFallSounds();
          SoundEvent fallSound = fallDistance < 7.0 ? entityFallsounds.small() : entityFallsounds.big();
          entity.playSound(fallSound, 1.0F, 1.0F);
@@ -114,7 +115,8 @@ public class PowderSnowBlock extends Block implements BucketPickup {
 
    @Override
    protected VoxelShape getCollisionShape(final BlockState state, final BlockGetter level, final BlockPos pos, final CollisionContext context) {
-      if (!context.isPlacement() && context instanceof EntityCollisionContext entityCollisionContext) {
+      if (!context.isPlacement() && context instanceof EntityCollisionContext) {
+          EntityCollisionContext entityCollisionContext = (EntityCollisionContext) !context.isPlacement() && context;
          Entity entity = entityCollisionContext.getEntity();
          if (entity != null) {
             if (entity.fallDistance > 2.5) {
@@ -140,7 +142,7 @@ public class PowderSnowBlock extends Block implements BucketPickup {
       if (entity.is(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS)) {
          return true;
       } else {
-         return entity instanceof LivingEntity livingEntity ? livingEntity.getItemBySlot(EquipmentSlot.FEET).is(Items.LEATHER_BOOTS) : false;
+         return entity instanceof LivingEntity ? ((LivingEntity) entity).getItemBySlot(EquipmentSlot.FEET).is(Items.LEATHER_BOOTS)  : false;
       }
    }
 

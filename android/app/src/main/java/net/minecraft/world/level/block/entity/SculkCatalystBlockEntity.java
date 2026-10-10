@@ -83,7 +83,8 @@ public class SculkCatalystBlockEntity extends BlockEntity implements GameEventLi
 
       @Override
       public boolean handleGameEvent(final ServerLevel level, final Holder<GameEvent> event, final GameEvent.Context context, final Vec3 sourcePosition) {
-         if (event.is(GameEvent.ENTITY_DIE) && context.sourceEntity() instanceof LivingEntity mob) {
+         if (event.is(GameEvent.ENTITY_DIE) && context.sourceEntity() instanceof LivingEntity) {
+             LivingEntity mob = (LivingEntity) event.is(GameEvent.ENTITY_DIE) && context.sourceEntity();
             if (!mob.wasExperienceConsumed()) {
                DamageSource lastDamageSource = mob.getLastDamageSource();
                int experienceWouldDrop = mob.getExperienceReward(level, Optionull.map(lastDamageSource, DamageSource::getEntity));
@@ -115,7 +116,8 @@ public class SculkCatalystBlockEntity extends BlockEntity implements GameEventLi
       }
 
       private void tryAwardItSpreadsAdvancement(final Level level, final LivingEntity mob) {
-         if (mob.getLastHurtByMob() instanceof ServerPlayer player) {
+         if (mob.getLastHurtByMob() instanceof ServerPlayer) {
+             ServerPlayer player = (ServerPlayer) mob.getLastHurtByMob();
             DamageSource damageSource = mob.getLastDamageSource() == null ? level.damageSources().playerAttack(player) : mob.getLastDamageSource();
             CriteriaTriggers.KILL_MOB_NEAR_SCULK_CATALYST.trigger(player, mob, damageSource);
          }

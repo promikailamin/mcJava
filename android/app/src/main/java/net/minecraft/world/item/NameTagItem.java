@@ -19,7 +19,8 @@ public class NameTagItem extends Item {
       if (customName != null && target.getType().canSerialize()) {
          if (!player.level().isClientSide() && target.isAlive()) {
             target.setCustomName(customName);
-            if (target instanceof Mob mob) {
+            if (target instanceof Mob) {
+                Mob mob = (Mob) target;
                mob.setPersistenceRequired();
             }
 

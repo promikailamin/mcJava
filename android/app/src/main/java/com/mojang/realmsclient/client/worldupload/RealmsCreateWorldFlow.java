@@ -76,14 +76,16 @@ public class RealmsCreateWorldFlow {
 
             realmsWorldUpload.packAndUpload().handleAsync((result, exception) -> {
                if (exception != null) {
-                  if (exception instanceof CompletionException e) {
+                  if (exception instanceof CompletionException) {
+                      CompletionException e = (CompletionException) exception;
                      exception = e.getCause();
                   }
 
                   if (exception instanceof RealmsUploadCanceledException) {
                      minecraft.setScreenAndShow(lastScreen);
                   } else {
-                     if (exception instanceof RealmsUploadFailedException realmsUploadFailedException) {
+                     if (exception instanceof RealmsUploadFailedException) {
+                         RealmsUploadFailedException realmsUploadFailedException = (RealmsUploadFailedException) exception;
                         LOGGER.warn("Failed to create realms world {}", realmsUploadFailedException.getStatusMessage());
                      } else {
                         LOGGER.warn("Failed to create realms world", exception);
@@ -92,7 +94,8 @@ public class RealmsCreateWorldFlow {
                      minecraft.setScreenAndShow(new RealmsGenericErrorScreen(Component.translatable("mco.create.world.failed"), lastScreen));
                   }
                } else {
-                  if (returnScreen instanceof RealmsConfigureWorldScreen configureWorldScreen) {
+                  if (returnScreen instanceof RealmsConfigureWorldScreen) {
+                      RealmsConfigureWorldScreen configureWorldScreen = (RealmsConfigureWorldScreen) returnScreen;
                      configureWorldScreen.fetchServerData(realmsServer.id);
                   }
 

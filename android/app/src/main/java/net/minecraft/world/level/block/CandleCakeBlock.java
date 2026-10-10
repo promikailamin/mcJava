@@ -37,7 +37,8 @@ public class CandleCakeBlock extends AbstractCandleBlock {
    protected CandleCakeBlock(final Block block, final BlockBehaviour.Properties properties) {
       super(properties);
       this.registerDefaultState(this.stateDefinition.any().setValue(LIT, false));
-      if (block instanceof CandleBlock matchingCandleBlock) {
+      if (block instanceof CandleBlock) {
+          CandleBlock matchingCandleBlock = (CandleBlock) block;
          BY_CANDLE.put(matchingCandleBlock, this);
          this.candleBlock = matchingCandleBlock;
       } else {

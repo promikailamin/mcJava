@@ -41,7 +41,8 @@ public class FurnaceRecipeBookComponent extends RecipeBookComponent<AbstractFurn
    @Override
    protected void fillGhostRecipe(final GhostSlots ghostSlots, final RecipeDisplay recipe, final ContextMap context) {
       ghostSlots.setResult(this.menu.getResultSlot(), context, recipe.result());
-      if (recipe instanceof FurnaceRecipeDisplay furnaceRecipe) {
+      if (recipe instanceof FurnaceRecipeDisplay) {
+          FurnaceRecipeDisplay furnaceRecipe = (FurnaceRecipeDisplay) recipe;
          ghostSlots.setInput(this.menu.slots.get(0), context, furnaceRecipe.ingredient());
          Slot fuelSlot = this.menu.slots.get(1);
          if (fuelSlot.getItem().isEmpty()) {

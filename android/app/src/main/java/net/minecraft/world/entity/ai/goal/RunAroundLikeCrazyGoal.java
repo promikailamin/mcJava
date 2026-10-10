@@ -55,7 +55,8 @@ public class RunAroundLikeCrazyGoal extends Goal {
             return;
          }
 
-         if (passenger instanceof Player player) {
+         if (passenger instanceof Player) {
+             Player player = (Player) passenger;
             int temper = this.horse.getTemper();
             int maxTemper = this.horse.getMaxTemper();
             if (maxTemper > 0 && this.horse.getRandom().nextInt(maxTemper) < temper) {

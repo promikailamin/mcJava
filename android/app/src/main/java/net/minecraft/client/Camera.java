@@ -132,7 +132,8 @@ public class Camera implements TrackedWaypoint.Camera {
       cameraState.depthFar = this.depthFar;
       this.projection.getMatrix(cameraState.projectionMatrix);
       this.getViewRotationMatrix(cameraState.viewRotationMatrix);
-      if (this.entity instanceof LivingEntity livingEntity) {
+      if (this.entity instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) this.entity;
          cameraState.entityRenderState.isLiving = true;
          cameraState.entityRenderState.isSleeping = livingEntity.isSleeping();
          cameraState.entityRenderState.doesMobEffectBlockSky = livingEntity.hasEffect(MobEffects.BLINDNESS) || livingEntity.hasEffect(MobEffects.DARKNESS);
@@ -147,7 +148,8 @@ public class Camera implements TrackedWaypoint.Camera {
          cameraState.entityRenderState.doesMobEffectBlockSky = false;
       }
 
-      if (this.entity instanceof AbstractClientPlayer player) {
+      if (this.entity instanceof AbstractClientPlayer) {
+          AbstractClientPlayer player = (AbstractClientPlayer) this.entity;
          cameraState.entityRenderState.isPlayer = true;
          ClientAvatarState avatarState = player.avatarState();
          cameraState.entityRenderState.backwardsInterpolatedWalkDistance = avatarState.getBackwardsInterpolatedWalkDistance(
@@ -163,7 +165,8 @@ public class Camera implements TrackedWaypoint.Camera {
 
    private void tickFov() {
       float targetFovModifier;
-      if (this.minecraft.getCameraEntity() instanceof AbstractClientPlayer player) {
+      if (this.minecraft.getCameraEntity() instanceof AbstractClientPlayer) {
+          AbstractClientPlayer player = (AbstractClientPlayer) this.minecraft.getCameraEntity();
          Options options = this.minecraft.options;
          boolean firstPerson = options.getCameraType().isFirstPerson();
          float effectScale = options.fovEffectScale().get().floatValue();
@@ -233,7 +236,7 @@ public class Camera implements TrackedWaypoint.Camera {
    }
 
    private float modifyFovBasedOnDeathOrFluid(final float partialTicks, float fov) {
-      if (this.entity instanceof LivingEntity cameraEntity && cameraEntity.isDeadOrDying()) {
+      if (this.entity instanceof LivingEntity && cameraEntity.isDeadOrDying()) {
          float duration = Math.min(cameraEntity.deathTime + partialTicks, 20.0F);
          fov /= (1.0F - 500.0F / (duration + 500.0F)) * 2.0F + 1.0F;
       }
@@ -249,9 +252,7 @@ public class Camera implements TrackedWaypoint.Camera {
 
    private void alignWithEntity(final float partialTicks) {
       if (this.entity.isPassenger()
-         && this.entity.getVehicle() instanceof Minecart minecart
-         && minecart.getBehavior() instanceof NewMinecartBehavior behavior
-         && behavior.cartHasPosRotLerp()) {
+         && this.entity.getVehicle() instanceof Minecart && minecart.getBehavior() instanceof NewMinecartBehavior && behavior.cartHasPosRotLerp()) {
          Vec3 positionOffset = minecart.getPassengerRidingPosition(this.entity)
             .subtract(minecart.position())
             .subtract(this.entity.getVehicleAttachmentPoint(minecart))
@@ -275,14 +276,16 @@ public class Camera implements TrackedWaypoint.Camera {
 
          float cameraDistance = 4.0F;
          float cameraScale = 1.0F;
-         if (this.entity instanceof LivingEntity living) {
+         if (this.entity instanceof LivingEntity) {
+             LivingEntity living = (LivingEntity) this.entity;
             cameraScale = living.getScale();
             cameraDistance = (float)living.getAttributeValue(Attributes.CAMERA_DISTANCE);
          }
 
          float mountScale = cameraScale;
          float mountDistance = cameraDistance;
-         if (this.entity.isPassenger() && this.entity.getVehicle() instanceof LivingEntity mount) {
+         if (this.entity.isPassenger() && this.entity.getVehicle() instanceof LivingEntity) {
+             LivingEntity mount = (LivingEntity) this.entity.isPassenger() && this.entity.getVehicle();
             mountScale = mount.getScale();
             mountDistance = (float)mount.getAttributeValue(Attributes.CAMERA_DISTANCE);
          }

@@ -51,7 +51,7 @@ public class ConversionTracker<M extends Mob> {
    }
 
    public void tick() {
-      if (this.mob.level() instanceof ServerLevel serverLevel && this.mob.isAlive() && !this.mob.isNoAi()) {
+      if (this.mob.level() instanceof ServerLevel && this.mob.isAlive() && !this.mob.isNoAi()) {
          if (this.isAfflicted.getAsBoolean()) {
             if (this.isConverting()) {
                this.conversionTime--;

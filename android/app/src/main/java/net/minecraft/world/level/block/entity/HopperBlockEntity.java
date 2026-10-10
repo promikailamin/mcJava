@@ -172,7 +172,8 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
    }
 
    private static int[] getSlots(final Container container, final Direction direction) {
-      if (container instanceof WorldlyContainer worldlyContainer) {
+      if (container instanceof WorldlyContainer) {
+          WorldlyContainer worldlyContainer = (WorldlyContainer) container;
          return worldlyContainer.getSlotsForFace(direction);
       } else {
          int containerSize = container.getContainerSize();
@@ -280,7 +281,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
    }
 
    public static ItemStack addItem(final @Nullable Container from, final Container container, ItemStack itemStack, final @Nullable Direction direction) {
-      if (container instanceof WorldlyContainer worldly && direction != null) {
+      if (container instanceof WorldlyContainer && direction != null) {
          int[] slots = worldly.getSlotsForFace(direction);
 
          for (int i = 0; i < slots.length && !itemStack.isEmpty(); i++) {
@@ -300,7 +301,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
    private static boolean canPlaceItemInContainer(final Container container, final ItemStack itemStack, final int slot, final @Nullable Direction direction) {
       return !container.canPlaceItem(slot, itemStack)
          ? false
-         : !(container instanceof WorldlyContainer worldly && !worldly.canPlaceItemThroughFace(slot, itemStack, direction));
+         : !(container instanceof WorldlyContainer && !worldly.canPlaceItemThroughFace(slot, itemStack, direction));
    }
 
    private static boolean canTakeItemFromContainer(
@@ -308,7 +309,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
    ) {
       return !from.canTakeItem(into, slot, itemStack)
          ? false
-         : !(from instanceof WorldlyContainer worldly && !worldly.canTakeItemThroughFace(slot, itemStack, direction));
+         : !(from instanceof WorldlyContainer && !worldly.canTakeItemThroughFace(slot, itemStack, direction));
    }
 
    private static ItemStack tryMoveInItem(
@@ -331,9 +332,9 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          }
 
          if (success) {
-            if (wasEmpty && container instanceof HopperBlockEntity hopperBlockEntity && !hopperBlockEntity.isOnCustomCooldown()) {
+            if (wasEmpty && container instanceof HopperBlockEntity && !hopperBlockEntity.isOnCustomCooldown()) {
                int skipTickCount = 0;
-               if (from instanceof HopperBlockEntity fromHopper && hopperBlockEntity.tickedGameTime >= fromHopper.tickedGameTime) {
+               if (from instanceof HopperBlockEntity && hopperBlockEntity.tickedGameTime >= fromHopper.tickedGameTime) {
                   skipTickCount = 1;
                }
 
@@ -375,20 +376,26 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
       return result;
    }
 
-   private static @Nullable Container getBlockContainer(final Level level, final BlockPos pos, final BlockState state) {
-      Block block = state.getBlock();
-      if (block instanceof WorldlyContainerHolder worldlyContainerHolder) {
-         return worldlyContainerHolder.getContainer(state, level, pos);
-      } else if (state.hasBlockEntity() && level.getBlockEntity(pos) instanceof Container container) {
-         if (container instanceof ChestBlockEntity && block instanceof ChestBlock chestBlock) {
-            container = ChestBlock.getContainer(chestBlock, state, level, pos, true);
-         }
+private static @Nullable Container getBlockContainer(final Level level, final BlockPos pos, final BlockState state) {
+       Block block = state.getBlock();
+       if (block instanceof WorldlyContainerHolder) {
+           WorldlyContainerHolder worldlyContainerHolder = (WorldlyContainerHolder) block;
+          return worldlyContainerHolder.getContainer(state, level, pos);
+       } else if (state.hasBlockEntity()) {
+          BlockEntity blockEntity = level.getBlockEntity(pos);
+          if (blockEntity instanceof Container) {
+              Container container = (Container) blockEntity;
+             if (container instanceof ChestBlockEntity && block instanceof ChestBlock) {
+                ChestBlock chestBlock = (ChestBlock) block;
+                container = ChestBlock.getContainer(chestBlock, state, level, pos, true);
+             }
 
-         return container;
-      } else {
-         return null;
-      }
-   }
+             return container;
+          }
+       }
+
+       return null;
+    }
 
    private static @Nullable Container getEntityContainer(final Level level, final double x, final double y, final double z) {
       List<Entity> entities = level.getEntities(
@@ -444,8 +451,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
    }
 
    public static void entityInside(final Level level, final BlockPos pos, final BlockState blockState, final Entity entity, final HopperBlockEntity hopper) {
-      if (entity instanceof ItemEntity itemEntity
-         && !itemEntity.getItem().isEmpty()
+      if (entity instanceof ItemEntity && !itemEntity.getItem().isEmpty()
          && entity.getBoundingBox().move(-pos.getX(), -pos.getY(), -pos.getZ()).intersects(hopper.getSuckAabb())) {
          tryMoveItems(level, pos, blockState, hopper, () -> addItem(hopper, itemEntity));
       }

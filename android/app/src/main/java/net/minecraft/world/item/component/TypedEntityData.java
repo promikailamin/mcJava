@@ -64,7 +64,7 @@ public final class TypedEntityData<IdType> implements TooltipProvider {
          }
 
          private static <T> DynamicOps<Tag> asNbtOps(final DynamicOps<T> ops) {
-            return (DynamicOps<Tag>)(ops instanceof RegistryOps<T> registryOps ? registryOps.withParent(NbtOps.INSTANCE) : NbtOps.INSTANCE);
+            return (DynamicOps<Tag>)(ops instanceof RegistryOps<T> ? withParent(NbtOps.INSTANCE) : NbtOps.INSTANCE);
          }
       };
    }
@@ -111,7 +111,7 @@ public final class TypedEntityData<IdType> implements TooltipProvider {
       if (obj == this) {
          return true;
       } else {
-         return !(obj instanceof TypedEntityData<?> customData) ? false : this.type == customData.type && this.tag.equals(customData.tag);
+         return !(obj instanceof TypedEntityData<?>) ? false : this.type == customData.type && this.tag.equals(customData.tag);
       }
    }
 

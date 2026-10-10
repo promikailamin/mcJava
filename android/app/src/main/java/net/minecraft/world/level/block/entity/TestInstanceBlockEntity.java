@@ -243,7 +243,8 @@ public class TestInstanceBlockEntity extends BlockEntity implements BoundingBoxR
          return identifier;
       }
 
-      if (this.level instanceof ServerLevel serverLevel) {
+      if (this.level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level;
          StructureBlockEntity.saveStructure(
             serverLevel, identifier.get(), this.getStructurePos(), this.getSize(), this.ignoreEntities(), "", true, List.of(Blocks.AIR)
          );
@@ -254,7 +255,7 @@ public class TestInstanceBlockEntity extends BlockEntity implements BoundingBoxR
 
    public boolean exportTest(final Consumer<Component> feedbackOutput) {
       Optional<Identifier> saved = this.saveTest(feedbackOutput);
-      return !saved.isEmpty() && this.level instanceof ServerLevel serverLevel ? export(serverLevel, saved.get(), feedbackOutput) : false;
+      return !saved.isEmpty() && this.level instanceof ServerLevel ? export(serverLevel, saved.get(), feedbackOutput)  : false;
    }
 
    public static boolean export(final ServerLevel level, final Identifier structureId, final Consumer<Component> feedbackOutput) {
@@ -286,7 +287,8 @@ public class TestInstanceBlockEntity extends BlockEntity implements BoundingBoxR
    }
 
    public void runTest(final Consumer<Component> feedbackOutput) {
-      if (this.level instanceof ServerLevel serverLevel) {
+      if (this.level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level;
          Optional var7 = this.getTestHolder();
          BlockPos pos = this.getBlockPos();
          if (var7.isEmpty()) {
@@ -311,7 +313,8 @@ public class TestInstanceBlockEntity extends BlockEntity implements BoundingBoxR
    }
 
    public boolean placeStructure() {
-      if (this.level instanceof ServerLevel serverLevel) {
+      if (this.level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level;
          Optional<StructureTemplate> template = this.data.test().flatMap(test -> getStructureTemplate(serverLevel, (ResourceKey<GameTestInstance>)test));
          if (template.isPresent()) {
             this.placeStructure(serverLevel, template.get());
@@ -344,7 +347,8 @@ public class TestInstanceBlockEntity extends BlockEntity implements BoundingBoxR
    }
 
    private void forceLoadChunks() {
-      if (this.level instanceof ServerLevel serverLevel) {
+      if (this.level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level;
          this.getStructureBoundingBox().intersectingChunks().forEach(pos -> serverLevel.setChunkForced(pos.x(), pos.z(), true));
       }
    }

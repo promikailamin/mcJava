@@ -102,7 +102,7 @@ public class FrontendRenderPass implements RenderPass, RenderPass.UniformUploade
 
    @Override
    public void setPipeline(final CompiledRenderPipeline pipeline) {
-      if (!(pipeline instanceof FrontendRenderPipeline frontendPipeline)) {
+      if (!(pipeline instanceof FrontendRenderPipeline)) {
          throw new IllegalArgumentException("Pipeline must be instance of FrontendCompiledRenderPipeline");
       } else {
          List<ColorTargetState> colorTargetStates = frontendPipeline.colorTargetStates();
@@ -547,7 +547,7 @@ public class FrontendRenderPass implements RenderPass, RenderPass.UniformUploade
 
                switch (uniform.type()) {
                   case UNIFORM_BUFFER:
-                     if (!(value instanceof GpuBufferSlice valueSlice)) {
+                     if (!(value instanceof GpuBufferSlice)) {
                         throw new IllegalArgumentException("UBO value must be GpuBufferSlice");
                      }
 
@@ -578,7 +578,7 @@ public class FrontendRenderPass implements RenderPass, RenderPass.UniformUploade
 
                      throw new IllegalArgumentException("UTB value must be GpuBufferSlice");
                   case COMBINED_IMAGE_SAMPLER:
-                     if (!(value instanceof TextureViewAndSampler var9)) {
+                     if (!(value instanceof TextureViewAndSampler)) {
                         throw new IllegalArgumentException("Sampler value must be TextureViewAndSampler");
                      }
 

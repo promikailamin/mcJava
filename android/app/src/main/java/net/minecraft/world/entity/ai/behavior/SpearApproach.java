@@ -53,7 +53,8 @@ public class SpearApproach extends Behavior<PathfinderMob> {
       LivingEntity target = this.getTarget(mob);
       Entity mount = mob.getRootVehicle();
       float speedModifier = 1.0F;
-      if (mount instanceof Mob vehicleMob) {
+      if (mount instanceof Mob) {
+          Mob vehicleMob = (Mob) mount;
          speedModifier = vehicleMob.chargeSpeedModifier();
       }
 

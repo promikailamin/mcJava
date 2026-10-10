@@ -97,29 +97,29 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
          throw new UnsupportedOperationException("DELETE_ON_CLOSE is not supported by CowFS");
       }
 
-      return (C)(switch (this.fs.fileTree().byPathOrNull(cowPath)) {
-         case null -> {
-            if (!options.contains(StandardOpenOption.CREATE) && !options.contains(StandardOpenOption.CREATE_NEW)) {
-               throw new CowFSNoSuchFileException(cowPath.toString());
-            }
-
-            DirectoryNode directoryNode = this.fs.fileTree().directoryByPath(Objects.requireNonNull(cowPath.getParent()));
-            Path tempFile = this.fs.createTemporaryFilePath();
-            C result = channelFactory.newChannel(tempFile, options, attrs);
-            FileNode child = new FileNode(cowPath, tempFile, true);
-            directoryNode.addChild(child);
-            yield result;
+      Node node = this.fs.fileTree().byPathOrNull(cowPath);
+      if (node == null) {
+         if (!options.contains(StandardOpenOption.CREATE) && !options.contains(StandardOpenOption.CREATE_NEW)) {
+            throw new CowFSNoSuchFileException(cowPath.toString());
          }
-         case FileNode fileNode -> {
-            if (wantsWrite(options)) {
-               fileNode.ensureCopy();
-            }
 
-            yield channelFactory.newChannel(fileNode.storagePath(), options, attrs);
+         DirectoryNode directoryNode = this.fs.fileTree().directoryByPath(Objects.requireNonNull(cowPath.getParent()));
+         Path tempFile = this.fs.createTemporaryFilePath();
+         C result = channelFactory.newChannel(tempFile, options, attrs);
+         FileNode child = new FileNode(cowPath, tempFile, true);
+         directoryNode.addChild(child);
+         return result;
+      } else if (node instanceof FileNode fileNode) {
+         if (wantsWrite(options)) {
+            fileNode.ensureCopy();
          }
-         case DirectoryNode var14 -> throw new CowFSFileSystemException(cowPath + ": not a regular file");
-         default -> throw new IllegalStateException("MatchException: " + null, null);
-      });
+
+         return channelFactory.newChannel(fileNode.storagePath(), options, attrs);
+      } else if (node instanceof DirectoryNode) {
+         throw new CowFSFileSystemException(cowPath + ": not a regular file");
+      } else {
+         throw new IllegalStateException("MatchException: " + null, null);
+      }
    }
 
    private static boolean wantsWrite(final Set<? extends OpenOption> options) {
@@ -177,11 +177,13 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
       }
 
       String name = Objects.requireNonNull(node.name());
-      if (node instanceof DirectoryNode directoryNode) {
+      if (node instanceof DirectoryNode) {
+         DirectoryNode directoryNode = (DirectoryNode) node;
          if (!directoryNode.children().isEmpty()) {
             throw new CowFSDirectoryNotEmptyException(cowPath.toString());
          }
-      } else if (node instanceof FileNode fileNode) {
+      } else if (node instanceof FileNode) {
+         FileNode fileNode = (FileNode) node;
          fileNode.deleteCopy();
       }
 
@@ -223,7 +225,9 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
          throw new CowFSFileAlreadyExistsException(targetCow.toString());
       }
 
-      if (this.fs.fileTree().byPathOrNull(parent) instanceof DirectoryNode folderTarget) {
+      Node parentNode = this.fs.fileTree().byPathOrNull(parent);
+      if (parentNode instanceof DirectoryNode) {
+         DirectoryNode folderTarget = (DirectoryNode) parentNode;
          String newName = Objects.requireNonNull(targetCow.getFileName()).toString();
          Node oldChild = folderTarget.getChild(newName);
          if (oldChild != null) {
@@ -266,11 +270,14 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
       CopyOnWriteFSPath cowPath = CopyOnWriteFSPath.asCow(path);
       Node node = this.fs.fileTree().byPath(cowPath);
 
-      Path checkPath = switch (node) {
-         case DirectoryNode var9 -> this.fs.tmpDirectory();
-         case FileNode file -> file.storagePath();
-         default -> throw new IllegalStateException("MatchException: " + null, null);
-      };
+      Path checkPath;
+      if (node instanceof DirectoryNode) {
+         checkPath = this.fs.tmpDirectory();
+      } else if (node instanceof FileNode file) {
+         checkPath = file.storagePath();
+      } else {
+         throw new IllegalStateException("MatchException: " + null, null);
+      }
       checkPath.getFileSystem().provider().checkAccess(checkPath, modes);
    }
 
@@ -279,27 +286,33 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
       final CopyOnWriteFSPath cowPath = CopyOnWriteFSPath.asCow(path);
       Node node = this.fs.fileTree().byPathOrNull(cowPath);
 
-      return (V)(switch (node) {
-         case null -> type == BasicFileAttributeView.class ? new BasicFileAttributeView() {
-            @Override
-            public String name() {
-               return "basic";
-            }
+      if (node == null) {
+         if (type == BasicFileAttributeView.class) {
+            return (V) new BasicFileAttributeView() {
+               @Override
+               public String name() {
+                  return "basic";
+               }
 
-            @Override
-            public BasicFileAttributes readAttributes() throws IOException {
-               throw new CowFSNoSuchFileException(cowPath.toString());
-            }
+               @Override
+               public BasicFileAttributes readAttributes() throws IOException {
+                  throw new CowFSNoSuchFileException(cowPath.toString());
+               }
 
-            @Override
-            public void setTimes(final FileTime lastModifiedTime, final FileTime lastAccessTime, final FileTime createTime) throws IOException {
-               throw new CowFSNoSuchFileException(cowPath.toString());
-            }
-         } : null;
-         case DirectoryNode var9 -> type == BasicFileAttributeView.class ? DUMMY_DIRECTORY_VIEW : null;
-         case FileNode file -> Files.getFileAttributeView(file.storagePath(), type, options);
-         default -> throw new IllegalStateException("MatchException: " + null, null);
-      });
+               @Override
+               public void setTimes(final FileTime lastModifiedTime, final FileTime lastAccessTime, final FileTime createTime) throws IOException {
+                  throw new CowFSNoSuchFileException(cowPath.toString());
+               }
+            };
+         }
+         return null;
+      } else if (node instanceof DirectoryNode) {
+         return type == BasicFileAttributeView.class ? (V) DUMMY_DIRECTORY_VIEW : null;
+      } else if (node instanceof FileNode file) {
+         return (V) Files.getFileAttributeView(file.storagePath(), type, options);
+      } else {
+         throw new IllegalStateException("MatchException: " + null, null);
+      }
    }
 
    @Override
@@ -307,11 +320,13 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
       CopyOnWriteFSPath cowPath = CopyOnWriteFSPath.asCow(path);
       Node node = this.fs.fileTree().byPath(cowPath);
 
-      return (A)(switch (node) {
-         case DirectoryNode var9 -> DummyFileAttributes.DIRECTORY;
-         case FileNode file -> Files.readAttributes(file.storagePath(), type, options);
-         default -> throw new IllegalStateException("MatchException: " + null, null);
-      });
+      if (node instanceof DirectoryNode) {
+         return (A) DummyFileAttributes.DIRECTORY;
+      } else if (node instanceof FileNode file) {
+         return (A) Files.readAttributes(file.storagePath(), type, options);
+      } else {
+         throw new IllegalStateException("MatchException: " + null, null);
+      }
    }
 
    @Override

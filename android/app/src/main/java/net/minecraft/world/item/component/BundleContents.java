@@ -148,7 +148,7 @@ public final class BundleContents implements ContainerComponent<BundleContents>,
       if (this == obj) {
          return true;
       } else {
-         return obj instanceof BundleContents contents ? this.items.equals(contents.items) : false;
+         return obj instanceof BundleContents ? this.items.equals(((BundleContents) obj).items)  : false;
       }
    }
 

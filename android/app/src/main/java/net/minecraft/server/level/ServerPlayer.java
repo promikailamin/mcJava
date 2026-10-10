@@ -838,7 +838,8 @@ public class ServerPlayer extends Player {
                   new EntitySpawnRequest(EntitySpawnReason.LOAD, false)
                )
                .ifPresent(entity -> {
-                  if (entity instanceof TamableAnimal tamed) {
+                  if (entity instanceof TamableAnimal) {
+                      TamableAnimal tamed = (TamableAnimal) entity;
                      tamed.setOwner(this);
                   }
 
@@ -997,10 +998,10 @@ public class ServerPlayer extends Player {
          return false;
       } else {
          Entity entity = source.getEntity();
-         if (entity instanceof Player player && !this.canHarmPlayer(player)) {
+         if (entity instanceof Player && !this.canHarmPlayer(player)) {
             return false;
          } else {
-            return entity instanceof AbstractArrow arrow && arrow.getOwner() instanceof Player player && !this.canHarmPlayer(player)
+            return entity instanceof AbstractArrow && arrow.getOwner() instanceof Player && !this.canHarmPlayer(player)
                ? false
                : super.hurtServer(level, source, damage);
          }
@@ -1109,7 +1110,7 @@ public class ServerPlayer extends Player {
          }
 
          return standUpPosition.map(p -> ServerPlayer.RespawnPosAngle.of(p, pos, 0.0F));
-      } else if (block instanceof AbstractBedBlock abstractBedBlock && abstractBedBlock.getBedRule(level, pos).canSetSpawn(level)) {
+      } else if (block instanceof AbstractBedBlock && abstractBedBlock.getBedRule(level, pos).canSetSpawn(level)) {
          return AbstractBedBlock.findStandUpPosition(EntityTypes.PLAYER, level, pos, blockState.getValue(AbstractBedBlock.FACING), yaw)
             .map(p -> ServerPlayer.RespawnPosAngle.of(p, pos, 0.0F));
       } else {
@@ -1885,9 +1886,8 @@ public class ServerPlayer extends Player {
    }
 
    public String getIpAddress() {
-      return this.connection.getRemoteAddress() instanceof InetSocketAddress ipSocketAddress
-         ? InetAddresses.toAddrString(ipSocketAddress.getAddress())
-         : "<unknown>";
+      return this.connection.getRemoteAddress() instanceof InetSocketAddress ? InetAddresses.toAddrString(((InetSocketAddress) this.connection.getRemoteAddress()).getAddress())
+          : "<unknown>";
    }
 
    public void updateOptions(final ClientInformation information) {
@@ -1976,7 +1976,8 @@ public class ServerPlayer extends Player {
       Entity oldCamera = this.getCamera();
       this.camera = newCamera == null ? this : newCamera;
       if (oldCamera != this.camera) {
-         if (this.camera.level() instanceof ServerLevel level) {
+         if (this.camera.level() instanceof ServerLevel) {
+             ServerLevel level = (ServerLevel) this.camera.level();
             this.teleportTo(level, this.camera.getX(), this.camera.getY(), this.camera.getZ(), Set.of(), this.getYRot(), this.getXRot(), false);
          }
 
@@ -2176,7 +2177,8 @@ public class ServerPlayer extends Player {
       if (super.startRiding(entityToRide, force, sendEventAndTriggers)) {
          entityToRide.positionRider(this);
          this.connection.teleport(new PositionMoveRotation(this.position(), Vec3.ZERO, 0.0F, 0.0F), Relative.ROTATION);
-         if (entityToRide instanceof LivingEntity livingEntity) {
+         if (entityToRide instanceof LivingEntity) {
+             LivingEntity livingEntity = (LivingEntity) entityToRide;
             this.server.getPlayerList().sendActiveEffects(livingEntity, this.connection);
          }
 
@@ -2191,7 +2193,8 @@ public class ServerPlayer extends Player {
    public void removeVehicle() {
       Entity oldVehicle = this.getVehicle();
       super.removeVehicle();
-      if (oldVehicle instanceof LivingEntity livingEntity) {
+      if (oldVehicle instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) oldVehicle;
          for (MobEffectInstance effect : livingEntity.getActiveEffects()) {
             this.connection.send(new ClientboundRemoveMobEffectPacket(oldVehicle.getId(), effect.getEffect()));
          }
@@ -2301,7 +2304,8 @@ public class ServerPlayer extends Player {
    }
 
    public long registerAndUpdateEnderPearlTicket(final ThrownEnderpearl enderpearl) {
-      if (enderpearl.level() instanceof ServerLevel enderPearlLevel) {
+      if (enderpearl.level() instanceof ServerLevel) {
+          ServerLevel enderPearlLevel = (ServerLevel) enderpearl.level();
          ChunkPos chunkPos = enderpearl.chunkPosition();
          this.registerEnderPearl(enderpearl);
          enderPearlLevel.resetEmptyTime();

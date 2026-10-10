@@ -40,7 +40,7 @@ public class ScaffoldingBlockItem extends BlockItem {
          if (!level.isClientSide() && !level.isInWorldBounds(placementPos)) {
             Player player = context.getPlayer();
             int maxY = level.getMaxY();
-            if (player instanceof ServerPlayer serverPlayer && placementPos.getY() > maxY) {
+            if (player instanceof ServerPlayer && placementPos.getY() > maxY) {
                serverPlayer.sendBuildLimitMessage(true, maxY);
             }
             break;

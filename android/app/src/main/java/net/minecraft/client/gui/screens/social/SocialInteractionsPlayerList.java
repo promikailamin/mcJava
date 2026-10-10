@@ -123,7 +123,7 @@ public class SocialInteractionsPlayerList extends ContainerObjectSelectionList<P
       Map<UUID, GameProfile> gameProfiles = new Object2ObjectLinkedOpenHashMap();
 
       for (int id = chatLog.end(); id >= chatLog.start(); id--) {
-         if (chatLog.lookup(id) instanceof LoggedChatMessage.Player message && message.message().hasSignature()) {
+         if (chatLog.lookup(id) instanceof LoggedChatMessage.Player && message.message().hasSignature()) {
             gameProfiles.put(message.profileId(), message.profile());
          }
       }

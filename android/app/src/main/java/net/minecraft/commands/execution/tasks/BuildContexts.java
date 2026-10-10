@@ -56,7 +56,8 @@ public class BuildContexts<T extends ExecutionCommandSource<T>> {
                }
 
                RedirectModifier<T> modifier = contextToRun.getRedirectModifier();
-               if (modifier instanceof CustomModifierExecutor<T> customModifierExecutor) {
+               if (modifier instanceof CustomModifierExecutor<T>) {
+                   CustomModifierExecutor<T> customModifierExecutor = (CustomModifierExecutor<T>) modifier;
                   customModifierExecutor.apply(originalSource, currentSources, currentStage, modifiers, ExecutionControl.create(context, frame));
                   return;
                }
@@ -99,7 +100,8 @@ public class BuildContexts<T extends ExecutionCommandSource<T>> {
          }
       } else {
          CommandContext<T> executeContext = currentStage.getTopContext();
-         if (executeContext.getCommand() instanceof CustomCommandExecutor<T> customCommandExecutor) {
+         if (executeContext.getCommand() instanceof CustomCommandExecutor<T>) {
+             CustomCommandExecutor<T> customCommandExecutor = (CustomCommandExecutor<T>) executeContext.getCommand();
             ExecutionControl<T> executionControl = ExecutionControl.create(context, frame);
 
             for (T executionSource : currentSources) {

@@ -144,7 +144,7 @@ public class TraderLlama extends Llama {
       public boolean canUse() {
          if (!this.llama.isLeashed()) {
             return false;
-         } else if (!(this.llama.getLeashHolder() instanceof WanderingTrader owner)) {
+         } else if (!(this.llama.getLeashHolder() instanceof WanderingTrader)) {
             return false;
          } else {
             this.ownerLastHurtBy = owner.getLastHurtByMob();
@@ -156,7 +156,8 @@ public class TraderLlama extends Llama {
       @Override
       public void start() {
          this.mob.setTarget(this.ownerLastHurtBy);
-         if (this.llama.getLeashHolder() instanceof WanderingTrader wanderingTrader) {
+         if (this.llama.getLeashHolder() instanceof WanderingTrader) {
+             WanderingTrader wanderingTrader = (WanderingTrader) this.llama.getLeashHolder();
             this.timestamp = wanderingTrader.getLastHurtByMobTimestamp();
          }
 

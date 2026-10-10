@@ -350,7 +350,8 @@ public interface ByteBufCodecs {
 
    static StreamCodec<ByteBuf, CompoundTag> compoundTagCodec(final Supplier<NbtAccounter> accounter) {
       return tagCodec(accounter).map(tag -> {
-         if (tag instanceof CompoundTag compoundTag) {
+         if (tag instanceof CompoundTag) {
+             CompoundTag compoundTag = (CompoundTag) tag;
             return compoundTag;
          } else {
             throw new DecoderException("Not a compound tag: " + tag);

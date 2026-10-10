@@ -64,9 +64,7 @@ public class ShulkerBoxBlock extends BaseEntityBlock {
    protected InteractionResult useWithoutItem(
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
-      if (level instanceof ServerLevel serverLevel
-         && level.getBlockEntity(pos) instanceof ShulkerBoxBlockEntity shulkerBoxBlockEntity
-         && canOpen(state, level, pos, shulkerBoxBlockEntity)) {
+      if (level instanceof ServerLevel && level.getBlockEntity(pos) instanceof ShulkerBoxBlockEntity && canOpen(state, level, pos, shulkerBoxBlockEntity)) {
          player.openMenu(shulkerBoxBlockEntity);
          player.awardStat(Stats.OPEN_SHULKER_BOX);
          PiglinAi.angerNearbyPiglins(serverLevel, player, true);
@@ -97,7 +95,8 @@ public class ShulkerBoxBlock extends BaseEntityBlock {
    @Override
    public BlockState playerWillDestroy(final Level level, final BlockPos pos, final BlockState state, final Player player) {
       BlockEntity blockEntity = level.getBlockEntity(pos);
-      if (blockEntity instanceof ShulkerBoxBlockEntity shulkerBoxBlockEntity) {
+      if (blockEntity instanceof ShulkerBoxBlockEntity) {
+          ShulkerBoxBlockEntity shulkerBoxBlockEntity = (ShulkerBoxBlockEntity) blockEntity;
          if (!level.isClientSide() && player.preventsBlockDrops() && !shulkerBoxBlockEntity.isEmpty()) {
             ItemStack itemStack = new ItemStack(state.getBlock());
             itemStack.applyComponents(blockEntity.collectComponents());
@@ -115,7 +114,8 @@ public class ShulkerBoxBlock extends BaseEntityBlock {
    @Override
    protected List<ItemStack> getDrops(final BlockState state, LootParams.Builder params) {
       BlockEntity blockEntity = params.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-      if (blockEntity instanceof ShulkerBoxBlockEntity shulkerBoxBlockEntity) {
+      if (blockEntity instanceof ShulkerBoxBlockEntity) {
+          ShulkerBoxBlockEntity shulkerBoxBlockEntity = (ShulkerBoxBlockEntity) blockEntity;
          params = params.withDynamicDrop(CONTENTS, output -> {
             for (int i = 0; i < shulkerBoxBlockEntity.getContainerSize(); i++) {
                output.accept(shulkerBoxBlockEntity.getItem(i));
@@ -133,16 +133,15 @@ public class ShulkerBoxBlock extends BaseEntityBlock {
 
    @Override
    protected VoxelShape getBlockSupportShape(final BlockState state, final BlockGetter level, final BlockPos pos) {
-      return level.getBlockEntity(pos) instanceof ShulkerBoxBlockEntity shulker && !shulker.isClosed()
+      return level.getBlockEntity(pos) instanceof ShulkerBoxBlockEntity && !shulker.isClosed()
          ? SHAPES_OPEN_SUPPORT.get(state.getValue(FACING).getOpposite())
          : Shapes.block();
    }
 
    @Override
    protected VoxelShape getShape(final BlockState state, final BlockGetter level, final BlockPos pos, final CollisionContext context) {
-      return level.getBlockEntity(pos) instanceof ShulkerBoxBlockEntity shulkerBoxBlockEntity
-         ? Shapes.create(shulkerBoxBlockEntity.getBoundingBox(state))
-         : Shapes.block();
+      return level.getBlockEntity(pos) instanceof ShulkerBoxBlockEntity ? Shapes.create(((ShulkerBoxBlockEntity) level.getBlockEntity(pos)).getBoundingBox(state))
+          : Shapes.block();
    }
 
    @Override

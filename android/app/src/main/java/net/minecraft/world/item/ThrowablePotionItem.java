@@ -22,7 +22,8 @@ public abstract class ThrowablePotionItem extends PotionItem implements Projecti
    @Override
    public InteractionResult use(final Level level, final Player player, final InteractionHand hand) {
       ItemStack itemStack = player.getItemInHand(hand);
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          Projectile.spawnProjectileFromRotation(this::createPotion, serverLevel, itemStack, player, -20.0F, 0.5F, 1.0F);
       }
 

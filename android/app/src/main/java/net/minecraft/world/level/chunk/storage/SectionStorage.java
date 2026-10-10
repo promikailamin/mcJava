@@ -199,7 +199,8 @@ public class SectionStorage<R, P> implements AutoCloseable {
                throwable = throwable.getCause();
             }
 
-            if (throwable instanceof IOException e) {
+            if (throwable instanceof IOException) {
+                IOException e = (IOException) throwable;
                LOGGER.error("Error reading chunk {} data from disk", chunkPos, e);
                this.errorReporter.reportChunkLoadFailure(e, this.simpleRegionStorage.storageInfo(), chunkPos);
                return Optional.empty();
@@ -236,7 +237,8 @@ public class SectionStorage<R, P> implements AutoCloseable {
       RegistryOps<Tag> registryOps = this.registryAccess.createSerializationContext(NbtOps.INSTANCE);
       Dynamic<Tag> tag = this.writeChunk(chunkPos, registryOps);
       Tag value = (Tag)tag.getValue();
-      if (value instanceof CompoundTag compoundTag) {
+      if (value instanceof CompoundTag) {
+          CompoundTag compoundTag = (CompoundTag) value;
          this.simpleRegionStorage.write(chunkPos, compoundTag).exceptionally(throwable -> {
             this.errorReporter.reportChunkSaveFailure(throwable, this.simpleRegionStorage.storageInfo(), chunkPos);
             return null;

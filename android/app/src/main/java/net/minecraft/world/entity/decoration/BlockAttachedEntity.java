@@ -40,7 +40,8 @@ public abstract class BlockAttachedEntity extends Entity {
 
    @Override
    public void tick() {
-      if (this.level() instanceof ServerLevel level) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.level();
          this.checkBelowWorld();
          if (this.ticksSinceLastCheck++ >= 100) {
             this.ticksSinceLastCheck = 0;
@@ -65,7 +66,8 @@ public abstract class BlockAttachedEntity extends Entity {
 
    @Override
    public boolean skipAttackInteraction(final Entity source) {
-      if (source instanceof Player player) {
+      if (source instanceof Player) {
+          Player player = (Player) source;
          return !this.level().mayInteract(player, this.pos) ? true : this.hurtOrSimulate(this.damageSources().playerAttack(player), 0.0F);
       } else {
          return false;
@@ -122,7 +124,7 @@ public abstract class BlockAttachedEntity extends Entity {
 
    @Override
    public void move(final MoverType moverType, final Vec3 delta) {
-      if (this.level() instanceof ServerLevel level && !this.isRemoved() && delta.lengthSqr() > 0.0) {
+      if (this.level() instanceof ServerLevel && !this.isRemoved() && delta.lengthSqr() > 0.0) {
          this.kill(level);
          this.dropItem(level, null);
       }
@@ -130,7 +132,7 @@ public abstract class BlockAttachedEntity extends Entity {
 
    @Override
    public void push(final double xa, final double ya, final double za) {
-      if (this.level() instanceof ServerLevel level && !this.isRemoved() && xa * xa + ya * ya + za * za > 0.0) {
+      if (this.level() instanceof ServerLevel && !this.isRemoved() && xa * xa + ya * ya + za * za > 0.0) {
          this.kill(level);
          this.dropItem(level, null);
       }

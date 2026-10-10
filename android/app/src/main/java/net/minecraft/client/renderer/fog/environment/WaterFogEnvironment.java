@@ -17,7 +17,8 @@ public class WaterFogEnvironment extends FogEnvironment {
       float partialTicks = deltaTracker.getGameTimeDeltaPartialTick(false);
       fog.environmentalStart = camera.attributeProbe().getValue(EnvironmentAttributes.WATER_FOG_START_DISTANCE, partialTicks);
       fog.environmentalEnd = camera.attributeProbe().getValue(EnvironmentAttributes.WATER_FOG_END_DISTANCE, partialTicks);
-      if (camera.entity() instanceof LocalPlayer player) {
+      if (camera.entity() instanceof LocalPlayer) {
+          LocalPlayer player = (LocalPlayer) camera.entity();
          fog.environmentalEnd = fog.environmentalEnd * Math.max(0.25F, player.getWaterVision());
       }
 

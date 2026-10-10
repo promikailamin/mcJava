@@ -156,14 +156,16 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public void getTag(final Tag parent, final List<Tag> output) {
-         if (parent instanceof CollectionTag collection) {
+         if (parent instanceof CollectionTag) {
+             CollectionTag collection = (CollectionTag) parent;
             Iterables.addAll(output, collection);
          }
       }
 
       @Override
       public void getOrCreateTag(final Tag parent, final Supplier<Tag> child, final List<Tag> output) {
-         if (parent instanceof CollectionTag list) {
+         if (parent instanceof CollectionTag) {
+             CollectionTag list = (CollectionTag) parent;
             if (list.isEmpty()) {
                Tag result = child.get();
                if (list.addTag(0, result)) {
@@ -182,7 +184,7 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public int setTag(final Tag parent, final Supplier<Tag> toAdd) {
-         if (!(parent instanceof CollectionTag list)) {
+         if (!(parent instanceof CollectionTag)) {
             return 0;
          } else {
             int size = list.size();
@@ -212,7 +214,8 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public int removeTag(final Tag parent) {
-         if (parent instanceof CollectionTag list) {
+         if (parent instanceof CollectionTag) {
+             CollectionTag list = (CollectionTag) parent;
             int size = list.size();
             if (size > 0) {
                list.clear();
@@ -233,7 +236,8 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public void getTag(final Tag parent, final List<Tag> output) {
-         if (parent instanceof CompoundTag compoundTag) {
+         if (parent instanceof CompoundTag) {
+             CompoundTag compoundTag = (CompoundTag) parent;
             Tag result = compoundTag.get(this.name);
             if (result != null) {
                output.add(result);
@@ -243,7 +247,8 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public void getOrCreateTag(final Tag parent, final Supplier<Tag> child, final List<Tag> output) {
-         if (parent instanceof CompoundTag compound) {
+         if (parent instanceof CompoundTag) {
+             CompoundTag compound = (CompoundTag) parent;
             Tag result;
             if (compound.contains(this.name)) {
                result = compound.get(this.name);
@@ -263,7 +268,8 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public int setTag(final Tag parent, final Supplier<Tag> toAdd) {
-         if (parent instanceof CompoundTag compound) {
+         if (parent instanceof CompoundTag) {
+             CompoundTag compound = (CompoundTag) parent;
             Tag newValue = toAdd.get();
             Tag previousValue = compound.put(this.name, newValue);
             if (!newValue.equals(previousValue)) {
@@ -276,7 +282,7 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public int removeTag(final Tag parent) {
-         if (parent instanceof CompoundTag compound && compound.contains(this.name)) {
+         if (parent instanceof CompoundTag && compound.contains(this.name)) {
             compound.remove(this.name);
             return 1;
          } else {
@@ -294,7 +300,8 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public void getTag(final Tag parent, final List<Tag> output) {
-         if (parent instanceof CollectionTag list) {
+         if (parent instanceof CollectionTag) {
+             CollectionTag list = (CollectionTag) parent;
             int size = list.size();
             int actualIndex = this.index < 0 ? size + this.index : this.index;
             if (0 <= actualIndex && actualIndex < size) {
@@ -315,7 +322,8 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public int setTag(final Tag parent, final Supplier<Tag> toAdd) {
-         if (parent instanceof CollectionTag list) {
+         if (parent instanceof CollectionTag) {
+             CollectionTag list = (CollectionTag) parent;
             int size = list.size();
             int actualIndex = this.index < 0 ? size + this.index : this.index;
             if (0 <= actualIndex && actualIndex < size) {
@@ -332,7 +340,8 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public int removeTag(final Tag parent) {
-         if (parent instanceof CollectionTag list) {
+         if (parent instanceof CollectionTag) {
+             CollectionTag list = (CollectionTag) parent;
             int size = list.size();
             int actualIndex = this.index < 0 ? size + this.index : this.index;
             if (0 <= actualIndex && actualIndex < size) {
@@ -356,7 +365,8 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public void getTag(final Tag parent, final List<Tag> output) {
-         if (parent instanceof ListTag list) {
+         if (parent instanceof ListTag) {
+             ListTag list = (ListTag) parent;
             list.stream().filter(this.predicate).forEach(output::add);
          }
       }
@@ -364,7 +374,8 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
       @Override
       public void getOrCreateTag(final Tag parent, final Supplier<Tag> child, final List<Tag> output) {
          MutableBoolean foundAnything = new MutableBoolean();
-         if (parent instanceof ListTag list) {
+         if (parent instanceof ListTag) {
+             ListTag list = (ListTag) parent;
             list.stream().filter(this.predicate).forEach(t -> {
                output.add(t);
                foundAnything.setTrue();
@@ -385,7 +396,8 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
       @Override
       public int setTag(final Tag parent, final Supplier<Tag> toAdd) {
          int changedCount = 0;
-         if (parent instanceof ListTag list) {
+         if (parent instanceof ListTag) {
+             ListTag list = (ListTag) parent;
             int size = list.size();
             if (size == 0) {
                list.add(toAdd.get());
@@ -409,7 +421,8 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
       @Override
       public int removeTag(final Tag parent) {
          int changedCount = 0;
-         if (parent instanceof ListTag list) {
+         if (parent instanceof ListTag) {
+             ListTag list = (ListTag) parent;
             for (int i = list.size() - 1; i >= 0; i--) {
                if (this.predicate.test(list.get(i))) {
                   list.remove(i);
@@ -435,7 +448,8 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public void getTag(final Tag parent, final List<Tag> output) {
-         if (parent instanceof CompoundTag compoundTag) {
+         if (parent instanceof CompoundTag) {
+             CompoundTag compoundTag = (CompoundTag) parent;
             Tag result = compoundTag.get(this.name);
             if (this.predicate.test(result)) {
                output.add(result);
@@ -445,7 +459,8 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public void getOrCreateTag(final Tag parent, final Supplier<Tag> child, final List<Tag> output) {
-         if (parent instanceof CompoundTag compound) {
+         if (parent instanceof CompoundTag) {
+             CompoundTag compound = (CompoundTag) parent;
             Tag result = compound.get(this.name);
             if (result == null) {
                result = this.pattern.copy();
@@ -464,7 +479,8 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public int setTag(final Tag parent, final Supplier<Tag> toAdd) {
-         if (parent instanceof CompoundTag compound) {
+         if (parent instanceof CompoundTag) {
+             CompoundTag compound = (CompoundTag) parent;
             Tag currentValue = compound.get(this.name);
             if (this.predicate.test(currentValue)) {
                Tag newValue = toAdd.get();
@@ -480,7 +496,8 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public int removeTag(final Tag parent) {
-         if (parent instanceof CompoundTag compound) {
+         if (parent instanceof CompoundTag) {
+             CompoundTag compound = (CompoundTag) parent;
             Tag current = compound.get(this.name);
             if (this.predicate.test(current)) {
                compound.remove(this.name);
@@ -606,7 +623,8 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
             return true;
          }
 
-         if (tag instanceof CompoundTag compound) {
+         if (tag instanceof CompoundTag) {
+             CompoundTag compound = (CompoundTag) tag;
             for (Tag child : compound.values()) {
                if (isTooDeep(child, depth + 1)) {
                   return true;
@@ -666,7 +684,7 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
          boolean usedFirst = false;
 
          for (Tag targetTag : targets) {
-            if (!(targetTag instanceof CollectionTag targetList)) {
+            if (!(targetTag instanceof CollectionTag)) {
                throw NbtPathArgument.ERROR_EXPECTED_LIST.create(targetTag);
             }
 

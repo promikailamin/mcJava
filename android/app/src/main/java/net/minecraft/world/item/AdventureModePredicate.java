@@ -125,7 +125,7 @@ public class AdventureModePredicate {
       if (this == obj) {
          return true;
       } else {
-         return obj instanceof AdventureModePredicate predicate ? this.predicates.equals(predicate.predicates) : false;
+         return obj instanceof AdventureModePredicate ? this.predicates.equals(((AdventureModePredicate) obj).predicates)  : false;
       }
    }
 

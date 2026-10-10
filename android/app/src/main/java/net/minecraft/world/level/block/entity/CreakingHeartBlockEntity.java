@@ -70,7 +70,8 @@ public class CreakingHeartBlockEntity extends BlockEntity {
 
    public static void serverTick(final Level level, final BlockPos pos, final BlockState state, final CreakingHeartBlockEntity entity) {
       entity.ticksExisted++;
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          int computedOutputSignal = entity.computeAnalogOutputSignal();
          if (entity.outputSignal != computedOutputSignal) {
             entity.outputSignal = computedOutputSignal;
@@ -180,9 +181,10 @@ public class CreakingHeartBlockEntity extends BlockEntity {
          this.setCreakingInfo(creaking.getUUID());
       }
 
-      if (this.level instanceof ServerLevel serverLevel && this.creakingInfo.right().isPresent()) {
+      if (this.level instanceof ServerLevel && this.creakingInfo.right().isPresent()) {
          UUID uuid = (UUID)this.creakingInfo.right().get();
-         if (serverLevel.getEntity(uuid) instanceof Creaking resolvedCreaking) {
+         if (serverLevel.getEntity(uuid) instanceof Creaking) {
+             Creaking resolvedCreaking = (Creaking) serverLevel.getEntity(uuid);
             this.setCreakingInfo(resolvedCreaking);
             return Optional.of(resolvedCreaking);
          } else {
@@ -225,7 +227,8 @@ public class CreakingHeartBlockEntity extends BlockEntity {
    public void creakingHurt() {
       Optional<Creaking> creaking = this.getCreakingProtector();
       if (!creaking.isEmpty()) {
-         if (this.level instanceof ServerLevel serverLevel) {
+         if (this.level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) this.level;
             if (this.emitter <= 0) {
                this.emitParticles(serverLevel, 20, false);
                if (this.getBlockState().getValue(CreakingHeartBlock.STATE) == CreakingHeartState.AWAKE) {

@@ -33,7 +33,7 @@ public class TranslatableContents implements ComponentContents {
    private static final Codec<Object> ARG_CODEC = Codec.either(PRIMITIVE_ARG_CODEC, ComponentSerialization.CODEC)
       .xmap(
          e -> e.map(o -> o, component -> Objects.requireNonNullElse(component.tryCollapseToString(), component)),
-         o -> o instanceof Component c ? Either.right(c) : Either.left(o)
+         o -> o instanceof Component ? Either.right(c)  : Either.left(o)
       );
    public static final MapCodec<TranslatableContents> MAP_CODEC = RecordCodecBuilder.mapCodec(
       i -> i.group(
@@ -151,7 +151,8 @@ public class TranslatableContents implements ComponentContents {
    private FormattedText getArgument(final int index) {
       if (index >= 0 && index < this.args.length) {
          Object arg = this.args[index];
-         if (arg instanceof Component componentArg) {
+         if (arg instanceof Component) {
+             Component componentArg = (Component) arg;
             return componentArg;
          } else {
             return arg == null ? TEXT_NULL : FormattedText.of(arg.toString());
@@ -195,7 +196,8 @@ public class TranslatableContents implements ComponentContents {
 
       for (int i = 0; i < argsCopy.length; i++) {
          Object param = this.args[i];
-         if (param instanceof Component component) {
+         if (param instanceof Component) {
+             Component component = (Component) param;
             argsCopy[i] = ComponentUtils.resolve(context, component, recursionDepth);
          } else {
             argsCopy[i] = param;
@@ -209,8 +211,7 @@ public class TranslatableContents implements ComponentContents {
    public boolean equals(final Object o) {
       return this == o
          ? true
-         : o instanceof TranslatableContents that
-            && Objects.equals(this.key, that.key)
+         : o instanceof TranslatableContents && Objects.equals(this.key, that.key)
             && Objects.equals(this.fallback, that.fallback)
             && Arrays.equals(this.args, that.args);
    }

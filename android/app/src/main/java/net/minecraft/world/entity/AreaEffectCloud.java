@@ -143,7 +143,8 @@ public class AreaEffectCloud extends Entity implements TraceableEntity {
    @Override
    public void tick() {
       super.tick();
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          this.serverTick(serverLevel);
       } else {
          this.clientTick();

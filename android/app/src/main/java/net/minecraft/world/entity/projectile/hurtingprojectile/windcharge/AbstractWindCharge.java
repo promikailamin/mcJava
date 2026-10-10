@@ -77,15 +77,17 @@ public abstract class AbstractWindCharge extends AbstractHurtingProjectile imple
    @Override
    protected void onHitEntity(final EntityHitResult hitResult) {
       super.onHitEntity(hitResult);
-      if (this.level() instanceof ServerLevel serverLevel) {
-         LivingEntity owner = this.getOwner() instanceof LivingEntity entity ? entity : null;
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
+         LivingEntity owner = this.getOwner() instanceof LivingEntity ? entity  : null;
          Entity entity = hitResult.getEntity();
          if (owner != null) {
             owner.setLastHurtMob(entity);
          }
 
          DamageSource source = this.damageSources().windCharge(this, owner);
-         if (entity.hurtServer(serverLevel, source, 1.0F) && entity instanceof LivingEntity mob) {
+         if (entity.hurtServer(serverLevel, source, 1.0F) && entity instanceof LivingEntity) {
+             LivingEntity mob = (LivingEntity) entity.hurtServer(serverLevel, source, 1.0F) && entity;
             EnchantmentHelper.doPostAttackEffects(serverLevel, mob, source);
          }
 

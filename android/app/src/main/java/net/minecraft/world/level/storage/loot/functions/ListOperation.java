@@ -19,7 +19,7 @@ public interface ListOperation {
 
    static MapCodec<ListOperation> codec(final int maxSize) {
       return ListOperation.Type.CODEC.dispatchMap("mode", ListOperation::mode, e -> e.mapCodec).validate(op -> {
-         if (op instanceof ListOperation.ReplaceSection section && section.size().isPresent()) {
+         if (op instanceof ListOperation.ReplaceSection && section.size().isPresent()) {
             int size = section.size().get();
             if (size > maxSize) {
                return DataResult.error(() -> "Size value too large: " + size + ", max size is " + maxSize);

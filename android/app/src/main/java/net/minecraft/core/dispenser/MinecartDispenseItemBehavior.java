@@ -69,7 +69,7 @@ public class MinecartDispenseItemBehavior extends DefaultDispenseItemBehavior {
    }
 
    private static RailShape getRailShape(final BlockState blockFront) {
-      return blockFront.getBlock() instanceof BaseRailBlock railBlock ? blockFront.getValue(railBlock.getShapeProperty()) : RailShape.NORTH_SOUTH;
+      return blockFront.getBlock() instanceof BaseRailBlock ? blockFront.getValue(((BaseRailBlock) blockFront.getBlock()).getShapeProperty())  : RailShape.NORTH_SOUTH;
    }
 
    @Override

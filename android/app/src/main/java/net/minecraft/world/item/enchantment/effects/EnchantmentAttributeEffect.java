@@ -45,14 +45,16 @@ public record EnchantmentAttributeEffect(Identifier id, Holder<Attribute> attrib
       final Vec3 position,
       final boolean becameActive
    ) {
-      if (becameActive && entity instanceof LivingEntity living) {
+      if (becameActive && entity instanceof LivingEntity) {
+          LivingEntity living = (LivingEntity) becameActive && entity;
          living.getAttributes().addTransientAttributeModifiers(this.makeAttributeMap(enchantmentLevel, item.inSlot()));
       }
    }
 
    @Override
    public void onDeactivated(final EnchantedItemInUse item, final Entity entity, final Vec3 position, final int level) {
-      if (entity instanceof LivingEntity living) {
+      if (entity instanceof LivingEntity) {
+          LivingEntity living = (LivingEntity) entity;
          living.getAttributes().removeAttributeModifiers(this.makeAttributeMap(level, item.inSlot()));
       }
    }

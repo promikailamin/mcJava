@@ -156,7 +156,7 @@ public class MerchantMenu extends AbstractContainerMenu {
       super.removed(player);
       this.trader.setTradingPlayer(null);
       if (!this.trader.isClientSide()) {
-         if (!player.isAlive() || player instanceof ServerPlayer serverPlayer && serverPlayer.hasDisconnected()) {
+         if (!player.isAlive() || player instanceof ServerPlayer && serverPlayer.hasDisconnected()) {
             ItemStack itemStack = this.tradeContainer.removeItemNoUpdate(0);
             if (!itemStack.isEmpty()) {
                player.drop(itemStack, false, Prediction.SERVER_ONLY);

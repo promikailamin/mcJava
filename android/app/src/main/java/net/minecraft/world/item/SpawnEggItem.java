@@ -45,15 +45,17 @@ public class SpawnEggItem extends Item {
       EntityType<?> type = getType(itemStack);
       if (type == null || !type.canSpawn(level)) {
          return InteractionResult.FAIL;
-      } else if (!(level instanceof ServerLevel serverLevel)) {
+      } else if (!(level instanceof ServerLevel)) {
          return InteractionResult.SUCCESS;
       } else {
          BlockPos pos = context.getClickedPos();
          Direction clickedFace = context.getClickedFace();
          BlockState blockState = level.getBlockState(pos);
-         if (level.getBlockEntity(pos) instanceof Spawner spawnerHolder) {
+         if (level.getBlockEntity(pos) instanceof Spawner) {
+             Spawner spawnerHolder = (Spawner) level.getBlockEntity(pos);
             if (!serverLevel.isSpawnerBlockEnabled()) {
-               if (context.getPlayer() instanceof ServerPlayer serverPlayer) {
+               if (context.getPlayer() instanceof ServerPlayer) {
+                   ServerPlayer serverPlayer = (ServerPlayer) context.getPlayer();
                   serverPlayer.sendSystemMessage(Component.translatable("advMode.notEnabled.spawner"));
                }
 
@@ -116,7 +118,8 @@ public class SpawnEggItem extends Item {
          return InteractionResult.FAIL;
       }
 
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          BlockPos pos = hitResult.getBlockPos();
          if (!(level.getBlockState(pos).getBlock() instanceof LiquidBlock)) {
             return InteractionResult.PASS;
@@ -158,7 +161,8 @@ public class SpawnEggItem extends Item {
       }
 
       Mob offspring;
-      if (parent instanceof AgeableMob ageableMob) {
+      if (parent instanceof AgeableMob) {
+          AgeableMob ageableMob = (AgeableMob) parent;
          offspring = ageableMob.getBreedOffspring(level, ageableMob);
       } else {
          offspring = type.create(level, EntitySpawnReason.SPAWN_ITEM_USE);

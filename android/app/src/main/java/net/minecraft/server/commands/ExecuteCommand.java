@@ -1024,7 +1024,7 @@ public class ExecuteCommand {
                                  .fork(
                                     execute,
                                     expandOneToOneEntityRelation(
-                                       e -> e instanceof OwnableEntity ownableEntity ? Optional.ofNullable(ownableEntity.getOwner()) : Optional.empty()
+                                       e -> e instanceof OwnableEntity ? Optional.ofNullable(((OwnableEntity) e).getOwner())  : Optional.empty()
                                     )
                                  )
                            ))
@@ -1033,7 +1033,7 @@ public class ExecuteCommand {
                                  .fork(
                                     execute,
                                     expandOneToOneEntityRelation(
-                                       e -> e instanceof Leashable leashable ? Optional.ofNullable(leashable.getLeashHolder()) : Optional.empty()
+                                       e -> e instanceof Leashable ? Optional.ofNullable(((Leashable) e).getLeashHolder())  : Optional.empty()
                                     )
                                  )
                            ))
@@ -1042,7 +1042,7 @@ public class ExecuteCommand {
                               .fork(
                                  execute,
                                  expandOneToOneEntityRelation(
-                                    e -> e instanceof Targeting targeting ? Optional.ofNullable(targeting.getTarget()) : Optional.empty()
+                                    e -> e instanceof Targeting ? Optional.ofNullable(((Targeting) e).getTarget())  : Optional.empty()
                                  )
                               )
                         ))
@@ -1051,7 +1051,7 @@ public class ExecuteCommand {
                            .fork(
                               execute,
                               expandOneToOneEntityRelation(
-                                 e -> e instanceof Attackable attackable ? Optional.ofNullable(attackable.getLastAttacker()) : Optional.empty()
+                                 e -> e instanceof Attackable ? Optional.ofNullable(((Attackable) e).getLastAttacker())  : Optional.empty()
                               )
                            )
                      ))
@@ -1061,7 +1061,7 @@ public class ExecuteCommand {
                Commands.literal("origin")
                   .fork(
                      execute,
-                     expandOneToOneEntityRelation(e -> e instanceof TraceableEntity traceable ? Optional.ofNullable(traceable.getOwner()) : Optional.empty())
+                     expandOneToOneEntityRelation(e -> e instanceof TraceableEntity ? Optional.ofNullable(((TraceableEntity) e).getOwner())  : Optional.empty())
                   )
             ))
          .then(Commands.literal("passengers").fork(execute, expandOneToManyEntityRelation(e -> e.getPassengers().stream())));

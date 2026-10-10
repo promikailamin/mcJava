@@ -111,7 +111,8 @@ public abstract class AbstractVillager extends AgeableMob implements Npc, Mercha
 
    @Override
    public MerchantOffers getOffers() {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          if (this.offers == null) {
             this.offers = new MerchantOffers();
             this.updateTrades(serverLevel);

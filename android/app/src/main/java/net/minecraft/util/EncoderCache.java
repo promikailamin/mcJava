@@ -32,7 +32,7 @@ public class EncoderCache {
 
          public <T> DataResult<T> encode(final A input, final DynamicOps<T> ops, final T prefix) {
             return ((DataResult)EncoderCache.this.cache.getUnchecked(new EncoderCache.Key(codec, input, ops)))
-               .map(value -> value instanceof Tag tag ? tag.copy() : value);
+               .map(value -> value instanceof Tag ? copy() : value);
          }
       };
    }

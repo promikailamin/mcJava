@@ -69,7 +69,7 @@ public class ThrownTrident extends AbstractArrow {
       int loyalty = this.entityData.get(ID_LOYALTY);
       if (loyalty > 0 && (this.dealtDamage || this.isNoPhysics()) && currentOwner != null) {
          if (!this.isAcceptibleReturnOwner()) {
-            if (this.level() instanceof ServerLevel level && this.pickup == AbstractArrow.Pickup.ALLOWED) {
+            if (this.level() instanceof ServerLevel && this.pickup == AbstractArrow.Pickup.ALLOWED) {
                this.spawnAtLocation(level, this.getPickupItem(), 0.1F);
             }
 
@@ -122,20 +122,23 @@ public class ThrownTrident extends AbstractArrow {
       float dmg = 8.0F;
       Entity currentOwner = this.getOwner();
       DamageSource damageSource = this.damageSources().trident(this, currentOwner == null ? this : currentOwner);
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          dmg = EnchantmentHelper.modifyDamage(serverLevel, this.getWeaponItem(), entity, damageSource, dmg);
       }
 
       this.dealtDamage = true;
       boolean wasHurt = entity.hurtOrSimulate(damageSource, dmg);
       if (wasHurt) {
-         if (this.level() instanceof ServerLevel serverLevel) {
+         if (this.level() instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) this.level();
             EnchantmentHelper.doPostAttackEffectsWithItemSourceOnBreak(
                serverLevel, entity, damageSource, this.getWeaponItem(), weapon -> this.kill(serverLevel)
             );
          }
 
-         if (entity instanceof LivingEntity mob) {
+         if (entity instanceof LivingEntity) {
+             LivingEntity mob = (LivingEntity) entity;
             this.doKnockback(mob, damageSource);
             this.doPostHurtEffects(mob);
          }
@@ -153,7 +156,7 @@ public class ThrownTrident extends AbstractArrow {
       EnchantmentHelper.onHitBlock(
          level,
          weapon,
-         this.getOwner() instanceof LivingEntity livingOwner ? livingOwner : null,
+         this.getOwner() instanceof LivingEntity ? livingOwner  : null,
          this,
          null,
          compensatedHitPosition,
@@ -203,9 +206,8 @@ public class ThrownTrident extends AbstractArrow {
    }
 
    private byte getLoyaltyFromItem(final ItemStack tridentItem) {
-      return this.level() instanceof ServerLevel serverLevel
-         ? (byte)Mth.clamp(EnchantmentHelper.getTridentReturnToOwnerAcceleration(serverLevel, tridentItem, this), 0, 127)
-         : 0;
+      return this.level() instanceof ServerLevel ? (byte)Mth.clamp(EnchantmentHelper.getTridentReturnToOwnerAcceleration(serverLevel, tridentItem, this), 0, 127)
+          : 0;
    }
 
    @Override

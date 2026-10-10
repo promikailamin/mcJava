@@ -196,7 +196,8 @@ public abstract class AgeableMob extends PathfinderMob {
    public void aiStep() {
       super.aiStep();
       Level level = this.level();
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          if (this.forcedAgeTimer > 0) {
             if (this.forcedAgeTimer % 4 == 0) {
                serverLevel.sendParticles(
@@ -226,7 +227,8 @@ public abstract class AgeableMob extends PathfinderMob {
 
    public static int makeAgeLockedParticle(final Level level, final Mob mob, int ageLockParticleTimer, final boolean isAgeLocked) {
       if (ageLockParticleTimer > 0) {
-         if (ageLockParticleTimer % 2 == 0 && level instanceof ServerLevel serverLevel) {
+         if (ageLockParticleTimer % 2 == 0 && level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) ageLockParticleTimer % 2 == 0 && level;
             float yParticleOffset = isAgeLocked ? 0.2F : 0.0F;
             Vec3 spawnPosition = new Vec3(mob.getRandomX(1.0), mob.getRandomY(0.2) + mob.getBbHeight() + yParticleOffset, mob.getRandomZ(1.0));
             serverLevel.sendParticles(
@@ -249,7 +251,7 @@ public abstract class AgeableMob extends PathfinderMob {
    }
 
    protected void ageBoundaryReached() {
-      if (!this.isBaby() && this.isPassenger() && this.getVehicle() instanceof AbstractBoat boat && !boat.hasEnoughSpaceFor(this)) {
+      if (!this.isBaby() && this.isPassenger() && this.getVehicle() instanceof AbstractBoat && !boat.hasEnoughSpaceFor(this)) {
          this.stopRiding();
       }
    }

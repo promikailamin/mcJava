@@ -27,7 +27,7 @@ public class TemptingSensor extends Sensor<PathfinderMob> {
    }
 
    public static TemptingSensor forAnimal() {
-      return new TemptingSensor((m, i) -> m instanceof Animal animal ? animal.isFood(i) : false);
+      return new TemptingSensor((m, i) -> m instanceof Animal ? isFood(i) : false);
    }
 
    private TemptingSensor(final BiPredicate<PathfinderMob, ItemStack> temptations) {

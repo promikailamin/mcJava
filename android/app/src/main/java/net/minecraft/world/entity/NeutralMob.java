@@ -81,15 +81,14 @@ public interface NeutralMob {
             this.stopBeingAngry();
          }
 
-         if (EntityReference.getLivingEntity(persistentAngerTarget, level) instanceof Player player
-            && (player.isCreative() || player.isSpectator() || level.getDifficulty() == Difficulty.PEACEFUL)) {
+         if (EntityReference.getLivingEntity(persistentAngerTarget, level) instanceof Player && (player.isCreative() || player.isSpectator() || level.getDifficulty() == Difficulty.PEACEFUL)) {
             this.stopBeingAngry();
          }
       }
    }
 
    private static boolean isValidPlayerTarget(final LivingEntity target) {
-      return target instanceof Player player && !player.isCreative() && !player.isSpectator() && player.level().getDifficulty() != Difficulty.PEACEFUL;
+      return target instanceof Player && !player.isCreative() && !player.isSpectator() && player.level().getDifficulty() != Difficulty.PEACEFUL;
    }
 
    default boolean isAngryAt(final LivingEntity entity, final ServerLevel level) {

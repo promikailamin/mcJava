@@ -68,12 +68,14 @@ public record BlockTransformer(List<BlockTransformer.BlockTransformData> transfo
                BlockState updatedShape = transformData.updateFromNeighbors ? Block.updateFromNeighbourShapes(newBlockState, level, pos) : newBlockState;
                Player player = context.getPlayer();
                ItemStack itemInHand = context.getItemInHand();
-               if (player instanceof ServerPlayer serverPlayer) {
+               if (player instanceof ServerPlayer) {
+                   ServerPlayer serverPlayer = (ServerPlayer) player;
                   CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pos, itemInHand);
                }
 
                BlockState oldBlockState = level.getBlockState(pos);
-               if (level instanceof ServerLevel serverLevel) {
+               if (level instanceof ServerLevel) {
+                   ServerLevel serverLevel = (ServerLevel) level;
                   transformData.loot
                      .ifPresent(
                         lt -> Block.dropFromBlockInteractLootTable(

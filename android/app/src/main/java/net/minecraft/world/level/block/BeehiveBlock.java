@@ -91,7 +91,8 @@ public class BeehiveBlock extends BaseEntityBlock {
       final ItemStack destroyedWith
    ) {
       super.playerDestroy(level, player, pos, state, blockEntity, destroyedWith);
-      if (blockEntity instanceof BeehiveBlockEntity beehiveBlockEntity) {
+      if (blockEntity instanceof BeehiveBlockEntity) {
+          BeehiveBlockEntity beehiveBlockEntity = (BeehiveBlockEntity) blockEntity;
          if (!EnchantmentHelper.hasTag(destroyedWith, EnchantmentTags.PREVENTS_BEE_SPAWNS_WHEN_MINING)) {
             beehiveBlockEntity.emptyAllLivingFromHive(player, state, BeehiveBlockEntity.BeeReleaseStatus.EMERGENCY);
             Containers.updateNeighboursAfterDestroy(state, level, pos);
@@ -155,7 +156,7 @@ public class BeehiveBlock extends BaseEntityBlock {
       boolean hiveEmptied = false;
       if (honeyLevel >= 5) {
          Item item = itemStack.getItem();
-         if (level instanceof ServerLevel serverLevel && itemStack.is(Items.SHEARS)) {
+         if (level instanceof ServerLevel && itemStack.is(Items.SHEARS)) {
             dropHoneycomb(serverLevel, itemStack, state, level.getBlockEntity(pos), player, pos);
             level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BEEHIVE_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
             itemStack.hurtAndBreak(1, player, hand.asEquipmentSlot());
@@ -197,14 +198,15 @@ public class BeehiveBlock extends BaseEntityBlock {
    }
 
    private boolean hiveContainsBees(final Level level, final BlockPos pos) {
-      return level.getBlockEntity(pos) instanceof BeehiveBlockEntity beehiveBlockEntity ? !beehiveBlockEntity.isEmpty() : false;
+      return level.getBlockEntity(pos) instanceof BeehiveBlockEntity ? !((BeehiveBlockEntity) level.getBlockEntity(pos)).isEmpty()  : false;
    }
 
    public void releaseBeesAndResetHoneyLevel(
       final Level level, final BlockState state, final BlockPos pos, final @Nullable Player player, final BeehiveBlockEntity.BeeReleaseStatus beeReleaseStatus
    ) {
       this.resetHoneyLevel(level, state, pos);
-      if (level.getBlockEntity(pos) instanceof BeehiveBlockEntity beehiveBlockEntity) {
+      if (level.getBlockEntity(pos) instanceof BeehiveBlockEntity) {
+          BeehiveBlockEntity beehiveBlockEntity = (BeehiveBlockEntity) level.getBlockEntity(pos);
          beehiveBlockEntity.emptyAllLivingFromHive(player, state, beeReleaseStatus);
       }
    }
@@ -280,23 +282,25 @@ public class BeehiveBlock extends BaseEntityBlock {
       return level.isClientSide() ? null : createTickerHelper(type, BlockEntityTypes.BEEHIVE, BeehiveBlockEntity::serverTick);
    }
 
-   @Override
-   public BlockState playerWillDestroy(final Level level, final BlockPos pos, final BlockState state, final Player player) {
-      if (level instanceof ServerLevel serverLevel
-         && player.preventsBlockDrops()
-         && serverLevel.getGameRules().get(GameRules.BLOCK_DROPS)
-         && level.getBlockEntity(pos) instanceof BeehiveBlockEntity beehiveBlockEntity) {
-         int honeyLevel = state.getValue(HONEY_LEVEL);
-         boolean hasBees = !beehiveBlockEntity.isEmpty();
-         if (hasBees || honeyLevel > 0) {
-            ItemStack itemStack = new ItemStack(this);
-            itemStack.applyComponents(beehiveBlockEntity.collectComponents());
-            itemStack.set(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(HONEY_LEVEL, honeyLevel));
-            ItemEntity entity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), itemStack);
-            entity.setDefaultPickUpDelay();
-            level.addFreshEntity(entity);
-         }
-      }
+@Override
+    public BlockState playerWillDestroy(final Level level, final BlockPos pos, final BlockState state, final Player player) {
+       if (level instanceof ServerLevel && player.preventsBlockDrops()
+          && serverLevel.getGameRules().get(GameRules.BLOCK_DROPS)) {
+          BlockEntity blockEntity = level.getBlockEntity(pos);
+          if (blockEntity instanceof BeehiveBlockEntity) {
+              BeehiveBlockEntity beehiveBlockEntity = (BeehiveBlockEntity) blockEntity;
+             int honeyLevel = state.getValue(HONEY_LEVEL);
+             boolean hasBees = !beehiveBlockEntity.isEmpty();
+             if (hasBees || honeyLevel > 0) {
+                ItemStack itemStack = new ItemStack(this);
+                itemStack.applyComponents(beehiveBlockEntity.collectComponents());
+                itemStack.set(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(HONEY_LEVEL, honeyLevel));
+                ItemEntity entity = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), itemStack);
+                entity.setDefaultPickUpDelay();
+                level.addFreshEntity(entity);
+             }
+          }
+       }
 
       return super.playerWillDestroy(level, pos, state, player);
    }
@@ -310,7 +314,8 @@ public class BeehiveBlock extends BaseEntityBlock {
          || entity instanceof WitherBoss
          || entity instanceof MinecartTNT) {
          BlockEntity blockEntity = params.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-         if (blockEntity instanceof BeehiveBlockEntity beehiveBlockEntity) {
+         if (blockEntity instanceof BeehiveBlockEntity) {
+             BeehiveBlockEntity beehiveBlockEntity = (BeehiveBlockEntity) blockEntity;
             beehiveBlockEntity.emptyAllLivingFromHive(null, state, BeehiveBlockEntity.BeeReleaseStatus.EMERGENCY);
          }
       }
@@ -339,7 +344,8 @@ public class BeehiveBlock extends BaseEntityBlock {
       final BlockState neighbourState,
       final RandomSource random
    ) {
-      if (level.getBlockState(neighbourPos).getBlock() instanceof FireBlock && level.getBlockEntity(pos) instanceof BeehiveBlockEntity beehiveBlockEntity) {
+      if (level.getBlockState(neighbourPos).getBlock() instanceof FireBlock && level.getBlockEntity(pos) instanceof BeehiveBlockEntity) {
+          BeehiveBlockEntity beehiveBlockEntity = (BeehiveBlockEntity) level.getBlockState(neighbourPos).getBlock() instanceof FireBlock && level.getBlockEntity(pos);
          beehiveBlockEntity.emptyAllLivingFromHive(null, state, BeehiveBlockEntity.BeeReleaseStatus.EMERGENCY);
       }
 

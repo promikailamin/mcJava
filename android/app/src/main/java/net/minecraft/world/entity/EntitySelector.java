@@ -12,7 +12,7 @@ public final class EntitySelector {
    public static final Predicate<Entity> ENTITY_NOT_BEING_RIDDEN = entity -> entity.isAlive() && !entity.isVehicle() && !entity.isPassenger();
    public static final Predicate<Entity> CONTAINER_ENTITY_SELECTOR = entity -> entity instanceof Container && entity.isAlive();
    public static final Predicate<Entity> NO_CREATIVE_OR_SPECTATOR = entity -> !(
-      entity instanceof Player player && (entity.isSpectator() || player.isCreative())
+      entity instanceof Player && (entity.isSpectator() || player.isCreative())
    );
    public static final Predicate<Entity> NO_SPECTATORS = entity -> !entity.isSpectator();
    public static final Predicate<Entity> CAN_BE_COLLIDED_WITH = NO_SPECTATORS.and(entity -> entity.canBeCollidedWith(null));
@@ -37,7 +37,7 @@ public final class EntitySelector {
                   return false;
                }
 
-               if (!entity.level().isClientSide() || input instanceof Player player && player.isLocalPlayer()) {
+               if (!entity.level().isClientSide() || input instanceof Player && player.isLocalPlayer()) {
                   Team theirTeam = input.getTeam();
                   Team.CollisionRule theirCollisionRule = theirTeam == null ? Team.CollisionRule.ALWAYS : theirTeam.getCollisionRule();
                   if (theirCollisionRule == Team.CollisionRule.NEVER) {

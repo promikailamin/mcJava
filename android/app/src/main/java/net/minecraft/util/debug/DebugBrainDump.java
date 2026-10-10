@@ -89,7 +89,8 @@ public record DebugBrainDump(
       String name = DebugEntityNameGenerator.getEntityName(entity);
       String profession;
       int xp;
-      if (entity instanceof Villager villager) {
+      if (entity instanceof Villager) {
+          Villager villager = (Villager) entity;
          profession = villager.getVillagerData().profession().getRegisteredName();
          xp = villager.getVillagerXp();
       } else {
@@ -102,21 +103,22 @@ public record DebugBrainDump(
       Brain<?> brain = entity.getBrain();
       long gameTime = entity.level().getGameTime();
       String inventoryStr;
-      if (entity instanceof InventoryCarrier inventoryCarrier) {
+      if (entity instanceof InventoryCarrier) {
+          InventoryCarrier inventoryCarrier = (InventoryCarrier) entity;
          Container inventory = inventoryCarrier.getInventory();
          inventoryStr = inventory.isEmpty() ? "" : inventory.toString();
       } else {
          inventoryStr = "";
       }
 
-      boolean wantsGolem = entity instanceof Villager villager && villager.wantsToSpawnGolem(gameTime);
-      int angerLevel = entity instanceof Warden warden ? warden.getClientAngerLevel() : -1;
+      boolean wantsGolem = entity instanceof Villager && villager.wantsToSpawnGolem(gameTime);
+      int angerLevel = entity instanceof Warden ? getClientAngerLevel() : -1;
       List<String> activities = brain.getActiveActivities().stream().map(Activity::getName).toList();
       List<String> behaviors = brain.getRunningBehaviors().stream().map(BehaviorControl::debugString).toList();
       List<String> memories = getMemoryDescriptions(serverLevel, entity, gameTime);
       Set<BlockPos> pois = getKnownBlockPositions(brain, MemoryModuleType.JOB_SITE, MemoryModuleType.HOME, MemoryModuleType.MEETING_POINT);
       Set<BlockPos> potentialPois = getKnownBlockPositions(brain, MemoryModuleType.POTENTIAL_JOB_SITE);
-      List<String> gossips = entity instanceof Villager villager ? getVillagerGossips(villager) : List.of();
+      List<String> gossips = entity instanceof Villager ? getVillagerGossips(villager)  : List.of();
       return new DebugBrainDump(
          name, profession, xp, health, maxHealth, inventoryStr, wantsGolem, angerLevel, activities, behaviors, memories, gossips, pois, potentialPois
       );

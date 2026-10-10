@@ -59,7 +59,7 @@ public class SuggestionProviders {
    }
 
    public static Identifier getName(final SuggestionProvider<?> provider) {
-      return provider instanceof SuggestionProviders.RegisteredSuggestion registeredProvider ? registeredProvider.name : ID_ASK_SERVER;
+      return provider instanceof SuggestionProviders.RegisteredSuggestion ? ((SuggestionProviders.RegisteredSuggestion) provider).name  : ID_ASK_SERVER;
    }
 
    private record RegisteredSuggestion(Identifier name, SuggestionProvider<SharedSuggestionProvider> delegate)

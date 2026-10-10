@@ -46,7 +46,7 @@ public abstract class VehicleEntity extends Entity {
       this.markHurt();
       this.setDamage(this.getDamage() + damage * 10.0F);
       this.gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
-      boolean creativePlayer = source.getEntity() instanceof Player player && player.getAbilities().instabuild;
+      boolean creativePlayer = source.getEntity() instanceof Player && player.getAbilities().instabuild;
       if ((creativePlayer || !(this.getDamage() > 40.0F)) && !this.shouldSourceDestroy(source)) {
          if (creativePlayer) {
             this.discard();

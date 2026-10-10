@@ -81,10 +81,9 @@ public class TntBlock extends Block {
    }
 
    public static boolean prime(final Level level, final BlockPos pos, final @Nullable LivingEntity source, final ItemStack itemStack) {
-      if (!(level instanceof ServerLevel serverLevel && serverLevel.getGameRules().get(GameRules.TNT_EXPLODES))) {
+      if (!(level instanceof ServerLevel && serverLevel.getGameRules().get(GameRules.TNT_EXPLODES))) {
          return false;
-      } else if (source instanceof Player player
-         && player.gameMode() == GameType.ADVENTURE
+      } else if (source instanceof Player && player.gameMode() == GameType.ADVENTURE
          && !itemStack.canBreakBlockInAdventureMode(new BlockInWorld(level, pos, false))) {
          return false;
       } else {
@@ -120,7 +119,7 @@ public class TntBlock extends Block {
          }
 
          player.awardStat(Stats.ITEM_USED.get(item));
-      } else if (level instanceof ServerLevel serverLevel && !serverLevel.getGameRules().get(GameRules.TNT_EXPLODES)) {
+      } else if (level instanceof ServerLevel && !serverLevel.getGameRules().get(GameRules.TNT_EXPLODES)) {
          player.sendOverlayMessage(Component.translatable("block.minecraft.tnt.disabled"));
          return InteractionResult.PASS;
       }
@@ -130,7 +129,8 @@ public class TntBlock extends Block {
 
    @Override
    protected void onProjectileHit(final Level level, final BlockState state, final BlockHitResult blockHit, final Projectile projectile) {
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          BlockPos pos = blockHit.getBlockPos();
          Entity owner = projectile.getOwner();
          if (projectile.isOnFire()
@@ -138,8 +138,8 @@ public class TntBlock extends Block {
             && prime(
                level,
                pos,
-               owner instanceof LivingEntity livingEntity ? livingEntity : null,
-               projectile instanceof AbstractArrow arr ? arr.getPickupItemStackOrigin() : ItemStack.EMPTY
+               owner instanceof LivingEntity ? livingEntity  : null,
+               projectile instanceof AbstractArrow ? getPickupItemStackOrigin() : ItemStack.EMPTY
             )) {
             level.removeBlock(pos, false);
          }

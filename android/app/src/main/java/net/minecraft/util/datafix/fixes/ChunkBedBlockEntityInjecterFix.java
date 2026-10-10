@@ -25,7 +25,7 @@ public class ChunkBedBlockEntityInjecterFix extends DataFix {
    public TypeRewriteRule makeRule() {
       Type<?> chunkType = this.getOutputSchema().getType(References.CHUNK);
       Type<?> levelType = chunkType.findFieldType("Level");
-      if (!(levelType.findFieldType("TileEntities") instanceof ListType<?> tileEntityListType)) {
+      if (!(levelType.findFieldType("TileEntities") instanceof ListType<?>)) {
          throw new IllegalStateException("Tile entity type is not a list type.");
       } else {
          return this.cap(levelType, tileEntityListType);

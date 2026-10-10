@@ -30,8 +30,7 @@ public final class CompoundTag implements Tag {
       .comapFlatMap(
          t -> {
             Tag tag = (Tag)t.convert(NbtOps.INSTANCE).getValue();
-            return tag instanceof CompoundTag compoundTag
-               ? DataResult.success(compoundTag == t.getValue() ? compoundTag.copy() : compoundTag)
+            return tag instanceof CompoundTag ? DataResult.success(compoundTag == t.getValue() ? ((CompoundTag) tag).copy()  : compoundTag)
                : DataResult.error(() -> "Not a compound tag: " + tag);
          },
          t -> new Dynamic(NbtOps.INSTANCE, t.copy())
@@ -286,7 +285,7 @@ public final class CompoundTag implements Tag {
    }
 
    public byte getByteOr(final String name, final byte defaultValue) {
-      return this.tags.get(name) instanceof NumericTag tag ? tag.byteValue() : defaultValue;
+      return this.tags.get(name) instanceof NumericTag ? byteValue() : defaultValue;
    }
 
    public Optional<Short> getShort(final String name) {
@@ -294,7 +293,7 @@ public final class CompoundTag implements Tag {
    }
 
    public short getShortOr(final String name, final short defaultValue) {
-      return this.tags.get(name) instanceof NumericTag tag ? tag.shortValue() : defaultValue;
+      return this.tags.get(name) instanceof NumericTag ? shortValue() : defaultValue;
    }
 
    public Optional<Integer> getInt(final String name) {
@@ -302,7 +301,7 @@ public final class CompoundTag implements Tag {
    }
 
    public int getIntOr(final String name, final int defaultValue) {
-      return this.tags.get(name) instanceof NumericTag tag ? tag.intValue() : defaultValue;
+      return this.tags.get(name) instanceof NumericTag ? intValue() : defaultValue;
    }
 
    public Optional<Long> getLong(final String name) {
@@ -310,7 +309,7 @@ public final class CompoundTag implements Tag {
    }
 
    public long getLongOr(final String name, final long defaultValue) {
-      return this.tags.get(name) instanceof NumericTag tag ? tag.longValue() : defaultValue;
+      return this.tags.get(name) instanceof NumericTag ? longValue() : defaultValue;
    }
 
    public Optional<Float> getFloat(final String name) {
@@ -318,7 +317,7 @@ public final class CompoundTag implements Tag {
    }
 
    public float getFloatOr(final String name, final float defaultValue) {
-      return this.tags.get(name) instanceof NumericTag tag ? tag.floatValue() : defaultValue;
+      return this.tags.get(name) instanceof NumericTag ? floatValue() : defaultValue;
    }
 
    public Optional<Double> getDouble(final String name) {
@@ -326,7 +325,7 @@ public final class CompoundTag implements Tag {
    }
 
    public double getDoubleOr(final String name, final double defaultValue) {
-      return this.tags.get(name) instanceof NumericTag tag ? tag.doubleValue() : defaultValue;
+      return this.tags.get(name) instanceof NumericTag ? doubleValue() : defaultValue;
    }
 
    public Optional<String> getString(final String name) {
@@ -338,19 +337,19 @@ public final class CompoundTag implements Tag {
    }
 
    public Optional<byte[]> getByteArray(final String name) {
-      return this.tags.get(name) instanceof ByteArrayTag tag ? Optional.of(tag.getAsByteArray()) : Optional.empty();
+      return this.tags.get(name) instanceof ByteArrayTag ? Optional.of(((ByteArrayTag) this.tags.get(name)).getAsByteArray())  : Optional.empty();
    }
 
    public Optional<int[]> getIntArray(final String name) {
-      return this.tags.get(name) instanceof IntArrayTag tag ? Optional.of(tag.getAsIntArray()) : Optional.empty();
+      return this.tags.get(name) instanceof IntArrayTag ? Optional.of(((IntArrayTag) this.tags.get(name)).getAsIntArray())  : Optional.empty();
    }
 
    public Optional<long[]> getLongArray(final String name) {
-      return this.tags.get(name) instanceof LongArrayTag tag ? Optional.of(tag.getAsLongArray()) : Optional.empty();
+      return this.tags.get(name) instanceof LongArrayTag ? Optional.of(((LongArrayTag) this.tags.get(name)).getAsLongArray())  : Optional.empty();
    }
 
    public Optional<CompoundTag> getCompound(final String name) {
-      return this.tags.get(name) instanceof CompoundTag tag ? Optional.of(tag) : Optional.empty();
+      return this.tags.get(name) instanceof CompoundTag ? Optional.of(tag)  : Optional.empty();
    }
 
    public CompoundTag getCompoundOrEmpty(final String name) {
@@ -358,7 +357,7 @@ public final class CompoundTag implements Tag {
    }
 
    public Optional<ListTag> getList(final String name) {
-      return this.tags.get(name) instanceof ListTag tag ? Optional.of(tag) : Optional.empty();
+      return this.tags.get(name) instanceof ListTag ? Optional.of(tag)  : Optional.empty();
    }
 
    public ListTag getListOrEmpty(final String name) {
@@ -405,7 +404,7 @@ public final class CompoundTag implements Tag {
 
    @Override
    public boolean equals(final Object obj) {
-      return this == obj ? true : obj instanceof CompoundTag compoundTag && Objects.equals(this.tags, compoundTag.tags);
+      return this == obj ? true : obj instanceof CompoundTag && Objects.equals(this.tags, compoundTag.tags);
    }
 
    @Override
@@ -436,7 +435,8 @@ public final class CompoundTag implements Tag {
    public CompoundTag merge(final CompoundTag other) {
       for (String tagName : other.tags.keySet()) {
          Tag otherTag = other.tags.get(tagName);
-         if (otherTag instanceof CompoundTag otherCompound && this.tags.get(tagName) instanceof CompoundTag selfCompound) {
+         if (otherTag instanceof CompoundTag && this.tags.get(tagName) instanceof CompoundTag) {
+             CompoundTag selfCompound = (CompoundTag) otherTag instanceof CompoundTag && this.tags.get(tagName);
             selfCompound.merge(otherCompound);
          } else {
             this.put(tagName, otherTag.copy());

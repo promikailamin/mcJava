@@ -25,7 +25,8 @@ public class ChatReportContextBuilder {
       IntSortedSet uncollectedRoots = new IntRBTreeSet(roots);
 
       for (int id = uncollectedRoots.lastInt(); id >= chatLog.start() && (this.isActive() || !uncollectedRoots.isEmpty()); id--) {
-         if (chatLog.lookup(id) instanceof LoggedChatMessage.Player event) {
+         if (chatLog.lookup(id) instanceof LoggedChatMessage.Player) {
+             LoggedChatMessage.Player event = (LoggedChatMessage.Player) chatLog.lookup(id);
             boolean context = this.acceptContext(event.message());
             if (uncollectedRoots.remove(id)) {
                this.trackContext(event.message());

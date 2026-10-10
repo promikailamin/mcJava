@@ -31,11 +31,11 @@ public record ReportEnvironment(String clientVersion, ReportEnvironment.@Nullabl
    }
 
    public @Nullable ThirdPartyServerInfo thirdPartyServerInfo() {
-      return this.server instanceof ReportEnvironment.Server.ThirdParty thirdParty ? new ThirdPartyServerInfo(thirdParty.ip) : null;
+      return this.server instanceof ReportEnvironment.Server.ThirdParty ? new ThirdPartyServerInfo(((ReportEnvironment.Server.ThirdParty) this.server).ip)  : null;
    }
 
    public @Nullable RealmInfo realmInfo() {
-      return this.server instanceof ReportEnvironment.Server.Realm realm ? new RealmInfo(String.valueOf(realm.realmId()), realm.slotId()) : null;
+      return this.server instanceof ReportEnvironment.Server.Realm ? new RealmInfo(String.valueOf(((ReportEnvironment.Server.Realm) this.server).realmId()), ((ReportEnvironment.Server.Realm) this.server).slotId())  : null;
    }
 
    private static String getClientVersion() {

@@ -114,7 +114,7 @@ public class EvokerFangs extends Entity implements TraceableEntity {
             }
 
             DamageSource damageSource = this.damageSources().indirectMagic(this, currentOwner);
-            if (this.level() instanceof ServerLevel serverLevel && entity.hurtServer(serverLevel, damageSource, 6.0F)) {
+            if (this.level() instanceof ServerLevel && entity.hurtServer(serverLevel, damageSource, 6.0F)) {
                EnchantmentHelper.doPostAttackEffects(serverLevel, entity, damageSource);
             }
          }

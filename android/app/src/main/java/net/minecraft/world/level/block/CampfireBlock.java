@@ -82,10 +82,11 @@ public class CampfireBlock extends BaseEntityBlock implements SimpleWaterloggedB
       final InteractionHand hand,
       final BlockHitResult hitResult
    ) {
-      if (level.getBlockEntity(pos) instanceof CampfireBlockEntity campfire) {
+      if (level.getBlockEntity(pos) instanceof CampfireBlockEntity) {
+          CampfireBlockEntity campfire = (CampfireBlockEntity) level.getBlockEntity(pos);
          ItemStack itemInHand = player.getItemInHand(hand);
          if (level.recipeAccess().propertySet(RecipePropertySet.CAMPFIRE_INPUT).test(itemInHand)) {
-            if (level instanceof ServerLevel serverLevel && campfire.placeFood(serverLevel, player, itemInHand)) {
+            if (level instanceof ServerLevel && campfire.placeFood(serverLevel, player, itemInHand)) {
                player.awardStat(Stats.INTERACT_WITH_CAMPFIRE);
                return InteractionResult.SUCCESS_SERVER;
             }
@@ -219,8 +220,7 @@ public class CampfireBlock extends BaseEntityBlock implements SimpleWaterloggedB
    @Override
    protected void onProjectileHit(final Level level, final BlockState state, final BlockHitResult blockHit, final Projectile projectile) {
       BlockPos pos = blockHit.getBlockPos();
-      if (level instanceof ServerLevel serverLevel
-         && projectile.isOnFire()
+      if (level instanceof ServerLevel && projectile.isOnFire()
          && projectile.mayInteract(serverLevel, pos)
          && !state.getValue(LIT)
          && !state.getValue(WATERLOGGED)) {
@@ -303,7 +303,8 @@ public class CampfireBlock extends BaseEntityBlock implements SimpleWaterloggedB
 
    @Override
    public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(final Level level, final BlockState blockState, final BlockEntityType<T> type) {
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          if (blockState.getValue(LIT)) {
             RecipeManager.CachedCheck<SingleRecipeInput, CampfireCookingRecipe> quickCheck = RecipeManager.createCheck(RecipeType.CAMPFIRE_COOKING);
             return createTickerHelper(

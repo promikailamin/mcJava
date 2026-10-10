@@ -21,7 +21,8 @@ public class CombatRules {
       float armorFraction = realArmor / 25.0F;
       ItemStack weaponItem = source.getWeaponItem();
       float modifiedArmorFraction;
-      if (weaponItem != null && victim.level() instanceof ServerLevel level) {
+      if (weaponItem != null && victim.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) weaponItem != null && victim.level();
          modifiedArmorFraction = Mth.clamp(EnchantmentHelper.modifyArmorEffectiveness(level, weaponItem, victim, source, armorFraction), 0.0F, 1.0F);
       } else {
          modifiedArmorFraction = armorFraction;

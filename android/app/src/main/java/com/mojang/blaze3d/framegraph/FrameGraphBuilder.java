@@ -273,7 +273,8 @@ public class FrameGraphBuilder {
       }
 
       private <T> void markResourceRequired(final FrameGraphBuilder.Handle<T> handle) {
-         if (handle.holder instanceof FrameGraphBuilder.InternalVirtualResource<?> resource) {
+         if (handle.holder instanceof FrameGraphBuilder.InternalVirtualResource<?>) {
+             FrameGraphBuilder.InternalVirtualResource<?> resource = (FrameGraphBuilder.InternalVirtualResource<?>) handle.holder;
             this.requiredResourceIds.set(resource.id);
          }
       }

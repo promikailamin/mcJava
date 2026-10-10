@@ -143,7 +143,8 @@ class FriendsTab extends AbstractFriendsTab {
 
    void applyPresenceUpdate(final PresenceResponse latestPresence) {
       this.friendScrollableContent.visitWidgets(widget -> {
-         if (widget instanceof FriendEntry entry) {
+         if (widget instanceof FriendEntry) {
+             FriendEntry entry = (FriendEntry) widget;
             PresenceStatusDto newPresenceStatus = null;
 
             for (PresenceStatusDto presenceStatus : latestPresence.presence()) {

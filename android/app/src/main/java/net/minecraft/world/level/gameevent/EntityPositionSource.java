@@ -57,7 +57,7 @@ public class EntityPositionSource implements PositionSource {
             .map(
                Optional::of,
                uuidOrId -> Optional.ofNullable(
-                  (Entity)uuidOrId.map(uuid -> level instanceof ServerLevel serverLevel ? serverLevel.getEntity(uuid) : null, level::getEntity)
+                  (Entity)uuidOrId.map(uuid -> level instanceof ServerLevel ? getEntity(uuid) : null, level::getEntity)
                )
             ))
          .ifPresent(entity -> this.entityOrUuidOrId = Either.left(entity));

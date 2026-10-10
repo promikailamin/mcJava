@@ -111,7 +111,8 @@ public class RangedBowAttackGoal<T extends Monster & RangedAttackMob> extends Go
             }
 
             this.mob.getMoveControl().strafe(this.strafingBackwards ? -0.5F : 0.5F, this.strafingClockwise ? 0.5F : -0.5F);
-            if (this.mob.getControlledVehicle() instanceof Mob vehicle) {
+            if (this.mob.getControlledVehicle() instanceof Mob) {
+                Mob vehicle = (Mob) this.mob.getControlledVehicle();
                vehicle.lookAt(target, 30.0F, 30.0F);
             }
 

@@ -167,7 +167,8 @@ public interface DispenseItemBehavior {
             LevelAccessor level = source.level();
             BlockPos target = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
             BlockState blockState = level.getBlockState(target);
-            if (blockState.getBlock() instanceof BucketPickup bucket) {
+            if (blockState.getBlock() instanceof BucketPickup) {
+                BucketPickup bucket = (BucketPickup) blockState.getBlock();
                ItemStack pickup = bucket.pickupBlock(null, level, target, blockState);
                if (pickup.isEmpty()) {
                   return super.execute(source, dispensed);
@@ -233,7 +234,8 @@ public interface DispenseItemBehavior {
                      target, Blocks.WITHER_SKELETON_SKULL.defaultBlockState().setValue(SkullBlock.ROTATION, RotationSegment.convertToSegment(direction))
                   );
                   level.gameEvent(null, GameEvent.BLOCK_PLACE, target);
-                  if (level.getBlockEntity(target) instanceof SkullBlockEntity skullBlockEntity) {
+                  if (level.getBlockEntity(target) instanceof SkullBlockEntity) {
+                      SkullBlockEntity skullBlockEntity = (SkullBlockEntity) level.getBlockEntity(target);
                      WitherSkullBlock.checkSpawn(level, target, skullBlockEntity);
                   }
 

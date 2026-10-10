@@ -132,7 +132,7 @@ public class Pack {
       if (this == o) {
          return true;
       } else {
-         return o instanceof Pack that ? this.location.equals(that.location) : false;
+         return o instanceof Pack ? this.location.equals(((Pack) o).location)  : false;
       }
    }
 

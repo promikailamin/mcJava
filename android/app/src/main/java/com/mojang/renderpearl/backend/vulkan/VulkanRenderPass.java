@@ -125,7 +125,8 @@ public class VulkanRenderPass implements RenderPassBackend {
 
    @Override
    public void setPipeline(final BackendRenderPipeline pipeline) {
-      if (pipeline instanceof VulkanRenderPipeline vulkanRenderPipeline) {
+      if (pipeline instanceof VulkanRenderPipeline) {
+          VulkanRenderPipeline vulkanRenderPipeline = (VulkanRenderPipeline) pipeline;
          this.pipeline = vulkanRenderPipeline;
          this.anyDescriptorDirty = true;
          this.uniforms.clear();

@@ -97,7 +97,7 @@ public final class FeatureFlagSet {
 
    @Override
    public boolean equals(final Object o) {
-      return this == o ? true : o instanceof FeatureFlagSet that && this.universe == that.universe && this.mask == that.mask;
+      return this == o ? true : o instanceof FeatureFlagSet && this.universe == that.universe && this.mask == that.mask;
    }
 
    @Override

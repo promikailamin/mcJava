@@ -29,6 +29,6 @@ public final class SDL_MessageBoxData extends sdl_struct {
 
     public SDL_MessageBoxButtonData.Buffer buttons() {
         Object v = fields.get(prefix + "buttons");
-        return v instanceof SDL_MessageBoxButtonData.Buffer b ? b : null;
+        return v instanceof SDL_MessageBoxButtonData.Buffer ? b  : null;
     }
 }

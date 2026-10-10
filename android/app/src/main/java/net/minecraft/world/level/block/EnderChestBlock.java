@@ -74,13 +74,15 @@ public class EnderChestBlock extends AbstractChestBlock<EnderChestBlockEntity> i
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
       PlayerEnderChestContainer container = player.getEnderChestInventory();
-      if (container != null && level.getBlockEntity(pos) instanceof EnderChestBlockEntity enderChest) {
+      if (container != null && level.getBlockEntity(pos) instanceof EnderChestBlockEntity) {
+          EnderChestBlockEntity enderChest = (EnderChestBlockEntity) container != null && level.getBlockEntity(pos);
          BlockPos above = pos.above();
          if (level.getBlockState(above).isRedstoneConductor(level, above)) {
             return InteractionResult.SUCCESS;
          }
 
-         if (level instanceof ServerLevel serverLevel) {
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
             container.setActiveChest(enderChest);
             player.openMenu(new SimpleMenuProvider((containerId, inventory, p) -> ChestMenu.threeRows(containerId, inventory, container), CONTAINER_TITLE));
             player.awardStat(Stats.OPEN_ENDERCHEST);
@@ -163,7 +165,8 @@ public class EnderChestBlock extends AbstractChestBlock<EnderChestBlockEntity> i
 
    @Override
    protected void tick(final BlockState state, final ServerLevel level, final BlockPos pos, final RandomSource random) {
-      if (level.getBlockEntity(pos) instanceof EnderChestBlockEntity enderChestBlockEntity) {
+      if (level.getBlockEntity(pos) instanceof EnderChestBlockEntity) {
+          EnderChestBlockEntity enderChestBlockEntity = (EnderChestBlockEntity) level.getBlockEntity(pos);
          enderChestBlockEntity.recheckOpen();
       }
    }

@@ -49,7 +49,8 @@ public record TeleportTransition(
    }
 
    private static void playPortalSound(final Entity entity) {
-      if (entity instanceof ServerPlayer player) {
+      if (entity instanceof ServerPlayer) {
+          ServerPlayer player = (ServerPlayer) entity;
          player.connection.send(new ClientboundLevelEventPacket(1032, BlockPos.ZERO, 0, false));
       }
    }

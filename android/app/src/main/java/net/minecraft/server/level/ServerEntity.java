@@ -103,7 +103,7 @@ public class ServerEntity {
          this.lastPassengers = passengers;
       }
 
-      if (this.entity instanceof ItemFrame frame && this.tickCount % 10 == 0) {
+      if (this.entity instanceof ItemFrame && this.tickCount % 10 == 0) {
          ItemStack itemStack = frame.getItem();
          if (itemStack.getItem() instanceof MapItem) {
             MapId id = itemStack.get(DataComponents.MAP_ID);
@@ -144,8 +144,12 @@ public class ServerEntity {
             this.positionCodec.setBase(currentPosition);
             this.sendDirtyEntityData();
             this.wasRiding = true;
-         } else if (this.entity instanceof AbstractMinecart minecart && minecart.getBehavior() instanceof NewMinecartBehavior newMinecartBehavior) {
-            this.handleMinecartPosRot(newMinecartBehavior, yRotn, xRotn, shouldSendRotation);
+         } else if (this.entity instanceof AbstractMinecart) {
+            AbstractMinecart minecart = (AbstractMinecart) this.entity;
+            if (minecart.getBehavior() instanceof NewMinecartBehavior) {
+                NewMinecartBehavior newMinecartBehavior = (NewMinecartBehavior) minecart.getBehavior();
+               this.handleMinecartPosRot(newMinecartBehavior, yRotn, xRotn, shouldSendRotation);
+            }
          } else {
             this.teleportDelay++;
             PositionPath position = this.interpolationTracker.getPositionPath(currentPosition);
@@ -159,12 +163,13 @@ public class ServerEntity {
                packet = this.createMovePacket(position, yRotn, xRotn, shouldSendPosition, shouldSendRotation);
             }
 
-            if (this.entity.needsSync || this.trackDelta || this.entity instanceof LivingEntity livingEntity && livingEntity.isFallFlying()) {
+            if (this.entity.needsSync || this.trackDelta || this.entity instanceof LivingEntity && livingEntity.isFallFlying()) {
                Vec3 movement = this.entity.getDeltaMovement();
                double diff = movement.distanceToSqr(this.lastSentMovement);
                if (diff > 1.0E-7 || diff > 0.0 && movement.lengthSqr() == 0.0) {
                   this.lastSentMovement = movement;
-                  if (this.entity instanceof AbstractHurtingProjectile projectile) {
+                  if (this.entity instanceof AbstractHurtingProjectile) {
+                      AbstractHurtingProjectile projectile = (AbstractHurtingProjectile) this.entity;
                      this.synchronizer
                         .sendToTrackingPlayers(
                            new ClientboundBundlePacket(
@@ -312,14 +317,16 @@ public class ServerEntity {
          broadcast.accept(new ClientboundSetEntityDataPacket(this.entity.getId(), this.trackedDataValues));
       }
 
-      if (this.entity instanceof LivingEntity livingEntity) {
+      if (this.entity instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) this.entity;
          Collection<AttributeInstance> attributes = livingEntity.getAttributes().getSyncableAttributes();
          if (!attributes.isEmpty()) {
             broadcast.accept(new ClientboundUpdateAttributesPacket(this.entity.getId(), attributes));
          }
       }
 
-      if (this.entity instanceof LivingEntity livingEntity) {
+      if (this.entity instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) this.entity;
          List<Pair<EquipmentSlot, ItemStack>> slots = Lists.newArrayList();
 
          for (EquipmentSlot slot : EquipmentSlot.VALUES) {
@@ -342,7 +349,7 @@ public class ServerEntity {
          broadcast.accept(new ClientboundSetPassengersPacket(this.entity.getVehicle()));
       }
 
-      if (this.entity instanceof Leashable leashable && leashable.isLeashed()) {
+      if (this.entity instanceof Leashable && leashable.isLeashed()) {
          broadcast.accept(new ClientboundSetEntityLinkPacket(this.entity, leashable.getLeashHolder()));
       }
    }
@@ -375,7 +382,8 @@ public class ServerEntity {
          this.synchronizer.sendToTrackingPlayersAndSelf(new ClientboundSetEntityDataPacket(this.entity.getId(), packedValues));
       }
 
-      if (this.entity instanceof LivingEntity livingEntity) {
+      if (this.entity instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) this.entity;
          Set<AttributeInstance> attributes = livingEntity.getAttributes().getAttributesToSync();
          if (!attributes.isEmpty()) {
             this.synchronizer.sendToTrackingPlayersAndSelf(new ClientboundUpdateAttributesPacket(this.entity.getId(), attributes));

@@ -69,7 +69,8 @@ public class LayeredCauldronBlock extends AbstractCauldronBlock {
    protected void entityInside(
       final BlockState state, final Level level, final BlockPos pos, final Entity entity, final InsideBlockEffectApplier effectApplier, final boolean isPrecise
    ) {
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          BlockPos blockPos = pos.immutable();
          effectApplier.runBefore(InsideBlockEffectType.EXTINGUISH, e -> {
             if (e.isOnFire() && e.mayInteract(serverLevel, blockPos)) {

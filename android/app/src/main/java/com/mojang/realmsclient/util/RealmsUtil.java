@@ -60,7 +60,8 @@ public class RealmsUtil {
          try {
             return function.apply(client);
          } catch (Throwable t) {
-            if (t instanceof RealmsServiceException e) {
+            if (t instanceof RealmsServiceException) {
+                RealmsServiceException e = (RealmsServiceException) t;
                if (onFailure != null) {
                   onFailure.accept(e);
                }

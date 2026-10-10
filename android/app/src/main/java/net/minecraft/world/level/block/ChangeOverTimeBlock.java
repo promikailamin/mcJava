@@ -32,7 +32,8 @@ public interface ChangeOverTimeBlock<T extends Enum<T>> {
          .filterPos(blockPos -> !blockPos.equals(pos))
          .filterState(this::isSameAgeingType)
          .forEachUntil((blockPos, var5x) -> {
-            if (level.getBlockState(blockPos).getBlock() instanceof ChangeOverTimeBlock<?> neighborBlock) {
+            if (level.getBlockState(blockPos).getBlock() instanceof ChangeOverTimeBlock<?>) {
+                ChangeOverTimeBlock<?> neighborBlock = (ChangeOverTimeBlock<?>) level.getBlockState(blockPos).getBlock();
                int foundAge = neighborBlock.getAge().ordinal();
                if (foundAge < ownAge) {
                   return Continuation.ABORT;
@@ -57,6 +58,6 @@ public interface ChangeOverTimeBlock<T extends Enum<T>> {
    }
 
    private boolean isSameAgeingType(final BlockState state) {
-      return state.getBlock() instanceof ChangeOverTimeBlock<?> neighborBlock && this.getAge().getClass() == neighborBlock.getAge().getClass();
+      return state.getBlock() instanceof ChangeOverTimeBlock<?> && this.getAge().getClass() == neighborBlock.getAge().getClass();
    }
 }

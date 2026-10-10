@@ -257,7 +257,8 @@ public abstract class LivingEntityRenderer<T extends LivingEntity, S extends Liv
          state.walkAnimationSpeed = 0.0F;
       }
 
-      if (entity.getVehicle() instanceof LivingEntity vehicle) {
+      if (entity.getVehicle() instanceof LivingEntity) {
+          LivingEntity vehicle = (LivingEntity) entity.getVehicle();
          state.wornHeadAnimationPos = vehicle.walkAnimation.position(partialTicks);
       } else {
          state.wornHeadAnimationPos = state.walkAnimationPos;
@@ -278,7 +279,8 @@ public abstract class LivingEntityRenderer<T extends LivingEntity, S extends Liv
       state.ticksSinceKineticHitFeedback = entity.getTicksSinceLastKineticHitFeedback(partialTicks);
       state.hasRedOverlay = entity.hurtTime > 0 || entity.deathTime > 0;
       ItemStack headItem = entity.getItemBySlot(EquipmentSlot.HEAD);
-      if (headItem.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof AbstractSkullBlock skullBlock) {
+      if (headItem.getItem() instanceof BlockItem && blockItem.getBlock() instanceof AbstractSkullBlock) {
+          AbstractSkullBlock skullBlock = (AbstractSkullBlock) headItem.getItem() instanceof BlockItem && blockItem.getBlock();
          state.wornHeadType = skullBlock.getType();
          state.wornHeadProfile = headItem.get(DataComponents.PROFILE);
          state.headItem.clear();
@@ -304,7 +306,8 @@ public abstract class LivingEntityRenderer<T extends LivingEntity, S extends Liv
    }
 
    private static float solveBodyRot(final LivingEntity entity, final float headRot, final float partialTicks) {
-      if (entity.getVehicle() instanceof LivingEntity riding) {
+      if (entity.getVehicle() instanceof LivingEntity) {
+          LivingEntity riding = (LivingEntity) entity.getVehicle();
          float bodyRot = Mth.rotLerp(partialTicks, riding.yBodyRotO, riding.yBodyRot);
          float maxHeadDiff = 85.0F;
          float headDiff = Mth.clamp(Mth.wrapDegrees(headRot - bodyRot), -85.0F, 85.0F);

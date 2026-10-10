@@ -95,7 +95,8 @@ public class EnchantingTableBlock extends BaseEntityBlock {
 
    @Override
    protected @Nullable MenuProvider getMenuProvider(final BlockState state, final Level level, final BlockPos pos) {
-      if (level.getBlockEntity(pos) instanceof EnchantingTableBlockEntity enchantingTable) {
+      if (level.getBlockEntity(pos) instanceof EnchantingTableBlockEntity) {
+          EnchantingTableBlockEntity enchantingTable = (EnchantingTableBlockEntity) level.getBlockEntity(pos);
          Component title = enchantingTable.getDisplayName();
          return new SimpleMenuProvider(
             (containerId, inventory, player) -> new EnchantmentMenu(containerId, inventory, ContainerLevelAccess.create(level, pos)), title

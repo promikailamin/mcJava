@@ -128,13 +128,15 @@ public class RealmsConfigureWorldScreen extends RealmsScreen {
    }
 
    private void onTabSelected(final Tab tab) {
-      if (this.serverData != null && tab instanceof RealmsConfigurationTab configurationTab) {
+      if (this.serverData != null && tab instanceof RealmsConfigurationTab) {
+          RealmsConfigurationTab configurationTab = (RealmsConfigurationTab) this.serverData != null && tab;
          configurationTab.onSelected(this.serverData);
       }
    }
 
    private void onTabDeselected(final Tab tab) {
-      if (this.serverData != null && tab instanceof RealmsConfigurationTab configurationTab) {
+      if (this.serverData != null && tab instanceof RealmsConfigurationTab) {
+          RealmsConfigurationTab configurationTab = (RealmsConfigurationTab) this.serverData != null && tab;
          configurationTab.onDeselected(this.serverData);
       }
    }
@@ -195,7 +197,8 @@ public class RealmsConfigureWorldScreen extends RealmsScreen {
 
    @Override
    public void onClose() {
-      if (this.serverData != null && this.tabManager.getCurrentTab() instanceof RealmsConfigurationTab tab) {
+      if (this.serverData != null && this.tabManager.getCurrentTab() instanceof RealmsConfigurationTab) {
+          RealmsConfigurationTab tab = (RealmsConfigurationTab) this.serverData != null && this.tabManager.getCurrentTab();
          tab.onDeselected(this.serverData);
       }
 
@@ -397,7 +400,8 @@ public class RealmsConfigureWorldScreen extends RealmsScreen {
       this.stateChanged = true;
       if (this.tabNavigationBar != null) {
          for (Tab child : this.tabNavigationBar.getTabs()) {
-            if (child instanceof RealmsConfigurationTab tab) {
+            if (child instanceof RealmsConfigurationTab) {
+                RealmsConfigurationTab tab = (RealmsConfigurationTab) child;
                tab.updateData(this.serverData);
             }
          }

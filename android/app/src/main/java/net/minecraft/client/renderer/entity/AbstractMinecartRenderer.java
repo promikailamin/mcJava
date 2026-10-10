@@ -99,10 +99,12 @@ public abstract class AbstractMinecartRenderer<T extends AbstractMinecart, S ext
 
    public void extractRenderState(final T entity, final S state, final float partialTicks) {
       super.extractRenderState(entity, state, partialTicks);
-      if (entity.getBehavior() instanceof NewMinecartBehavior behavior) {
+      if (entity.getBehavior() instanceof NewMinecartBehavior) {
+          NewMinecartBehavior behavior = (NewMinecartBehavior) entity.getBehavior();
          newExtractState(entity, behavior, state, partialTicks);
          state.isNewRender = true;
-      } else if (entity.getBehavior() instanceof OldMinecartBehavior behavior) {
+      else if (entity.getBehavior() instanceof OldMinecartBehavior) {
+          OldMinecartBehavior behavior = (OldMinecartBehavior) entity.getBehavior();
          oldExtractState(entity, behavior, state, partialTicks);
          state.isNewRender = false;
       }

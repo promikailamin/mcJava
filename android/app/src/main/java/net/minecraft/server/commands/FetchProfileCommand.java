@@ -156,7 +156,8 @@ public class FetchProfileCommand {
    }
 
    private static int printForEntity(final CommandSourceStack source, final Entity entity) throws CommandSyntaxException {
-      if (entity instanceof Avatar avatar) {
+      if (entity instanceof Avatar) {
+          Avatar avatar = (Avatar) entity;
          printForAvatar(source, avatar);
          return 1;
       } else {

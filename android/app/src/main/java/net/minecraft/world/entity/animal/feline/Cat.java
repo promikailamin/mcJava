@@ -366,7 +366,8 @@ public class Cat extends TamableAnimal {
 
    public @Nullable Cat getBreedOffspring(final ServerLevel level, final AgeableMob partner) {
       Cat baby = EntityTypes.CAT.create(level, EntitySpawnReason.BREEDING);
-      if (baby != null && partner instanceof Cat partnerCat) {
+      if (baby != null && partner instanceof Cat) {
+          Cat partnerCat = (Cat) baby != null && partner;
          if (this.random.nextBoolean()) {
             baby.setVariant(this.getVariant());
          } else {
@@ -390,7 +391,7 @@ public class Cat extends TamableAnimal {
       if (!this.isTame()) {
          return false;
       } else {
-         return !(partner instanceof Cat cat) ? false : cat.isTame() && super.canMate(partner);
+         return !(partner instanceof Cat) ? false : cat.isTame() && super.canMate(partner);
       }
    }
 
@@ -537,7 +538,8 @@ public class Cat extends TamableAnimal {
          }
 
          LivingEntity owner = this.cat.getOwner();
-         if (owner instanceof Player playerOwner) {
+         if (owner instanceof Player) {
+             Player playerOwner = (Player) owner;
             this.ownerPlayer = playerOwner;
             if (!owner.isSleeping()) {
                return false;

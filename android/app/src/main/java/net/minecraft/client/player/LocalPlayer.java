@@ -198,16 +198,19 @@ public class LocalPlayer extends AbstractClientPlayer {
          return false;
       }
 
-      if (entity instanceof AbstractMinecart minecart) {
+      if (entity instanceof AbstractMinecart) {
+         AbstractMinecart minecart = (AbstractMinecart) entity;
          this.minecraft
             .getSoundManager()
             .play(new RidingMinecartSoundInstance(this, minecart, true, SoundEvents.MINECART_INSIDE_UNDERWATER, 0.0F, 0.75F, 1.0F));
          this.minecraft.getSoundManager().play(new RidingMinecartSoundInstance(this, minecart, false, SoundEvents.MINECART_INSIDE, 0.0F, 0.75F, 1.0F));
-      } else if (entity instanceof HappyGhast happyGhast) {
+      } else if (entity instanceof HappyGhast) {
+         HappyGhast happyGhast = (HappyGhast) entity;
          this.minecraft
             .getSoundManager()
             .play(new RidingEntitySoundInstance(this, happyGhast, false, SoundEvents.HAPPY_GHAST_RIDING, happyGhast.getSoundSource(), 0.0F, 1.0F, 5.0F));
-      } else if (entity instanceof AbstractNautilus nautilus) {
+      } else if (entity instanceof AbstractNautilus) {
+         AbstractNautilus nautilus = (AbstractNautilus) entity;
          this.minecraft
             .getSoundManager()
             .play(new RidingEntitySoundInstance(this, nautilus, true, SoundEvents.NAUTILUS_RIDING, nautilus.getSoundSource(), 0.0F, 1.0F, 5.0F));
@@ -282,7 +285,8 @@ public class LocalPlayer extends AbstractClientPlayer {
 
    public float getCurrentMood() {
       for (AmbientSoundHandler ambientSoundHandler : this.ambientSoundHandlers) {
-         if (ambientSoundHandler instanceof BiomeAmbientSoundsHandler biomeAmbientSoundsHandler) {
+         if (ambientSoundHandler instanceof BiomeAmbientSoundsHandler) {
+             BiomeAmbientSoundsHandler biomeAmbientSoundsHandler = (BiomeAmbientSoundsHandler) ambientSoundHandler;
             return biomeAmbientSoundsHandler.getMoodiness();
          }
       }
@@ -437,7 +441,8 @@ public class LocalPlayer extends AbstractClientPlayer {
       boolean previousGamemasterPermission = this.permissions.hasPermission(Permissions.COMMANDS_GAMEMASTER);
       boolean newGamemasterPermission = newPermissions.hasPermission(Permissions.COMMANDS_GAMEMASTER);
       this.permissions = newPermissions;
-      if (previousGamemasterPermission != newGamemasterPermission && this.minecraft.gui.screen() instanceof HasGamemasterPermissionReaction screen) {
+      if (previousGamemasterPermission != newGamemasterPermission && this.minecraft.gui.screen() instanceof HasGamemasterPermissionReaction) {
+          HasGamemasterPermissionReaction screen = (HasGamemasterPermissionReaction) previousGamemasterPermission != newGamemasterPermission && this.minecraft.gui.screen();
          screen.onGamemasterPermissionChanged(newGamemasterPermission);
       }
    }
@@ -611,7 +616,7 @@ public class LocalPlayer extends AbstractClientPlayer {
    }
 
    public @Nullable PlayerRideableJumping jumpableVehicle() {
-      return this.getControlledVehicle() instanceof PlayerRideableJumping playerRideableJumping && playerRideableJumping.canJump()
+      return this.getControlledVehicle() instanceof PlayerRideableJumping && playerRideableJumping.canJump()
          ? playerRideableJumping
          : null;
    }
@@ -627,7 +632,8 @@ public class LocalPlayer extends AbstractClientPlayer {
 
    @Override
    public void openTextEdit(final SignBlockEntity sign, final SignTextSlot slot) {
-      if (sign instanceof HangingSignBlockEntity hangingSign) {
+      if (sign instanceof HangingSignBlockEntity) {
+          HangingSignBlockEntity hangingSign = (HangingSignBlockEntity) sign;
          this.minecraft.gui.setScreen(new HangingSignEditScreen(hangingSign, slot, this.minecraft.isTextFilteringEnabled()));
       } else {
          this.minecraft.gui.setScreen(new SignEditScreen(sign, slot, this.minecraft.isTextFilteringEnabled()));
@@ -1000,7 +1006,8 @@ public class LocalPlayer extends AbstractClientPlayer {
    public void rideTick() {
       super.rideTick();
       this.handsBusy = false;
-      if (this.getControlledVehicle() instanceof AbstractBoat boat) {
+      if (this.getControlledVehicle() instanceof AbstractBoat) {
+          AbstractBoat boat = (AbstractBoat) this.getControlledVehicle();
          boat.setInput(this.input.keyPresses.left(), this.input.keyPresses.right(), this.input.keyPresses.forward(), this.input.keyPresses.backward());
          this.handsBusy = this.handsBusy
             | (this.input.keyPresses.left() || this.input.keyPresses.right() || this.input.keyPresses.forward() || this.input.keyPresses.backward());

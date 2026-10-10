@@ -220,7 +220,7 @@ public class EntitySelector {
       AABB absoluteAabb = this.getAbsoluteAabb(pos);
       Predicate<Entity> predicate = this.getPredicate(pos, absoluteAabb, null);
       if (this.currentEntity) {
-         return sender.getEntity() instanceof ServerPlayer player && predicate.test(player) ? List.of(player) : List.of();
+         return sender.getEntity() instanceof ServerPlayer && predicate.test(player) ? List.of(player) : List.of();
       }
 
       int limit = this.getResultLimit();

@@ -257,7 +257,8 @@ public class ZombieVillager extends Zombie implements VillagerDataHolder {
             villager.refreshBrain(level);
             if (this.conversionStarter != null) {
                Player player = level.getPlayerByUUID(this.conversionStarter);
-               if (player instanceof ServerPlayer serverPlayer) {
+               if (player instanceof ServerPlayer) {
+                   ServerPlayer serverPlayer = (ServerPlayer) player;
                   CriteriaTriggers.CURED_ZOMBIE_VILLAGER.trigger(serverPlayer, this, villager);
                   level.onReputationEvent(ReputationEventType.ZOMBIE_VILLAGER_CURED, player, villager);
                }

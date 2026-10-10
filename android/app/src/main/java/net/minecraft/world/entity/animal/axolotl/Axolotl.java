@@ -187,7 +187,8 @@ public class Axolotl extends Animal implements Bucketable {
    public void baseTick() {
       int airSupply = this.getAirSupply();
       super.baseTick();
-      if (!this.isNoAi() && this.level() instanceof ServerLevel serverLevel) {
+      if (!this.isNoAi() && this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) !this.isNoAi() && this.level();
          this.handleAirSupply(serverLevel, airSupply);
       }
 
@@ -478,7 +479,8 @@ public class Axolotl extends Animal implements Bucketable {
    public static void onStopAttacking(final ServerLevel level, final Axolotl body, final LivingEntity target) {
       if (target.isDeadOrDying()) {
          DamageSource lastDamageSource = target.getLastDamageSource();
-         if (lastDamageSource != null && lastDamageSource.getEntity() instanceof Player player) {
+         if (lastDamageSource != null && lastDamageSource.getEntity() instanceof Player) {
+             Player player = (Player) lastDamageSource != null && lastDamageSource.getEntity();
             List<Player> playersInRange = level.getEntitiesOfClass(Player.class, body.getBoundingBox().inflate(20.0));
             if (playersInRange.contains(player)) {
                body.applySupportingEffects(player);

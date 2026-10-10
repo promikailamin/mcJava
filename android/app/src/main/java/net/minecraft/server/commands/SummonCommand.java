@@ -101,7 +101,8 @@ public class SummonCommand {
          throw ERROR_FAILED.create();
       }
 
-      if (finalize && entity instanceof Mob mob) {
+      if (finalize && entity instanceof Mob) {
+          Mob mob = (Mob) finalize && entity;
          mob.finalizeSpawn(source.getLevel(), source.getLevel().getCurrentDifficultyAt(entity.blockPosition()), EntitySpawnReason.COMMAND, null);
       }
 

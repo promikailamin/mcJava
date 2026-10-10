@@ -43,7 +43,8 @@ public record NbtPredicate(CompoundTag tag) {
       try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(entity.problemPath(), LOGGER)) {
          TagValueOutput output = TagValueOutput.createWithContext(reporter, entity.registryAccess());
          entity.saveWithoutId(output);
-         if (entity instanceof Player player) {
+         if (entity instanceof Player) {
+             Player player = (Player) entity;
             ItemStack selected = player.getInventory().getSelectedItem();
             if (!selected.isEmpty()) {
                output.store("SelectedItem", ItemStack.CODEC, selected);

@@ -76,7 +76,8 @@ public final class NbtUtils {
          return false;
       }
 
-      if (expected instanceof CompoundTag expectedCompound) {
+      if (expected instanceof CompoundTag) {
+          CompoundTag expectedCompound = (CompoundTag) expected;
          CompoundTag actualCompound = (CompoundTag)actual;
          if (actualCompound.size() < expectedCompound.size()) {
             return false;
@@ -90,7 +91,7 @@ public final class NbtUtils {
          }
 
          return true;
-      } else if (expected instanceof ListTag expectedList && partialListMatches) {
+      } else if (expected instanceof ListTag && partialListMatches) {
          ListTag actualList = (ListTag)actual;
          if (expectedList.isEmpty()) {
             return actualList.isEmpty();

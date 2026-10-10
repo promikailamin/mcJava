@@ -56,9 +56,10 @@ public class BrushItem extends Item {
 
    @Override
    public void onUseTick(final Level level, final LivingEntity livingEntity, final ItemStack itemStack, final int ticksRemaining) {
-      if (ticksRemaining >= 0 && livingEntity instanceof Player player) {
+      if (ticksRemaining >= 0 && livingEntity instanceof Player) {
+          Player player = (Player) ticksRemaining >= 0 && livingEntity;
          HitResult hitResult = this.calculateHitResult(player);
-         if (hitResult instanceof BlockHitResult blockHitResult && hitResult.getType() == HitResult.Type.BLOCK) {
+         if (hitResult instanceof BlockHitResult && hitResult.getType() == HitResult.Type.BLOCK) {
             int timeElapsed = this.getUseDuration(itemStack, livingEntity) - ticksRemaining + 1;
             boolean isLastTickBeforeBackswing = timeElapsed % 10 == 5;
             if (isLastTickBeforeBackswing) {
@@ -70,14 +71,16 @@ public class BrushItem extends Item {
                }
 
                SoundEvent brushSound;
-               if (state.getBlock() instanceof BrushableBlock brushableBlock) {
+               if (state.getBlock() instanceof BrushableBlock) {
+                   BrushableBlock brushableBlock = (BrushableBlock) state.getBlock();
                   brushSound = brushableBlock.getBrushSound();
                } else {
                   brushSound = SoundEvents.BRUSH_GENERIC;
                }
 
                level.playSound(player, pos, brushSound, SoundSource.BLOCKS);
-               if (level instanceof ServerLevel serverLevel && level.getBlockEntity(pos) instanceof BrushableBlockEntity brushableBlockEntity) {
+               if (level instanceof ServerLevel && level.getBlockEntity(pos) instanceof BrushableBlockEntity) {
+                   BrushableBlockEntity brushableBlockEntity = (BrushableBlockEntity) level instanceof ServerLevel && level.getBlockEntity(pos);
                   boolean brushingUpdatedState = brushableBlockEntity.brush(level.getGameTime(), serverLevel, player, blockHitResult.getDirection(), itemStack);
                   if (brushingUpdatedState) {
                      EquipmentSlot equippedHand = itemStack.equals(player.getItemBySlot(EquipmentSlot.OFFHAND))

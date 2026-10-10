@@ -147,7 +147,8 @@ public class StructureCheck {
          return StructureCheckResult.CHUNK_LOAD_NEEDED;
       }
 
-      if (collectFields.getResult() instanceof CompoundTag chunkTag) {
+      if (collectFields.getResult() instanceof CompoundTag) {
+          CompoundTag chunkTag = (CompoundTag) collectFields.getResult();
          int version = NbtUtils.getDataVersion(chunkTag);
          SimpleRegionStorage.injectDatafixingContext(
             chunkTag, ChunkMap.getChunkDataFixContextTag(this.dimension, this.chunkGenerator.getTypeNameForDataFixer())

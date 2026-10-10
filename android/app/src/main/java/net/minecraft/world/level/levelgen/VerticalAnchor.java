@@ -51,14 +51,17 @@ public interface VerticalAnchor {
    private static Either<VerticalAnchor.Absolute, Either<VerticalAnchor.AboveBottom, Either<VerticalAnchor.BelowTop, VerticalAnchor.RelativeToSeaLevel>>> split(
       final VerticalAnchor anchor
    ) {
-      if (anchor instanceof VerticalAnchor.Absolute absolute) {
+      if (anchor instanceof VerticalAnchor.Absolute) {
+         VerticalAnchor.Absolute absolute = (VerticalAnchor.Absolute) anchor;
          return Either.left(absolute);
-      } else if (anchor instanceof VerticalAnchor.AboveBottom aboveBottom) {
+      } else if (anchor instanceof VerticalAnchor.AboveBottom) {
+         VerticalAnchor.AboveBottom aboveBottom = (VerticalAnchor.AboveBottom) anchor;
          return Either.right(Either.left(aboveBottom));
+      } else if (anchor instanceof VerticalAnchor.BelowTop) {
+         VerticalAnchor.BelowTop belowTop = (VerticalAnchor.BelowTop) anchor;
+         return Either.right(Either.right(Either.left(belowTop)));
       } else {
-         return anchor instanceof VerticalAnchor.BelowTop belowTop
-            ? Either.right(Either.right(Either.left(belowTop)))
-            : Either.right(Either.right(Either.right((VerticalAnchor.RelativeToSeaLevel)anchor)));
+         return Either.right(Either.right(Either.right((VerticalAnchor.RelativeToSeaLevel) anchor)));
       }
    }
 

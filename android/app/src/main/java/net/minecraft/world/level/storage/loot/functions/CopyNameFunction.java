@@ -36,7 +36,8 @@ public class CopyNameFunction extends LootItemConditionalFunction {
 
    @Override
    public ItemStack run(final ItemStack itemStack, final LootContext context) {
-      if (this.source.get(context) instanceof Nameable nameable) {
+      if (this.source.get(context) instanceof Nameable) {
+          Nameable nameable = (Nameable) this.source.get(context);
          itemStack.set(DataComponents.CUSTOM_NAME, nameable.getCustomName());
       }
 

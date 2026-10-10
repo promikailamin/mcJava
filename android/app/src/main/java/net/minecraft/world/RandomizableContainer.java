@@ -42,7 +42,8 @@ public interface RandomizableContainer extends Container {
    static void setBlockEntityLootTable(
       final BlockGetter level, final RandomSource random, final BlockPos blockEntityPos, final ResourceKey<LootTable> lootTable
    ) {
-      if (level.getBlockEntity(blockEntityPos) instanceof RandomizableContainer randomizableContainer) {
+      if (level.getBlockEntity(blockEntityPos) instanceof RandomizableContainer) {
+          RandomizableContainer randomizableContainer = (RandomizableContainer) level.getBlockEntity(blockEntityPos);
          randomizableContainer.setLootTable(lootTable, random.nextLong());
       }
    }
@@ -75,7 +76,8 @@ public interface RandomizableContainer extends Container {
       ResourceKey<LootTable> lootTableKey = this.getLootTable();
       if (lootTableKey != null && level != null && level.getServer() != null) {
          LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(lootTableKey);
-         if (player instanceof ServerPlayer serverPlayer) {
+         if (player instanceof ServerPlayer) {
+             ServerPlayer serverPlayer = (ServerPlayer) player;
             CriteriaTriggers.GENERATE_LOOT.trigger(serverPlayer, lootTableKey);
          }
 

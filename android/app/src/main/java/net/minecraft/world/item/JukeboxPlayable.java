@@ -44,7 +44,8 @@ public record JukeboxPlayable(Holder<JukeboxSong> song) implements TooltipProvid
       if (state.is(Blocks.JUKEBOX) && !state.getValue(JukeboxBlock.HAS_RECORD)) {
          if (!level.isClientSide()) {
             ItemStack inserted = toInsert.consumeAndReturn(1, player);
-            if (level.getBlockEntity(pos) instanceof JukeboxBlockEntity jukebox) {
+            if (level.getBlockEntity(pos) instanceof JukeboxBlockEntity) {
+                JukeboxBlockEntity jukebox = (JukeboxBlockEntity) level.getBlockEntity(pos);
                jukebox.setTheItem(inserted);
                level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));
             }

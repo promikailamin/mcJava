@@ -28,7 +28,8 @@ public class EquipmentDispenseItemBehavior extends DefaultDispenseItemBehavior {
       EquipmentSlot slot = target.getEquipmentSlotForItem(dispensed);
       ItemStack equip = dispensed.split(1);
       target.setItemSlot(slot, equip);
-      if (target instanceof Mob targetMob) {
+      if (target instanceof Mob) {
+          Mob targetMob = (Mob) target;
          targetMob.setGuaranteedDrop(slot);
          targetMob.setPersistenceRequired();
       }

@@ -232,11 +232,13 @@ public class RealmsUploadScreen extends RealmsScreen implements RealmsWorldUploa
 
       newUpload.packAndUpload().handleAsync((result, exception) -> {
          if (exception != null) {
-            if (exception instanceof CompletionException e) {
+            if (exception instanceof CompletionException) {
+                CompletionException e = (CompletionException) exception;
                exception = e.getCause();
             }
 
-            if (exception instanceof RealmsUploadException e) {
+            if (exception instanceof RealmsUploadException) {
+                RealmsUploadException e = (RealmsUploadException) exception;
                if (e.getStatusMessage() != null) {
                   this.status = e.getStatusMessage();
                }

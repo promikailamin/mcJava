@@ -77,7 +77,7 @@ public class SweetBerryBushBlock extends VegetationBlock implements Bonemealable
    ) {
       if (entity instanceof LivingEntity && !entity.is(EntityTypes.FOX) && !entity.is(EntityTypes.BEE)) {
          entity.makeStuckInBlock(state, new Vec3(0.8F, 0.75, 0.8F));
-         if (level instanceof ServerLevel serverLevel && state.getValue(AGE) != 0) {
+         if (level instanceof ServerLevel && state.getValue(AGE) != 0) {
             Vec3 movement = entity.isClientAuthoritative() ? entity.getKnownMovement() : entity.oldPosition().subtract(entity.position());
             if (movement.horizontalDistanceSqr() > 0.0) {
                double xs = Math.abs(movement.x());
@@ -110,7 +110,8 @@ public class SweetBerryBushBlock extends VegetationBlock implements Bonemealable
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
       if (state.getValue(AGE) > 1) {
-         if (level instanceof ServerLevel serverLevel) {
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
             Block.dropFromBlockInteractLootTable(
                serverLevel,
                BuiltInLootTables.HARVEST_SWEET_BERRY_BUSH,

@@ -45,7 +45,7 @@ public class EnvironmentAttributeSystem implements EnvironmentAttributeReader {
       Value constantBaseValue = attribute.defaultValue();
 
       while (!layers.isEmpty()) {
-         if (!(layers.get(0) instanceof EnvironmentAttributeLayer.Constant<Value> constantLayer)) {
+         if (!(layers.get(0) instanceof EnvironmentAttributeLayer.Constant<Value>)) {
             break;
          }
 

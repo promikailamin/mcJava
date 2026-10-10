@@ -83,7 +83,8 @@ abstract class AbstractFriendsEntryContainerWidget extends AbstractContainerWidg
    @Override
    protected void updateWidgetNarration(final NarrationElementOutput output) {
       output.add(NarratedElementType.TITLE, this.nameWidget.getMessage());
-      if (this.getFocused() instanceof AbstractWidget focusedWidget) {
+      if (this.getFocused() instanceof AbstractWidget) {
+          AbstractWidget focusedWidget = (AbstractWidget) this.getFocused();
          focusedWidget.updateNarration(output.nest());
       } else {
          output.add(NarratedElementType.USAGE, this.getEntryNarration());

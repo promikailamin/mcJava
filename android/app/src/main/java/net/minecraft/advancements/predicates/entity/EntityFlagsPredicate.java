@@ -58,8 +58,7 @@ public record EntityFlagsPredicate(
       }
 
       if (this.isFlying.isPresent()) {
-         boolean entityIsFlying = entity instanceof LivingEntity living
-            && (living.isFallFlying() || living instanceof Player player && player.getAbilities().flying);
+         boolean entityIsFlying = entity instanceof LivingEntity && (living.isFallFlying() || living instanceof Player && player.getAbilities().flying);
          if (entityIsFlying != this.isFlying.get()) {
             return false;
          }
@@ -68,9 +67,10 @@ public record EntityFlagsPredicate(
       if (this.isInWater.isPresent() && entity.isInWater() != this.isInWater.get()) {
          return false;
       } else {
-         return this.isFallFlying.isPresent() && entity instanceof LivingEntity living && living.isFallFlying() != this.isFallFlying.get()
+         LivingEntity living = entity instanceof LivingEntity ? (LivingEntity) entity : null;
+         return this.isFallFlying.isPresent() && living != null && living.isFallFlying() != this.isFallFlying.get()
             ? false
-            : !(this.isBaby.isPresent() && entity instanceof LivingEntity living) || living.isBaby() == this.isBaby.get();
+            : !(this.isBaby.isPresent() && living != null && living.isBaby() != this.isBaby.get());
       }
    }
 

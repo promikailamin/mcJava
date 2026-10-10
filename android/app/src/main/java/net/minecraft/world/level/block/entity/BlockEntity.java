@@ -231,7 +231,7 @@ public abstract class BlockEntity implements DebugValueSource, TypedInstance<Blo
    }
 
    public void preRemoveSideEffects(final BlockPos pos, final BlockState state) {
-      if (this instanceof Container container && this.level != null) {
+      if (this instanceof Container && this.level != null) {
          Containers.dropContents(this.level, pos, container);
       }
    }

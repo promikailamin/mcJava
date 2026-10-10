@@ -77,7 +77,7 @@ private EnvironmentAttributeMap(final Map<EnvironmentAttribute<?>, EnvironmentAt
 
    @Override
    public boolean equals(final Object obj) {
-      return obj == this ? true : obj instanceof EnvironmentAttributeMap attributes && this.entries.equals(attributes.entries);
+      return obj == this ? true : obj instanceof EnvironmentAttributeMap && this.entries.equals(attributes.entries);
    }
 
    @Override

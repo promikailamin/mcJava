@@ -48,9 +48,8 @@ public record MultifaceGrowthFeature(
    );
 
    private static DataResult<Block> validateBlock(final Block block) {
-      return block instanceof MultifaceSpreadeableBlock multifaceBlock
-         ? DataResult.success(multifaceBlock)
-         : DataResult.error(() -> "Growth block should be a multiface spreadeable block");
+      return block instanceof MultifaceSpreadeableBlock ? DataResult.success(multifaceBlock)
+          : DataResult.error(() -> "Growth block should be a multiface spreadeable block");
    }
 
    @Override
@@ -62,7 +61,7 @@ public record MultifaceGrowthFeature(
    public boolean place(final WorldGenLevel level, final ChunkGenerator chunkGenerator, final RandomSource random, final BlockPos origin) {
       if (!isAirOrWater(level.getBlockState(origin))) {
          return false;
-      } else if (!(this.placeBlock instanceof MultifaceSpreadeableBlock placerBlock)) {
+      } else if (!(this.placeBlock instanceof MultifaceSpreadeableBlock)) {
          return false;
       } else {
          List var13 = this.getShuffledDirections(random);

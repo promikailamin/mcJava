@@ -61,7 +61,7 @@ public class FishingRodHookedTrigger extends SimpleCriterionTrigger<FishingRodHo
          if (this.item.isPresent()) {
             boolean matched = false;
             Entity hookedInEntity = hookedIn.getOptional(LootContextParams.THIS_ENTITY);
-            if (hookedInEntity instanceof ItemEntity item && this.item.get().test(item.getItem())) {
+            if (hookedInEntity instanceof ItemEntity && this.item.get().test(item.getItem())) {
                matched = true;
             }
 

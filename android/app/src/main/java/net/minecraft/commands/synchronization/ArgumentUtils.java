@@ -95,7 +95,8 @@ public class ArgumentUtils {
          result.addProperty("executable", true);
       }
 
-      if (node.getRequirement() instanceof PermissionProviderCheck<?> permissionCheck) {
+      if (node.getRequirement() instanceof PermissionProviderCheck<?>) {
+          PermissionProviderCheck<?> permissionCheck = (PermissionProviderCheck<?>) node.getRequirement();
          JsonElement permissions = (JsonElement)PermissionCheck.CODEC
             .encodeStart(JsonOps.INSTANCE, permissionCheck.test())
             .getOrThrow(error -> new IllegalStateException("Failed to serialize requirement: " + error));

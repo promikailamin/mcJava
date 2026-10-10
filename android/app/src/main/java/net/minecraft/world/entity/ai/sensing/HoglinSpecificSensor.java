@@ -39,14 +39,16 @@ public class HoglinSpecificSensor extends Sensor<Hoglin> {
          .orElse(NearestVisibleLivingEntities.empty());
 
       for (LivingEntity entity : visibleLivingEntities.findAll(entityx -> !entityx.isBaby() && (entityx instanceof Piglin || entityx instanceof Hoglin))) {
-         if (entity instanceof Piglin piglin) {
+         if (entity instanceof Piglin) {
+             Piglin piglin = (Piglin) entity;
             adultPiglinCount++;
             if (adultPiglin.isEmpty()) {
                adultPiglin = Optional.of(piglin);
             }
          }
 
-         if (entity instanceof Hoglin hoglin) {
+         if (entity instanceof Hoglin) {
+             Hoglin hoglin = (Hoglin) entity;
             adultHoglins.add(hoglin);
          }
       }

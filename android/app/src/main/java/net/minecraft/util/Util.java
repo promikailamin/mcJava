@@ -282,7 +282,7 @@ public class Util {
    }
 
    public static void throwAsRuntime(final Throwable throwable) {
-      throw throwable instanceof RuntimeException runtimeException ? runtimeException : new RuntimeException(throwable);
+      throw throwable instanceof RuntimeException ? runtimeException  : new RuntimeException(throwable);
    }
 
    private static void onThreadException(final Thread thread, Throwable throwable) {
@@ -293,7 +293,8 @@ public class Util {
 
       LOGGER.error("Caught exception in thread {}", thread, throwable);
       CrashReport report;
-      if (throwable instanceof ReportedException reportedException) {
+      if (throwable instanceof ReportedException) {
+          ReportedException reportedException = (ReportedException) throwable;
          report = reportedException.getReport();
       } else {
          report = CrashReport.forThrowable(throwable, "Exception on worker thread");

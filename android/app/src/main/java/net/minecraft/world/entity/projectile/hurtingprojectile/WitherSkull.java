@@ -58,10 +58,12 @@ public class WitherSkull extends AbstractHurtingProjectile {
    @Override
    protected void onHitEntity(final EntityHitResult hitResult) {
       super.onHitEntity(hitResult);
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          Entity var8 = hitResult.getEntity();
          boolean wasHurt;
-         if (this.getOwner() instanceof LivingEntity livingOwner) {
+         if (this.getOwner() instanceof LivingEntity) {
+             LivingEntity livingOwner = (LivingEntity) this.getOwner();
             DamageSource damageSource = this.damageSources().witherSkull(this, livingOwner);
             wasHurt = var8.hurtServer(serverLevel, damageSource, 8.0F);
             if (wasHurt) {
@@ -75,7 +77,8 @@ public class WitherSkull extends AbstractHurtingProjectile {
             wasHurt = var8.hurtServer(serverLevel, this.damageSources().magic(), 5.0F);
          }
 
-         if (wasHurt && var8 instanceof LivingEntity livingEntity) {
+         if (wasHurt && var8 instanceof LivingEntity) {
+             LivingEntity livingEntity = (LivingEntity) wasHurt && var8;
             int witherSeconds = 0;
             if (this.level().getDifficulty() == Difficulty.NORMAL) {
                witherSeconds = 10;

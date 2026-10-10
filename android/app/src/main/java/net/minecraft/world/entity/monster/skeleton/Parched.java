@@ -22,7 +22,8 @@ public class Parched extends AbstractSkeleton {
    @Override
    protected AbstractArrow getArrow(final ItemStack projectile, final float power, final @Nullable ItemStack firingWeapon) {
       AbstractArrow arrow = super.getArrow(projectile, power, firingWeapon);
-      if (arrow instanceof Arrow arrow2) {
+      if (arrow instanceof Arrow) {
+          Arrow arrow2 = (Arrow) arrow;
          arrow2.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 600));
       }
 

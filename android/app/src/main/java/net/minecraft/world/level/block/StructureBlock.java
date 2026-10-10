@@ -36,7 +36,8 @@ public class StructureBlock extends BaseEntityBlock implements GameMasterBlock {
    protected InteractionResult useWithoutItem(
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
-      if (level.getBlockEntity(pos) instanceof StructureBlockEntity structureBlockEntity) {
+      if (level.getBlockEntity(pos) instanceof StructureBlockEntity) {
+          StructureBlockEntity structureBlockEntity = (StructureBlockEntity) level.getBlockEntity(pos);
          return structureBlockEntity.usedBy(player) ? InteractionResult.SUCCESS : InteractionResult.PASS;
       } else {
          return InteractionResult.PASS;
@@ -46,7 +47,8 @@ public class StructureBlock extends BaseEntityBlock implements GameMasterBlock {
    @Override
    public void setPlacedBy(final Level level, final BlockPos pos, final BlockState state, final @Nullable LivingEntity by, final ItemStack itemStack) {
       if (!level.isClientSide()) {
-         if (by != null && level.getBlockEntity(pos) instanceof StructureBlockEntity structureBlockEntity) {
+         if (by != null && level.getBlockEntity(pos) instanceof StructureBlockEntity) {
+             StructureBlockEntity structureBlockEntity = (StructureBlockEntity) by != null && level.getBlockEntity(pos);
             structureBlockEntity.createdBy(by);
          }
       }
@@ -61,8 +63,10 @@ public class StructureBlock extends BaseEntityBlock implements GameMasterBlock {
    protected void neighborChanged(
       final BlockState state, final Level level, final BlockPos pos, final Block block, final @Nullable Orientation orientation, final boolean movedByPiston
    ) {
-      if (level instanceof ServerLevel serverLevel) {
-         if (level.getBlockEntity(pos) instanceof StructureBlockEntity structureBlock) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
+         if (level.getBlockEntity(pos) instanceof StructureBlockEntity) {
+             StructureBlockEntity structureBlock = (StructureBlockEntity) level.getBlockEntity(pos);
             boolean shouldTrigger = level.hasNeighborSignal(pos);
             boolean isPowered = structureBlock.isPowered();
             if (shouldTrigger && !isPowered) {

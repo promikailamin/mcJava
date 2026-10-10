@@ -64,8 +64,7 @@ public class CeilingHangingSignBlock extends SignBlock implements HangingSignBlo
       final InteractionHand hand,
       final BlockHitResult hitResult
    ) {
-      return level.getBlockEntity(pos) instanceof SignBlockEntity signEntity
-            && this.shouldTryToChainAnotherHangingSign(player, hitResult, signEntity, itemStack)
+      return level.getBlockEntity(pos) instanceof SignBlockEntity && this.shouldTryToChainAnotherHangingSign(player, hitResult, signEntity, itemStack)
          ? InteractionResult.PASS
          : super.useItemOn(itemStack, state, level, pos, player, hand, hitResult);
    }

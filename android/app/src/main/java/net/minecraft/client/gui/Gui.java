@@ -103,7 +103,7 @@ public class Gui {
       profiler.push("screen");
       LocalPlayer player = this.minecraft.player;
       if (this.screen != null || player == null) {
-         if (this.screen instanceof InBedChatScreen inBedScreen && !player.isSleeping()) {
+         if (this.screen instanceof InBedChatScreen && !player.isSleeping()) {
             inBedScreen.onPlayerWokeUp();
          }
       } else if (player.isDeadOrDying() && !(this.screen instanceof DeathScreen)) {
@@ -360,7 +360,8 @@ public class Gui {
 
    public void openChatAndAddText(final ChatComponent.ChatMethod chatMethod, final String text) {
       this.openChatScreen(chatMethod);
-      if (this.screen instanceof ChatScreen chatScreen) {
+      if (this.screen instanceof ChatScreen) {
+          ChatScreen chatScreen = (ChatScreen) this.screen;
          chatScreen.insertText(text, false);
       }
    }

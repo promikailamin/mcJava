@@ -80,7 +80,7 @@ public class ExperimentalRedstoneWireEvaluator extends RedstoneWireEvaluator {
             }
          }
       });
-      if (level instanceof ServerLevel serverLevel && serverLevel.debugSynchronizers().hasAnySubscriberFor(DebugSubscriptions.REDSTONE_WIRE_ORIENTATIONS)) {
+      if (level instanceof ServerLevel && serverLevel.debugSynchronizers().hasAnySubscriberFor(DebugSubscriptions.REDSTONE_WIRE_ORIENTATIONS)) {
          this.updatedWires
             .forEach(
                (wirePos, packed) -> serverLevel.debugSynchronizers()

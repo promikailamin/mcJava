@@ -76,7 +76,8 @@ public class ChiseledBookShelfBlock extends BaseEntityBlock implements Selectabl
       final InteractionHand hand,
       final BlockHitResult hitResult
    ) {
-      if (level.getBlockEntity(pos) instanceof ChiseledBookShelfBlockEntity bookshelfBlock) {
+      if (level.getBlockEntity(pos) instanceof ChiseledBookShelfBlockEntity) {
+          ChiseledBookShelfBlockEntity bookshelfBlock = (ChiseledBookShelfBlockEntity) level.getBlockEntity(pos);
          if (!itemStack.is(ItemTags.BOOKSHELF_BOOKS)) {
             return InteractionResult.TRY_WITH_EMPTY_HAND;
          }
@@ -101,7 +102,8 @@ public class ChiseledBookShelfBlock extends BaseEntityBlock implements Selectabl
    protected InteractionResult useWithoutItem(
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
-      if (level.getBlockEntity(pos) instanceof ChiseledBookShelfBlockEntity bookshelfBlock) {
+      if (level.getBlockEntity(pos) instanceof ChiseledBookShelfBlockEntity) {
+          ChiseledBookShelfBlockEntity bookshelfBlock = (ChiseledBookShelfBlockEntity) level.getBlockEntity(pos);
          OptionalInt hitSlot = this.getHitSlot(hitResult, state.getValue(FACING));
          if (hitSlot.isEmpty()) {
             return InteractionResult.PASS;
@@ -186,7 +188,7 @@ public class ChiseledBookShelfBlock extends BaseEntityBlock implements Selectabl
       if (level.isClientSide()) {
          return 0;
       } else {
-         return level.getBlockEntity(pos) instanceof ChiseledBookShelfBlockEntity blockEntity ? blockEntity.getLastInteractedSlot() + 1 : 0;
+         return level.getBlockEntity(pos) instanceof ChiseledBookShelfBlockEntity ? ((ChiseledBookShelfBlockEntity) level.getBlockEntity(pos)).getLastInteractedSlot() + 1  : 0;
       }
    }
 }

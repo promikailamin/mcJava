@@ -178,7 +178,8 @@ public class ChunkMap extends SimpleRegionStorage implements ChunkHolder.PlayerP
       this.level = level;
       RegistryAccess registryAccess = level.registryAccess();
       long levelSeed = level.getSeed();
-      if (generator instanceof NoiseBasedChunkGenerator noiseGenerator) {
+      if (generator instanceof NoiseBasedChunkGenerator) {
+          NoiseBasedChunkGenerator noiseGenerator = (NoiseBasedChunkGenerator) generator;
          this.randomState = RandomState.create(registryAccess.lookupOrThrow(Registries.NOISE), levelSeed, noiseGenerator.generatorSettings().value());
       } else {
          this.randomState = RandomState.create(
@@ -523,12 +524,14 @@ public class ChunkMap extends SimpleRegionStorage implements ChunkHolder.PlayerP
          } else {
             ChunkAccess chunk = chunkHolder.getLatestChunk();
             if (this.pendingUnloads.remove(pos, chunkHolder) && chunk != null) {
-               if (chunk instanceof LevelChunk levelChunk) {
+               if (chunk instanceof LevelChunk) {
+                   LevelChunk levelChunk = (LevelChunk) chunk;
                   levelChunk.setLoaded(false);
                }
 
                this.save(chunk);
-               if (chunk instanceof LevelChunk levelChunk) {
+               if (chunk instanceof LevelChunk) {
+                   LevelChunk levelChunk = (LevelChunk) chunk;
                   this.level.unload(levelChunk);
                }
 
@@ -581,8 +584,8 @@ public class ChunkMap extends SimpleRegionStorage implements ChunkHolder.PlayerP
    }
 
    private ChunkAccess handleChunkLoadFailure(final Throwable throwable, final ChunkPos pos) {
-      Throwable unwrapped = throwable instanceof CompletionException e ? e.getCause() : throwable;
-      Throwable cause = unwrapped instanceof ReportedException e ? e.getCause() : unwrapped;
+      Throwable unwrapped = throwable instanceof CompletionException ? getCause() : throwable;
+      Throwable cause = unwrapped instanceof ReportedException ? getCause() : unwrapped;
       boolean alwaysThrow = cause instanceof Error;
       boolean ioException = cause instanceof IOException || cause instanceof NbtException;
       if (!alwaysThrow) {
@@ -881,7 +884,7 @@ public class ChunkMap extends SimpleRegionStorage implements ChunkHolder.PlayerP
          ChunkHolder holder = (ChunkHolder)entry.getValue();
          Optional<ChunkAccess> chunk = Optional.ofNullable(holder.getLatestChunk());
          Optional<LevelChunk> fullChunk = chunk.flatMap(
-            chunkAccess -> chunkAccess instanceof LevelChunk levelChunk ? Optional.of(levelChunk) : Optional.empty()
+            chunkAccess -> chunkAccess instanceof LevelChunk ? Optional.of(levelChunk)  : Optional.empty()
          );
          csvOutput.writeRow(
             pos.x(),
@@ -1110,8 +1113,7 @@ public class ChunkMap extends SimpleRegionStorage implements ChunkHolder.PlayerP
       ChunkPos chunkPos = player.chunkPosition();
       int playerViewDistance = this.getPlayerViewDistance(player);
       if (!(
-         player.getChunkTrackingView() instanceof ChunkTrackingView.Positioned view
-            && view.center().equals(chunkPos)
+         player.getChunkTrackingView() instanceof ChunkTrackingView.Positioned && view.center().equals(chunkPos)
             && view.viewDistance() == playerViewDistance
       )) {
          this.applyChunkTrackingView(player, ChunkTrackingView.of(chunkPos, playerViewDistance));
@@ -1121,7 +1123,7 @@ public class ChunkMap extends SimpleRegionStorage implements ChunkHolder.PlayerP
    private void applyChunkTrackingView(final ServerPlayer player, final ChunkTrackingView next) {
       if (player.level() == this.level) {
          ChunkTrackingView previous = player.getChunkTrackingView();
-         if (next instanceof ChunkTrackingView.Positioned to && !(previous instanceof ChunkTrackingView.Positioned from && from.center().equals(to.center()))) {
+         if (next instanceof ChunkTrackingView.Positioned && !(previous instanceof ChunkTrackingView.Positioned && from.center().equals(to.center()))) {
             player.connection.send(new ClientboundSetChunkCacheCenterPacket(to.center().x(), to.center().z()));
          }
 
@@ -1161,7 +1163,8 @@ public class ChunkMap extends SimpleRegionStorage implements ChunkHolder.PlayerP
             ChunkMap.TrackedEntity trackedEntity = new ChunkMap.TrackedEntity(entity, range, updateInterval, type.trackDeltas());
             this.entityMap.put(entity.getId(), trackedEntity);
             trackedEntity.updatePlayers(this.level.players());
-            if (entity instanceof ServerPlayer player) {
+            if (entity instanceof ServerPlayer) {
+                ServerPlayer player = (ServerPlayer) entity;
                this.updatePlayerStatus(player, true);
                ObjectIterator var7 = this.entityMap.values().iterator();
 
@@ -1177,7 +1180,8 @@ public class ChunkMap extends SimpleRegionStorage implements ChunkHolder.PlayerP
    }
 
    protected void removeEntity(final Entity entity) {
-      if (entity instanceof ServerPlayer player) {
+      if (entity instanceof ServerPlayer) {
+          ServerPlayer player = (ServerPlayer) entity;
          this.updatePlayerStatus(player, false);
          ObjectIterator var3 = this.entityMap.values().iterator();
 
@@ -1209,7 +1213,8 @@ public class ChunkMap extends SimpleRegionStorage implements ChunkHolder.PlayerP
          boolean sectionPosChanged = !Objects.equals(oldPos, newPos);
          if (sectionPosChanged) {
             trackedEntity.updatePlayers(players);
-            if (trackedEntity.entity instanceof ServerPlayer serverPlayer) {
+            if (trackedEntity.entity instanceof ServerPlayer) {
+                ServerPlayer serverPlayer = (ServerPlayer) trackedEntity.entity;
                movedPlayers.add(serverPlayer);
             }
 
@@ -1276,7 +1281,8 @@ public class ChunkMap extends SimpleRegionStorage implements ChunkHolder.PlayerP
       for (ChunkAccess chunkAccess : chunks) {
          ChunkPos pos = chunkAccess.getPos();
          LevelChunk chunk;
-         if (chunkAccess instanceof LevelChunk levelChunk) {
+         if (chunkAccess instanceof LevelChunk) {
+             LevelChunk levelChunk = (LevelChunk) chunkAccess;
             chunk = levelChunk;
          } else {
             chunk = this.level.getChunk(pos.x(), pos.z());
@@ -1357,7 +1363,7 @@ public class ChunkMap extends SimpleRegionStorage implements ChunkHolder.PlayerP
 
       @Override
       public boolean equals(final Object obj) {
-         return obj instanceof ChunkMap.TrackedEntity trackedEntity ? trackedEntity.entity.getId() == this.entity.getId() : false;
+         return obj instanceof ChunkMap.TrackedEntity ? ((ChunkMap.TrackedEntity) obj).entity.getId() == this.entity.getId()  : false;
       }
 
       @Override
@@ -1375,7 +1381,8 @@ public class ChunkMap extends SimpleRegionStorage implements ChunkHolder.PlayerP
       @Override
       public void sendToTrackingPlayersAndSelf(final Packet<? super ClientGamePacketListener> packet) {
          this.sendToTrackingPlayers(packet);
-         if (this.entity instanceof ServerPlayer player) {
+         if (this.entity instanceof ServerPlayer) {
+             ServerPlayer player = (ServerPlayer) this.entity;
             player.connection.send(packet);
          }
       }

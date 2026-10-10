@@ -135,7 +135,8 @@ public abstract class AbstractMinecart extends VehicleEntity {
       if (entity != null) {
          entity.setInitialPos(x, y, z);
          EntityType.createDefaultStackConfig(level, itemStack, player).apply(entity);
-         if (entity.getBehavior() instanceof NewMinecartBehavior newMinecartBehavior) {
+         if (entity.getBehavior() instanceof NewMinecartBehavior) {
+             NewMinecartBehavior newMinecartBehavior = (NewMinecartBehavior) entity.getBehavior();
             BlockPos currentPos = entity.getCurrentBlockPosOrRailBelow();
             BlockState currentState = level.getBlockState(currentPos);
             newMinecartBehavior.adjustToRails(currentPos, currentState, true);
@@ -534,7 +535,8 @@ public abstract class AbstractMinecart extends VehicleEntity {
                   za *= 0.1F;
                   xa *= 0.5;
                   za *= 0.5;
-                  if (entity instanceof AbstractMinecart otherMinecart) {
+                  if (entity instanceof AbstractMinecart) {
+                      AbstractMinecart otherMinecart = (AbstractMinecart) entity;
                      this.pushOtherMinecart(otherMinecart, xa, za);
                   } else {
                      this.push(-xa, 0.0, -za);

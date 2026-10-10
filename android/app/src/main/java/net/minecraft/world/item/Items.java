@@ -2998,7 +2998,8 @@ public class Items {
 
    private static Item registerItem(final ResourceKey<Item> id, final Function<Item.Properties, Item> itemFactory, final Item.Properties properties) {
       Item item = itemFactory.apply(properties.setId(id));
-      if (item instanceof BlockItem blockItem) {
+      if (item instanceof BlockItem) {
+          BlockItem blockItem = (BlockItem) item;
          blockItem.registerBlocks(Item.BY_BLOCK, item);
       }
 

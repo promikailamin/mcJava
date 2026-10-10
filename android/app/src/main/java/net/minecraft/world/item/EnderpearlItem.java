@@ -31,7 +31,8 @@ public class EnderpearlItem extends Item {
          0.5F,
          0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F)
       );
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          Projectile.spawnProjectileFromRotation(ThrownEnderpearl::new, serverLevel, itemStack, player, 0.0F, 1.5F, 1.0F);
       }
 

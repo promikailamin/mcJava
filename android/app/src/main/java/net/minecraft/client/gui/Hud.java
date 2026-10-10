@@ -725,7 +725,7 @@ public class Hud {
    }
 
    private @Nullable Player getCameraPlayer() {
-      return this.minecraft.getCameraEntity() instanceof Player player ? player : null;
+      return this.minecraft.getCameraEntity() instanceof Player ? player  : null;
    }
 
    private @Nullable LivingEntity getPlayerVehicleWithHealth() {
@@ -736,7 +736,8 @@ public class Hud {
             return null;
          }
 
-         if (vehicle instanceof LivingEntity livingEntity) {
+         if (vehicle instanceof LivingEntity) {
+             LivingEntity livingEntity = (LivingEntity) vehicle;
             return livingEntity;
          }
       }

@@ -259,7 +259,7 @@ public class Turtle extends Animal {
    @Override
    protected void ageBoundaryReached() {
       super.ageBoundaryReached();
-      if (!this.isBaby() && this.level() instanceof ServerLevel level && level.getGameRules().get(GameRules.MOB_DROPS)) {
+      if (!this.isBaby() && this.level() instanceof ServerLevel && level.getGameRules().get(GameRules.MOB_DROPS)) {
          this.dropFromGiftLootTable(level, BuiltInLootTables.TURTLE_GROW, this::spawnAtLocation);
       }
    }
@@ -554,7 +554,7 @@ public class Turtle extends Animal {
 
       @Override
       public boolean isStableDestination(final BlockPos pos) {
-         return this.mob instanceof Turtle turtle && turtle.travelPos != null
+         return this.mob instanceof Turtle && turtle.travelPos != null
             ? this.level.getBlockState(pos).is(Blocks.WATER)
             : !this.level.getBlockState(pos.below()).isAir();
       }

@@ -23,7 +23,8 @@ public record MapBanner(BlockPos pos, DyeColor color, Optional<Component> name) 
    );
 
    public static @Nullable MapBanner fromWorld(final BlockGetter level, final BlockPos pos) {
-      if (level.getBlockEntity(pos) instanceof BannerBlockEntity banner) {
+      if (level.getBlockEntity(pos) instanceof BannerBlockEntity) {
+          BannerBlockEntity banner = (BannerBlockEntity) level.getBlockEntity(pos);
          DyeColor color = banner.getBaseColor();
          Optional<Component> name = Optional.ofNullable(banner.getCustomName());
          return new MapBanner(pos, color, name);

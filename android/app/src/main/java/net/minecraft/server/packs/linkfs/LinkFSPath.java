@@ -56,7 +56,8 @@ class LinkFSPath implements Path {
 
    @Override
    public File toFile() {
-      if (this.pathContents instanceof PathContents.FileContents file) {
+      if (this.pathContents instanceof PathContents.FileContents) {
+          PathContents.FileContents file = (PathContents.FileContents) this.pathContents;
          return file.contents().toFile();
       } else {
          throw new UnsupportedOperationException("Path " + this.pathToString() + " does not represent file");
@@ -128,7 +129,8 @@ class LinkFSPath implements Path {
          return false;
       }
 
-      if (other instanceof LinkFSPath otherLink) {
+      if (other instanceof LinkFSPath) {
+          LinkFSPath otherLink = (LinkFSPath) other;
          if (otherLink.fileSystem != this.fileSystem) {
             return false;
          }
@@ -158,7 +160,8 @@ class LinkFSPath implements Path {
          return false;
       }
 
-      if (other instanceof LinkFSPath otherLink) {
+      if (other instanceof LinkFSPath) {
+          LinkFSPath otherLink = (LinkFSPath) other;
          if (otherLink.fileSystem != this.fileSystem) {
             return false;
          }
@@ -205,7 +208,8 @@ class LinkFSPath implements Path {
    LinkFSPath resolveName(final String name) {
       if (isRelativeOrMissing(this.pathContents)) {
          return new LinkFSPath(this.fileSystem, name, this, this.pathContents);
-      } else if (this.pathContents instanceof PathContents.DirectoryContents directory) {
+      else if (this.pathContents instanceof PathContents.DirectoryContents) {
+          PathContents.DirectoryContents directory = (PathContents.DirectoryContents) this.pathContents;
          LinkFSPath child = directory.children().get(name);
          return child != null ? child : new LinkFSPath(this.fileSystem, name, this, PathContents.MISSING);
       } else if (this.pathContents instanceof PathContents.FileContents) {
@@ -274,7 +278,8 @@ class LinkFSPath implements Path {
          return true;
       }
 
-      if (other instanceof LinkFSPath that) {
+      if (other instanceof LinkFSPath) {
+          LinkFSPath that = (LinkFSPath) other;
          if (this.fileSystem != that.fileSystem) {
             return false;
          } else {
@@ -323,7 +328,7 @@ class LinkFSPath implements Path {
    private LinkFSPath toLinkPath(final @Nullable Path path) {
       if (path == null) {
          throw new NullPointerException();
-      } else if (path instanceof LinkFSPath p && p.fileSystem == this.fileSystem) {
+      } else if (path instanceof LinkFSPath && p.fileSystem == this.fileSystem) {
          return p;
       } else {
          throw new ProviderMismatchException();
@@ -335,11 +340,11 @@ class LinkFSPath implements Path {
    }
 
    public @Nullable Path getTargetPath() {
-      return this.pathContents instanceof PathContents.FileContents file ? file.contents() : null;
+      return this.pathContents instanceof PathContents.FileContents ? contents() : null;
    }
 
    public PathContents.@Nullable DirectoryContents getDirectoryContents() {
-      return this.pathContents instanceof PathContents.DirectoryContents dir ? dir : null;
+      return this.pathContents instanceof PathContents.DirectoryContents ? dir  : null;
    }
 
    public BasicFileAttributeView getBasicAttributeView() {

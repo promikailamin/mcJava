@@ -36,9 +36,7 @@ public interface PresetEditor {
          return new CreateFlatWorldScreen(
             parent,
             flatWorldSettings -> parent.getUiState().updateDimensions(flatWorldConfigurator(flatWorldSettings)),
-            overworld instanceof FlatLevelSource flatLevelSource
-               ? flatLevelSource.settings()
-               : FlatLevelGeneratorSettings.getDefault(biomes, structureSets, placedFeatures)
+            overworld instanceof FlatLevelSource ? settings() : FlatLevelGeneratorSettings.getDefault(biomes, structureSets, placedFeatures)
          );
       },
       Optional.of(WorldPresets.SINGLE_BIOME_SURFACE),

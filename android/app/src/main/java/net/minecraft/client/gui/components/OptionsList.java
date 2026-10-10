@@ -66,7 +66,8 @@ public class OptionsList extends ContainerObjectSelectionList<OptionsList.Abstra
 
    public @Nullable AbstractWidget findOption(final OptionInstance<?> option) {
       for (OptionsList.AbstractEntry child : this.children()) {
-         if (child instanceof OptionsList.Entry entry) {
+         if (child instanceof OptionsList.Entry) {
+             OptionsList.Entry entry = (OptionsList.Entry) child;
             AbstractWidget widgetForOption = entry.findOption(option);
             if (widgetForOption != null) {
                return widgetForOption;
@@ -79,7 +80,8 @@ public class OptionsList extends ContainerObjectSelectionList<OptionsList.Abstra
 
    public void applyUnsavedChanges() {
       for (OptionsList.AbstractEntry child : this.children()) {
-         if (child instanceof OptionsList.Entry entry) {
+         if (child instanceof OptionsList.Entry) {
+             OptionsList.Entry entry = (OptionsList.Entry) child;
             for (OptionsList.OptionInstanceWidget optionInstanceWidget : entry.children) {
                if (optionInstanceWidget.optionInstance() != null
                   && optionInstanceWidget.widget() instanceof OptionInstance.OptionInstanceSliderButton<?> optionSlider) {
@@ -92,9 +94,11 @@ public class OptionsList extends ContainerObjectSelectionList<OptionsList.Abstra
 
    public void resetOption(final OptionInstance<?> option) {
       for (OptionsList.AbstractEntry child : this.children()) {
-         if (child instanceof OptionsList.Entry entry) {
+         if (child instanceof OptionsList.Entry) {
+             OptionsList.Entry entry = (OptionsList.Entry) child;
             for (OptionsList.OptionInstanceWidget optionInstanceWidget : entry.children) {
-               if (optionInstanceWidget.optionInstance() == option && optionInstanceWidget.widget() instanceof ResettableOptionWidget resettableOptionWidget) {
+               if (optionInstanceWidget.optionInstance() == option && optionInstanceWidget.widget() instanceof ResettableOptionWidget) {
+                   ResettableOptionWidget resettableOptionWidget = (ResettableOptionWidget) optionInstanceWidget.optionInstance() == option && optionInstanceWidget.widget();
                   resettableOptionWidget.resetValue();
                   return;
                }

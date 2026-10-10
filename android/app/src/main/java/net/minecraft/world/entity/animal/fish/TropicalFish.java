@@ -237,7 +237,8 @@ public class TropicalFish extends AbstractSchoolingFish {
       groupData = super.finalizeSpawn(level, difficulty, spawnReason, groupData);
       RandomSource random = level.getRandom();
       TropicalFish.Variant variant;
-      if (groupData instanceof TropicalFish.TropicalFishGroupData tropicalFishGroupData) {
+      if (groupData instanceof TropicalFish.TropicalFishGroupData) {
+          TropicalFish.TropicalFishGroupData tropicalFishGroupData = (TropicalFish.TropicalFishGroupData) groupData;
          variant = tropicalFishGroupData.variant;
       } else if (random.nextFloat() < 0.9) {
          variant = Util.getRandom(COMMON_VARIANTS, random);

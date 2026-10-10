@@ -131,7 +131,7 @@ public final class Identifier implements Comparable<Identifier> {
       if (this == o) {
          return true;
       } else {
-         return !(o instanceof Identifier that) ? false : this.namespace.equals(that.namespace) && this.path.equals(that.path);
+         return !(o instanceof Identifier) ? false : this.namespace.equals(that.namespace) && this.path.equals(that.path);
       }
    }
 

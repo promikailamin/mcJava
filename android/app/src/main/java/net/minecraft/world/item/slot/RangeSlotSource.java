@@ -43,7 +43,7 @@ public class RangeSlotSource implements SlotSource {
 
    @Override
    public final SlotCollection provide(final LootContext context) {
-      return this.source.get(context) instanceof SlotProvider slotProvider ? slotProvider.getSlotsFromRange(this.slotRange.slots()) : SlotCollection.EMPTY;
+      return this.source.get(context) instanceof SlotProvider ? ((SlotProvider) this.source.get(context)).getSlotsFromRange(this.slotRange.slots())  : SlotCollection.EMPTY;
    }
 
    public static RangeSlotSource slotRange(final SlotRange slotRange) {

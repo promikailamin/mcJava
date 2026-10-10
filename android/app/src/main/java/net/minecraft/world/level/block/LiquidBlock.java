@@ -77,9 +77,8 @@ public class LiquidBlock extends Block implements BucketPickup {
    }
 
    private Optional<LivingEntity> ifMobIsColliding(final CollisionContext context) {
-      return context instanceof EntityCollisionContext entityCollisionContext && entityCollisionContext.getEntity() instanceof LivingEntity mob
-         ? Optional.of(mob)
-         : Optional.empty();
+      return context instanceof EntityCollisionContext && entityCollisionContext.getEntity() instanceof LivingEntity ? Optional.of(mob)
+          : Optional.empty();
    }
 
    @Override

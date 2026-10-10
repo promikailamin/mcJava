@@ -107,9 +107,8 @@ public class EntityRenderDispatcher implements ResourceManagerReloadListener {
    }
 
    public <S extends EntityRenderState> EntityRenderer<?, ? super S> getRenderer(final S entityRenderState) {
-      return entityRenderState instanceof AvatarRenderState avatarRenderState
-         ? this.getRenderer(avatarRenderState)
-         : (EntityRenderer)this.renderers.get(entityRenderState.entityType);
+      return entityRenderState instanceof AvatarRenderState ? this.getRenderer(avatarRenderState)
+          : (EntityRenderer)this.renderers.get(entityRenderState.entityType);
    }
 
    public void prepare(final Camera camera, final Entity crosshairPickEntity) {

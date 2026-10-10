@@ -128,7 +128,7 @@ public class PlayerSkinRenderCache {
       @Override
       public boolean equals(final Object o) {
          return this == o
-            || o instanceof PlayerSkinRenderCache.RenderInfo that && this.gameProfile.equals(that.gameProfile) && this.playerSkin.equals(that.playerSkin);
+            || o instanceof PlayerSkinRenderCache.RenderInfo && this.gameProfile.equals(that.gameProfile) && this.playerSkin.equals(that.playerSkin);
       }
 
       @Override

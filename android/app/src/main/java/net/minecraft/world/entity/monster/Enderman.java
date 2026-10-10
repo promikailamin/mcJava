@@ -370,7 +370,7 @@ public class Enderman extends Monster implements NeutralMob {
          return false;
       }
 
-      AbstractThrownPotion thrownPotion = source.getDirectEntity() instanceof AbstractThrownPotion potion ? potion : null;
+      AbstractThrownPotion thrownPotion = source.getDirectEntity() instanceof AbstractThrownPotion ? potion  : null;
       if (source.is(DamageTypeTags.IS_PROJECTILE) && !this.isPassenger()) {
          this.repeatedlyTryToTeleport();
          return false;
@@ -430,7 +430,8 @@ public class Enderman extends Monster implements NeutralMob {
       @Override
       public boolean canUse() {
          this.target = this.enderman.getTarget();
-         if (this.target instanceof Player playerTarget) {
+         if (this.target instanceof Player) {
+             Player playerTarget = (Player) this.target;
             double dist = this.target.distanceToSqr(this.enderman);
             return dist > 256.0 ? false : this.enderman.isBeingStaredBy(playerTarget);
          } else {

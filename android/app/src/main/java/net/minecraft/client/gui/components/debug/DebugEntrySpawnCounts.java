@@ -23,7 +23,7 @@ public class DebugEntrySpawnCounts implements DebugScreenEntry {
    ) {
       Minecraft minecraft = Minecraft.getInstance();
       Entity entity = minecraft.getCameraEntity();
-      ServerLevel serverLevel = serverOrClientLevel instanceof ServerLevel level ? level : null;
+      ServerLevel serverLevel = serverOrClientLevel instanceof ServerLevel ? level  : null;
       if (entity != null && serverLevel != null) {
          ServerChunkCache chunkSource = serverLevel.getChunkSource();
          NaturalSpawner.SpawnState lastSpawnState = chunkSource.getLastSpawnState();

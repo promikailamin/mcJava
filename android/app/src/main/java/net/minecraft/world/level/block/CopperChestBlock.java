@@ -56,24 +56,27 @@ public class CopperChestBlock extends ChestBlock {
       return getLeastOxidizedChestOfConnectedBlocks(state, context.getLevel(), context.getClickedPos());
    }
 
-   private static BlockState getLeastOxidizedChestOfConnectedBlocks(final BlockState state, final Level level, final BlockPos pos) {
-      BlockState connectedState = level.getBlockState(pos.relative(getConnectedDirection(state)));
-      if (!state.getValue(ChestBlock.TYPE).equals(ChestType.SINGLE)
-         && state.getBlock() instanceof CopperChestBlock copperChestBlock
-         && connectedState.getBlock() instanceof CopperChestBlock connectedCopperChestBlock) {
-         BlockState updatedBlockState = state;
-         BlockState connectedPredictedBlockState = connectedState;
-         if (copperChestBlock.isWaxed() != connectedCopperChestBlock.isWaxed()) {
-            updatedBlockState = unwaxBlock(copperChestBlock, state).orElse(updatedBlockState);
-            connectedPredictedBlockState = unwaxBlock(connectedCopperChestBlock, connectedState).orElse(connectedPredictedBlockState);
-         }
+private static BlockState getLeastOxidizedChestOfConnectedBlocks(final BlockState state, final Level level, final BlockPos pos) {
+       BlockState connectedState = level.getBlockState(pos.relative(getConnectedDirection(state)));
+       Block block = state.getBlock();
+       Block connectedBlock = connectedState.getBlock();
+       if (!state.getValue(ChestBlock.TYPE).equals(ChestType.SINGLE)
+          && block instanceof CopperChestBlock && connectedBlock instanceof CopperChestBlock) {
+          CopperChestBlock copperChestBlock = (CopperChestBlock) block;
+          CopperChestBlock connectedCopperChestBlock = (CopperChestBlock) connectedBlock;
+          BlockState updatedBlockState = state;
+          BlockState connectedPredictedBlockState = connectedState;
+          if (copperChestBlock.isWaxed() != connectedCopperChestBlock.isWaxed()) {
+             updatedBlockState = unwaxBlock(copperChestBlock, state).orElse(updatedBlockState);
+             connectedPredictedBlockState = unwaxBlock(connectedCopperChestBlock, connectedState).orElse(connectedPredictedBlockState);
+          }
 
-         Block leastOxidizedBlock = copperChestBlock.weatherState.ordinal() <= connectedCopperChestBlock.weatherState.ordinal()
-            ? updatedBlockState.getBlock()
-            : connectedPredictedBlockState.getBlock();
-         return leastOxidizedBlock.withPropertiesOf(updatedBlockState);
-      } else {
-         return state;
+          Block leastOxidizedBlock = copperChestBlock.weatherState.ordinal() <= connectedCopperChestBlock.weatherState.ordinal()
+             ? updatedBlockState.getBlock()
+             : connectedPredictedBlockState.getBlock();
+          return leastOxidizedBlock.withPropertiesOf(updatedBlockState);
+       } else {
+          return state;
       }
    }
 

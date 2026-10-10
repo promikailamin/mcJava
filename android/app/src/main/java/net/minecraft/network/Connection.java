@@ -339,7 +339,8 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
 
    public void tick() {
       this.flushQueue();
-      if (this.packetListener instanceof TickablePacketListener tickable) {
+      if (this.packetListener instanceof TickablePacketListener) {
+          TickablePacketListener tickable = (TickablePacketListener) this.packetListener;
          tickable.tick();
       }
 
@@ -541,13 +542,15 @@ public class Connection extends SimpleChannelInboundHandler<Packet<?>> {
 
    public void setupCompression(final int threshold, final boolean validateDecompressed) {
       if (threshold >= 0) {
-         if (this.channel.pipeline().get("decompress") instanceof CompressionDecoder compressionDecoder) {
+         if (this.channel.pipeline().get("decompress") instanceof CompressionDecoder) {
+             CompressionDecoder compressionDecoder = (CompressionDecoder) this.channel.pipeline().get("decompress");
             compressionDecoder.setThreshold(threshold, validateDecompressed);
          } else {
             this.channel.pipeline().addAfter("splitter", "decompress", new CompressionDecoder(threshold, validateDecompressed));
          }
 
-         if (this.channel.pipeline().get("compress") instanceof CompressionEncoder compressionEncoder) {
+         if (this.channel.pipeline().get("compress") instanceof CompressionEncoder) {
+             CompressionEncoder compressionEncoder = (CompressionEncoder) this.channel.pipeline().get("compress");
             compressionEncoder.setThreshold(threshold);
          } else {
             this.channel.pipeline().addAfter("prepender", "compress", new CompressionEncoder(threshold));

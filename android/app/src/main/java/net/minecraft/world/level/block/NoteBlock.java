@@ -167,9 +167,10 @@ public class NoteBlock extends Block {
       return true;
    }
 
-   private @Nullable Identifier getCustomSoundId(final Level level, final BlockPos pos) {
-      return level.getBlockEntity(pos.above()) instanceof SkullBlockEntity head ? head.getNoteBlockSound() : null;
-   }
+private @Nullable Identifier getCustomSoundId(final Level level, final BlockPos pos) {
+       BlockEntity blockEntity = level.getBlockEntity(pos.above());
+       return blockEntity instanceof SkullBlockEntity ? getNoteBlockSound() : null;
+    }
 
    @Override
    protected void createBlockStateDefinition(final StateDefinition.Builder<Block, BlockState> builder) {

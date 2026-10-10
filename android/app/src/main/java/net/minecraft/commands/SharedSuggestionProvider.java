@@ -94,9 +94,7 @@ public interface SharedSuggestionProvider extends PermissionSetSupplier {
       final SharedSuggestionProvider.ElementSuggestionType type,
       final Predicate<E> filter
    ) {
-      return context.getSource() instanceof SharedSuggestionProvider suggestionProvider
-         ? suggestionProvider.suggestRegistryElements(registryKey, type, builder, context, filter)
-         : builder.buildFuture();
+      return context.getSource() instanceof SharedSuggestionProvider ? suggestRegistryElements(registryKey, type, builder, context, filter) : builder.buildFuture();
    }
 
    <E> CompletableFuture<Suggestions> suggestRegistryElements(

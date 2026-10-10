@@ -78,7 +78,8 @@ public class BoatItem extends Item {
       if (boat != null) {
          Vec3 location = hitResult.getLocation();
          boat.setInitialPos(location.x, location.y, location.z);
-         if (level instanceof ServerLevel serverLevel) {
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
             EntityType.<AbstractBoat>createDefaultStackConfig(serverLevel, itemStack, player).apply(boat);
          }
       }

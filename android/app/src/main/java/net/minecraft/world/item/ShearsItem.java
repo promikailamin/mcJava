@@ -63,10 +63,11 @@ public class ShearsItem extends Item {
       Level level = context.getLevel();
       BlockPos pos = context.getClickedPos();
       BlockState state = level.getBlockState(pos);
-      if (state.getBlock() instanceof GrowingPlantHeadBlock plantBlock && !plantBlock.isMaxAge(state)) {
+      if (state.getBlock() instanceof GrowingPlantHeadBlock && !plantBlock.isMaxAge(state)) {
          Player player = context.getPlayer();
          ItemStack itemInHand = context.getItemInHand();
-         if (player instanceof ServerPlayer serverPlayer) {
+         if (player instanceof ServerPlayer) {
+             ServerPlayer serverPlayer = (ServerPlayer) player;
             CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pos, itemInHand);
          }
 

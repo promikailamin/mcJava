@@ -102,7 +102,8 @@ public enum ConversionType {
          to.setBaby(true);
       }
 
-      if (from instanceof AgeableMob oldAgeable && to instanceof AgeableMob convertedAgeable) {
+      if (from instanceof AgeableMob && to instanceof AgeableMob) {
+          AgeableMob convertedAgeable = (AgeableMob) from instanceof AgeableMob && to;
          convertedAgeable.setAge(oldAgeable.getAge());
          convertedAgeable.forcedAge = oldAgeable.forcedAge;
          convertedAgeable.forcedAgeTimer = oldAgeable.forcedAgeTimer;
@@ -145,7 +146,8 @@ public enum ConversionType {
          }
       }
 
-      if (from instanceof Zombie fromZombie && fromZombie.canBreakDoors() && to instanceof Zombie toZombie) {
+      if (from instanceof Zombie && fromZombie.canBreakDoors() && to instanceof Zombie) {
+          Zombie toZombie = (Zombie) from instanceof Zombie && fromZombie.canBreakDoors() && to;
          toZombie.setCanBreakDoors(true);
       }
    }

@@ -57,7 +57,7 @@ public class SpongeBlock extends Block {
             FluidState fluidState = level.getFluidState(pos);
             if (!fluidState.is(FluidTags.WATER)) {
                return BlockPos.TraversalNodeStatus.SKIP;
-            } else if (state.getBlock() instanceof BucketPickup bucketPickup && !bucketPickup.pickupBlock(null, level, pos, state).isEmpty()) {
+            } else if (state.getBlock() instanceof BucketPickup && !bucketPickup.pickupBlock(null, level, pos, state).isEmpty()) {
                return BlockPos.TraversalNodeStatus.ACCEPT;
             } else {
                if (state.getBlock() instanceof LiquidBlock) {

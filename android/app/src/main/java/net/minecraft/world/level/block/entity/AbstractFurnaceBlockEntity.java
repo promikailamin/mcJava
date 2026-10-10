@@ -331,7 +331,8 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
       boolean same = !itemStack.isEmpty() && ItemStack.isSameItemSameComponents(oldStack, itemStack);
       this.items.set(slot, itemStack);
       itemStack.limitSize(this.getMaxStackSize(itemStack));
-      if (slot == 0 && !same && this.level instanceof ServerLevel serverLevel) {
+      if (slot == 0 && !same && this.level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) slot == 0 && !same && this.level;
          this.cookingTotalTime = getTotalCookTime(serverLevel, this);
          this.cookingTimer = 0;
          this.setChanged();
@@ -415,7 +416,8 @@ public abstract class AbstractFurnaceBlockEntity extends BaseContainerBlockEntit
    @Override
    public void preRemoveSideEffects(final BlockPos pos, final BlockState state) {
       super.preRemoveSideEffects(pos, state);
-      if (this.level instanceof ServerLevel serverLevel) {
+      if (this.level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level;
          this.getRecipesToAwardAndPopExperience(serverLevel, Vec3.atCenterOf(pos));
       }
    }

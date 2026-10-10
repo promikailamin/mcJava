@@ -24,7 +24,8 @@ public interface Validatable {
 
    static void validateHolder(final ValidationContext context, final Holder<? extends Validatable> holder) {
       ValidationContext elementContext;
-      if (holder instanceof Holder.Reference<?> reference) {
+      if (holder instanceof Holder.Reference<?>) {
+          Holder.Reference<?> reference = (Holder.Reference<?>) holder;
          ResourceKey<?> id = reference.key();
          if (context.hasVisitedElement(id)) {
             context.reportProblem(new ValidationContext.RecursiveElementReferenceProblem(id));
@@ -68,7 +69,8 @@ public interface Validatable {
    private static void validateHolderSet(final ValidationContext context, final HolderSet<? extends Validatable> holderSet) {
       if (holderSet.isBound()) {
          ValidationContext collectionContext;
-         if (holderSet instanceof HolderSet.Named<?> reference) {
+         if (holderSet instanceof HolderSet.Named<?>) {
+             HolderSet.Named<?> reference = (HolderSet.Named<?>) holderSet;
             TagKey<?> id = reference.key();
             if (context.hasVisitedTag(id)) {
                context.reportProblem(new ValidationContext.RecursiveTagReferenceProblem(id));

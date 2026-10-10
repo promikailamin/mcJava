@@ -58,7 +58,8 @@ public record EntityItemAccessor(Collection<? extends Entity> entities) implemen
       for (Entity entity : this.entities) {
          SlotCollection targetSlots = ItemCommands.getSlotsFromProvider(source, entity, slotSource);
          int updatedSlots = function.apply(entity, targetSlots);
-         if (updatedSlots > 0 && entity instanceof ServerPlayer serverPlayer) {
+         if (updatedSlots > 0 && entity instanceof ServerPlayer) {
+             ServerPlayer serverPlayer = (ServerPlayer) updatedSlots > 0 && entity;
             serverPlayer.containerMenu.broadcastChanges();
          }
       }

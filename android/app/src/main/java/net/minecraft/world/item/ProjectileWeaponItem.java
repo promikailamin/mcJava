@@ -93,7 +93,7 @@ public abstract class ProjectileWeaponItem extends Item {
    protected Projectile createProjectile(
       final Level level, final LivingEntity shooter, final ItemStack weapon, final ItemStack projectile, final boolean isCrit
    ) {
-      ArrowItem arrowItem = projectile.getItem() instanceof ArrowItem arrow ? arrow : (ArrowItem)Items.ARROW;
+      ArrowItem arrowItem = projectile.getItem() instanceof ArrowItem ? arrow  : (ArrowItem)Items.ARROW;
       AbstractArrow arrow = arrowItem.createArrow(level, projectile, shooter, weapon);
       if (isCrit) {
          arrow.setCritArrow(true);
@@ -107,7 +107,7 @@ public abstract class ProjectileWeaponItem extends Item {
          return List.of();
       }
 
-      int numProjectiles = shooter.level() instanceof ServerLevel serverLevel ? EnchantmentHelper.processProjectileCount(serverLevel, weapon, shooter, 1) : 1;
+      int numProjectiles = shooter.level() instanceof ServerLevel ? EnchantmentHelper.processProjectileCount(serverLevel, weapon, shooter, 1)  : 1;
       List<ItemStack> drawn = new ArrayList<>(numProjectiles);
       ItemStack projectileCopy = projectile.copy();
 
@@ -122,9 +122,8 @@ public abstract class ProjectileWeaponItem extends Item {
    }
 
    protected static ItemStack useAmmo(final ItemStack weapon, final ItemStack projectile, final LivingEntity holder, final boolean forceInfinite) {
-      int ammoToUse = !forceInfinite && !holder.hasInfiniteMaterials() && holder.level() instanceof ServerLevel serverLevel
-         ? EnchantmentHelper.processAmmoUse(serverLevel, weapon, projectile, 1)
-         : 0;
+      int ammoToUse = !forceInfinite && !holder.hasInfiniteMaterials() && holder.level() instanceof ServerLevel ? EnchantmentHelper.processAmmoUse(serverLevel, weapon, projectile, 1)
+          : 0;
       if (ammoToUse > projectile.getCount()) {
          return ItemStack.EMPTY;
       }
@@ -136,7 +135,8 @@ public abstract class ProjectileWeaponItem extends Item {
       }
 
       ItemStack used = projectile.split(ammoToUse);
-      if (projectile.isEmpty() && holder instanceof Player player) {
+      if (projectile.isEmpty() && holder instanceof Player) {
+          Player player = (Player) projectile.isEmpty() && holder;
          player.getInventory().removeItem(projectile);
       }
 

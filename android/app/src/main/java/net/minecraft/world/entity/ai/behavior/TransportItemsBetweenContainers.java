@@ -97,7 +97,8 @@ public class TransportItemsBetweenContainers extends Behavior<PathfinderMob> {
    }
 
    protected void start(final ServerLevel level, final PathfinderMob body, final long timestamp) {
-      if (body.getNavigation() instanceof GroundPathNavigation pathNavigation) {
+      if (body.getNavigation() instanceof GroundPathNavigation) {
+          GroundPathNavigation pathNavigation = (GroundPathNavigation) body.getNavigation();
          pathNavigation.setCanPathToTargetsBelowSurface(true);
       }
    }
@@ -282,7 +283,8 @@ public class TransportItemsBetweenContainers extends Behavior<PathfinderMob> {
          LevelChunk levelChunk = level.getChunkSource().getChunkNow(chunkPos.x(), chunkPos.z());
          if (levelChunk != null) {
             for (BlockEntity potentialTarget : levelChunk.getBlockEntities().values()) {
-               if (potentialTarget instanceof ChestBlockEntity chestBlockEntity) {
+               if (potentialTarget instanceof ChestBlockEntity) {
+                   ChestBlockEntity chestBlockEntity = (ChestBlockEntity) potentialTarget;
                   double distance = chestBlockEntity.getBlockPos().distToCenterSqr(body.position());
                   if (distance < closestDistance) {
                      TransportItemsBetweenContainers.TransportItemTarget targetValidToPick = this.isTargetValidToPick(
@@ -329,7 +331,7 @@ public class TransportItemsBetweenContainers extends Behavior<PathfinderMob> {
    }
 
    private boolean isContainerLocked(final TransportItemsBetweenContainers.TransportItemTarget transportItemTarget) {
-      return transportItemTarget.blockEntity instanceof BaseContainerBlockEntity blockEntity && blockEntity.isLocked();
+      return transportItemTarget.blockEntity instanceof BaseContainerBlockEntity && blockEntity.isLocked();
    }
 
    private boolean hasValidTarget(final Level level, final PathfinderMob body) {
@@ -593,7 +595,8 @@ public class TransportItemsBetweenContainers extends Behavior<PathfinderMob> {
 
    protected void stop(final ServerLevel level, final PathfinderMob body, final long timestamp) {
       this.onStartTravelling(body);
-      if (body.getNavigation() instanceof GroundPathNavigation pathNavigation) {
+      if (body.getNavigation() instanceof GroundPathNavigation) {
+          GroundPathNavigation pathNavigation = (GroundPathNavigation) body.getNavigation();
          pathNavigation.setCanPathToTargetsBelowSurface(false);
       }
    }
@@ -639,10 +642,11 @@ public class TransportItemsBetweenContainers extends Behavior<PathfinderMob> {
       private static @Nullable Container getBlockEntityContainer(
          final BlockEntity blockEntity, final BlockState blockState, final Level level, final BlockPos blockPos
       ) {
-         if (blockState.getBlock() instanceof ChestBlock chestBlock) {
+         if (blockState.getBlock() instanceof ChestBlock) {
+             ChestBlock chestBlock = (ChestBlock) blockState.getBlock();
             return ChestBlock.getContainer(chestBlock, blockState, level, blockPos, false);
          } else {
-            return blockEntity instanceof Container container ? container : null;
+            return blockEntity instanceof Container ? container  : null;
          }
       }
    }

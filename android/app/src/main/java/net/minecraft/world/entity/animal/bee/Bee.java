@@ -227,7 +227,8 @@ public class Bee extends Animal implements NeutralMob {
       boolean wasHurt = target.hurtServer(level, damageSource, (int)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
       if (wasHurt) {
          EnchantmentHelper.doPostAttackEffects(level, target, damageSource);
-         if (target instanceof LivingEntity livingTarget) {
+         if (target instanceof LivingEntity) {
+             LivingEntity livingTarget = (LivingEntity) target;
             livingTarget.setStingerCount(livingTarget.getStingerCount() + 1);
             int poisonTime = 0;
             if (this.level().getDifficulty() == Difficulty.NORMAL) {
@@ -421,7 +422,7 @@ public class Bee extends Animal implements NeutralMob {
    }
 
    private boolean doesHiveHaveSpace(final BlockPos hivePos) {
-      return this.level().getBlockEntity(hivePos) instanceof BeehiveBlockEntity beehiveBlockEntity ? !beehiveBlockEntity.isFull() : false;
+      return this.level().getBlockEntity(hivePos) instanceof BeehiveBlockEntity ? !((BeehiveBlockEntity) getBlockEntity(hivePos)).isFull()  : false;
    }
 
    @VisibleForDebug
@@ -558,7 +559,8 @@ public class Bee extends Animal implements NeutralMob {
    @Override
    public InteractionResult mobInteract(final Player player, final InteractionHand hand) {
       ItemStack heldItem = player.getItemInHand(hand);
-      if (this.isFood(heldItem) && heldItem.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof FlowerBlock flower) {
+      if (this.isFood(heldItem) && heldItem.getItem() instanceof BlockItem && blockItem.getBlock() instanceof FlowerBlock) {
+          FlowerBlock flower = (FlowerBlock) this.isFood(heldItem) && heldItem.getItem() instanceof BlockItem && blockItem.getBlock();
          MobEffectInstance effect = flower.getBeeInteractionEffect();
          if (effect != null) {
             this.usePlayerItem(player, hand, heldItem);
@@ -964,7 +966,8 @@ public class Bee extends Animal implements NeutralMob {
                Block belowBlock = belowState.getBlock();
                BlockState growState = null;
                if (belowState.is(BlockTags.BEE_GROWABLES)) {
-                  if (belowBlock instanceof CropBlock cropBlockBelow) {
+                  if (belowBlock instanceof CropBlock) {
+                      CropBlock cropBlockBelow = (CropBlock) belowBlock;
                      if (!cropBlockBelow.isMaxAge(belowState)) {
                         growState = cropBlockBelow.getStateForAge(cropBlockBelow.getAge(belowState) + 1);
                      }

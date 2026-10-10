@@ -126,7 +126,8 @@ public class Guardian extends Monster {
       if (this.level().isClientSide()) {
          if (this.clientSideCachedAttackTarget != null) {
             return this.clientSideCachedAttackTarget;
-         } else if (this.level().getEntity(this.entityData.get(DATA_ID_ATTACK_TARGET)) instanceof LivingEntity livingEntity) {
+         } else if (this.level().getEntity(this.entityData.get(DATA_ID_ATTACK_TARGET)) instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity) this.level().getEntity(this.entityData.get(DATA_ID_ATTACK_TARGET));
             this.clientSideCachedAttackTarget = livingEntity;
             return this.clientSideCachedAttackTarget;
          } else {
@@ -307,14 +308,16 @@ public class Guardian extends Monster {
          && level.getFluidState(pos.below()).is(FluidTags.WATER);
    }
 
-   @Override
-   public boolean hurtServer(final ServerLevel level, final DamageSource source, final float damage) {
-      if (!this.isMoving()
-         && !source.is(DamageTypeTags.AVOIDS_GUARDIAN_THORNS)
-         && !source.is(DamageTypes.THORNS)
-         && source.getDirectEntity() instanceof LivingEntity cause) {
-         cause.hurtServer(level, this.damageSources().thorns(this), 2.0F);
-      }
+@Override
+    public boolean hurtServer(final ServerLevel level, final DamageSource source, final float damage) {
+       Entity directEntity = source.getDirectEntity();
+       if (!this.isMoving()
+          && !source.is(DamageTypeTags.AVOIDS_GUARDIAN_THORNS)
+          && !source.is(DamageTypes.THORNS)
+          && directEntity instanceof LivingEntity) {
+          LivingEntity cause = (LivingEntity) directEntity;
+          cause.hurtServer(level, this.damageSources().thorns(this), 2.0F);
+       }
 
       if (this.randomStrollGoal != null) {
          this.randomStrollGoal.trigger();

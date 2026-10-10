@@ -59,7 +59,7 @@ public class CompassAngleState extends NeedleDirectionHelper {
       float angleToTarget = (float)getAngleFromEntityToPos(owner, compassTargetPos);
       float ownerYRotation = getWrappedVisualRotationY(owner);
       float targetRotation;
-      if (owner.asLivingEntity() instanceof Player player && player.isLocalPlayer() && player.level().tickRateManager().runsNormally()) {
+      if (owner.asLivingEntity() instanceof Player && player.isLocalPlayer() && player.level().tickRateManager().runsNormally()) {
          if (this.wobbler.shouldUpdate(gameTime)) {
             this.wobbler.update(gameTime, 0.5F - (ownerYRotation - 0.25F));
          }
@@ -116,12 +116,13 @@ public class CompassAngleState extends NeedleDirectionHelper {
             return level.getRespawnData().globalPos();
          }
       },
-      RECOVERY("recovery") {
-         @Override
-         public @Nullable GlobalPos get(final ClientLevel level, final ItemStack itemStack, final @Nullable ItemOwner owner) {
-            return (owner == null ? null : owner.asLivingEntity()) instanceof Player player ? player.getLastDeathLocation().orElse(null) : null;
-         }
-      };
+RECOVERY("recovery") {
+          @Override
+          public @Nullable GlobalPos get(final ClientLevel level, final ItemStack itemStack, final @Nullable ItemOwner owner) {
+             LivingEntity living = owner == null ? null : owner.asLivingEntity();
+             return living instanceof Player ? ((Player) living).getLastDeathLocation().orElse(null)  : null;
+          }
+       };
 
       public static final Codec<CompassAngleState.CompassTarget> CODEC = StringRepresentable.fromEnum(CompassAngleState.CompassTarget::values);
       private final String name;

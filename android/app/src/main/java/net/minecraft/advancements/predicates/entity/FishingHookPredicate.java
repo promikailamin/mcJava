@@ -24,7 +24,7 @@ public record FishingHookPredicate(Optional<Boolean> inOpenWater) implements Ent
       if (this.inOpenWater.isEmpty()) {
          return true;
       } else {
-         return entity instanceof FishingHook hook ? this.inOpenWater.get() == hook.isOpenWaterFishing() : false;
+         return entity instanceof FishingHook ? this.inOpenWater.get() == ((FishingHook) entity).isOpenWaterFishing()  : false;
       }
    }
 }

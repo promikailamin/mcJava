@@ -209,7 +209,8 @@ public final class TrialSpawner {
             return Optional.empty();
          }
 
-         if (entity instanceof Mob mob) {
+         if (entity instanceof Mob) {
+             Mob mob = (Mob) entity;
             if (!mob.checkSpawnObstruction(level)) {
                return Optional.empty();
             }

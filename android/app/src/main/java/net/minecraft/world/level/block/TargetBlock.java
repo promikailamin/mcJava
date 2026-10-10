@@ -35,7 +35,8 @@ public class TargetBlock extends Block {
    @Override
    protected void onProjectileHit(final Level level, final BlockState state, final BlockHitResult hitResult, final Projectile projectile) {
       int outputStrength = updateRedstoneOutput(level, state, hitResult, projectile);
-      if (projectile.getOwner() instanceof ServerPlayer playerOwner) {
+      if (projectile.getOwner() instanceof ServerPlayer) {
+          ServerPlayer playerOwner = (ServerPlayer) projectile.getOwner();
          playerOwner.awardStat(Stats.TARGET_HIT);
          CriteriaTriggers.TARGET_BLOCK_HIT.trigger(playerOwner, projectile, hitResult.getLocation(), outputStrength);
       }

@@ -61,7 +61,8 @@ public class AccessibilityOnboardingScreen extends Screen {
       GridLayout grid = content.addChild(new GridLayout());
       grid.defaultCellSetting().padding(4);
       GridLayout.RowHelper rowHelper = grid.createRowHelper(2);
-      if (this.options.narrator().createButton(this.options) instanceof CycleButton<?> cycleButton) {
+      if (this.options.narrator().createButton(this.options) instanceof CycleButton<?>) {
+          CycleButton<?> cycleButton = (CycleButton<?>) this.options.narrator().createButton(this.options);
          this.narratorButton = (CycleButton<NarratorStatus>)cycleButton;
          this.narratorButton.active = this.narratorAvailable;
          rowHelper.addChild(this.narratorButton);

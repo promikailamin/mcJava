@@ -42,9 +42,8 @@ public class PermissionSetUnion implements PermissionSet {
 
    @Override
    public PermissionSet union(final PermissionSet other) {
-      return other instanceof PermissionSetUnion otherUnion
-         ? new PermissionSetUnion(this.permissions, otherUnion.permissions)
-         : new PermissionSetUnion(this.permissions, other);
+      return other instanceof PermissionSetUnion ? new PermissionSetUnion(this.permissions, ((PermissionSetUnion) other).permissions)
+          : new PermissionSetUnion(this.permissions, other);
    }
 
    @VisibleForTesting

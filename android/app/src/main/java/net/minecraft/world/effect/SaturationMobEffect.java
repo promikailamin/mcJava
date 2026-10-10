@@ -11,7 +11,8 @@ class SaturationMobEffect extends InstantaneousMobEffect {
 
    @Override
    public boolean applyEffectTick(final ServerLevel level, final LivingEntity mob, final int amplification) {
-      if (mob instanceof Player player) {
+      if (mob instanceof Player) {
+          Player player = (Player) mob;
          player.getFoodData().eat(amplification + 1, 1.0F);
       }
 

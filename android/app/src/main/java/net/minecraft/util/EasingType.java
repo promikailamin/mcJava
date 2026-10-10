@@ -9,7 +9,7 @@ import java.util.List;
 public interface EasingType {
    ExtraCodecs.LateBoundIdMapper<String, EasingType> SIMPLE_REGISTRY = new ExtraCodecs.LateBoundIdMapper<>();
    Codec<EasingType> CODEC = Codec.either(SIMPLE_REGISTRY.codec(Codec.STRING), EasingType.CubicBezier.CODEC)
-      .xmap(Either::unwrap, easing -> easing instanceof EasingType.CubicBezier bezier ? Either.right(bezier) : Either.left(easing));
+      .xmap(Either::unwrap, easing -> easing instanceof EasingType.CubicBezier ? Either.right(bezier)  : Either.left(easing));
    EasingType CONSTANT = registerSimple("constant", x -> 0.0F);
    EasingType LINEAR = registerSimple("linear", x -> x);
    EasingType IN_BACK = registerSimple("in_back", Ease::inBack);
@@ -126,7 +126,7 @@ public interface EasingType {
 
       @Override
       public boolean equals(final Object obj) {
-         return obj instanceof EasingType.CubicBezier bezier && this.controls.equals(bezier.controls);
+         return obj instanceof EasingType.CubicBezier && this.controls.equals(bezier.controls);
       }
 
       @Override

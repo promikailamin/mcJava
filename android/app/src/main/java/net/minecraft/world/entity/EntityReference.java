@@ -132,7 +132,7 @@ public final class EntityReference<StoredEntityType extends UniquelyIdentifyable
 
    @Override
    public boolean equals(final Object obj) {
-      return obj == this ? true : obj instanceof EntityReference<?> reference && this.getUUID().equals(reference.getUUID());
+      return obj == this ? true : obj instanceof EntityReference<?> && this.getUUID().equals(reference.getUUID());
    }
 
    @Override

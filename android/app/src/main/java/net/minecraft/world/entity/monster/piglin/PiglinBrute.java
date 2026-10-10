@@ -107,7 +107,8 @@ public class PiglinBrute extends AbstractPiglin {
    @Override
    public boolean hurtServer(final ServerLevel level, final DamageSource source, final float damage) {
       boolean wasHurt = super.hurtServer(level, source, damage);
-      if (wasHurt && source.getEntity() instanceof LivingEntity sourceEntity) {
+      if (wasHurt && source.getEntity() instanceof LivingEntity) {
+          LivingEntity sourceEntity = (LivingEntity) wasHurt && source.getEntity();
          PiglinBruteAi.wasHurtBy(level, this, sourceEntity);
       }
 

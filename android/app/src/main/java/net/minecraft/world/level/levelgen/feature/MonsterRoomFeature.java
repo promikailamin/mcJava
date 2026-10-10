@@ -113,7 +113,8 @@ public record MonsterRoomFeature() implements Feature {
          }
 
          this.safeSetBlock(level, origin, Blocks.SPAWNER.defaultBlockState(), replaceableTag);
-         if (level.getBlockEntity(origin) instanceof SpawnerBlockEntity spawner) {
+         if (level.getBlockEntity(origin) instanceof SpawnerBlockEntity) {
+             SpawnerBlockEntity spawner = (SpawnerBlockEntity) level.getBlockEntity(origin);
             spawner.setEntityId(this.randomEntityId(random), random);
          } else {
             LOGGER.error("Failed to fetch mob spawner entity at ({}, {}, {})", new Object[]{origin.getX(), origin.getY(), origin.getZ()});

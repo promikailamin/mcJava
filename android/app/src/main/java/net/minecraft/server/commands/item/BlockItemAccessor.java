@@ -64,7 +64,8 @@ public record BlockItemAccessor(BlockPos pos) implements ItemAccessor<BlockPos> 
    }
 
    public static Container getContainer(final CommandSourceStack source, final BlockPos pos, final Dynamic3CommandExceptionType exceptionType) throws CommandSyntaxException {
-      if (source.getLevel().getBlockEntity(pos) instanceof Container container) {
+      if (source.getLevel().getBlockEntity(pos) instanceof Container) {
+          Container container = (Container) source.getLevel().getBlockEntity(pos);
          return container;
       } else {
          throw exceptionType.create(pos.getX(), pos.getY(), pos.getZ());

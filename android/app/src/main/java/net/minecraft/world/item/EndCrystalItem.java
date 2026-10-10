@@ -41,7 +41,8 @@ public class EndCrystalItem extends Item {
          return InteractionResult.FAIL;
       }
 
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          EndCrystal crystal = new EndCrystal(level, x + 0.5, y, z + 0.5);
          crystal.setShowBottom(false);
          level.addFreshEntity(crystal);

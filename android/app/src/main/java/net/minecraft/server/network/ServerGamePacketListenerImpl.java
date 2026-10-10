@@ -487,7 +487,7 @@ public class ServerGamePacketListenerImpl
             yDist = targetY - this.vehicleLastGoodY;
             zDist = targetZ - this.vehicleLastGoodZ;
             boolean vehicleRestsOnSomething = vehicle.verticalCollisionBelow;
-            if (vehicle instanceof LivingEntity livingVehicle && livingVehicle.onClimbable()) {
+            if (vehicle instanceof LivingEntity && livingVehicle.onClimbable()) {
                livingVehicle.resetFallDistance();
             }
 
@@ -632,7 +632,8 @@ public class ServerGamePacketListenerImpl
          CommandBlockEntity autoCommandBlock = null;
          BlockPos blockPos = packet.getPos();
          BlockEntity blockEntity = this.player.level().getBlockEntity(blockPos);
-         if (blockEntity instanceof CommandBlockEntity commandBlockEntity) {
+         if (blockEntity instanceof CommandBlockEntity) {
+             CommandBlockEntity commandBlockEntity = (CommandBlockEntity) blockEntity;
             autoCommandBlock = commandBlockEntity;
             commandBlock = autoCommandBlock.getCommandBlock();
          }
@@ -754,7 +755,8 @@ public class ServerGamePacketListenerImpl
             this.tryPickItem(itemStack);
          }
 
-         if (packet.includeData() && this.player.canUseGameMasterBlocks() && entity instanceof Avatar avatar) {
+         if (packet.includeData() && this.player.canUseGameMasterBlocks() && entity instanceof Avatar) {
+             Avatar avatar = (Avatar) packet.includeData() && this.player.canUseGameMasterBlocks() && entity;
             FetchProfileCommand.printForAvatar(this.player.createCommandSourceStack(), avatar);
          }
       }
@@ -782,7 +784,8 @@ public class ServerGamePacketListenerImpl
    @Override
    public void handleRenameItem(final ServerboundRenameItemPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.player.level());
-      if (this.player.containerMenu instanceof AnvilMenu menu) {
+      if (this.player.containerMenu instanceof AnvilMenu) {
+          AnvilMenu menu = (AnvilMenu) this.player.containerMenu;
          if (!menu.stillValid(this.player)) {
             LOGGER.debug("Player {} interacted with invalid menu {}", this.player, menu);
             return;
@@ -795,7 +798,8 @@ public class ServerGamePacketListenerImpl
    @Override
    public void handleSetBeaconPacket(final ServerboundSetBeaconPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.player.level());
-      if (this.player.containerMenu instanceof BeaconMenu menu) {
+      if (this.player.containerMenu instanceof BeaconMenu) {
+          BeaconMenu menu = (BeaconMenu) this.player.containerMenu;
          if (!this.player.containerMenu.stillValid(this.player)) {
             LOGGER.debug("Player {} interacted with invalid menu {}", this.player, this.player.containerMenu);
             return;
@@ -846,7 +850,8 @@ public class ServerGamePacketListenerImpl
       if (this.player.canUseGameMasterBlocks()) {
          BlockPos blockPos = packet.getPos();
          BlockState state = this.player.level().getBlockState(blockPos);
-         if (this.player.level().getBlockEntity(blockPos) instanceof StructureBlockEntity structure) {
+         if (this.player.level().getBlockEntity(blockPos) instanceof StructureBlockEntity) {
+             StructureBlockEntity structure = (StructureBlockEntity) this.player.level().getBlockEntity(blockPos);
             structure.setMode(packet.getMode());
             structure.setStructureName(packet.getName());
             structure.setStructurePos(packet.getOffset());
@@ -899,7 +904,8 @@ public class ServerGamePacketListenerImpl
       if (this.player.canUseGameMasterBlocks()) {
          BlockPos blockPos = packet.position();
          BlockState initialState = this.player.level().getBlockState(blockPos);
-         if (this.player.level().getBlockEntity(blockPos) instanceof TestBlockEntity testBlock) {
+         if (this.player.level().getBlockEntity(blockPos) instanceof TestBlockEntity) {
+             TestBlockEntity testBlock = (TestBlockEntity) this.player.level().getBlockEntity(blockPos);
             testBlock.setMode(packet.mode());
             testBlock.setMessage(packet.message());
             testBlock.setChanged();
@@ -912,7 +918,8 @@ public class ServerGamePacketListenerImpl
    public void handleTestInstanceBlockAction(final ServerboundTestInstanceBlockActionPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.player.level());
       BlockPos pos = packet.pos();
-      if (this.player.canUseGameMasterBlocks() && this.player.level().getBlockEntity(pos) instanceof TestInstanceBlockEntity blockEntity) {
+      if (this.player.canUseGameMasterBlocks() && this.player.level().getBlockEntity(pos) instanceof TestInstanceBlockEntity) {
+          TestInstanceBlockEntity blockEntity = (TestInstanceBlockEntity) this.player.canUseGameMasterBlocks() && this.player.level().getBlockEntity(pos);
          if (packet.action() != ServerboundTestInstanceBlockActionPacket.Action.QUERY
             && packet.action() != ServerboundTestInstanceBlockActionPacket.Action.INIT) {
             blockEntity.set(packet.data());
@@ -958,7 +965,8 @@ public class ServerGamePacketListenerImpl
       if (this.player.canUseGameMasterBlocks()) {
          BlockPos blockPos = packet.getPos();
          BlockState state = this.player.level().getBlockState(blockPos);
-         if (this.player.level().getBlockEntity(blockPos) instanceof JigsawBlockEntity jigsaw) {
+         if (this.player.level().getBlockEntity(blockPos) instanceof JigsawBlockEntity) {
+             JigsawBlockEntity jigsaw = (JigsawBlockEntity) this.player.level().getBlockEntity(blockPos);
             jigsaw.setName(packet.getName());
             jigsaw.setTarget(packet.getTarget());
             jigsaw.setPool(ResourceKey.create(Registries.TEMPLATE_POOL, packet.getPool()));
@@ -977,7 +985,8 @@ public class ServerGamePacketListenerImpl
       PacketUtils.ensureRunningOnSameThread(packet, this, this.player.level());
       if (this.player.canUseGameMasterBlocks()) {
          BlockPos blockPos = packet.getPos();
-         if (this.player.level().getBlockEntity(blockPos) instanceof JigsawBlockEntity jigsaw) {
+         if (this.player.level().getBlockEntity(blockPos) instanceof JigsawBlockEntity) {
+             JigsawBlockEntity jigsaw = (JigsawBlockEntity) this.player.level().getBlockEntity(blockPos);
             jigsaw.generate(this.player.level(), packet.levels(), packet.keepJigsaws());
          }
       }
@@ -987,7 +996,8 @@ public class ServerGamePacketListenerImpl
    public void handleSelectTrade(final ServerboundSelectTradePacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.player.level());
       int selection = packet.getItem();
-      if (this.player.containerMenu instanceof MerchantMenu menu) {
+      if (this.player.containerMenu instanceof MerchantMenu) {
+          MerchantMenu menu = (MerchantMenu) this.player.containerMenu;
          if (!menu.stillValid(this.player)) {
             LOGGER.debug("Player {} interacted with invalid menu {}", this.player, menu);
             return;
@@ -1058,7 +1068,8 @@ public class ServerGamePacketListenerImpl
    public void handleContainerSlotStateChanged(final ServerboundContainerSlotStateChangedPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.player.level());
       if (!this.player.isSpectator() && packet.containerId() == this.player.containerMenu.containerId) {
-         if (this.player.containerMenu instanceof CrafterMenu crafterMenu && crafterMenu.getContainer() instanceof CrafterBlockEntity crafterBlockEntity) {
+         if (this.player.containerMenu instanceof CrafterMenu && crafterMenu.getContainer() instanceof CrafterBlockEntity) {
+             CrafterBlockEntity crafterBlockEntity = (CrafterBlockEntity) this.player.containerMenu instanceof CrafterMenu && crafterMenu.getContainer();
             crafterBlockEntity.setSlotState(packet.slotId(), packet.newState());
          }
       }
@@ -1401,7 +1412,7 @@ public class ServerGamePacketListenerImpl
       }
 
       Item item = itemStack.getItem();
-      return (item instanceof BlockItem || item instanceof BucketItem bucket && bucket.getContent() != Fluids.EMPTY)
+      return (item instanceof BlockItem || item instanceof BucketItem && bucket.getContent() != Fluids.EMPTY)
          && !player.getCooldowns().isOnCooldown(itemStack);
    }
 
@@ -1444,7 +1455,7 @@ public class ServerGamePacketListenerImpl
                            && pos.getY() >= maxY
                            && wasBlockPlacementAttempt(this.player, itemStack)) {
                            this.player.sendBuildLimitMessage(true, maxY);
-                        } else if (interactionResult instanceof InteractionResult.Success success && success.shouldSwing()) {
+                        } else if (interactionResult instanceof InteractionResult.Success && success.shouldSwing()) {
                            this.player.swingAndResetAttackStrength(hand, swingAnimation, success.swingSource() != InteractionResult.SwingSource.PREDICTED);
                         }
 
@@ -1454,7 +1465,7 @@ public class ServerGamePacketListenerImpl
                            } else if (direction == Direction.DOWN && pos.getY() <= minY) {
                               this.player.sendBuildLimitMessage(false, minY);
                            }
-                        } else if (interactionResult instanceof InteractionResult.Success success && success.shouldSwing()) {
+                        } else if (interactionResult instanceof InteractionResult.Success && success.shouldSwing()) {
                            this.player.swingAndResetAttackStrength(hand, swingAnimation, success.swingSource() != InteractionResult.SwingSource.PREDICTED);
                         }
                      } else {
@@ -1492,7 +1503,7 @@ public class ServerGamePacketListenerImpl
                this.player.absSnapRotationTo(targetYRot, targetXRot);
             }
 
-            if (this.player.gameMode.useItem(this.player, level, itemStack, hand) instanceof InteractionResult.Success success && success.shouldSwing()) {
+            if (this.player.gameMode.useItem(this.player, level, itemStack, hand) instanceof InteractionResult.Success && success.shouldSwing()) {
                this.player.swingAndResetAttackStrength(hand, swingAnimation, success.swingSource() != InteractionResult.SwingSource.PREDICTED);
             }
          }
@@ -1516,7 +1527,8 @@ public class ServerGamePacketListenerImpl
    @Override
    public void handlePaddleBoat(final ServerboundPaddleBoatPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.player.level());
-      if (this.player.getControlledVehicle() instanceof AbstractBoat boat) {
+      if (this.player.getControlledVehicle() instanceof AbstractBoat) {
+          AbstractBoat boat = (AbstractBoat) this.player.getControlledVehicle();
          boat.setPaddleState(packet.getLeft(), packet.getRight());
       }
    }
@@ -1797,7 +1809,8 @@ public class ServerGamePacketListenerImpl
                }
                break;
             case START_RIDING_JUMP:
-               if (this.player.getControlledVehicle() instanceof PlayerRideableJumping vehicle) {
+               if (this.player.getControlledVehicle() instanceof PlayerRideableJumping) {
+                   PlayerRideableJumping vehicle = (PlayerRideableJumping) this.player.getControlledVehicle();
                   int data = packet.getData();
                   if (vehicle.canJump() && data > 0) {
                      vehicle.handleStartJump(data);
@@ -1805,12 +1818,14 @@ public class ServerGamePacketListenerImpl
                }
                break;
             case STOP_RIDING_JUMP:
-               if (this.player.getControlledVehicle() instanceof PlayerRideableJumping vehicle) {
+               if (this.player.getControlledVehicle() instanceof PlayerRideableJumping) {
+                   PlayerRideableJumping vehicle = (PlayerRideableJumping) this.player.getControlledVehicle();
                   vehicle.handleStopJump();
                }
                break;
             case OPEN_INVENTORY:
-               if (this.player.getVehicle() instanceof HasCustomInventoryScreen vehicleWithInventory) {
+               if (this.player.getVehicle() instanceof HasCustomInventoryScreen) {
+                   HasCustomInventoryScreen vehicleWithInventory = (HasCustomInventoryScreen) this.player.getVehicle();
                   vehicleWithInventory.openCustomInventoryScreen(this.player);
                }
                break;
@@ -1888,7 +1903,7 @@ public class ServerGamePacketListenerImpl
                   if (target instanceof ItemEntity
                      || target instanceof ExperienceOrb
                      || target == this.player
-                     || target instanceof AbstractArrow abstractArrow && !abstractArrow.isAttackable()) {
+                     || target instanceof AbstractArrow && !abstractArrow.isAttackable()) {
                      this.disconnect(Component.translatable("multiplayer.disconnect.invalid_entity_attacked"));
                      LOGGER.warn("Player {} tried to attack an invalid entity", this.player.getPlainTextName());
                   } else if (mainHandItem.isItemEnabled(level.enabledFeatures())) {
@@ -1918,7 +1933,8 @@ public class ServerGamePacketListenerImpl
                ItemStack tool = this.player.getItemInHand(hand);
                if (tool.isItemEnabled(level.enabledFeatures())) {
                   ItemStack usedItemStack = tool.copy();
-                  if (this.player.interactOn(target, hand, location) instanceof InteractionResult.Success success) {
+                  if (this.player.interactOn(target, hand, location) instanceof InteractionResult.Success) {
+                      InteractionResult.Success success = (InteractionResult.Success) this.player.interactOn(target, hand, location);
                      ItemStack awardedForStack = success.wasItemInteraction() ? usedItemStack : ItemStack.EMPTY;
                      CriteriaTriggers.PLAYER_INTERACTED_WITH_ENTITY.trigger(this.player, awardedForStack, target);
                      if (success.shouldSwing()) {
@@ -2057,7 +2073,8 @@ public class ServerGamePacketListenerImpl
             if (displayInfo != null) {
                RecipeHolder<?> recipe = displayInfo.parent();
                if (this.player.getRecipeBook().contains(recipe.id())) {
-                  if (this.player.containerMenu instanceof RecipeBookMenu recipeBookMenu) {
+                  if (this.player.containerMenu instanceof RecipeBookMenu) {
+                      RecipeBookMenu recipeBookMenu = (RecipeBookMenu) this.player.containerMenu;
                      if (recipe.value().placementInfo().isImpossibleToPlace()) {
                         LOGGER.debug("Player {} tried to place impossible recipe {}", this.player, recipe.id().identifier());
                         return;
@@ -2130,7 +2147,7 @@ public class ServerGamePacketListenerImpl
       ServerLevel level = this.player.level();
       BlockPos pos = packet.pos();
       if (level.hasChunkAt(pos)) {
-         if (!(level.getBlockEntity(pos) instanceof SignBlockEntity sign)) {
+         if (!(level.getBlockEntity(pos) instanceof SignBlockEntity)) {
             return;
          }
 

@@ -32,7 +32,8 @@ public class MobBucketItem extends BucketItem {
 
    @Override
    public void checkExtraContent(final @Nullable LivingEntity user, final Level level, final ItemStack itemStack, final BlockPos pos) {
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          this.spawn(serverLevel, itemStack, pos);
          level.gameEvent(user, GameEvent.ENTITY_PLACE, pos);
       }
@@ -45,7 +46,8 @@ public class MobBucketItem extends BucketItem {
 
    private void spawn(final ServerLevel level, final ItemStack itemStack, final BlockPos spawnPos) {
       Mob mob = this.type.create(level, EntityType.createDefaultStackConfig(level, itemStack, null), spawnPos, EntitySpawnReason.BUCKET, true, false);
-      if (mob instanceof Bucketable bucketable) {
+      if (mob instanceof Bucketable) {
+          Bucketable bucketable = (Bucketable) mob;
          CustomData entityData = itemStack.getOrDefault(DataComponents.BUCKET_ENTITY_DATA, CustomData.EMPTY);
          bucketable.loadFromBucketTag(entityData.copyTag());
          bucketable.setFromBucket(true);

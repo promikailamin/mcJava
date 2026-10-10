@@ -92,7 +92,7 @@ public final class LongArrayTag implements CollectionTag {
 
    @Override
    public boolean equals(final Object obj) {
-      return this == obj ? true : obj instanceof LongArrayTag longArrayTag && Arrays.equals(this.data, longArrayTag.data);
+      return this == obj ? true : obj instanceof LongArrayTag && Arrays.equals(this.data, longArrayTag.data);
    }
 
    @Override
@@ -120,7 +120,8 @@ public final class LongArrayTag implements CollectionTag {
 
    @Override
    public boolean setTag(final int index, final Tag tag) {
-      if (tag instanceof NumericTag numeric) {
+      if (tag instanceof NumericTag) {
+          NumericTag numeric = (NumericTag) tag;
          this.data[index] = numeric.longValue();
          return true;
       } else {
@@ -130,7 +131,8 @@ public final class LongArrayTag implements CollectionTag {
 
    @Override
    public boolean addTag(final int index, final Tag tag) {
-      if (tag instanceof NumericTag numeric) {
+      if (tag instanceof NumericTag) {
+          NumericTag numeric = (NumericTag) tag;
          this.data = ArrayUtils.add(this.data, index, numeric.longValue());
          return true;
       } else {

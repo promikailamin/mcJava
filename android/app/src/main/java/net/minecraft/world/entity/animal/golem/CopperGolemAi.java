@@ -114,7 +114,8 @@ public class CopperGolemAi {
       final CopperGolemState state, final @Nullable SoundEvent sound
    ) {
       return (body, target, ticksSinceReachingTarget) -> {
-         if (body instanceof CopperGolem copperGolem) {
+         if (body instanceof CopperGolem) {
+             CopperGolem copperGolem = (CopperGolem) body;
             Container container = target.container();
             if (ticksSinceReachingTarget == 1) {
                container.startOpen(copperGolem);
@@ -139,7 +140,8 @@ public class CopperGolemAi {
 
    private static Consumer<PathfinderMob> onTravelling() {
       return body -> {
-         if (body instanceof CopperGolem copperGolem) {
+         if (body instanceof CopperGolem) {
+             CopperGolem copperGolem = (CopperGolem) body;
             copperGolem.clearOpenedChestPos();
             copperGolem.setState(CopperGolemState.IDLE);
          }
@@ -147,8 +149,7 @@ public class CopperGolemAi {
    }
 
    private static Predicate<TransportItemsBetweenContainers.TransportItemTarget> shouldQueueForTarget() {
-      return transportTarget -> transportTarget.blockEntity() instanceof ChestBlockEntity chestBlockEntity
-         ? !chestBlockEntity.getEntitiesWithContainerOpen().isEmpty()
-         : false;
+      return transportTarget -> transportTarget.blockEntity() instanceof ChestBlockEntity ? !((ChestBlockEntity) transportTarget.blockEntity()).getEntitiesWithContainerOpen().isEmpty()
+          : false;
    }
 }

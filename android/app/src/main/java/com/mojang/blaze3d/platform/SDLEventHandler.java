@@ -102,7 +102,8 @@ public class SDLEventHandler {
 
    private void handleKeymapChangedEvent() {
       this.minecraft.execute(() -> {
-         if (this.minecraft.gui.screen() instanceof KeyBindsScreen keyBindsScreen) {
+         if (this.minecraft.gui.screen() instanceof KeyBindsScreen) {
+             KeyBindsScreen keyBindsScreen = (KeyBindsScreen) this.minecraft.gui.screen();
             keyBindsScreen.refreshKeybindLabels();
          }
       });

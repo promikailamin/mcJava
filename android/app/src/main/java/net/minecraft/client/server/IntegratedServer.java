@@ -413,7 +413,8 @@ public class IntegratedServer extends MinecraftServer {
    @Override
    public void setDefaultGameType(final GameType gameType) {
       super.setDefaultGameType(gameType);
-      if (this.minecraft.gui.screen() instanceof WorldOptionsScreen worldOptionsScreen) {
+      if (this.minecraft.gui.screen() instanceof WorldOptionsScreen) {
+          WorldOptionsScreen worldOptionsScreen = (WorldOptionsScreen) this.minecraft.gui.screen();
          worldOptionsScreen.onDefaultGameModeChanged(gameType);
       }
    }

@@ -70,7 +70,7 @@ public final class Ingredient implements Predicate<ItemStack>, StackedContents.I
 
    @Override
    public boolean equals(final Object o) {
-      return o instanceof Ingredient other ? Objects.equals(this.values, other.values) : false;
+      return o instanceof Ingredient ? Objects.equals(this.values, ((Ingredient) o).values)  : false;
    }
 
    @Override

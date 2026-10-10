@@ -99,7 +99,7 @@ public final class EntityPredicate {
 
    @Override
    public boolean equals(final Object o) {
-      return o == this || o instanceof EntityPredicate that && Objects.equals(this.parts, that.parts);
+      return o == this || o instanceof EntityPredicate && Objects.equals(this.parts, that.parts);
    }
 
    @Override

@@ -80,7 +80,8 @@ public class RealmsCreateRealmScreen extends RealmsScreen {
          }, this.minecraft).exceptionallyAsync(ex -> {
             this.lastScreen.resetScreen();
             Component errorMessage;
-            if (ex.getCause() instanceof RealmsServiceException realmsServiceException) {
+            if (ex.getCause() instanceof RealmsServiceException) {
+                RealmsServiceException realmsServiceException = (RealmsServiceException) ex.getCause();
                errorMessage = realmsServiceException.realmsError.errorMessage();
             } else {
                errorMessage = Component.translatable("mco.errorMessage.initialize.failed");

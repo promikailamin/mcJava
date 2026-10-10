@@ -70,7 +70,8 @@ public abstract class AbstractFurnaceMenu extends RecipeBookMenu {
 
    @Override
    public void fillCraftSlotsStackedContents(final StackedItemContents stackedContents) {
-      if (this.container instanceof StackedContentsCompatible stackedContentsCompatible) {
+      if (this.container instanceof StackedContentsCompatible) {
+          StackedContentsCompatible stackedContentsCompatible = (StackedContentsCompatible) this.container;
          stackedContentsCompatible.fillStackedContents(stackedContents);
       }
    }

@@ -109,7 +109,8 @@ public class SmithingMenu extends ItemCombinerMenu {
    public void createResult() {
       SmithingRecipeInput input = this.createRecipeInput();
       Optional<RecipeHolder<SmithingRecipe>> foundRecipe;
-      if (this.level instanceof ServerLevel serverLevel) {
+      if (this.level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level;
          foundRecipe = serverLevel.recipeAccess().getRecipeFor(RecipeType.SMITHING, input, serverLevel);
       } else {
          foundRecipe = Optional.empty();

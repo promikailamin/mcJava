@@ -24,7 +24,7 @@ public interface HashedStack {
    StreamCodec<RegistryFriendlyByteBuf, HashedStack> STREAM_CODEC = ByteBufCodecs.optional(HashedStack.ActualItem.STREAM_CODEC)
       .map(
          actualItem -> (HashedStack)DataFixUtils.orElse(actualItem, EMPTY),
-         hashedStack -> hashedStack instanceof HashedStack.ActualItem actualItem ? Optional.of(actualItem) : Optional.empty()
+         hashedStack -> hashedStack instanceof HashedStack.ActualItem ? Optional.of(actualItem)  : Optional.empty()
       );
 
    boolean matches(ItemStack stack, HashedPatchMap.HashGenerator hasher);

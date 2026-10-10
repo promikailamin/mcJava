@@ -53,12 +53,14 @@ public class MaceItem extends Item {
          ServerLevel level = (ServerLevel)attacker.level();
          attacker.setDeltaMovement(attacker.getDeltaMovement().with(Direction.Axis.Y, 0.01F));
          attacker.setIgnoreFallDamageFromCurrentImpulse(true, this.calculateImpactPosition(attacker));
-         if (attacker instanceof ServerPlayer player) {
+         if (attacker instanceof ServerPlayer) {
+             ServerPlayer player = (ServerPlayer) attacker;
             player.connection.send(new ClientboundSetEntityMotionPacket(player));
          }
 
          if (mob.onGround()) {
-            if (attacker instanceof ServerPlayer player) {
+            if (attacker instanceof ServerPlayer) {
+                ServerPlayer player = (ServerPlayer) attacker;
                player.setSpawnExtraParticlesOnFall(true);
             }
 
@@ -87,7 +89,8 @@ public class MaceItem extends Item {
 
    @Override
    public float getAttackDamageBonus(final Entity victim, final float ignoredDamage, final DamageSource damageSource) {
-      if (damageSource.getDirectEntity() instanceof LivingEntity attacker) {
+      if (damageSource.getDirectEntity() instanceof LivingEntity) {
+          LivingEntity attacker = (LivingEntity) damageSource.getDirectEntity();
          if (!canSmashAttack(attacker)) {
             return 0.0F;
          }
@@ -104,9 +107,8 @@ public class MaceItem extends Item {
             damage = 22.0 + fallDistance - 8.0;
          }
 
-         return attacker.level() instanceof ServerLevel level
-            ? (float)(damage + EnchantmentHelper.modifyFallBasedDamage(level, attacker.getWeaponItem(), victim, damageSource, 0.0F) * fallDistance)
-            : (float)damage;
+         return attacker.level() instanceof ServerLevel ? (float)(damage + EnchantmentHelper.modifyFallBasedDamage(level, attacker.getWeaponItem(), victim, damageSource, 0.0F) * fallDistance)
+             : (float)damage;
       } else {
          return 0.0F;
       }
@@ -120,7 +122,8 @@ public class MaceItem extends Item {
          Vec3 knockbackVector = direction.normalize().scale(knockbackPower);
          if (knockbackPower > 0.0) {
             nearby.push(knockbackVector.x, 0.7F, knockbackVector.z);
-            if (nearby instanceof ServerPlayer otherPlayer) {
+            if (nearby instanceof ServerPlayer) {
+                ServerPlayer otherPlayer = (ServerPlayer) nearby;
                otherPlayer.connection.send(new ClientboundSetEntityMotionPacket(otherPlayer));
             }
          }
@@ -133,11 +136,11 @@ public class MaceItem extends Item {
          boolean notPlayer = nearby != attacker && nearby != entity;
          boolean notAlliedToPlayer = !attacker.isAlliedTo(nearby);
          boolean notTamedByPlayer = !(
-            nearby instanceof TamableAnimal animal && entity instanceof LivingEntity livingAttacker && animal.isTame() && animal.isOwnedBy(livingAttacker)
+            nearby instanceof TamableAnimal && entity instanceof LivingEntity && animal.isTame() && animal.isOwnedBy(livingAttacker)
          );
-         boolean notArmorStand = !(nearby instanceof ArmorStand armorStand && armorStand.isMarker());
+         boolean notArmorStand = !(nearby instanceof ArmorStand && armorStand.isMarker());
          boolean withinRange = entity.distanceToSqr(nearby) <= Math.pow(3.5, 2.0);
-         boolean notFlyingInCreative = !(nearby instanceof Player player && player.isCreative() && player.getAbilities().flying);
+         boolean notFlyingInCreative = !(nearby instanceof Player && player.isCreative() && player.getAbilities().flying);
          return notSpectator && notPlayer && notAlliedToPlayer && notTamedByPlayer && notArmorStand && withinRange && notFlyingInCreative;
       };
    }

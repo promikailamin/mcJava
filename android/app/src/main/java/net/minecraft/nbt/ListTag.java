@@ -169,7 +169,7 @@ public final class ListTag extends AbstractList<Tag> implements CollectionTag {
       if (elementType != 10) {
          return tag;
       } else {
-         return tag instanceof CompoundTag compoundTag && !isWrapper(compoundTag) ? compoundTag : wrapElement(tag);
+         return tag instanceof CompoundTag && !isWrapper(compoundTag) ? compoundTag : wrapElement(tag);
       }
    }
 
@@ -205,7 +205,8 @@ public final class ListTag extends AbstractList<Tag> implements CollectionTag {
    }
 
    public void addAndUnwrap(final Tag tag) {
-      if (tag instanceof CompoundTag compound) {
+      if (tag instanceof CompoundTag) {
+          CompoundTag compound = (CompoundTag) tag;
          this.add(tryUnwrap(compound));
       } else {
          this.add(tag);
@@ -252,7 +253,7 @@ public final class ListTag extends AbstractList<Tag> implements CollectionTag {
    }
 
    public Optional<CompoundTag> getCompound(final int index) {
-      return this.getNullable(index) instanceof CompoundTag tag ? Optional.of(tag) : Optional.empty();
+      return this.getNullable(index) instanceof CompoundTag ? Optional.of(tag)  : Optional.empty();
    }
 
    public CompoundTag getCompoundOrEmpty(final int index) {
@@ -260,7 +261,7 @@ public final class ListTag extends AbstractList<Tag> implements CollectionTag {
    }
 
    public Optional<ListTag> getList(final int index) {
-      return this.getNullable(index) instanceof ListTag tag ? Optional.of(tag) : Optional.empty();
+      return this.getNullable(index) instanceof ListTag ? Optional.of(tag)  : Optional.empty();
    }
 
    public ListTag getListOrEmpty(final int index) {
@@ -272,7 +273,7 @@ public final class ListTag extends AbstractList<Tag> implements CollectionTag {
    }
 
    public short getShortOr(final int index, final short defaultValue) {
-      return this.getNullable(index) instanceof NumericTag tag ? tag.shortValue() : defaultValue;
+      return this.getNullable(index) instanceof NumericTag ? shortValue() : defaultValue;
    }
 
    public Optional<Integer> getInt(final int index) {
@@ -280,15 +281,15 @@ public final class ListTag extends AbstractList<Tag> implements CollectionTag {
    }
 
    public int getIntOr(final int index, final int defaultValue) {
-      return this.getNullable(index) instanceof NumericTag tag ? tag.intValue() : defaultValue;
+      return this.getNullable(index) instanceof NumericTag ? intValue() : defaultValue;
    }
 
    public Optional<int[]> getIntArray(final int index) {
-      return this.getNullable(index) instanceof IntArrayTag tag ? Optional.of(tag.getAsIntArray()) : Optional.empty();
+      return this.getNullable(index) instanceof IntArrayTag ? Optional.of(((IntArrayTag) this.getNullable(index)).getAsIntArray())  : Optional.empty();
    }
 
    public Optional<long[]> getLongArray(final int index) {
-      return this.getNullable(index) instanceof LongArrayTag tag ? Optional.of(tag.getAsLongArray()) : Optional.empty();
+      return this.getNullable(index) instanceof LongArrayTag ? Optional.of(((LongArrayTag) this.getNullable(index)).getAsLongArray())  : Optional.empty();
    }
 
    public Optional<Double> getDouble(final int index) {
@@ -296,7 +297,7 @@ public final class ListTag extends AbstractList<Tag> implements CollectionTag {
    }
 
    public double getDoubleOr(final int index, final double defaultValue) {
-      return this.getNullable(index) instanceof NumericTag tag ? tag.doubleValue() : defaultValue;
+      return this.getNullable(index) instanceof NumericTag ? doubleValue() : defaultValue;
    }
 
    public Optional<Float> getFloat(final int index) {
@@ -304,7 +305,7 @@ public final class ListTag extends AbstractList<Tag> implements CollectionTag {
    }
 
    public float getFloatOr(final int index, final float defaultValue) {
-      return this.getNullable(index) instanceof NumericTag tag ? tag.floatValue() : defaultValue;
+      return this.getNullable(index) instanceof NumericTag ? floatValue() : defaultValue;
    }
 
    public Optional<String> getString(final int index) {
@@ -370,7 +371,7 @@ public final class ListTag extends AbstractList<Tag> implements CollectionTag {
 
    @Override
    public boolean equals(final Object obj) {
-      return this == obj ? true : obj instanceof ListTag listTag && Objects.equals(this.list, listTag.list);
+      return this == obj ? true : obj instanceof ListTag && Objects.equals(this.list, listTag.list);
    }
 
    @Override
@@ -385,7 +386,8 @@ public final class ListTag extends AbstractList<Tag> implements CollectionTag {
 
    public Stream<CompoundTag> compoundStream() {
       return this.stream().mapMulti((tag, output) -> {
-         if (tag instanceof CompoundTag compound) {
+         if (tag instanceof CompoundTag) {
+             CompoundTag compound = (CompoundTag) tag;
             output.accept(compound);
          }
       });

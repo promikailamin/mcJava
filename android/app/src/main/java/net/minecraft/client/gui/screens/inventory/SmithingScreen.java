@@ -83,9 +83,8 @@ public class SmithingScreen extends ItemCombinerScreen<SmithingMenu> {
 
    private Optional<SmithingTemplateItem> getTemplateItem() {
       ItemStack templateSlotItem = this.menu.getSlot(0).getItem();
-      return !templateSlotItem.isEmpty() && templateSlotItem.getItem() instanceof SmithingTemplateItem templateItem
-         ? Optional.of(templateItem)
-         : Optional.empty();
+      return !templateSlotItem.isEmpty() && templateSlotItem.getItem() instanceof SmithingTemplateItem ? Optional.of(templateItem)
+          : Optional.empty();
    }
 
    @Override
@@ -173,7 +172,7 @@ public class SmithingScreen extends ItemCombinerScreen<SmithingMenu> {
             if (this.hoveredSlot.index == 0) {
                tooltip = Optional.of(MISSING_TEMPLATE_TOOLTIP);
             }
-         } else if (template.getItem() instanceof SmithingTemplateItem templateItem && hoveredStack.isEmpty()) {
+         } else if (template.getItem() instanceof SmithingTemplateItem && hoveredStack.isEmpty()) {
             if (this.hoveredSlot.index == 1) {
                tooltip = Optional.of(templateItem.getBaseSlotDescription());
             } else if (this.hoveredSlot.index == 2) {

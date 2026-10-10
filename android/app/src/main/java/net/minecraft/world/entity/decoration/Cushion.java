@@ -59,7 +59,7 @@ public class Cushion extends BlockAttachedEntity {
       this.playSound(SoundEvents.CUSHION_BREAK, 1.0F, 1.0F);
       this.showBreakingParticles();
       if (level.getGameRules().get(GameRules.ENTITY_DROPS)) {
-         if (!(causedBy instanceof Player player && player.hasInfiniteMaterials())) {
+         if (!(causedBy instanceof Player && player.hasInfiniteMaterials())) {
             ItemEntity itemEntity = this.spawnAtLocation(level, this.getCushionItemStackWithData());
             if (itemEntity != null && causedBy instanceof LightningBolt) {
                itemEntity.setInvulnerableTime(20);
@@ -69,11 +69,11 @@ public class Cushion extends BlockAttachedEntity {
    }
 
    private static boolean isBreakingDeniedFor(final DamageSource source) {
-      return source.getEntity() instanceof Player player && !player.mayBuild();
+      return source.getEntity() instanceof Player && !player.mayBuild();
    }
 
    private boolean isBreakingDeniedAtPosFor(final ServerLevel level, final DamageSource source) {
-      return source.getEntity() instanceof Player player && !level.mayInteract(player, this.pos);
+      return source.getEntity() instanceof Player && !level.mayInteract(player, this.pos);
    }
 
    @Override
@@ -113,7 +113,8 @@ public class Cushion extends BlockAttachedEntity {
 
    @Override
    protected void tickAtCheckInterval() {
-      if (this.level() instanceof ServerLevel level) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.level();
          BlockPos blockPos = this.blockPosition();
          FluidState fluidState = level.getBlockState(blockPos).getFluidState();
          if (this.collidedWithFluid(fluidState, blockPos, this.position(), this.position())) {
@@ -149,7 +150,8 @@ public class Cushion extends BlockAttachedEntity {
    }
 
    private void showBreakingParticles() {
-      if (this.level() instanceof ServerLevel level) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.level();
          level.sendParticles(
             new BlockParticleOption(ParticleTypes.BLOCK, Blocks.WOOL.pick(this.getColor()).defaultBlockState()),
             this.getX(),

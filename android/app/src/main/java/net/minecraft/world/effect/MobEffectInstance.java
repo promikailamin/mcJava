@@ -315,7 +315,7 @@ public class MobEffectInstance implements Comparable<MobEffectInstance> {
       if (this == o) {
          return true;
       } else {
-         return !(o instanceof MobEffectInstance that)
+         return !(o instanceof MobEffectInstance)
             ? false
             : this.duration == that.duration
                && this.amplifier == that.amplifier

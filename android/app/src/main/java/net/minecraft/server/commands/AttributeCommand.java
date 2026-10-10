@@ -247,7 +247,8 @@ public class AttributeCommand {
    }
 
    private static LivingEntity getLivingEntity(final Entity target) throws CommandSyntaxException {
-      if (target instanceof LivingEntity livingEntity) {
+      if (target instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) target;
          return livingEntity;
       } else {
          throw ERROR_NOT_LIVING_ENTITY.create(target.getDisplayName());

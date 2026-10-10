@@ -24,7 +24,7 @@ public abstract class BaseEntityBlock extends Block implements EntityBlock {
 
    @Override
    protected @Nullable MenuProvider getMenuProvider(final BlockState state, final Level level, final BlockPos pos) {
-      return level.getBlockEntity(pos) instanceof MenuProvider menuProvider ? menuProvider : null;
+      return level.getBlockEntity(pos) instanceof MenuProvider ? menuProvider  : null;
    }
 
    protected static <E extends BlockEntity, A extends BlockEntity> @Nullable BlockEntityTicker<A> createTickerHelper(

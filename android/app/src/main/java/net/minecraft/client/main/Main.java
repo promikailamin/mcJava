@@ -340,7 +340,8 @@ public class Main {
       try {
          return (T)optionSet.valueOf(optionSpec);
       } catch (Throwable t) {
-         if (optionSpec instanceof ArgumentAcceptingOptionSpec<T> options) {
+         if (optionSpec instanceof ArgumentAcceptingOptionSpec<T>) {
+             ArgumentAcceptingOptionSpec<T> options = (ArgumentAcceptingOptionSpec<T>) optionSpec;
             List<T> defaultValues = options.defaultValues();
             if (!defaultValues.isEmpty()) {
                return defaultValues.get(0);

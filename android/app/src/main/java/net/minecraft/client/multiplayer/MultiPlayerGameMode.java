@@ -105,7 +105,8 @@ public class MultiPlayerGameMode {
       }
 
       this.localPlayerMode = mode;
-      if (this.minecraft.gui.screen() instanceof WorldOptionsScreen worldOptionsScreen) {
+      if (this.minecraft.gui.screen() instanceof WorldOptionsScreen) {
+          WorldOptionsScreen worldOptionsScreen = (WorldOptionsScreen) this.minecraft.gui.screen();
          worldOptionsScreen.updatePersonalGameModeButton(mode);
       }
 
@@ -366,7 +367,8 @@ public class MultiPlayerGameMode {
             itemStack.setCount(count);
          } else {
             result = itemStack.useOn(context);
-            if (result instanceof InteractionResult.Success success) {
+            if (result instanceof InteractionResult.Success) {
+                InteractionResult.Success success = (InteractionResult.Success) result;
                ItemStack resultItemStack = Objects.requireNonNullElseGet(success.heldItemTransformedTo(), () -> player.getItemInHand(hand));
                if (resultItemStack != itemStack) {
                   player.setItemInHand(hand, resultItemStack);
@@ -397,7 +399,8 @@ public class MultiPlayerGameMode {
 
          InteractionResult resultHolder = itemStack.use(this.minecraft.level, player, hand);
          ItemStack result;
-         if (resultHolder instanceof InteractionResult.Success success) {
+         if (resultHolder instanceof InteractionResult.Success) {
+             InteractionResult.Success success = (InteractionResult.Success) resultHolder;
             result = Objects.requireNonNullElseGet(success.heldItemTransformedTo(), () -> player.getItemInHand(hand));
          } else {
             result = player.getItemInHand(hand);

@@ -367,7 +367,8 @@ public class LootCommand {
       final CommandResponseTracker<ItemStack> usedItems
    ) {
       for (Entity entity : entities) {
-         if (entity instanceof ServerPlayer player) {
+         if (entity instanceof ServerPlayer) {
+             ServerPlayer player = (ServerPlayer) entity;
             setSlots(entity, drops, startSlot, count, usedItems);
             player.containerMenu.broadcastChanges();
          } else {
@@ -390,7 +391,8 @@ public class LootCommand {
 
    private static ItemStack getSourceHandItem(final CommandSourceStack source, final EquipmentSlot slot) throws CommandSyntaxException {
       Entity entity = source.getEntityOrException();
-      if (entity instanceof LivingEntity livingEntity) {
+      if (entity instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) entity;
          return livingEntity.getItemBySlot(slot);
       } else {
          throw ERROR_NO_HELD_ITEMS.create(entity.getDisplayName());
@@ -430,7 +432,8 @@ public class LootCommand {
       CommandSourceStack source = (CommandSourceStack)context.getSource();
       LootParams.Builder builder = new LootParams.Builder(source.getLevel());
       Entity killer = source.getEntity();
-      if (killer instanceof Player player) {
+      if (killer instanceof Player) {
+          Player player = (Player) killer;
          builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, player);
       }
 

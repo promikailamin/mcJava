@@ -92,9 +92,7 @@ public class SculkSensorBlock extends BaseEntityBlock implements SimpleWaterlogg
       if (!level.isClientSide()
          && canActivate(onState)
          && !entity.is(EntityTypes.WARDEN)
-         && level.getBlockEntity(pos) instanceof SculkSensorBlockEntity sculkSensor
-         && level instanceof ServerLevel serverLevel
-         && sculkSensor.getVibrationUser().canReceiveVibration(serverLevel, pos, GameEvent.STEP, GameEvent.Context.of(onState))) {
+         && level.getBlockEntity(pos) instanceof SculkSensorBlockEntity && level instanceof ServerLevel && sculkSensor.getVibrationUser().canReceiveVibration(serverLevel, pos, GameEvent.STEP, GameEvent.Context.of(onState))) {
          sculkSensor.getListener().forceScheduleVibration(serverLevel, GameEvent.STEP, GameEvent.Context.of(entity), entity.position());
       }
 
@@ -261,7 +259,8 @@ public class SculkSensorBlock extends BaseEntityBlock implements SimpleWaterlogg
 
    @Override
    protected int getAnalogOutputSignal(final BlockState state, final Level level, final BlockPos pos, final Direction direction) {
-      if (level.getBlockEntity(pos) instanceof SculkSensorBlockEntity sculk) {
+      if (level.getBlockEntity(pos) instanceof SculkSensorBlockEntity) {
+          SculkSensorBlockEntity sculk = (SculkSensorBlockEntity) level.getBlockEntity(pos);
          return getPhase(state) == SculkSensorPhase.ACTIVE ? sculk.getLastVibrationFrequency() : 0;
       } else {
          return 0;

@@ -71,7 +71,8 @@ public class Cow extends AbstractCow {
 
    public @Nullable Cow getBreedOffspring(final ServerLevel level, final AgeableMob partner) {
       Cow baby = EntityTypes.COW.create(level, EntitySpawnReason.BREEDING);
-      if (baby != null && partner instanceof Cow partnerCow) {
+      if (baby != null && partner instanceof Cow) {
+          Cow partnerCow = (Cow) baby != null && partner;
          baby.setVariant(this.random.nextBoolean() ? this.getVariant() : partnerCow.getVariant());
       }
 

@@ -287,7 +287,8 @@ public class Drowned extends Zombie implements RangedAttackMob {
       double yd = target.getY(0.3333333333333333) - trident.getY();
       double zd = target.getZ() - this.getZ();
       double distanceToTarget = Math.sqrt(xd * xd + zd * zd);
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          Projectile.spawnProjectileUsingShoot(
             trident, serverLevel, tridentItemStack, xd, yd + distanceToTarget * 0.2F, zd, 1.6F, this.rangedAttackUncertainty(serverLevel)
          );
@@ -322,7 +323,8 @@ public class Drowned extends Zombie implements RangedAttackMob {
    @Override
    public void rideTick() {
       super.rideTick();
-      if (this.getControlledVehicle() instanceof PathfinderMob entity) {
+      if (this.getControlledVehicle() instanceof PathfinderMob) {
+          PathfinderMob entity = (PathfinderMob) this.getControlledVehicle();
          this.yBodyRot = entity.yBodyRot;
       }
    }

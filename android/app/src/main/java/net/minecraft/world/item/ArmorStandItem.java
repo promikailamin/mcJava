@@ -38,7 +38,8 @@ public class ArmorStandItem extends Item {
       Vec3 pos = Vec3.atBottomCenterOf(blockPos);
       AABB box = EntityTypes.ARMOR_STAND.getDimensions().makeBoundingBox(pos.x(), pos.y(), pos.z());
       if (level.noCollision(null, box) && level.getEntities(null, box).isEmpty()) {
-         if (level instanceof ServerLevel serverLevel) {
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
             PostSpawnProcessor<ArmorStand> entityConfig = EntityType.createDefaultStackConfig(serverLevel, itemStack, context.getPlayer());
             ArmorStand entity = EntityTypes.ARMOR_STAND.create(serverLevel, entityConfig, blockPos, EntitySpawnReason.SPAWN_ITEM_USE, true, true);
             if (entity == null) {

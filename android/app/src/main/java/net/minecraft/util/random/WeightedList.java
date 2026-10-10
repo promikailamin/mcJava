@@ -141,7 +141,7 @@ public final class WeightedList<E> {
       if (this == obj) {
          return true;
       } else {
-         return !(obj instanceof WeightedList<?> list) ? false : this.totalWeight == list.totalWeight && Objects.equals(this.items, list.items);
+         return !(obj instanceof WeightedList<?>) ? false : this.totalWeight == list.totalWeight && Objects.equals(this.items, list.items);
       }
    }
 

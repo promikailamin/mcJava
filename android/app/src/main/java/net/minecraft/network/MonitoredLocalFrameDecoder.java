@@ -13,7 +13,8 @@ public class MonitoredLocalFrameDecoder extends ChannelInboundHandlerAdapter {
 
    public void channelRead(final ChannelHandlerContext ctx, Object msg) {
       msg = HiddenByteBuf.unpack(msg);
-      if (msg instanceof ByteBuf in) {
+      if (msg instanceof ByteBuf) {
+          ByteBuf in = (ByteBuf) msg;
          this.monitor.onReceive(in.readableBytes());
       }
 

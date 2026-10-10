@@ -72,7 +72,8 @@ public class HoneycombItem extends Item implements SignApplicator {
       return getWaxed(oldState).map(waxedState -> {
          Player player = context.getPlayer();
          ItemStack itemInHand = context.getItemInHand();
-         if (player instanceof ServerPlayer serverPlayer) {
+         if (player instanceof ServerPlayer) {
+             ServerPlayer serverPlayer = (ServerPlayer) player;
             CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pos, itemInHand);
          }
 

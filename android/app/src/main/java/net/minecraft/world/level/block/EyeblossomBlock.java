@@ -91,8 +91,7 @@ public class EyeblossomBlock extends FlowerBlock {
    ) {
       if (!level.isClientSide()
          && level.getDifficulty() != Difficulty.PEACEFUL
-         && entity instanceof Bee bee
-         && Bee.attractsBees(state)
+         && entity instanceof Bee && Bee.attractsBees(state)
          && !bee.hasEffect(MobEffects.POISON)) {
          bee.addEffect(this.getBeeInteractionEffect());
       }

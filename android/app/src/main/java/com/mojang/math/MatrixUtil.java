@@ -162,7 +162,8 @@ public class MatrixUtil {
    public static boolean checkProperty(final Matrix4fc matrix, final int property) {
       if (checkPropertyRaw(matrix, property)) {
          return true;
-      } else if (matrix instanceof Matrix4f mutableMatrix) {
+      } else if (matrix instanceof Matrix4f) {
+         Matrix4f mutableMatrix = (Matrix4f) matrix;
          int currentProperties = mutableMatrix.properties();
          mutableMatrix.determineProperties();
          mutableMatrix.assume(mutableMatrix.properties() | currentProperties);

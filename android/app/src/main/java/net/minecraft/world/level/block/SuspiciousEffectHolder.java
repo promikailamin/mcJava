@@ -17,10 +17,11 @@ public interface SuspiciousEffectHolder {
    }
 
    static @Nullable SuspiciousEffectHolder tryGet(final ItemLike item) {
-      if (item.asItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof SuspiciousEffectHolder effectHolder) {
+      if (item.asItem() instanceof BlockItem && blockItem.getBlock() instanceof SuspiciousEffectHolder) {
+          SuspiciousEffectHolder effectHolder = (SuspiciousEffectHolder) item.asItem() instanceof BlockItem && blockItem.getBlock();
          return effectHolder;
       } else {
-         return item.asItem() instanceof SuspiciousEffectHolder effectHolder ? effectHolder : null;
+         return item.asItem() instanceof SuspiciousEffectHolder ? effectHolder  : null;
       }
    }
 }

@@ -194,7 +194,8 @@ public class GameTestInfo {
             throw new IllegalStateException("This GameTestInfo has no position");
          }
 
-         if (this.level.getBlockEntity(this.testBlockPos) instanceof TestInstanceBlockEntity blockEntity) {
+         if (this.level.getBlockEntity(this.testBlockPos) instanceof TestInstanceBlockEntity) {
+             TestInstanceBlockEntity blockEntity = (TestInstanceBlockEntity) this.level.getBlockEntity(this.testBlockPos);
             this.testInstanceBlockEntity = blockEntity;
          }
 
@@ -282,7 +283,8 @@ public class GameTestInfo {
 
    private @Nullable TestInstanceBlockEntity createTestInstanceBlock(final BlockPos testPos, final Rotation rotation, final ServerLevel level) {
       level.setBlockAndUpdate(testPos, Blocks.TEST_INSTANCE_BLOCK.defaultBlockState());
-      if (level.getBlockEntity(testPos) instanceof TestInstanceBlockEntity blockEntity) {
+      if (level.getBlockEntity(testPos) instanceof TestInstanceBlockEntity) {
+          TestInstanceBlockEntity blockEntity = (TestInstanceBlockEntity) level.getBlockEntity(testPos);
          ResourceKey<GameTestInstance> test = this.getTestHolder().key();
          Vec3i size = TestInstanceBlockEntity.getStructureSize(level, test).orElse(new Vec3i(1, 1, 1));
          blockEntity.set(new TestInstanceBlockEntity.Data(Optional.of(test), size, rotation, false, TestInstanceBlockEntity.Status.CLEARED, Optional.empty()));

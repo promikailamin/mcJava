@@ -132,8 +132,7 @@ public class StructureUtils {
    }
 
    private static boolean doesStructureContain(final BlockPos testInstanceBlockPos, final BlockPos pos, final ServerLevel level) {
-      return level.getBlockEntity(testInstanceBlockPos) instanceof TestInstanceBlockEntity blockEntity
-         ? blockEntity.getStructureBoundingBox().isInside(pos)
-         : false;
+      return level.getBlockEntity(testInstanceBlockPos) instanceof TestInstanceBlockEntity ? ((TestInstanceBlockEntity) level.getBlockEntity(testInstanceBlockPos)).getStructureBoundingBox().isInside(pos)
+          : false;
    }
 }

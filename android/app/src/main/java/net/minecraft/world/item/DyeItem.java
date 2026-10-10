@@ -19,7 +19,7 @@ public class DyeItem extends Item implements SignApplicator {
 
    @Override
    public InteractionResult interactLivingEntity(final ItemStack itemStack, final Player player, final LivingEntity target, final InteractionHand type) {
-      if (target instanceof Sheep sheep && sheep.isAlive() && !sheep.isSheared()) {
+      if (target instanceof Sheep && sheep.isAlive() && !sheep.isSheared()) {
          DyeColor dyeColor = itemStack.get(DataComponents.DYE);
          if (dyeColor != null && sheep.getColor() != dyeColor) {
             sheep.level().playSound(player, sheep, SoundEvents.DYE_USE, SoundSource.PLAYERS, 1.0F, 1.0F);

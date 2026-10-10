@@ -137,10 +137,11 @@ public interface ContainerEventHandler extends GuiEventListener {
          }
       }
 
-      if (navigationEvent instanceof FocusNavigationEvent.TabNavigation tabNavigation) {
+      if (navigationEvent instanceof FocusNavigationEvent.TabNavigation) {
+          FocusNavigationEvent.TabNavigation tabNavigation = (FocusNavigationEvent.TabNavigation) navigationEvent;
          return this.handleTabNavigation(tabNavigation);
       } else {
-         return navigationEvent instanceof FocusNavigationEvent.ArrowNavigation arrowNavigation ? this.handleArrowNavigation(arrowNavigation) : null;
+         return navigationEvent instanceof FocusNavigationEvent.ArrowNavigation ? this.handleArrowNavigation(arrowNavigation)  : null;
       }
    }
 

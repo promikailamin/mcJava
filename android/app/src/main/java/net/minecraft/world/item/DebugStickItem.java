@@ -27,7 +27,8 @@ public class DebugStickItem extends Item {
 
    @Override
    public boolean canDestroyBlock(final ItemStack itemStack, final BlockState state, final Level level, final BlockPos pos, final LivingEntity user) {
-      if (user instanceof ServerPlayer player) {
+      if (user instanceof ServerPlayer) {
+          ServerPlayer player = (ServerPlayer) user;
          this.handleInteraction(player, state, level, pos, false, itemStack);
       }
 
@@ -38,7 +39,8 @@ public class DebugStickItem extends Item {
    public InteractionResult useOn(final UseOnContext context) {
       Player player = context.getPlayer();
       Level level = context.getLevel();
-      if (player instanceof ServerPlayer serverPlayer) {
+      if (player instanceof ServerPlayer) {
+          ServerPlayer serverPlayer = (ServerPlayer) player;
          BlockPos pos = context.getClickedPos();
          if (!this.handleInteraction(serverPlayer, level.getBlockState(pos), level, pos, true, context.getItemInHand())) {
             return InteractionResult.FAIL;

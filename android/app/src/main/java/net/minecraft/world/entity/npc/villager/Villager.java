@@ -430,7 +430,8 @@ public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<Villager, Holde
 
       Player tradingPlayer = this.getTradingPlayer();
       if (tradingPlayer != null && !merchantOffers.isEmpty()) {
-         if (tradingPlayer.containerMenu instanceof MerchantMenu menu) {
+         if (tradingPlayer.containerMenu instanceof MerchantMenu) {
+             MerchantMenu menu = (MerchantMenu) tradingPlayer.containerMenu;
             menu.updateSellItem();
          }
 
@@ -488,7 +489,8 @@ public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<Villager, Holde
       this.lastRestockGameTime = input.getLongOr("LastRestock", 0L);
       this.lastGossipDecayTime = input.getLongOr("LastGossipDecay", 0L);
       this.numberOfRestocksToday = input.getIntOr("RestocksToday", 0);
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          this.refreshBrain(serverLevel);
       }
    }
@@ -560,7 +562,8 @@ public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<Villager, Holde
       this.villagerXp = this.villagerXp + offer.getXp();
       this.lastTradedPlayer = this.getTradingPlayer();
       if (this.shouldIncreaseLevel()) {
-         if (this.level() instanceof ServerLevel serverLevel) {
+         if (this.level() instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) this.level();
             this.increaseMerchantCareer(serverLevel);
             this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0));
          }
@@ -575,7 +578,8 @@ public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<Villager, Holde
 
    @Override
    public void setLastHurtByMob(final @Nullable LivingEntity hurtBy) {
-      if (hurtBy != null && this.level() instanceof ServerLevel serverLevel) {
+      if (hurtBy != null && this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) hurtBy != null && this.level();
          serverLevel.onReputationEvent(ReputationEventType.VILLAGER_HURT, hurtBy, this);
          if (this.isAlive() && hurtBy instanceof Player) {
             this.level().broadcastEntityEvent(this, (byte)13);
@@ -605,7 +609,8 @@ public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<Villager, Holde
    }
 
    private void tellWitnessesThatIWasMurdered(final Entity murderer) {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          Optional<NearestVisibleLivingEntities> witnesses = this.brain.getMemory(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES);
          if (!witnesses.isEmpty()) {
             witnesses.get()

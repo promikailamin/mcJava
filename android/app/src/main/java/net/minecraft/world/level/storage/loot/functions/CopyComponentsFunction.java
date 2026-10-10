@@ -77,7 +77,8 @@ public class CopyComponentsFunction extends LootItemConditionalFunction {
    public ItemStack run(final ItemStack itemStack, final LootContext context) {
       DataComponentGetter data = this.source.get(context);
       if (data != null) {
-         if (data instanceof DataComponentMap sourceComponents) {
+         if (data instanceof DataComponentMap) {
+             DataComponentMap sourceComponents = (DataComponentMap) data;
             itemStack.applyComponents(sourceComponents.filter(this.bakedPredicate));
          } else {
             Collection<DataComponentType<?>> exclude = this.exclude.orElse(List.of());

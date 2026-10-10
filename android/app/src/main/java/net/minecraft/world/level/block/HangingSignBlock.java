@@ -8,9 +8,7 @@ public interface HangingSignBlock {
    HangingSignBlock.Attachment attachmentPoint(BlockState state);
 
    static HangingSignBlock.Attachment getAttachmentPoint(final BlockState blockState) {
-      return blockState.getBlock() instanceof HangingSignBlock hangingSignBlock
-         ? hangingSignBlock.attachmentPoint(blockState)
-         : HangingSignBlock.Attachment.CEILING;
+      return blockState.getBlock() instanceof HangingSignBlock ? attachmentPoint(blockState) : HangingSignBlock.Attachment.CEILING;
    }
 
    enum Attachment implements StringRepresentable {

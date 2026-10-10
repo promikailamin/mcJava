@@ -97,7 +97,8 @@ public abstract class TrackedWaypoint implements Waypoint {
 
       @Override
       public void update(final TrackedWaypoint other) {
-         if (other instanceof TrackedWaypoint.AzimuthWaypoint azimuthWaypoint) {
+         if (other instanceof TrackedWaypoint.AzimuthWaypoint) {
+             TrackedWaypoint.AzimuthWaypoint azimuthWaypoint = (TrackedWaypoint.AzimuthWaypoint) other;
             this.angle = azimuthWaypoint.angle;
          } else {
             TrackedWaypoint.LOGGER.warn("Unsupported Waypoint update operation: {}", other.getClass());
@@ -153,7 +154,8 @@ public abstract class TrackedWaypoint implements Waypoint {
 
       @Override
       public void update(final TrackedWaypoint other) {
-         if (other instanceof TrackedWaypoint.ChunkWaypoint chunkWaypoint) {
+         if (other instanceof TrackedWaypoint.ChunkWaypoint) {
+             TrackedWaypoint.ChunkWaypoint chunkWaypoint = (TrackedWaypoint.ChunkWaypoint) other;
             this.chunkPos = chunkWaypoint.chunkPos;
          } else {
             TrackedWaypoint.LOGGER.warn("Unsupported Waypoint update operation: {}", other.getClass());
@@ -271,7 +273,8 @@ public abstract class TrackedWaypoint implements Waypoint {
 
       @Override
       public void update(final TrackedWaypoint other) {
-         if (other instanceof TrackedWaypoint.Vec3iWaypoint vec3iWaypoint) {
+         if (other instanceof TrackedWaypoint.Vec3iWaypoint) {
+             TrackedWaypoint.Vec3iWaypoint vec3iWaypoint = (TrackedWaypoint.Vec3iWaypoint) other;
             this.vector = vec3iWaypoint.vector;
          } else {
             TrackedWaypoint.LOGGER.warn("Unsupported Waypoint update operation: {}", other.getClass());

@@ -103,7 +103,7 @@ public class MovingPistonBlock extends BaseEntityBlock {
    }
 
    private @Nullable PistonMovingBlockEntity getBlockEntity(final BlockGetter level, final BlockPos pos) {
-      return level.getBlockEntity(pos) instanceof PistonMovingBlockEntity pistonMovingBlockEntity ? pistonMovingBlockEntity : null;
+      return level.getBlockEntity(pos) instanceof PistonMovingBlockEntity ? pistonMovingBlockEntity  : null;
    }
 
    @Override

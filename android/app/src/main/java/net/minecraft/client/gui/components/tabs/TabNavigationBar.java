@@ -99,7 +99,7 @@ public class TabNavigationBar extends AbstractContainerWidget {
    @Override
    public void setFocused(final @Nullable GuiEventListener focused) {
       super.setFocused(focused);
-      if (focused instanceof TabButton button && button.isActive()) {
+      if (focused instanceof TabButton && button.isActive()) {
          this.tabManager.setCurrentTab(button.tab(), true);
       }
    }

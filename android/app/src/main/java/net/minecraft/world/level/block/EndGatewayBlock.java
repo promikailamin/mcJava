@@ -43,7 +43,8 @@ public class EndGatewayBlock extends BaseEntityBlock implements Portal {
 
    @Override
    public void animateTick(final BlockState state, final Level level, final BlockPos pos, final RandomSource random) {
-      if (level.getBlockEntity(pos) instanceof TheEndGatewayBlockEntity theEndGatewayBlockEntity) {
+      if (level.getBlockEntity(pos) instanceof TheEndGatewayBlockEntity) {
+          TheEndGatewayBlockEntity theEndGatewayBlockEntity = (TheEndGatewayBlockEntity) level.getBlockEntity(pos);
          int particleCount = theEndGatewayBlockEntity.getParticleAmount();
 
          for (int i = 0; i < particleCount; i++) {
@@ -83,8 +84,7 @@ public class EndGatewayBlock extends BaseEntityBlock implements Portal {
    ) {
       if (entity.canUsePortal(false)
          && !level.isClientSide()
-         && level.getBlockEntity(pos) instanceof TheEndGatewayBlockEntity endGatewayBlockEntity
-         && !endGatewayBlockEntity.isCoolingDown()) {
+         && level.getBlockEntity(pos) instanceof TheEndGatewayBlockEntity && !endGatewayBlockEntity.isCoolingDown()) {
          entity.setAsInsidePortal(this, pos);
          TheEndGatewayBlockEntity.triggerCooldown(level, pos, state, endGatewayBlockEntity);
       }
@@ -92,7 +92,8 @@ public class EndGatewayBlock extends BaseEntityBlock implements Portal {
 
    @Override
    public @Nullable TeleportTransition getPortalDestination(final ServerLevel currentLevel, final Entity entity, final BlockPos portalEntryPos) {
-      if (currentLevel.getBlockEntity(portalEntryPos) instanceof TheEndGatewayBlockEntity endGatewayBlockEntity) {
+      if (currentLevel.getBlockEntity(portalEntryPos) instanceof TheEndGatewayBlockEntity) {
+          TheEndGatewayBlockEntity endGatewayBlockEntity = (TheEndGatewayBlockEntity) currentLevel.getBlockEntity(portalEntryPos);
          Vec3 teleportPosition = endGatewayBlockEntity.getPortalPosition(currentLevel, portalEntryPos);
          if (teleportPosition == null) {
             return null;

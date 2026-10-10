@@ -121,7 +121,7 @@ public class BeehiveBlockEntity extends BlockEntity {
       List<Entity> releasedFromHive = this.releaseAllOccupants(state, releaseReason);
       if (player != null) {
          for (Entity released : releasedFromHive) {
-            if (released instanceof Bee bee && player.position().distanceToSqr(released.position()) <= 16.0) {
+            if (released instanceof Bee && player.position().distanceToSqr(released.position()) <= 16.0) {
                if (!this.isSedated()) {
                   bee.setTarget(player);
                } else {
@@ -207,7 +207,8 @@ public class BeehiveBlockEntity extends BlockEntity {
 
       Entity entity = beeData.createEntity(level, blockPos);
       if (entity != null) {
-         if (entity instanceof Bee bee) {
+         if (entity instanceof Bee) {
+             Bee bee = (Bee) entity;
             RandomSource random = level.getRandom();
             if (savedFlowerPos != null && !bee.hasSavedFlowerPos() && random.nextFloat() < 0.9F) {
                bee.setSavedFlowerPos(savedFlowerPos);
@@ -399,7 +400,8 @@ public class BeehiveBlockEntity extends BlockEntity {
          Entity entity = EntityType.loadEntityRecursive(this.entityData.type(), entityTag, level, EntitySpawnReason.LOAD, EntityProcessor.NOP);
          if (entity != null && entity.is(EntityTypeTags.BEEHIVE_INHABITORS)) {
             entity.setNoGravity(true);
-            if (entity instanceof Bee bee) {
+            if (entity instanceof Bee) {
+                Bee bee = (Bee) entity;
                bee.setHivePos(hivePos);
                setBeeReleaseData(this.ticksInHive, bee);
             }

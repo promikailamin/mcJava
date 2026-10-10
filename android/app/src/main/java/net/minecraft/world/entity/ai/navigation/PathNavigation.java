@@ -60,7 +60,8 @@ public abstract class PathNavigation {
       this.mob = mob;
       this.level = level;
       this.pathFinder = this.createPathFinder(Mth.floor(mob.getAttributeBaseValue(Attributes.FOLLOW_RANGE) * 16.0));
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          ServerDebugSubscribers subscribers = serverLevel.getServer().debugSubscribers();
          this.pathFinder.setCaptureDebug(() -> subscribers.hasAnySubscriberFor(DebugSubscriptions.ENTITY_PATHS));
       }

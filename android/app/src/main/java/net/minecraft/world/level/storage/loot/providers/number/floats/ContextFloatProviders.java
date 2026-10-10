@@ -22,7 +22,7 @@ public class ContextFloatProviders {
       () -> {
          Codec<ContextFloatProvider> typedCodec = BuiltInRegistries.CONTEXT_FLOAT_PROVIDER_TYPE.byNameCodec().dispatch(ContextFloatProvider::codec, c -> c);
          return Codec.either(ConstantValue.INLINE_CODEC, typedCodec)
-            .xmap(Either::unwrap, provider -> provider instanceof ConstantValue constant ? Either.left(constant) : Either.right(provider));
+            .xmap(Either::unwrap, provider -> provider instanceof ConstantValue ? Either.left(constant)  : Either.right(provider));
       }
    );
    public static final Codec<Holder<ContextFloatProvider>> CODEC = RegistryCodecs.holder(Registries.CONTEXT_FLOAT_PROVIDER, DIRECT_CODEC);

@@ -46,7 +46,8 @@ public class PresenceHandler {
             this.minecraft.execute(() -> {
                boolean refreshPresence = !Objects.equals(this.latestPresence, newPresence);
                this.latestPresence = newPresence;
-               if (refreshPresence && this.minecraft.gui.screen() instanceof FriendsOverlayScreen friendsOverlayScreen) {
+               if (refreshPresence && this.minecraft.gui.screen() instanceof FriendsOverlayScreen) {
+                   FriendsOverlayScreen friendsOverlayScreen = (FriendsOverlayScreen) refreshPresence && this.minecraft.gui.screen();
                   friendsOverlayScreen.applyPresenceUpdate();
                }
             });

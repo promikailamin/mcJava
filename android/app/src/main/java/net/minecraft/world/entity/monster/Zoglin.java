@@ -179,7 +179,8 @@ public class Zoglin extends Monster implements HoglinBase {
 
    @Override
    public boolean doHurtTarget(final ServerLevel level, final Entity target) {
-      if (target instanceof LivingEntity entity) {
+      if (target instanceof LivingEntity) {
+          LivingEntity entity = (LivingEntity) target;
          this.attackAnimationRemainingTicks = 10;
          level.broadcastEntityEvent(this, (byte)4);
          this.makeSound(SoundEvents.ZOGLIN_ATTACK);
@@ -204,7 +205,8 @@ public class Zoglin extends Monster implements HoglinBase {
    @Override
    public boolean hurtServer(final ServerLevel level, final DamageSource source, final float damage) {
       boolean wasHurt = super.hurtServer(level, source, damage);
-      if (wasHurt && source.getEntity() instanceof LivingEntity attacker) {
+      if (wasHurt && source.getEntity() instanceof LivingEntity) {
+          LivingEntity attacker = (LivingEntity) wasHurt && source.getEntity();
          if (this.canAttack(attacker) && !BehaviorUtils.isOtherTargetMuchFurtherAwayThanCurrentAttackTarget(this, attacker, 4.0)) {
             this.setAttackTarget(attacker);
          }

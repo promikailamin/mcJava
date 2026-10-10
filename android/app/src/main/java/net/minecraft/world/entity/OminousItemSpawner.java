@@ -44,7 +44,8 @@ public class OminousItemSpawner extends Entity {
    @Override
    public void tick() {
       super.tick();
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          this.tickServer(serverLevel);
       } else {
          this.tickClient();
@@ -69,11 +70,13 @@ public class OminousItemSpawner extends Entity {
    }
 
    private void spawnItem() {
-      if (this.level() instanceof ServerLevel level) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.level();
          ItemStack item = this.getItem();
          if (!item.isEmpty()) {
             Entity spawnedEntity;
-            if (item.getItem() instanceof ProjectileItem projectileItem) {
+            if (item.getItem() instanceof ProjectileItem) {
+                ProjectileItem projectileItem = (ProjectileItem) item.getItem();
                spawnedEntity = this.spawnProjectile(level, projectileItem, item);
             } else {
                spawnedEntity = new ItemEntity(level, this.getX(), this.getY(), this.getZ(), item);

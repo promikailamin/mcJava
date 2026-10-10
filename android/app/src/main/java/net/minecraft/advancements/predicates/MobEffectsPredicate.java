@@ -25,7 +25,7 @@ public record MobEffectsPredicate(Map<Holder<MobEffect>, MobEffectsPredicate.Mob
       .map(MobEffectsPredicate::new, MobEffectsPredicate::effectMap);
 
    public boolean matches(final Entity entity) {
-      return entity instanceof LivingEntity living && this.matches(living.getActiveEffectsMap());
+      return entity instanceof LivingEntity && this.matches(living.getActiveEffectsMap());
    }
 
    public boolean matches(final LivingEntity entity) {

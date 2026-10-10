@@ -16,7 +16,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 public class SetContainerLootTable extends LootItemConditionalFunction {
    public static final Codec<Holder.Reference<LootTable>> ID_ONLY_CODEC = LootTable.CODEC
       .comapFlatMap(
-         holder -> holder instanceof Holder.Reference<LootTable> tag ? DataResult.success(tag) : DataResult.error(() -> "Only tag names supported"),
+         holder -> holder instanceof Holder.Reference<LootTable> ? DataResult.success(tag)  : DataResult.error(() -> "Only tag names supported"),
          holder -> holder
       );
    public static final MapCodec<SetContainerLootTable> MAP_CODEC = RecordCodecBuilder.mapCodec(

@@ -31,7 +31,8 @@ public class LargeFireball extends Fireball {
    @Override
    protected void onHit(final HitResult hitResult) {
       super.onHit(hitResult);
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          boolean grief = serverLevel.getGameRules().get(GameRules.MOB_GRIEFING);
          this.level().explode(this, this.getX(), this.getY(), this.getZ(), this.explosionPower, grief, Level.ExplosionInteraction.MOB);
          this.discard();
@@ -41,7 +42,8 @@ public class LargeFireball extends Fireball {
    @Override
    protected void onHitEntity(final EntityHitResult hitResult) {
       super.onHitEntity(hitResult);
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          Entity var6 = hitResult.getEntity();
          Entity owner = this.getOwner();
          DamageSource damageSource = this.damageSources().fireball(this, owner);

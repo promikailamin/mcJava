@@ -809,7 +809,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
       ReportedException firstReported = null;
 
       for (Throwable cause = t; cause != null; cause = cause.getCause()) {
-         if (cause instanceof ReportedException reportedException) {
+         if (cause instanceof ReportedException) {
+             ReportedException reportedException = (ReportedException) cause;
             firstReported = reportedException;
          }
       }

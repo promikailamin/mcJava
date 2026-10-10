@@ -219,7 +219,8 @@ public class BundleItem extends Item {
 
    @Override
    public void onUseTick(final Level level, final LivingEntity livingEntity, final ItemStack itemStack, final int ticksRemaining) {
-      if (livingEntity instanceof Player player) {
+      if (livingEntity instanceof Player) {
+          Player player = (Player) livingEntity;
          int useDuration = this.getUseDuration(itemStack, livingEntity);
          boolean isFirstTick = ticksRemaining == useDuration;
          if (isFirstTick || ticksRemaining < useDuration - 10 && ticksRemaining % 2 == 0) {

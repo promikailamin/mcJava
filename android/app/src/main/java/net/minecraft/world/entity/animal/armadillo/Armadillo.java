@@ -251,7 +251,8 @@ public class Armadillo extends Animal {
          return true;
       } else if (this.getLastHurtByMob() == livingEntity) {
          return true;
-      } else if (livingEntity instanceof Player player) {
+      } else if (livingEntity instanceof Player) {
+         Player player = (Player) livingEntity;
          return player.isSpectator() ? false : player.isSprinting() || player.isPassenger();
       } else {
          return false;
@@ -330,7 +331,8 @@ public class Armadillo extends Animal {
          return false;
       }
 
-      if (this.level() instanceof ServerLevel level) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.level();
          this.dropFromEntityInteractLootTable(level, BuiltInLootTables.ARMADILLO_BRUSH, interactingEntity, tool, this::spawnAtLocation);
          this.playSound(SoundEvents.ARMADILLO_BRUSH);
          this.gameEvent(GameEvent.ENTITY_INTERACT);

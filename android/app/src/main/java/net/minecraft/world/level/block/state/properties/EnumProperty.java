@@ -62,7 +62,7 @@ public final class EnumProperty<T extends Enum<T> & StringRepresentable> extends
       if (this == o) {
          return true;
       } else {
-         return o instanceof EnumProperty<?> that && super.equals(o) ? this.values.equals(that.values) : false;
+         return o instanceof EnumProperty<?> && super.equals(o) ? this.values.equals(that.values) : false;
       }
    }
 

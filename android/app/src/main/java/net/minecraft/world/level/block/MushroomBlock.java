@@ -92,11 +92,13 @@ public class MushroomBlock extends VegetationBlock implements BonemealableBlock 
 
    @Override
    public boolean isValidBonemealTarget(final LevelReader level, final BlockPos pos, final BlockState state, final BonemealSource source) {
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          Optional<? extends Holder<Feature>> featureHolder = serverLevel.registryAccess().lookupOrThrow(Registries.FEATURE).get(this.feature);
          if (featureHolder.isPresent()) {
             Feature feature = featureHolder.get().value();
-            if (feature instanceof AbstractHugeMushroomFeature mushroomFeature) {
+            if (feature instanceof AbstractHugeMushroomFeature) {
+                AbstractHugeMushroomFeature mushroomFeature = (AbstractHugeMushroomFeature) feature;
                int minHeight = 4 + mushroomFeature.foliageRadius();
                return level.isInsideBuildHeight(pos.above(minHeight));
             } else {

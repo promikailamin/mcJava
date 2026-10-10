@@ -64,7 +64,8 @@ public class MinecartChest extends AbstractMinecartContainer {
    @Override
    public InteractionResult interact(final Player player, final InteractionHand hand, final Vec3 location) {
       InteractionResult result = this.interactWithContainerVehicle(player);
-      if (result.consumesAction() && player.level() instanceof ServerLevel serverLevel) {
+      if (result.consumesAction() && player.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) result.consumesAction() && player.level();
          this.gameEvent(GameEvent.CONTAINER_OPEN, player);
          PiglinAi.angerNearbyPiglins(serverLevel, player, true);
       }

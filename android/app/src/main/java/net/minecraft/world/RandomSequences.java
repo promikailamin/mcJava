@@ -166,7 +166,7 @@ public class RandomSequences extends SavedData {
          if (this == obj) {
             return true;
          } else {
-            return obj instanceof RandomSequences.DirtyMarkingRandomSource other ? this.random.equals(other.random) : false;
+            return obj instanceof RandomSequences.DirtyMarkingRandomSource ? this.random.equals(((RandomSequences.DirtyMarkingRandomSource) obj).random)  : false;
          }
       }
 

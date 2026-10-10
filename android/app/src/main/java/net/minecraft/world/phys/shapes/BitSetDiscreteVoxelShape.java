@@ -44,7 +44,8 @@ public final class BitSetDiscreteVoxelShape extends DiscreteVoxelShape {
 
    public BitSetDiscreteVoxelShape(final DiscreteVoxelShape voxelShape) {
       super(voxelShape.xSize, voxelShape.ySize, voxelShape.zSize);
-      if (voxelShape instanceof BitSetDiscreteVoxelShape bitSetDiscreteVoxelShape) {
+      if (voxelShape instanceof BitSetDiscreteVoxelShape) {
+          BitSetDiscreteVoxelShape bitSetDiscreteVoxelShape = (BitSetDiscreteVoxelShape) voxelShape;
          this.storage = (BitSet)bitSetDiscreteVoxelShape.storage.clone();
       } else {
          this.storage = new BitSet(this.xSize * this.ySize * this.zSize);

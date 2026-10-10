@@ -129,8 +129,7 @@ public class CommandBlockEntity extends BlockEntity {
       if (this.isConditional()) {
          BlockPos relative = this.worldPosition.relative(this.level.getBlockState(this.worldPosition).getValue(CommandBlock.FACING).getOpposite());
          if (this.level.getBlockState(relative).getBlock() instanceof CommandBlock) {
-            this.conditionMet = this.level.getBlockEntity(relative) instanceof CommandBlockEntity commandBlockEntity
-               && commandBlockEntity.getCommandBlock().getSuccessCount() > 0;
+            this.conditionMet = this.level.getBlockEntity(relative) instanceof CommandBlockEntity && commandBlockEntity.getCommandBlock().getSuccessCount() > 0;
          } else {
             this.conditionMet = false;
          }

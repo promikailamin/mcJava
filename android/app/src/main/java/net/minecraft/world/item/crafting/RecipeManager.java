@@ -28,11 +28,11 @@ public class RecipeManager implements RecipeAccess {
    private static final Logger LOGGER = LogUtils.getLogger();
    private static final Map<ResourceKey<RecipePropertySet>, RecipeManager.IngredientExtractor> RECIPE_PROPERTY_SETS = Map.of(
       RecipePropertySet.SMITHING_ADDITION,
-      recipe -> recipe instanceof SmithingRecipe smithingRecipe ? smithingRecipe.additionIngredient() : Optional.empty(),
+      recipe -> recipe instanceof SmithingRecipe ? additionIngredient() : Optional.empty(),
       RecipePropertySet.SMITHING_BASE,
-      recipe -> recipe instanceof SmithingRecipe smithingRecipe ? Optional.of(smithingRecipe.baseIngredient()) : Optional.empty(),
+      recipe -> recipe instanceof SmithingRecipe ? Optional.of(((SmithingRecipe) recipe).baseIngredient())  : Optional.empty(),
       RecipePropertySet.SMITHING_TEMPLATE,
-      recipe -> recipe instanceof SmithingRecipe smithingRecipe ? smithingRecipe.templateIngredient() : Optional.empty(),
+      recipe -> recipe instanceof SmithingRecipe ? templateIngredient() : Optional.empty(),
       RecipePropertySet.FURNACE_INPUT,
       forSingleInput(RecipeType.SMELTING),
       RecipePropertySet.BLAST_FURNACE_INPUT,
@@ -42,9 +42,9 @@ public class RecipeManager implements RecipeAccess {
       RecipePropertySet.CAMPFIRE_INPUT,
       forSingleInput(RecipeType.CAMPFIRE_COOKING),
       RecipePropertySet.BREWING_INPUTS,
-      recipe -> recipe instanceof BrewingRecipe brewingRecipe ? Optional.of(brewingRecipe.getInput().ingredient()) : Optional.empty(),
+      recipe -> recipe instanceof BrewingRecipe ? Optional.of(((BrewingRecipe) recipe).getInput().ingredient())  : Optional.empty(),
       RecipePropertySet.BREWING_REAGENTS,
-      recipe -> recipe instanceof BrewingRecipe brewingRecipe ? Optional.of(brewingRecipe.getReagent().ingredient()) : Optional.empty()
+      recipe -> recipe instanceof BrewingRecipe ? Optional.of(((BrewingRecipe) recipe).getReagent().ingredient())  : Optional.empty()
    );
    private final RecipeMap recipes;
    private Map<ResourceKey<RecipePropertySet>, RecipePropertySet> propertySets = Map.of();
@@ -74,7 +74,8 @@ public class RecipeManager implements RecipeAccess {
                   LOGGER.warn("Recipe {} can't be placed due to empty ingredients and will be ignored", recipeHolder.id().identifier());
                } else {
                   propertySetCollectors.forEach(c -> c.accept(recipe));
-                  if (recipe instanceof StonecutterRecipe stonecutterRecipe) {
+                  if (recipe instanceof StonecutterRecipe) {
+                      StonecutterRecipe stonecutterRecipe = (StonecutterRecipe) recipe;
                      RecipeHolder<StonecutterRecipe> castHolder = (RecipeHolder<StonecutterRecipe>)recipeHolder;
                      if (isIngredientEnabled(enabledFlags, stonecutterRecipe.input()) && stonecutterRecipe.resultDisplay().isEnabled(enabledFlags)) {
                         stonecutterRecipes.add(
@@ -219,9 +220,8 @@ public class RecipeManager implements RecipeAccess {
    }
 
    private static RecipeManager.IngredientExtractor forSingleInput(final RecipeType<? extends SingleItemRecipe> type) {
-      return recipe -> recipe.getType() == type && recipe instanceof SingleItemRecipe singleItemRecipe
-         ? Optional.of(singleItemRecipe.input())
-         : Optional.empty();
+      return recipe -> recipe.getType() == type && recipe instanceof SingleItemRecipe ? Optional.of(((SingleItemRecipe) recipe).input())
+          : Optional.empty();
    }
 
    public interface CachedCheck<I extends RecipeInput, T extends Recipe<I>> {

@@ -338,7 +338,8 @@ public class ServerPlayerGameMode {
       int oldDamage = itemStack.getDamageValue();
       InteractionResult result = itemStack.use(level, player, hand);
       ItemStack resultStack;
-      if (result instanceof InteractionResult.Success success) {
+      if (result instanceof InteractionResult.Success) {
+          InteractionResult.Success success = (InteractionResult.Success) result;
          resultStack = Objects.requireNonNullElse(success.heldItemTransformedTo(), player.getItemInHand(hand));
       } else {
          resultStack = player.getItemInHand(hand);
@@ -386,7 +387,8 @@ public class ServerPlayerGameMode {
             return InteractionResult.CONSUME;
          }
 
-         if (state.getBlock() instanceof Portal portal) {
+         if (state.getBlock() instanceof Portal) {
+             Portal portal = (Portal) state.getBlock();
             ServerLevel serverLevel = player.level();
             TeleportTransition teleportTransition = portal.getPortalDestination(serverLevel, player, pos);
             if (teleportTransition != null) {
@@ -432,7 +434,8 @@ public class ServerPlayerGameMode {
                itemStack.setCount(count);
             } else {
                result = itemStack.useOn(context);
-               if (result instanceof InteractionResult.Success success) {
+               if (result instanceof InteractionResult.Success) {
+                   InteractionResult.Success success = (InteractionResult.Success) result;
                   ItemStack resultItemStack = Objects.requireNonNullElseGet(success.heldItemTransformedTo(), () -> player.getItemInHand(hand));
                   if (resultItemStack != itemStack) {
                      player.setItemInHand(hand, resultItemStack);

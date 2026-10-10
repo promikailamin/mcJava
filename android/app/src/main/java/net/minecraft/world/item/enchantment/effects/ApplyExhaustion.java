@@ -16,7 +16,8 @@ public record ApplyExhaustion(LevelBasedValue amount) implements EnchantmentEnti
 
    @Override
    public void apply(final ServerLevel serverLevel, final int enchantmentLevel, final EnchantedItemInUse item, final Entity entity, final Vec3 position) {
-      if (entity instanceof Player livingEntity) {
+      if (entity instanceof Player) {
+          Player livingEntity = (Player) entity;
          livingEntity.causeFoodExhaustion(this.amount.calculate(enchantmentLevel));
       }
    }

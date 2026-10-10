@@ -70,7 +70,7 @@ public class ArmadilloAi {
             new MoveToTargetSink() {
                @Override
                protected boolean checkExtraStartConditions(final ServerLevel level, final Mob body) {
-                  return body instanceof Armadillo armadillo && armadillo.isScared() ? false : super.checkExtraStartConditions(level, body);
+                  return body instanceof Armadillo && armadillo.isScared() ? false : super.checkExtraStartConditions(level, body);
                }
             },
             new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS),

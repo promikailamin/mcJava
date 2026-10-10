@@ -79,7 +79,8 @@ public class SulfurCubeRenderer extends AbstractCubeMobRenderer<SulfurCube, Sulf
       state.fuseRemainingTicks = entity.isPrimed() ? entity.getFuse() - partialTicks + 1.0F : 0.0F;
       ItemStack containedBlock = entity.getBodyArmorItem();
       if (!containedBlock.isEmpty()) {
-         if (containedBlock.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof AbstractSkullBlock skullBlock) {
+         if (containedBlock.getItem() instanceof BlockItem && blockItem.getBlock() instanceof AbstractSkullBlock) {
+             AbstractSkullBlock skullBlock = (AbstractSkullBlock) containedBlock.getItem() instanceof BlockItem && blockItem.getBlock();
             state.wornHeadType = skullBlock.getType();
             state.wornHeadProfile = containedBlock.get(DataComponents.PROFILE);
          } else {

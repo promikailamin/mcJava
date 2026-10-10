@@ -370,7 +370,8 @@ public class RealmsMainScreen extends RealmsScreen {
          this.notifications.addAll(retrievedNotifications);
 
          for (RealmsNotification notification : retrievedNotifications) {
-            if (notification instanceof RealmsNotification.InfoPopup popup) {
+            if (notification instanceof RealmsNotification.InfoPopup) {
+                RealmsNotification.InfoPopup popup = (RealmsNotification.InfoPopup) notification;
                PopupScreen popupScreen = popup.buildScreen(this, this::dismissNotification);
                if (popupScreen != null) {
                   this.minecraft.gui.setScreen(popupScreen);
@@ -512,7 +513,7 @@ public class RealmsMainScreen extends RealmsScreen {
    }
 
    private @Nullable RealmsServer getSelectedServer() {
-      return this.realmSelectionList.getSelected() instanceof RealmsMainScreen.ServerEntry entry ? entry.getServer() : null;
+      return this.realmSelectionList.getSelected() instanceof RealmsMainScreen.ServerEntry ? getServer() : null;
    }
 
    private void leaveServer(final RealmsServer server) {
@@ -1113,7 +1114,8 @@ public class RealmsMainScreen extends RealmsScreen {
          this.clearEntries();
 
          for (RealmsNotification notification : RealmsMainScreen.this.notifications) {
-            if (notification instanceof RealmsNotification.VisitUrl visitUrl) {
+            if (notification instanceof RealmsNotification.VisitUrl) {
+                RealmsNotification.VisitUrl visitUrl = (RealmsNotification.VisitUrl) notification;
                this.addEntriesForNotification(visitUrl, realmsMainScreen, previouslySelected);
                RealmsMainScreen.this.markNotificationsAsSeen(List.of(notification));
                break;
@@ -1132,8 +1134,7 @@ public class RealmsMainScreen extends RealmsScreen {
             realmsMainScreen, messageHeight, message, visitUrl
          );
          this.addEntry(entry, 38 + messageHeight);
-         if (previouslySelected instanceof RealmsMainScreen.NotificationMessageEntry notificationMessageEntry
-            && notificationMessageEntry.getText().equals(message)) {
+         if (previouslySelected instanceof RealmsMainScreen.NotificationMessageEntry && notificationMessageEntry.getText().equals(message)) {
             this.setSelected(entry);
          }
       }
@@ -1156,7 +1157,7 @@ public class RealmsMainScreen extends RealmsScreen {
             }
 
             this.addEntry(entry);
-            if (previouslySelected instanceof RealmsMainScreen.ServerEntry serverEntry && serverEntry.serverData.id == server.id) {
+            if (previouslySelected instanceof RealmsMainScreen.ServerEntry && serverEntry.serverData.id == server.id) {
                this.setSelected(entry);
             }
          }

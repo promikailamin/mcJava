@@ -1422,7 +1422,8 @@ public class Options {
    private void setGraphicsPresetToCustom() {
       if (!this.isApplyingGraphicsPreset) {
          this.graphicsPreset.set(GraphicsPreset.CUSTOM);
-         if (this.minecraft.gui.screen() instanceof OptionsSubScreen optionsSubScreen) {
+         if (this.minecraft.gui.screen() instanceof OptionsSubScreen) {
+             OptionsSubScreen optionsSubScreen = (OptionsSubScreen) this.minecraft.gui.screen();
             optionsSubScreen.resetOption(this.graphicsPreset);
          }
       }

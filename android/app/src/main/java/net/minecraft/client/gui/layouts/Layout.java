@@ -13,7 +13,8 @@ public interface Layout extends LayoutElement {
 
    default void arrangeElements() {
       this.visitChildren(child -> {
-         if (child instanceof Layout layout) {
+         if (child instanceof Layout) {
+             Layout layout = (Layout) child;
             layout.arrangeElements();
          }
       });

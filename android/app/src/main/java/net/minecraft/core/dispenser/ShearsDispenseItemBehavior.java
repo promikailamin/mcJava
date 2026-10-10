@@ -53,7 +53,7 @@ public class ShearsDispenseItemBehavior extends OptionalDispenseItemBehavior {
             return true;
          }
 
-         if (entity.isAlive() && entity instanceof Shearable shearable && shearable.readyForShearing()) {
+         if (entity.isAlive() && entity instanceof Shearable && shearable.readyForShearing()) {
             shearable.shear(level, SoundSource.BLOCKS, tool);
             level.gameEvent(null, GameEvent.SHEAR, pos);
             return true;

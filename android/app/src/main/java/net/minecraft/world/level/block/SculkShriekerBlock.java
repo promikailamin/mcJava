@@ -51,7 +51,8 @@ public class SculkShriekerBlock extends BaseEntityBlock implements SimpleWaterlo
 
    @Override
    public void stepOn(final Level level, final BlockPos pos, final BlockState onState, final Entity entity) {
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          ServerPlayer player = SculkShriekerBlockEntity.tryGetPlayer(entity);
          if (player != null) {
             serverLevel.getBlockEntity(pos, BlockEntityTypes.SCULK_SHRIEKER).ifPresent(shrieker -> shrieker.tryShriek(serverLevel, player));

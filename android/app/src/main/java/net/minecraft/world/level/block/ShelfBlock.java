@@ -155,7 +155,7 @@ public class ShelfBlock extends BaseEntityBlock implements SelectableSlotContain
       final InteractionHand hand,
       final BlockHitResult hitResult
    ) {
-      if (level.getBlockEntity(pos) instanceof ShelfBlockEntity shelfBlockEntity && !hand.equals(InteractionHand.OFF_HAND)) {
+      if (level.getBlockEntity(pos) instanceof ShelfBlockEntity && !hand.equals(InteractionHand.OFF_HAND)) {
          OptionalInt hitSlot = this.getHitSlot(hitResult, state.getValue(FACING));
          if (hitSlot.isEmpty()) {
             return InteractionResult.PASS;
@@ -314,7 +314,8 @@ public class ShelfBlock extends BaseEntityBlock implements SelectableSlotContain
          return 0;
       } else if (direction != state.getValue(FACING).getOpposite()) {
          return 0;
-      } else if (level.getBlockEntity(pos) instanceof ShelfBlockEntity blockEntity) {
+      } else if (level.getBlockEntity(pos) instanceof ShelfBlockEntity) {
+         ShelfBlockEntity blockEntity = (ShelfBlockEntity) level.getBlockEntity(pos);
          int item1Bit = blockEntity.getItem(0).isEmpty() ? 0 : 1;
          int item2Bit = blockEntity.getItem(1).isEmpty() ? 0 : 1;
          int item3Bit = blockEntity.getItem(2).isEmpty() ? 0 : 1;

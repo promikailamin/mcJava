@@ -86,7 +86,8 @@ public record AttackRange(float minReach, float maxReach, float minCreativeReach
    }
 
    public float effectiveMinRange(final Entity entity) {
-      if (entity instanceof Player player) {
+      if (entity instanceof Player) {
+          Player player = (Player) entity;
          return player.isCreative() ? this.minCreativeReach : this.minReach;
       } else {
          return this.minReach * this.mobFactor;
@@ -94,7 +95,8 @@ public record AttackRange(float minReach, float maxReach, float minCreativeReach
    }
 
    public float effectiveMaxRange(final Entity entity) {
-      if (entity instanceof Player player) {
+      if (entity instanceof Player) {
+          Player player = (Player) entity;
          return player.isCreative() ? this.maxCreativeReach : this.maxReach;
       } else {
          return this.maxReach * this.mobFactor;

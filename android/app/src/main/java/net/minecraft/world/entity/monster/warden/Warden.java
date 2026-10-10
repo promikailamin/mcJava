@@ -246,7 +246,8 @@ public class Warden extends Monster implements VibrationSystem {
 
    @Override
    public void tick() {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          VibrationSystem.Ticker.tick(serverLevel, this.vibrationData, this.vibrationUser);
          if (this.isPersistenceRequired() || this.requiresCustomPersistence()) {
             WardenAi.setDigCooldown(this);
@@ -384,7 +385,8 @@ public class Warden extends Monster implements VibrationSystem {
 
    @Override
    public void updateDynamicGameEventListener(final BiConsumer<DynamicGameEventListener<?>, ServerLevel> action) {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          action.accept(this.dynamicGameEventListener, serverLevel);
       }
    }
@@ -396,8 +398,7 @@ public class Warden extends Monster implements VibrationSystem {
 
    @Contract("null->false")
    public boolean canTargetEntity(final @Nullable Entity entity) {
-      return entity instanceof LivingEntity livingEntity
-         && this.level() == entity.level()
+      return entity instanceof LivingEntity && this.level() == entity.level()
          && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity)
          && !this.isAlliedTo(entity)
          && !livingEntity.is(EntityTypes.ARMOR_STAND)
@@ -501,8 +502,7 @@ public class Warden extends Monster implements VibrationSystem {
          Entity attacker = source.getEntity();
          this.increaseAngerAt(attacker, AngerLevel.ANGRY.getMinimumAnger() + 20, false);
          if (this.brain.getMemory(MemoryModuleType.ATTACK_TARGET).isEmpty()
-            && attacker instanceof LivingEntity livingAttacker
-            && (source.isDirect() || this.closerThan(livingAttacker, 5.0))) {
+            && attacker instanceof LivingEntity && (source.isDirect() || this.closerThan(livingAttacker, 5.0))) {
             this.setAttackTarget(livingAttacker);
          }
       }
@@ -601,7 +601,7 @@ public class Warden extends Monster implements VibrationSystem {
                && !Warden.this.getBrain().hasMemoryValue(MemoryModuleType.VIBRATION_COOLDOWN)
                && !Warden.this.isDiggingOrEmerging()
                && level.getWorldBorder().isWithinBounds(pos)
-            ? !(context.sourceEntity() instanceof LivingEntity livingEntity && !Warden.this.canTargetEntity(livingEntity))
+            ? !(context.sourceEntity() instanceof LivingEntity && !Warden.this.canTargetEntity(livingEntity))
             : false;
       }
 

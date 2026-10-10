@@ -142,11 +142,12 @@ public class ComponentUtils {
    }
 
    public static Component fromMessage(final Message message) {
-      return message instanceof Component component ? component : Component.literal(message.getString());
+      return message instanceof Component ? component  : Component.literal(message.getString());
    }
 
    public static boolean isTranslationResolvable(final @Nullable Component component) {
-      if (component != null && component.getContents() instanceof TranslatableContents translatable) {
+      if (component != null && component.getContents() instanceof TranslatableContents) {
+          TranslatableContents translatable = (TranslatableContents) component != null && component.getContents();
          String key = translatable.getKey();
          String fallback = translatable.getFallback();
          return fallback != null || Language.getInstance().has(key);

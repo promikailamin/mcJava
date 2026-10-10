@@ -144,7 +144,7 @@ public class Ravager extends Raider {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(Mth.lerp(0.1, baseValue, maxSpeed));
          }
 
-         if (this.level() instanceof ServerLevel serverLevel && this.horizontalCollision && serverLevel.getGameRules().get(GameRules.MOB_GRIEFING)) {
+         if (this.level() instanceof ServerLevel && this.horizontalCollision && serverLevel.getGameRules().get(GameRules.MOB_GRIEFING)) {
             boolean destroyedBlock = false;
             AABB bb = this.getBoundingBox().inflate(0.2);
 
@@ -222,7 +222,8 @@ public class Ravager extends Raider {
    }
 
    private void roar() {
-      if (this.isAlive() && this.level() instanceof ServerLevel level) {
+      if (this.isAlive() && this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.isAlive() && this.level();
          Predicate<Entity> targetSelector = level.getGameRules().get(GameRules.MOB_GRIEFING) ? ROAR_TARGET_WITH_GRIEFING : ROAR_TARGET_WITHOUT_GRIEFING;
 
          for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(4.0), targetSelector)) {

@@ -127,7 +127,7 @@ public class CraftingInput implements RecipeInput {
       if (obj == this) {
          return true;
       } else {
-         return !(obj instanceof CraftingInput input)
+         return !(obj instanceof CraftingInput)
             ? false
             : this.width == input.width
                && this.height == input.height

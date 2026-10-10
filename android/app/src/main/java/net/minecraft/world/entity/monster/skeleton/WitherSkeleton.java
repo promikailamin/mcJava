@@ -95,7 +95,8 @@ public class WitherSkeleton extends AbstractSkeleton {
          return false;
       }
 
-      if (target instanceof LivingEntity livingEntity) {
+      if (target instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) target;
          livingEntity.addEffect(new MobEffectInstance(MobEffects.WITHER, 200), this);
       }
 

@@ -238,7 +238,7 @@ public class ServerSelectionList extends ObjectSelectionList<ServerSelectionList
 
       @Override
       protected boolean matches(final ServerSelectionList.Entry other) {
-         return other instanceof ServerSelectionList.NetworkServerEntry networkServerEntry && networkServerEntry.serverData == this.serverData;
+         return other instanceof ServerSelectionList.NetworkServerEntry && networkServerEntry.serverData == this.serverData;
       }
    }
 
@@ -563,7 +563,7 @@ public class ServerSelectionList extends ObjectSelectionList<ServerSelectionList
 
       @Override
       protected boolean matches(final ServerSelectionList.Entry other) {
-         return other instanceof ServerSelectionList.OnlineServerEntry onlineServerEntry && onlineServerEntry.serverData == this.serverData;
+         return other instanceof ServerSelectionList.OnlineServerEntry && onlineServerEntry.serverData == this.serverData;
       }
    }
 }

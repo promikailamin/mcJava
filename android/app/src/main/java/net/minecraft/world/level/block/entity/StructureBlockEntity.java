@@ -317,7 +317,8 @@ public class StructureBlockEntity extends BlockEntity implements BoundingBoxRend
    }
 
    public boolean saveStructure(final boolean saveToDisk) {
-      if (this.structureName != null && this.level instanceof ServerLevel serverLevel) {
+      if (this.structureName != null && this.level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.structureName != null && this.level;
          BlockPos var4 = this.getBlockPos().offset(this.structurePos);
          return saveStructure(serverLevel, this.structureName, var4, this.structureSize, this.ignoreEntities, this.author, saveToDisk, List.of());
       } else {

@@ -56,7 +56,7 @@ public class ShulkerBoxBlockEntity extends RandomizableContainerBlockEntity impl
 
    public ShulkerBoxBlockEntity(final BlockPos worldPosition, final BlockState blockState) {
       super(BlockEntityTypes.SHULKER_BOX, worldPosition, blockState);
-      this.color = blockState.getBlock() instanceof ShulkerBoxBlock shulkerBoxBlock ? shulkerBoxBlock.getColor() : null;
+      this.color = blockState.getBlock() instanceof ShulkerBoxBlock ? getColor() : null;
    }
 
    public static void tick(final Level level, final BlockPos pos, final BlockState state, final ShulkerBoxBlockEntity entity) {

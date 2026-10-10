@@ -582,7 +582,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
          LOGGER.warn("Skipping Entity with id {}", packet.getType());
       }
 
-      if (entity instanceof Player player) {
+      if (entity instanceof Player) {
+          Player player = (Player) entity;
          UUID uuid = player.getUUID();
          PlayerInfo playerInfo = this.playerInfoMap.get(uuid);
          if (playerInfo != null) {
@@ -607,9 +608,11 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
    }
 
    private void postAddEntitySoundInstance(final Entity entity) {
-      if (entity instanceof AbstractMinecart minecart) {
+      if (entity instanceof AbstractMinecart) {
+         AbstractMinecart minecart = (AbstractMinecart) entity;
          this.minecraft.getSoundManager().play(new MinecartSoundInstance(minecart));
-      } else if (entity instanceof Bee bee) {
+      } else if (entity instanceof Bee) {
+         Bee bee = (Bee) entity;
          boolean angry = bee.isAngry();
          BeeSoundInstance soundInstance;
          if (angry) {
@@ -752,8 +755,10 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
    @Override
    public void handleMinecartAlongTrack(final ClientboundMoveMinecartPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
-      if (packet.getEntity(this.level) instanceof AbstractMinecart minecart) {
-         if (minecart.getBehavior() instanceof NewMinecartBehavior newMinecartBehavior) {
+      if (packet.getEntity(this.level) instanceof AbstractMinecart) {
+          AbstractMinecart minecart = (AbstractMinecart) packet.getEntity(this.level);
+         if (minecart.getBehavior() instanceof NewMinecartBehavior) {
+             NewMinecartBehavior newMinecartBehavior = (NewMinecartBehavior) minecart.getBehavior();
             newMinecartBehavior.lerpSteps.addAll(packet.lerpSteps());
          }
       }
@@ -1003,7 +1008,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
             this.minecraft.particleEngine.add(new ItemPickupParticle(this.level, itemState, to, from.getDeltaMovement()));
          }
 
-         if (from instanceof ItemEntity itemEntity) {
+         if (from instanceof ItemEntity) {
+             ItemEntity itemEntity = (ItemEntity) from;
             ItemStack itemStack = itemEntity.getItem();
             if (!itemStack.isEmpty()) {
                itemStack.shrink(packet.getAmount());
@@ -1117,7 +1123,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
    @Override
    public void handleSwingAnimation(final ClientboundSwingAnimationPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
-      if (this.level.getEntity(packet.entityId()) instanceof LivingEntity livingEntity) {
+      if (this.level.getEntity(packet.entityId()) instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) this.level.getEntity(packet.entityId());
          livingEntity.swing(packet.hand(), packet.animation(), false);
       }
    }
@@ -1184,7 +1191,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
    @Override
    public void handleEntityLinkPacket(final ClientboundSetEntityLinkPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
-      if (this.level.getEntity(packet.getSourceId()) instanceof Leashable leashable) {
+      if (this.level.getEntity(packet.getSourceId()) instanceof Leashable) {
+          Leashable leashable = (Leashable) this.level.getEntity(packet.getSourceId());
          leashable.setDelayedLeashHolderId(packet.getDestId());
       }
    }
@@ -1384,22 +1392,24 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
    }
 
    @Override
-   public void handleMountScreenOpen(final ClientboundMountScreenOpenPacket packet) {
-      PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
-      Entity entity = this.level.getEntity(packet.getEntityId());
-      LocalPlayer player = this.minecraft.player;
-      int inventoryColumns = packet.getInventoryColumns();
-      SimpleContainer container = new SimpleContainer(AbstractMountInventoryMenu.getInventorySize(inventoryColumns));
-      if (entity instanceof AbstractHorse horse) {
-         HorseInventoryMenu menu = new HorseInventoryMenu(packet.getContainerId(), player.getInventory(), container, horse, inventoryColumns);
-         player.containerMenu = menu;
-         this.minecraft.gui.setScreen(new HorseInventoryScreen(menu, player.getInventory(), horse, inventoryColumns));
-      } else if (entity instanceof AbstractNautilus nautilus) {
-         NautilusInventoryMenu menu = new NautilusInventoryMenu(packet.getContainerId(), player.getInventory(), container, nautilus, inventoryColumns);
-         player.containerMenu = menu;
-         this.minecraft.gui.setScreen(new NautilusInventoryScreen(menu, player.getInventory(), nautilus, inventoryColumns));
-      }
-   }
+public void handleMountScreenOpen(final ClientboundMountScreenOpenPacket packet) {
+       PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
+       Entity entity = this.level.getEntity(packet.getEntityId());
+       LocalPlayer player = this.minecraft.player;
+       int inventoryColumns = packet.getInventoryColumns();
+       SimpleContainer container = new SimpleContainer(AbstractMountInventoryMenu.getInventorySize(inventoryColumns));
+       if (entity instanceof AbstractHorse) {
+          AbstractHorse horse = (AbstractHorse) entity;
+          HorseInventoryMenu menu = new HorseInventoryMenu(packet.getContainerId(), player.getInventory(), container, horse, inventoryColumns);
+          player.containerMenu = menu;
+          this.minecraft.gui.setScreen(new HorseInventoryScreen(menu, player.getInventory(), horse, inventoryColumns));
+       } else if (entity instanceof AbstractNautilus) {
+          AbstractNautilus nautilus = (AbstractNautilus) entity;
+          NautilusInventoryMenu menu = new NautilusInventoryMenu(packet.getContainerId(), player.getInventory(), container, nautilus, inventoryColumns);
+          player.containerMenu = menu;
+          this.minecraft.gui.setScreen(new NautilusInventoryScreen(menu, player.getInventory(), nautilus, inventoryColumns));
+       }
+    }
 
    @Override
    public void handleOpenScreen(final ClientboundOpenScreenPacket packet) {
@@ -1415,7 +1425,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
       int slot = packet.getSlot();
       this.minecraft.getTutorial().onGetItem(itemStack);
       boolean creative;
-      if (this.minecraft.gui.screen() instanceof CreativeModeInventoryScreen screen) {
+      if (this.minecraft.gui.screen() instanceof CreativeModeInventoryScreen) {
+          CreativeModeInventoryScreen screen = (CreativeModeInventoryScreen) this.minecraft.gui.screen();
          creative = !screen.isInventoryOpen();
       } else {
          creative = false;
@@ -1471,7 +1482,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
    public void handleOpenSignEditor(final ClientboundOpenSignEditorPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
       BlockPos pos = packet.pos();
-      if (this.level.getBlockEntity(pos) instanceof SignBlockEntity sign) {
+      if (this.level.getBlockEntity(pos) instanceof SignBlockEntity) {
+          SignBlockEntity sign = (SignBlockEntity) this.level.getBlockEntity(pos);
          this.minecraft.player.openTextEdit(sign, packet.slot());
       } else {
          LOGGER.warn("Ignoring openTextEdit on an invalid entity: {} at pos {}", this.level.getBlockEntity(pos), pos);
@@ -1516,7 +1528,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
    @Override
    public void handleSetEquipment(final ClientboundSetEquipmentPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
-      if (this.level.getEntity(packet.getEntity()) instanceof LivingEntity livingEntity) {
+      if (this.level.getEntity(packet.getEntity()) instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) this.level.getEntity(packet.getEntity());
          packet.getSlots().forEach(e -> livingEntity.setItemSlot((EquipmentSlot)e.getFirst(), (ItemStack)e.getSecond()));
       }
    }
@@ -1641,7 +1654,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
       }
 
       this.levelLoadTracker.startClientLoad(player, level);
-      if (this.minecraft.gui.screen() instanceof LevelLoadingScreen loadingScreen) {
+      if (this.minecraft.gui.screen() instanceof LevelLoadingScreen) {
+          LevelLoadingScreen loadingScreen = (LevelLoadingScreen) this.minecraft.gui.screen();
          loadingScreen.update(this.levelLoadTracker, reason);
       } else {
          this.minecraft.gui.hud.getChat().preserveCurrentChatScreen();
@@ -1744,7 +1758,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
          this.minecraft.player.getStats().setValue(this.minecraft.player, stat, amount);
       }
 
-      if (this.minecraft.gui.screen() instanceof StatsScreen statsScreenx) {
+      if (this.minecraft.gui.screen() instanceof StatsScreen) {
+          StatsScreen statsScreenx = (StatsScreen) this.minecraft.gui.screen();
          statsScreenx.onStatsUpdated();
       }
    }
@@ -1794,7 +1809,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
    private void refreshRecipeBook(final ClientRecipeBook recipeBook) {
       recipeBook.rebuildCollections();
       this.searchTrees.updateRecipes(recipeBook, this.level);
-      if (this.minecraft.gui.screen() instanceof RecipeUpdateListener updateListener) {
+      if (this.minecraft.gui.screen() instanceof RecipeUpdateListener) {
+          RecipeUpdateListener updateListener = (RecipeUpdateListener) this.minecraft.gui.screen();
          updateListener.recipesUpdated();
       }
    }
@@ -1802,7 +1818,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
    @Override
    public void handleUpdateMobEffect(final ClientboundUpdateMobEffectPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
-      if (this.level.getEntity(packet.getEntityId()) instanceof LivingEntity livingEntity) {
+      if (this.level.getEntity(packet.getEntityId()) instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) this.level.getEntity(packet.getEntityId());
          Holder effect = packet.getEffect();
          MobEffectInstance mobEffectInstance = new MobEffectInstance(
             effect,
@@ -1867,7 +1884,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
       PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
       this.levelData.setDifficulty(packet.difficulty());
       this.levelData.setDifficultyLocked(packet.locked());
-      if (this.minecraft.gui.screen() instanceof HasDifficultyReaction screen) {
+      if (this.minecraft.gui.screen() instanceof HasDifficultyReaction) {
+          HasDifficultyReaction screen = (HasDifficultyReaction) this.minecraft.gui.screen();
          screen.onDifficultyChanged();
       }
    }
@@ -1987,7 +2005,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
    @Override
    public void handleRemoveMobEffect(final ClientboundRemoveMobEffectPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
-      if (packet.getEntity(this.level) instanceof LivingEntity entity) {
+      if (packet.getEntity(this.level) instanceof LivingEntity) {
+          LivingEntity entity = (LivingEntity) packet.getEntity(this.level);
          entity.removeEffectNoUpdate(packet.effect());
       }
    }
@@ -2108,7 +2127,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
    @Override
    public void handleGameRuleValues(final ClientboundGameRuleValuesPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
-      if (this.minecraft.gui.screen() instanceof InWorldGameRulesScreen inWorldGameRulesScreen) {
+      if (this.minecraft.gui.screen() instanceof InWorldGameRulesScreen) {
+          InWorldGameRulesScreen inWorldGameRulesScreen = (InWorldGameRulesScreen) this.minecraft.gui.screen();
          inWorldGameRulesScreen.onGameRuleValuesUpdated(packet.values());
       }
    }
@@ -2364,7 +2384,7 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
       PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
       Entity entity = this.level.getEntity(packet.getEntityId());
       if (entity != null) {
-         if (!(entity instanceof LivingEntity livingEntity)) {
+         if (!(entity instanceof LivingEntity)) {
             throw new IllegalStateException("Server tried to update attributes of a non-living entity (actually: " + entity + ")");
          } else {
             AttributeMap attributes = livingEntity.getAttributes();
@@ -2391,7 +2411,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
       PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
       AbstractContainerMenu containerMenu = this.minecraft.player.containerMenu;
       if (containerMenu.containerId == packet.containerId()) {
-         if (this.minecraft.gui.screen() instanceof RecipeUpdateListener listener) {
+         if (this.minecraft.gui.screen() instanceof RecipeUpdateListener) {
+             RecipeUpdateListener listener = (RecipeUpdateListener) this.minecraft.gui.screen();
             listener.fillGhostRecipe(packet.recipeDisplay());
          }
       }
@@ -2423,7 +2444,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
    public void handleMerchantOffers(final ClientboundMerchantOffersPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
       AbstractContainerMenu menu = this.minecraft.player.containerMenu;
-      if (packet.getContainerId() == menu.containerId && menu instanceof MerchantMenu merchantMenu) {
+      if (packet.getContainerId() == menu.containerId && menu instanceof MerchantMenu) {
+          MerchantMenu merchantMenu = (MerchantMenu) packet.getContainerId() == menu.containerId && menu;
          merchantMenu.setOffers(packet.getOffers());
          merchantMenu.setXp(packet.getVillagerXp());
          merchantMenu.setMerchantLevel(packet.getVillagerLevel());
@@ -2471,7 +2493,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
    @Override
    public void handleProjectilePowerPacket(final ClientboundProjectilePowerPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
-      if (this.level.getEntity(packet.getId()) instanceof AbstractHurtingProjectile projectile) {
+      if (this.level.getEntity(packet.getId()) instanceof AbstractHurtingProjectile) {
+          AbstractHurtingProjectile projectile = (AbstractHurtingProjectile) this.level.getEntity(packet.getId());
          projectile.accelerationPower = packet.getAccelerationPower();
       }
    }
@@ -2500,7 +2523,8 @@ public class ClientPacketListener extends ClientCommonPacketListenerImpl impleme
    @Override
    public void handleTestInstanceBlockStatus(final ClientboundTestInstanceBlockStatus packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.minecraft.packetProcessor());
-      if (this.minecraft.gui.screen() instanceof TestInstanceBlockEditScreen editScreen) {
+      if (this.minecraft.gui.screen() instanceof TestInstanceBlockEditScreen) {
+          TestInstanceBlockEditScreen editScreen = (TestInstanceBlockEditScreen) this.minecraft.gui.screen();
          editScreen.setStatus(packet.status(), packet.size());
       }
    }

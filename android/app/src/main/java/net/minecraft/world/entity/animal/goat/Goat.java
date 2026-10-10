@@ -149,17 +149,18 @@ public class Goat extends Animal {
       return this.isScreamingGoat() ? SoundEvents.GOAT_SCREAMING_MILK : SoundEvents.GOAT_MILK;
    }
 
-   public @Nullable Goat getBreedOffspring(final ServerLevel level, final AgeableMob partner) {
-      Goat newGoat = EntityTypes.GOAT.create(level, EntitySpawnReason.BREEDING);
-      if (newGoat != null) {
-         GoatAi.initMemories(newGoat, level.getRandom());
-         boolean babyIsScreaming = (level.getRandom().nextBoolean() ? this : partner) instanceof Goat goat && goat.isScreamingGoat()
-            || level.getRandom().nextDouble() < 0.02;
-         newGoat.setScreamingGoat(babyIsScreaming);
-      }
+public @Nullable Goat getBreedOffspring(final ServerLevel level, final AgeableMob partner) {
+       Goat newGoat = EntityTypes.GOAT.create(level, EntitySpawnReason.BREEDING);
+       if (newGoat != null) {
+          GoatAi.initMemories(newGoat, level.getRandom());
+          AgeableMob selected = level.getRandom().nextBoolean() ? this : partner;
+          boolean babyIsScreaming = selected instanceof Goat && goat.isScreamingGoat()
+             || level.getRandom().nextDouble() < 0.02;
+          newGoat.setScreamingGoat(babyIsScreaming);
+       }
 
-      return newGoat;
-   }
+       return newGoat;
+    }
 
    @Override
    public float getAgeScale() {

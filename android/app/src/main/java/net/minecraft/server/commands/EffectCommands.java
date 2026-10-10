@@ -188,7 +188,8 @@ public class EffectCommands {
       CommandResponseTracker<LivingEntity> tracker = CommandResponseTracker.create();
 
       for (Entity entity : entities) {
-         if (entity instanceof LivingEntity livingEntity) {
+         if (entity instanceof LivingEntity) {
+             LivingEntity livingEntity = (LivingEntity) entity;
             MobEffectInstance instance = new MobEffectInstance(effectHolder, duration, amplifier, false, particles);
             tracker.track(livingEntity, livingEntity.addEffect(instance, source.getEntity()));
          }
@@ -213,7 +214,8 @@ public class EffectCommands {
       CommandResponseTracker<LivingEntity> tracker = CommandResponseTracker.create();
 
       for (Entity entity : entities) {
-         if (entity instanceof LivingEntity livingEntity) {
+         if (entity instanceof LivingEntity) {
+             LivingEntity livingEntity = (LivingEntity) entity;
             tracker.track(livingEntity, livingEntity.removeAllEffects());
          }
       }
@@ -226,7 +228,8 @@ public class EffectCommands {
       CommandResponseTracker<LivingEntity> tracker = CommandResponseTracker.create();
 
       for (Entity entity : entities) {
-         if (entity instanceof LivingEntity livingEntity) {
+         if (entity instanceof LivingEntity) {
+             LivingEntity livingEntity = (LivingEntity) entity;
             tracker.track(livingEntity, livingEntity.removeEffect(effectHolder));
          }
       }

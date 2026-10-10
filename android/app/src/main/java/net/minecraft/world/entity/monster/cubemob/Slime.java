@@ -85,7 +85,7 @@ public class Slime extends AbstractCubeMob implements Enemy {
             }
          }
 
-         if (!(level instanceof WorldGenLevel worldGenLevel)) {
+         if (!(level instanceof WorldGenLevel)) {
             return false;
          }
 

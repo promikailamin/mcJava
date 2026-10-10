@@ -79,7 +79,7 @@ public class AdvancementNode {
 
    @Override
    public boolean equals(final Object obj) {
-      return this == obj ? true : obj instanceof AdvancementNode that && this.holder.equals(that.holder);
+      return this == obj ? true : obj instanceof AdvancementNode && this.holder.equals(that.holder);
    }
 
    @Override

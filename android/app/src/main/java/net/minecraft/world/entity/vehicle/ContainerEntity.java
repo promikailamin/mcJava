@@ -79,7 +79,8 @@ public interface ContainerEntity extends Container, MenuProvider {
    default void chestVehicleDestroyed(final DamageSource source, final ServerLevel level, final Entity entity) {
       if (level.getGameRules().get(GameRules.ENTITY_DROPS)) {
          Containers.dropContents(level, entity, this);
-         if (source.getDirectEntity() instanceof Player player) {
+         if (source.getDirectEntity() instanceof Player) {
+             Player player = (Player) source.getDirectEntity();
             PiglinAi.angerNearbyPiglins(level, player, true);
          }
       }

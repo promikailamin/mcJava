@@ -35,7 +35,8 @@ final class DirectoryNode extends Node {
    }
 
    public DirectoryNode directoryByPath(final CopyOnWriteFSPath path) throws CowFSNoSuchFileException, CowFSNotDirectoryException {
-      if (this.byPath(path) instanceof DirectoryNode result) {
+      if (this.byPath(path) instanceof DirectoryNode) {
+          DirectoryNode result = (DirectoryNode) this.byPath(path);
          return result;
       } else {
          throw new CowFSNotDirectoryException(path + " was a file, expected directory");
@@ -43,7 +44,8 @@ final class DirectoryNode extends Node {
    }
 
    public FileNode fileByPath(final CopyOnWriteFSPath path) throws CowFSNoSuchFileException {
-      if (this.byPathOrNull(path) instanceof FileNode result) {
+      if (this.byPathOrNull(path) instanceof FileNode) {
+          FileNode result = (FileNode) this.byPathOrNull(path);
          return result;
       } else {
          throw new CowFSNoSuchFileException(path.toString());
@@ -73,7 +75,7 @@ final class DirectoryNode extends Node {
                }
             } else {
                Node nextNode = directory.getChild(name);
-               if (!(nextNode instanceof DirectoryNode nextDirectory)) {
+               if (!(nextNode instanceof DirectoryNode)) {
                   return i == nameCount - 1 ? nextNode : null;
                }
 

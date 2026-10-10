@@ -50,9 +50,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 
 public class Blocks {
-   private static final BlockBehaviour.StatePredicate NOT_CLOSED_SHULKER = (state, level, pos) -> level.getBlockEntity(pos) instanceof ShulkerBoxBlockEntity shulkerBoxBlockEntity
-      ? shulkerBoxBlockEntity.isClosed()
-      : true;
+   private static final BlockBehaviour.StatePredicate NOT_CLOSED_SHULKER = (state, level, pos) -> level.getBlockEntity(pos) instanceof ShulkerBoxBlockEntity ? isClosed() : true;
    private static final BlockBehaviour.StatePredicate NOT_EXTENDED_PISTON = (state, level, pos) -> !state.getValue(PistonBaseBlock.EXTENDED);
    private static final BlockBehaviour.StateArgumentPredicate<AABB> NEAR_PLANE_INTERSECTS_OUTLINE = (state, level, blockPos, nearPlaneBox) -> {
       for (AABB outlineBox : state.getOcclusionShape().toAabbs()) {

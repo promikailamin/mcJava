@@ -64,7 +64,7 @@ public class ChargeAttack extends Behavior<Animal> {
          return false;
       } else {
          LivingEntity attackTarget = attackCandidate.get();
-         if (body instanceof TamableAnimal tamedAnimal && tamedAnimal.isTame()) {
+         if (body instanceof TamableAnimal && tamedAnimal.isTame()) {
             return false;
          } else if (body.position().subtract(this.startPosition).lengthSqr() >= this.maxChargeDistance * this.maxChargeDistance) {
             return false;

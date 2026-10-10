@@ -164,7 +164,8 @@ public class ConnectScreen extends Screen {
                }
 
                Exception cause;
-               if (exception.getCause() instanceof Exception originalCause) {
+               if (exception.getCause() instanceof Exception) {
+                   Exception originalCause = (Exception) exception.getCause();
                   cause = originalCause;
                } else {
                   cause = exception;

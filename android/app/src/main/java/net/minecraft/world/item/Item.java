@@ -182,7 +182,7 @@ public class Item implements ItemLike, FeatureElement {
 
    public boolean canDestroyBlock(final ItemStack itemStack, final BlockState state, final Level level, final BlockPos pos, final LivingEntity user) {
       Tool tool = itemStack.get(DataComponents.TOOL);
-      return tool != null && !tool.canDestroyBlocksInCreative() ? !(user instanceof Player player && player.getAbilities().instabuild) : true;
+      return tool != null && !tool.canDestroyBlocksInCreative() ? !(user instanceof Player && player.getAbilities().instabuild) : true;
    }
 
    @Override

@@ -89,7 +89,8 @@ public class EnchantCommand {
       CommandResponseTracker<Entity> tracker = CommandResponseTracker.create();
 
       for (Entity entity : targets) {
-         if (entity instanceof LivingEntity target) {
+         if (entity instanceof LivingEntity) {
+             LivingEntity target = (LivingEntity) entity;
             ItemStack item = target.getMainHandItem();
             if (!item.isEmpty()) {
                if (enchantment.canEnchant(item)

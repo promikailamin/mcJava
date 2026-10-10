@@ -70,7 +70,8 @@ public class DispenserBlock extends BaseEntityBlock {
    protected InteractionResult useWithoutItem(
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
-      if (!level.isClientSide() && level.getBlockEntity(pos) instanceof DispenserBlockEntity dispenser) {
+      if (!level.isClientSide() && level.getBlockEntity(pos) instanceof DispenserBlockEntity) {
+          DispenserBlockEntity dispenser = (DispenserBlockEntity) !level.isClientSide() && level.getBlockEntity(pos);
          player.openMenu(dispenser);
          player.awardStat(dispenser instanceof DropperBlockEntity ? Stats.INSPECT_DROPPER : Stats.INSPECT_DISPENSER);
       }

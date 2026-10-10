@@ -380,7 +380,7 @@ public final class Interval {
 
    @Override
    public boolean equals(final Object obj) {
-      return obj == this ? true : obj instanceof Interval interval && this.min == interval.min && this.max == interval.max;
+      return obj == this ? true : obj instanceof Interval && this.min == interval.min && this.max == interval.max;
    }
 
    @Override

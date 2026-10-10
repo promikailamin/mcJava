@@ -29,9 +29,7 @@ public class WorldgenRandom extends LegacyRandomSource {
    @Override
    public int next(final int bits) {
       this.count++;
-      return this.randomSource instanceof LegacyRandomSource legacyRandomSource
-         ? legacyRandomSource.next(bits)
-         : (int)(this.randomSource.nextLong() >>> 64 - bits);
+      return this.randomSource instanceof LegacyRandomSource ? next(bits) : (int)(this.randomSource.nextLong() >>> 64 - bits);
    }
 
    @Override

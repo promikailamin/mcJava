@@ -177,7 +177,8 @@ public class StructureTemplate {
          TagValueOutput output = TagValueOutput.createWithContext(reporter.forChild(entity.problemPath()), entity.registryAccess());
          entity.save(output);
          BlockPos blockPos;
-         if (entity instanceof Painting painting) {
+         if (entity instanceof Painting) {
+             Painting painting = (Painting) entity;
             blockPos = painting.getPos().subtract(minCorner);
          } else {
             blockPos = BlockPos.containing(pos);
@@ -333,7 +334,8 @@ public class StructureTemplate {
 
                   if (toPlace.isSource()) {
                      BlockState state = level.getBlockState(pos);
-                     if (state.getBlock() instanceof LiquidBlockContainer liquidBlockContainer) {
+                     if (state.getBlock() instanceof LiquidBlockContainer) {
+                         LiquidBlockContainer liquidBlockContainer = (LiquidBlockContainer) state.getBlock();
                         liquidBlockContainer.placeLiquid(level, pos, state, toPlace);
                         filled = true;
                         iterator.remove();
@@ -502,7 +504,8 @@ public class StructureTemplate {
                entity.snapTo(pos.x, pos.y, pos.z, yRot, entity.getXRot());
                entity.setYBodyRot(yRot);
                entity.setYHeadRot(yRot);
-               if (finalizeEntities && entity instanceof Mob mob) {
+               if (finalizeEntities && entity instanceof Mob) {
+                   Mob mob = (Mob) finalizeEntities && entity;
                   mob.finalizeSpawn(level, level.getCurrentDifficultyAt(BlockPos.containing(pos)), EntitySpawnReason.STRUCTURE, null);
                }
 

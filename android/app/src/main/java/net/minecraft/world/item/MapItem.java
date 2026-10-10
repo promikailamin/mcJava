@@ -86,7 +86,8 @@ public class MapItem extends Item {
    }
 
    public void update(final Level level, final Entity player, final MapItemSavedData data) {
-      if (level.dimension() == data.dimension && player instanceof Player player2) {
+      if (level.dimension() == data.dimension && player instanceof Player) {
+          Player player2 = (Player) level.dimension() == data.dimension && player;
          int scale = 1 << data.scale;
          int centerX = data.centerX;
          int centerZ = data.centerZ;
@@ -289,7 +290,8 @@ public class MapItem extends Item {
    public void inventoryTick(final ItemStack itemStack, final ServerLevel level, final Entity owner, final @Nullable EquipmentSlot slot) {
       MapItemSavedData data = getSavedData(itemStack, level);
       if (data != null) {
-         if (owner instanceof Player player) {
+         if (owner instanceof Player) {
+             Player player = (Player) owner;
             data.tickCarriedBy(player, itemStack, null);
          }
 
@@ -303,7 +305,8 @@ public class MapItem extends Item {
    public void onCraftedPostProcess(final ItemStack itemStack, final Level level) {
       MapPostProcessing postProcessing = itemStack.remove(DataComponents.MAP_POST_PROCESSING);
       if (postProcessing != null) {
-         if (level instanceof ServerLevel serverLevel) {
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
             switch (postProcessing) {
                case LOCK:
                   lockMap(itemStack, serverLevel);

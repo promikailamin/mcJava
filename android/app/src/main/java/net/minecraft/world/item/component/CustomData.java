@@ -67,7 +67,7 @@ public final class CustomData {
       if (obj == this) {
          return true;
       } else {
-         return obj instanceof CustomData customData ? this.tag.equals(customData.tag) : false;
+         return obj instanceof CustomData ? this.tag.equals(((CustomData) obj).tag)  : false;
       }
    }
 

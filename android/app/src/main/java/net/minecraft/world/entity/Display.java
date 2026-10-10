@@ -124,7 +124,8 @@ public abstract class Display extends Entity {
          this.updateStartTick = true;
       }
 
-      if (DATA_POS_ROT_INTERPOLATION_DURATION_ID.equals(accessor) && this.interpolationHandler instanceof LinearInterpolationHandler interpolation) {
+      if (DATA_POS_ROT_INTERPOLATION_DURATION_ID.equals(accessor) && this.interpolationHandler instanceof LinearInterpolationHandler) {
+          LinearInterpolationHandler interpolation = (LinearInterpolationHandler) DATA_POS_ROT_INTERPOLATION_DURATION_ID.equals(accessor) && this.interpolationHandler;
          interpolation.setInterpolationLength(this.getPosRotInterpolationDuration());
       }
 
@@ -782,7 +783,8 @@ public abstract class Display extends Entity {
          Optional<Component> text = input.read("text", ComponentSerialization.CODEC);
          if (text.isPresent()) {
             try {
-               if (this.level() instanceof ServerLevel serverLevel) {
+               if (this.level() instanceof ServerLevel) {
+                   ServerLevel serverLevel = (ServerLevel) this.level();
                   CommandSourceStack context = this.createCommandSourceStackForNameResolution(serverLevel).withPermission(LevelBasedPermissionSet.GAMEMASTER);
                   Component resolvedText = ComponentUtils.resolve(ResolutionContext.create(context), text.get());
                   this.setText(resolvedText);

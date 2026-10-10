@@ -34,7 +34,7 @@ public record ChunkStep(
    }
 
    private ChunkAccess completeChunkGeneration(final ChunkAccess newCenterChunk, final @Nullable ProfiledDuration profiledDuration) {
-      if (newCenterChunk instanceof ProtoChunk protochunk && protochunk.getPersistedStatus().isBefore(this.targetStatus)) {
+      if (newCenterChunk instanceof ProtoChunk && protochunk.getPersistedStatus().isBefore(this.targetStatus)) {
          protochunk.setPersistedStatus(this.targetStatus);
       }
 

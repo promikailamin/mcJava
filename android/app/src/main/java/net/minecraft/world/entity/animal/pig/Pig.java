@@ -95,7 +95,7 @@ public class Pig extends Animal implements ItemSteerable {
 
    @Override
    public @Nullable LivingEntity getControllingPassenger() {
-      return this.isSaddled() && this.getFirstPassenger() instanceof Player player && player.isHolding(Items.CARROT_ON_A_STICK)
+      return this.isSaddled() && this.getFirstPassenger() instanceof Player && player.isHolding(Items.CARROT_ON_A_STICK)
          ? player
          : super.getControllingPassenger();
    }
@@ -241,7 +241,8 @@ public class Pig extends Animal implements ItemSteerable {
 
    public @Nullable Pig getBreedOffspring(final ServerLevel level, final AgeableMob partner) {
       Pig baby = EntityTypes.PIG.create(level, EntitySpawnReason.BREEDING);
-      if (baby != null && partner instanceof Pig partnerPig) {
+      if (baby != null && partner instanceof Pig) {
+          Pig partnerPig = (Pig) baby != null && partner;
          baby.setVariant(this.random.nextBoolean() ? this.getVariant() : partnerPig.getVariant());
       }
 

@@ -49,7 +49,8 @@ public class GameTestEntityBuilder<E extends Entity> {
             .assertionException(BlockPos.containing(this.position), "test.error.spawn_failure", this.entityType.builtInRegistryHolder().getRegisteredName());
       }
 
-      if (this.requirePersistence && entity instanceof Mob mob) {
+      if (this.requirePersistence && entity instanceof Mob) {
+          Mob mob = (Mob) this.requirePersistence && entity;
          mob.setPersistenceRequired();
       }
 
@@ -58,7 +59,8 @@ public class GameTestEntityBuilder<E extends Entity> {
       entity.snapTo(absoluteVec.x, absoluteVec.y, absoluteVec.z, yRot, entity.getXRot());
       entity.setYBodyRot(yRot);
       entity.setYHeadRot(yRot);
-      if (this.spawnReason != null && entity instanceof Mob mob) {
+      if (this.spawnReason != null && entity instanceof Mob) {
+          Mob mob = (Mob) this.spawnReason != null && entity;
          mob.finalizeSpawn(level, level.getCurrentDifficultyAt(mob.blockPosition()), this.spawnReason, null);
       }
 

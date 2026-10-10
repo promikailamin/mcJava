@@ -48,7 +48,8 @@ public class FallingBlockRenderer extends EntityRenderer<FallingBlockEntity, Fal
       state.movingBlockRenderState.randomSeedPos = entity.getStartPos();
       state.movingBlockRenderState.blockPos = pos;
       state.movingBlockRenderState.blockState = entity.getBlockState();
-      if (entity.level() instanceof ClientLevel clientLevel) {
+      if (entity.level() instanceof ClientLevel) {
+          ClientLevel clientLevel = (ClientLevel) entity.level();
          state.movingBlockRenderState.biome = clientLevel.getBiome(pos);
          state.movingBlockRenderState.cardinalLighting = clientLevel.cardinalLighting();
          state.movingBlockRenderState.lightEngine = clientLevel.getLightEngine();

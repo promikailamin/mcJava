@@ -121,7 +121,8 @@ public abstract class Projectile extends Entity implements TraceableEntity {
    @Override
    public void restoreFrom(final Entity oldEntity) {
       super.restoreFrom(oldEntity);
-      if (oldEntity instanceof Projectile projectile) {
+      if (oldEntity instanceof Projectile) {
+          Projectile projectile = (Projectile) oldEntity;
          this.owner = projectile.owner;
       }
    }
@@ -206,7 +207,7 @@ public abstract class Projectile extends Entity implements TraceableEntity {
    public boolean canBreakBlockInAdventureMode(final ServerLevel level, final BlockInWorld blockInWorld) {
       Entity owner = this.getOwner();
       GameType worldGameMode = level.getServer().getDefaultGameType();
-      return (owner != null || worldGameMode == GameType.ADVENTURE) && !(owner instanceof Player player && player.gameMode() != GameType.ADVENTURE)
+      return (owner != null || worldGameMode == GameType.ADVENTURE) && !(owner instanceof Player && player.gameMode() != GameType.ADVENTURE)
          ? this.canBreak != null && this.canBreak.test(blockInWorld)
          : true;
    }
@@ -272,7 +273,8 @@ public abstract class Projectile extends Entity implements TraceableEntity {
 
    public void applyOnProjectileSpawned(final ServerLevel serverLevel, final ItemStack pickupItemStack) {
       EnchantmentHelper.onProjectileSpawned(serverLevel, pickupItemStack, this, item -> {});
-      if (this instanceof AbstractArrow arrow) {
+      if (this instanceof AbstractArrow) {
+          AbstractArrow arrow = (AbstractArrow) this;
          ItemStack weapon = arrow.getWeaponItem();
          if (weapon != null && !weapon.isEmpty() && !pickupItemStack.getItem().equals(weapon.getItem())) {
             EnchantmentHelper.onProjectileSpawned(serverLevel, weapon, this, arrow::onItemBreak);
@@ -281,7 +283,8 @@ public abstract class Projectile extends Entity implements TraceableEntity {
    }
 
    protected ProjectileDeflection hitTargetOrDeflectSelf(final HitResult hitResult) {
-      if (hitResult instanceof EntityHitResult entityHitResult) {
+      if (hitResult instanceof EntityHitResult) {
+          EntityHitResult entityHitResult = (EntityHitResult) hitResult;
          Entity entity = entityHitResult.getEntity();
          ProjectileDeflection deflection = entity.deflection(this);
          if (deflection != ProjectileDeflection.NONE) {
@@ -291,7 +294,8 @@ public abstract class Projectile extends Entity implements TraceableEntity {
 
             return deflection;
          }
-      } else if (hitResult instanceof BlockHitResult blockHitResult) {
+      else if (hitResult instanceof BlockHitResult) {
+          BlockHitResult blockHitResult = (BlockHitResult) hitResult;
          if (!blockHitResult.isWorldBorderHit()) {
             BlockState collidedWith = this.level().getBlockState(blockHitResult.getBlockPos());
             if (collidedWith.isAir()) {
@@ -350,7 +354,8 @@ public abstract class Projectile extends Entity implements TraceableEntity {
       if (type == HitResult.Type.ENTITY) {
          EntityHitResult entityHitResult = (EntityHitResult)hitResult;
          Entity entityHit = entityHitResult.getEntity();
-         if (entityHit.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entityHit instanceof Projectile projectile) {
+         if (entityHit.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entityHit instanceof Projectile) {
+             Projectile projectile = (Projectile) entityHit.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entityHit;
             this.onRedirectProjectile(projectile);
          }
 

@@ -48,7 +48,8 @@ public class JukeboxBlock extends BaseEntityBlock {
    protected InteractionResult useWithoutItem(
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
-      if (state.getValue(HAS_RECORD) && level.getBlockEntity(pos) instanceof JukeboxBlockEntity jukebox) {
+      if (state.getValue(HAS_RECORD) && level.getBlockEntity(pos) instanceof JukeboxBlockEntity) {
+          JukeboxBlockEntity jukebox = (JukeboxBlockEntity) state.getValue(HAS_RECORD) && level.getBlockEntity(pos);
          jukebox.popOutTheItem();
          return InteractionResult.SUCCESS;
       } else {
@@ -92,7 +93,7 @@ public class JukeboxBlock extends BaseEntityBlock {
 
    @Override
    protected int ownSignal(final BlockState state, final BlockGetter level, final BlockPos pos) {
-      return level.getBlockEntity(pos) instanceof JukeboxBlockEntity jukebox && jukebox.getSongPlayer().isPlaying() ? 15 : 0;
+      return level.getBlockEntity(pos) instanceof JukeboxBlockEntity && jukebox.getSongPlayer().isPlaying() ? 15 : 0;
    }
 
    @Override
@@ -102,7 +103,7 @@ public class JukeboxBlock extends BaseEntityBlock {
 
    @Override
    protected int getAnalogOutputSignal(final BlockState state, final Level level, final BlockPos pos, final Direction direction) {
-      return level.getBlockEntity(pos) instanceof JukeboxBlockEntity jukebox ? jukebox.getComparatorOutput() : 0;
+      return level.getBlockEntity(pos) instanceof JukeboxBlockEntity ? getComparatorOutput() : 0;
    }
 
    @Override

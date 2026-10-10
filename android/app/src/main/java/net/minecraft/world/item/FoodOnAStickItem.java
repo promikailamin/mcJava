@@ -27,7 +27,7 @@ public class FoodOnAStickItem<T extends Entity & ItemSteerable> extends Item {
          return InteractionResult.PASS;
       } else {
          Entity vehicle = player.getControlledVehicle();
-         if (player.isPassenger() && vehicle instanceof ItemSteerable steerable && vehicle.is(this.canInteractWith) && steerable.boost()) {
+         if (player.isPassenger() && vehicle instanceof ItemSteerable && vehicle.is(this.canInteractWith) && steerable.boost()) {
             EquipmentSlot slot = hand.asEquipmentSlot();
             ItemStack result = itemStack.hurtAndConvertOnBreak(this.consumeItemDamage, Items.FISHING_ROD, player, slot);
             return InteractionResult.SUCCESS_SERVER.heldItemTransformedTo(result);

@@ -88,7 +88,7 @@ public interface DataComponentPredicate {
          .map(DataComponentPredicate.Type::copyOrCreateType, DataComponentPredicate.Type::unpackType);
 
       private static <T extends DataComponentPredicate.Type<?>> Either<T, DataComponentType<?>> unpackType(final T type) {
-         return type instanceof DataComponentPredicate.AnyValueType anyCheck ? Either.right(anyCheck.componentType()) : Either.left(type);
+         return type instanceof DataComponentPredicate.AnyValueType ? Either.right(((DataComponentPredicate.AnyValueType) type).componentType())  : Either.left(type);
       }
 
       private static DataComponentPredicate.Type<?> copyOrCreateType(final Either<DataComponentPredicate.Type<?>, DataComponentType<?>> concreteTypeOrComponent) {

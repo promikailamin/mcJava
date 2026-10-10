@@ -132,7 +132,7 @@ public class Chicken extends Animal {
       }
 
       this.flap = this.flap + this.flapping * 2.0F;
-      if (this.level() instanceof ServerLevel level && this.isAlive() && !this.isBaby() && !this.isChickenJockey() && --this.eggTime <= 0) {
+      if (this.level() instanceof ServerLevel && this.isAlive() && !this.isBaby() && !this.isChickenJockey() && --this.eggTime <= 0) {
          if (this.dropFromGiftLootTable(level, BuiltInLootTables.CHICKEN_LAY, this::spawnAtLocation)) {
             this.playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
             this.gameEvent(GameEvent.ENTITY_PLACE);
@@ -174,7 +174,8 @@ public class Chicken extends Animal {
 
    public @Nullable Chicken getBreedOffspring(final ServerLevel level, final AgeableMob partner) {
       Chicken baby = EntityTypes.CHICKEN.create(level, EntitySpawnReason.BREEDING);
-      if (baby != null && partner instanceof Chicken partnerChicken) {
+      if (baby != null && partner instanceof Chicken) {
+          Chicken partnerChicken = (Chicken) baby != null && partner;
          baby.setVariant(this.random.nextBoolean() ? this.getVariant() : partnerChicken.getVariant());
       }
 
@@ -275,7 +276,8 @@ public class Chicken extends Animal {
    @Override
    protected void positionRider(final Entity passenger, final Entity.MoveFunction moveFunction) {
       super.positionRider(passenger, moveFunction);
-      if (passenger instanceof LivingEntity livingEntity) {
+      if (passenger instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) passenger;
          livingEntity.yBodyRot = this.yBodyRot;
       }
    }

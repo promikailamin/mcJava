@@ -27,7 +27,7 @@ public abstract class ContainerObjectSelectionList<E extends ContainerObjectSele
    public @Nullable ComponentPath nextFocusPath(final FocusNavigationEvent navigationEvent) {
       if (this.getItemCount() == 0) {
          return null;
-      } else if (!(navigationEvent instanceof FocusNavigationEvent.ArrowNavigation arrowNavigation)) {
+      } else if (!(navigationEvent instanceof FocusNavigationEvent.ArrowNavigation)) {
          return super.nextFocusPath(navigationEvent);
       } else {
          E focused = this.getFocused();
@@ -157,7 +157,8 @@ public abstract class ContainerObjectSelectionList<E extends ContainerObjectSele
 
       @Override
       public @Nullable ComponentPath nextFocusPath(final FocusNavigationEvent navigationEvent) {
-         if (navigationEvent instanceof FocusNavigationEvent.ArrowNavigation arrowNavigation) {
+         if (navigationEvent instanceof FocusNavigationEvent.ArrowNavigation) {
+             FocusNavigationEvent.ArrowNavigation arrowNavigation = (FocusNavigationEvent.ArrowNavigation) navigationEvent;
             int delta = switch (arrowNavigation.direction()) {
                case LEFT -> -1;
                case RIGHT -> 1;

@@ -23,7 +23,8 @@ public abstract class ObjectSelectionList<E extends ObjectSelectionList.Entry<E>
          return null;
       }
 
-      if (this.isFocused() && navigationEvent instanceof FocusNavigationEvent.ArrowNavigation arrowNavigation) {
+      if (this.isFocused() && navigationEvent instanceof FocusNavigationEvent.ArrowNavigation) {
+          FocusNavigationEvent.ArrowNavigation arrowNavigation = (FocusNavigationEvent.ArrowNavigation) this.isFocused() && navigationEvent;
          E entry = this.nextEntry(arrowNavigation.direction());
          if (entry != null) {
             return ComponentPath.path(this, ComponentPath.leaf(entry));

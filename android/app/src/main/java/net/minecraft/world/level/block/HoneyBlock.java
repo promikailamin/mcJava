@@ -94,7 +94,7 @@ public class HoneyBlock extends HalfTransparentBlock {
    }
 
    private void maybeDoSlideAchievement(final Entity entity, final BlockPos pos) {
-      if (entity instanceof ServerPlayer serverPlayer && entity.level().getGameTime() % 20L == 0L) {
+      if (entity instanceof ServerPlayer && entity.level().getGameTime() % 20L == 0L) {
          CriteriaTriggers.HONEY_BLOCK_SLIDE.trigger(serverPlayer, entity.level().getBlockState(pos));
       }
    }

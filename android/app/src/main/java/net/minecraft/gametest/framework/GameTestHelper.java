@@ -424,7 +424,8 @@ public class GameTestHelper {
       BlockPos pos = this.absolutePos(relativePos);
       Direction placeDirection = this.getAbsoluteDirection(relativePlaceDirection);
       Item item = block.asItem();
-      if (item instanceof BlockItem blockItem) {
+      if (item instanceof BlockItem) {
+          BlockItem blockItem = (BlockItem) item;
          BlockHitResult hitResult = new BlockHitResult(Vec3.atCenterOf(pos), Direction.DOWN, pos, true);
          BlockPlaceContext context = new GameTestHelper.TestBlockPlaceContext(
             this.getLevel(), InteractionHand.MAIN_HAND, item.getDefaultInstance(), hitResult, placeDirection

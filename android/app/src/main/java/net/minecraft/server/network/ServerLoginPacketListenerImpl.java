@@ -217,9 +217,7 @@ public class ServerLoginPacketListenerImpl implements ServerLoginPacketListener,
 
          private @Nullable InetAddress getAddress() {
             return ServerLoginPacketListenerImpl.this.server.getPreventProxyConnections()
-                  && ServerLoginPacketListenerImpl.this.connection.getRemoteAddress() instanceof InetSocketAddress inetSocketAddress
-               ? inetSocketAddress.getAddress()
-               : null;
+                  && ServerLoginPacketListenerImpl.this.connection.getRemoteAddress() instanceof InetSocketAddress ? getAddress() : null;
          }
       };
       thread.setUncaughtExceptionHandler(new DefaultUncaughtExceptionHandler(LOGGER));

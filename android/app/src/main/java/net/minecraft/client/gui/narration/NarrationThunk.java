@@ -37,7 +37,7 @@ public class NarrationThunk<T> {
       if (this == o) {
          return true;
       } else {
-         return !(o instanceof NarrationThunk<?> thunk) ? false : thunk.converter == this.converter && thunk.contents.equals(this.contents);
+         return !(o instanceof NarrationThunk<?>) ? false : thunk.converter == this.converter && thunk.contents.equals(this.contents);
       }
    }
 

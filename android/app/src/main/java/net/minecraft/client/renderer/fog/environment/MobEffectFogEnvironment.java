@@ -22,6 +22,6 @@ public abstract class MobEffectFogEnvironment extends FogEnvironment {
 
    @Override
    public boolean isApplicable(final @Nullable FogType fogType, final Entity entity) {
-      return entity instanceof LivingEntity livingEntity && livingEntity.hasEffect(this.getMobEffect());
+      return entity instanceof LivingEntity && livingEntity.hasEffect(this.getMobEffect());
    }
 }

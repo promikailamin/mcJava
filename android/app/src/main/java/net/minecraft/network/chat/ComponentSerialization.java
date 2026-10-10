@@ -65,7 +65,7 @@ public class ComponentSerialization {
          }
 
          private static <T> DynamicOps<JsonElement> asJsonOps(final DynamicOps<T> ops) {
-            return (DynamicOps<JsonElement>)(ops instanceof RegistryOps<T> registryOps ? registryOps.withParent(JsonOps.INSTANCE) : JsonOps.INSTANCE);
+            return (DynamicOps<JsonElement>)(ops instanceof RegistryOps<T> ? withParent(JsonOps.INSTANCE) : JsonOps.INSTANCE);
          }
       };
    }

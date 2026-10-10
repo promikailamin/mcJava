@@ -247,8 +247,7 @@ public abstract class Player extends Avatar implements ContainerUser {
          }
 
          if (!this.level().isClientSide()
-            && this.getInBlockState().getBlock() instanceof AbstractBedBlock abstractBedBlock
-            && !abstractBedBlock.getBedRule(this.level(), this.blockPosition()).canSleep(this.level())) {
+            && this.getInBlockState().getBlock() instanceof AbstractBedBlock && !abstractBedBlock.getBedRule(this.level(), this.blockPosition()).canSleep(this.level())) {
             this.stopSleepInBed(false, true);
          }
       } else if (this.sleepCounter > 0) {
@@ -527,7 +526,8 @@ public abstract class Player extends Avatar implements ContainerUser {
    public void die(final DamageSource source) {
       super.die(source);
       this.reapplyPosition();
-      if (!this.isSpectator() && this.level() instanceof ServerLevel level) {
+      if (!this.isSpectator() && this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) !this.isSpectator() && this.level();
          this.dropAllDeathLoot(level, source);
       }
 
@@ -812,7 +812,8 @@ public abstract class Player extends Avatar implements ContainerUser {
 
    public InteractionResult interactOn(final Entity entity, final InteractionHand hand, final Vec3 location) {
       if (this.isSpectator()) {
-         if (entity instanceof MenuProvider menuProvider) {
+         if (entity instanceof MenuProvider) {
+             MenuProvider menuProvider = (MenuProvider) entity;
             this.openMenu(menuProvider);
          }
 
@@ -828,7 +829,8 @@ public abstract class Player extends Avatar implements ContainerUser {
 
             return interact;
          } else {
-            if (!itemStack.isEmpty() && entity instanceof LivingEntity livingEntity) {
+            if (!itemStack.isEmpty() && entity instanceof LivingEntity) {
+                LivingEntity livingEntity = (LivingEntity) !itemStack.isEmpty() && entity;
                if (this.hasInfiniteMaterials()) {
                   itemStack = itemStackClone;
                }
@@ -966,7 +968,8 @@ public abstract class Player extends Avatar implements ContainerUser {
                float totalDamage = baseDamage + magicBoost;
                boolean sweepAttack = this.isSweepAttack(fullStrengthAttack, criticalAttack, knockbackAttack);
                float oldLivingEntityHealth = 0.0F;
-               if (entity instanceof LivingEntity livingTarget) {
+               if (entity instanceof LivingEntity) {
+                   LivingEntity livingTarget = (LivingEntity) entity;
                   oldLivingEntityHealth = livingTarget.getHealth();
                }
 
@@ -1009,8 +1012,7 @@ public abstract class Player extends Avatar implements ContainerUser {
 
    private boolean deflectProjectile(final Entity entity) {
       if (entity.is(EntityTypeTags.REDIRECTABLE_PROJECTILE)
-         && entity instanceof Projectile projectile
-         && projectile.deflect(ProjectileDeflection.AIM_DEFLECT, this, EntityReference.of(this), true, 1.0)) {
+         && entity instanceof Projectile && projectile.deflect(ProjectileDeflection.AIM_DEFLECT, this, EntityReference.of(this), true, 1.0)) {
          this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.PLAYER_ATTACK_NODAMAGE, this.getSoundSource());
          return true;
       } else {
@@ -1064,7 +1066,8 @@ public abstract class Player extends Avatar implements ContainerUser {
    }
 
    private void damageStatsAndHearts(final Entity entity, final float oldLivingEntityHealth) {
-      if (entity instanceof LivingEntity livingEntity) {
+      if (entity instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) entity;
          float actualDamage = oldLivingEntityHealth - livingEntity.getHealth();
          this.awardStat(Stats.DAMAGE_DEALT, Math.round(actualDamage * 10.0F));
          if (this.level() instanceof ServerLevel && actualDamage > 2.0F) {
@@ -1077,13 +1080,16 @@ public abstract class Player extends Avatar implements ContainerUser {
 
    private void itemAttackInteraction(final Entity entity, final ItemStack attackingItemStack, final DamageSource damageSource, final boolean applyToTarget) {
       Entity hurtTarget = entity;
-      if (entity instanceof EnderDragonPart enderDragonPart) {
+      if (entity instanceof EnderDragonPart) {
+          EnderDragonPart enderDragonPart = (EnderDragonPart) entity;
          hurtTarget = enderDragonPart.parentMob;
       }
 
       boolean itemHurtEnemy = false;
-      if (this.level() instanceof ServerLevel serverLevel) {
-         if (hurtTarget instanceof LivingEntity livingTarget) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
+         if (hurtTarget instanceof LivingEntity) {
+             LivingEntity livingTarget = (LivingEntity) hurtTarget;
             itemHurtEnemy = attackingItemStack.hurtEnemy(livingTarget, this);
          }
 
@@ -1117,7 +1123,8 @@ public abstract class Player extends Avatar implements ContainerUser {
       final boolean comesFromEffect
    ) {
       if (knockbackAmount > 0.0F) {
-         if (entity instanceof LivingEntity livingTarget) {
+         if (entity instanceof LivingEntity) {
+             LivingEntity livingTarget = (LivingEntity) entity;
             livingTarget.knockback(
                knockbackAmount,
                Mth.sin(this.getYRot() * (float) (Math.PI / 180.0)),
@@ -1138,7 +1145,7 @@ public abstract class Player extends Avatar implements ContainerUser {
          this.setSprinting(false);
       }
 
-      if (entity instanceof ServerPlayer serverPlayer && entity.syncVelocity) {
+      if (entity instanceof ServerPlayer && entity.syncVelocity) {
          serverPlayer.connection.send(new ClientboundSetEntityMotionPacket(entity));
          entity.syncVelocity = false;
          entity.setDeltaMovement(oldMovement);
@@ -1152,14 +1159,15 @@ public abstract class Player extends Avatar implements ContainerUser {
 
    private void doSweepAttack(final Entity entity, final float baseDamage, final DamageSource damageSource, final float attackStrengthScale) {
       this.playServerSideSound(SoundEvents.PLAYER_ATTACK_SWEEP);
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          float var12 = 1.0F + (float)this.getAttributeValue(Attributes.SWEEPING_DAMAGE_RATIO) * baseDamage;
 
          for (LivingEntity nearby : this.level().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(1.0, 0.25, 1.0))) {
             if (nearby != this
                && nearby != entity
                && !this.isAlliedTo(nearby)
-               && !(nearby instanceof ArmorStand armorStand && armorStand.isMarker())
+               && !(nearby instanceof ArmorStand && armorStand.isMarker())
                && this.distanceToSqr(nearby) < 9.0) {
                float enchantedDamage = this.getEnchantedDamage(nearby, var12, damageSource) * attackStrengthScale;
                if (nearby.hurtServer(serverLevel, damageSource, enchantedDamage)) {
@@ -1220,7 +1228,8 @@ public abstract class Player extends Avatar implements ContainerUser {
 
       float totalDamage = dealsDamage ? baseDamage + magicBoost : 0.0F;
       float oldLivingEntityHealth = 0.0F;
-      if (target instanceof LivingEntity livingTarget) {
+      if (target instanceof LivingEntity) {
+          LivingEntity livingTarget = (LivingEntity) target;
          oldLivingEntityHealth = livingTarget.getHealth();
       }
 

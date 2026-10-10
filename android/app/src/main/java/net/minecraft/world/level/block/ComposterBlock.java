@@ -126,7 +126,8 @@ public class ComposterBlock extends Block implements WorldlyContainerHolder {
       int fillLevel = state.getValue(LEVEL);
       Compostable compostable = itemStack.get(DataComponents.COMPOSTABLE);
       if (fillLevel < 8 && compostable != null) {
-         if (fillLevel < 7 && level instanceof ServerLevel serverLevel) {
+         if (fillLevel < 7 && level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) fillLevel < 7 && level;
             BlockState newState = addLayer(player, state, serverLevel, pos, compostable);
             level.levelEvent(1500, pos, state != newState ? 1 : 0);
             player.awardStat(Stats.ITEM_USED.get(itemStack.getItem()));
@@ -310,7 +311,8 @@ public class ComposterBlock extends Block implements WorldlyContainerHolder {
       public void setChanged() {
          ItemStack contents = this.getItem(0);
          Compostable compostable = contents.get(DataComponents.COMPOSTABLE);
-         if (!contents.isEmpty() && compostable != null && this.level instanceof ServerLevel serverLevel) {
+         if (!contents.isEmpty() && compostable != null && this.level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) !contents.isEmpty() && compostable != null && this.level;
             this.changed = true;
             BlockState newState = ComposterBlock.addLayer(null, this.state, serverLevel, this.pos, compostable);
             this.level.levelEvent(1500, this.pos, newState != this.state ? 1 : 0);

@@ -280,15 +280,17 @@ public class ShulkerBullet extends Projectile {
       super.onHitEntity(hitResult);
       Entity target = hitResult.getEntity();
       Entity owner = this.getOwner();
-      LivingEntity livingOwner = owner instanceof LivingEntity livingEntity ? livingEntity : null;
+      LivingEntity livingOwner = owner instanceof LivingEntity ? livingEntity  : null;
       DamageSource damageSource = this.damageSources().mobProjectile(this, livingOwner);
       boolean wasHurt = target.hurtOrSimulate(damageSource, 4.0F);
       if (wasHurt) {
-         if (this.level() instanceof ServerLevel serverLevel) {
+         if (this.level() instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) this.level();
             EnchantmentHelper.doPostAttackEffects(serverLevel, target, damageSource);
          }
 
-         if (target instanceof LivingEntity livingTarget) {
+         if (target instanceof LivingEntity) {
+             LivingEntity livingTarget = (LivingEntity) target;
             livingTarget.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 200), (Entity)MoreObjects.firstNonNull(owner, this));
          }
       }

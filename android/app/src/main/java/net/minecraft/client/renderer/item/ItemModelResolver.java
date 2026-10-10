@@ -61,7 +61,7 @@ public class ItemModelResolver {
       Identifier modelId = item.get(DataComponents.ITEM_MODEL);
       if (modelId != null) {
          output.setOversizedInGui(this.getItemProperties(modelId).oversizedInGui());
-         this.getItemModel(modelId).update(output, item, this, displayContext, level instanceof ClientLevel clientLevel ? clientLevel : null, owner, seed);
+         this.getItemModel(modelId).update(output, item, this, displayContext, level instanceof ClientLevel ? clientLevel  : null, owner, seed);
       }
    }
 

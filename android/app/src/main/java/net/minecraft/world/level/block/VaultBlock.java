@@ -46,8 +46,9 @@ public class VaultBlock extends BaseEntityBlock {
       final BlockHitResult hitResult
    ) {
       if (!itemStack.isEmpty() && state.getValue(STATE) == VaultState.ACTIVE) {
-         if (level instanceof ServerLevel serverLevel) {
-            if (!(serverLevel.getBlockEntity(pos) instanceof VaultBlockEntity vault)) {
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
+            if (!(serverLevel.getBlockEntity(pos) instanceof VaultBlockEntity)) {
                return InteractionResult.TRY_WITH_EMPTY_HAND;
             }
 
@@ -72,15 +73,14 @@ public class VaultBlock extends BaseEntityBlock {
 
    @Override
    public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(final Level level, final BlockState blockState, final BlockEntityType<T> type) {
-      return level instanceof ServerLevel serverLevel
-         ? createTickerHelper(
+      return level instanceof ServerLevel ? createTickerHelper(
             type,
             BlockEntityTypes.VAULT,
             (innerLevel, pos, state, entity) -> VaultBlockEntity.Server.tick(
                serverLevel, pos, state, entity.getConfig(), entity.getServerData(), entity.getSharedData()
             )
          )
-         : createTickerHelper(
+          : createTickerHelper(
             type,
             BlockEntityTypes.VAULT,
             (innerLevel, pos, state, entity) -> VaultBlockEntity.Client.tick(innerLevel, pos, state, entity.getClientData(), entity.getSharedData())

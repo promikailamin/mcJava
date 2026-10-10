@@ -56,7 +56,7 @@ public class CombatTracker {
    private Component getMessageForAssistedFall(
       final Entity attackerEntity, final Component attackerName, final String messageWithItem, final String messageWithoutItem
    ) {
-      ItemStack attackerItem = attackerEntity instanceof LivingEntity livingEntity ? livingEntity.getMainHandItem() : ItemStack.EMPTY;
+      ItemStack attackerItem = attackerEntity instanceof LivingEntity ? getMainHandItem() : ItemStack.EMPTY;
       return !attackerItem.isEmpty() && attackerItem.has(DataComponents.CUSTOM_NAME)
          ? Component.translatable(messageWithItem, this.mob.getDisplayName(), attackerName, attackerItem.getDisplayName())
          : Component.translatable(messageWithoutItem, this.mob.getDisplayName(), attackerName);

@@ -90,17 +90,18 @@ public class TagValueInput implements ValueInput {
       }
    }
 
-   private @Nullable NumericTag getNumericTag(final String name) {
-      Tag tag = this.input.get(name);
-      if (tag == null) {
-         return null;
-      } else if (tag instanceof NumericTag numericTag) {
-         return numericTag;
-      } else {
-         this.problemReporter.report(new TagValueInput.UnexpectedNonNumberProblem(name, tag.getType()));
-         return null;
-      }
-   }
+private @Nullable NumericTag getNumericTag(final String name) {
+       Tag tag = this.input.get(name);
+       if (tag == null) {
+          return null;
+       } else if (tag instanceof NumericTag) {
+          NumericTag numericTag = (NumericTag) tag;
+          return numericTag;
+       } else {
+          this.problemReporter.report(new TagValueInput.UnexpectedNonNumberProblem(name, tag.getType()));
+          return null;
+       }
+    }
 
    @Override
    public Optional<ValueInput> child(final String name) {
@@ -325,7 +326,8 @@ public class TagValueInput implements ValueInput {
       @Override
       public Stream<ValueInput> stream() {
          return Streams.mapWithIndex(this.list.stream(), (value, index) -> {
-            if (value instanceof CompoundTag compoundTag) {
+            if (value instanceof CompoundTag) {
+                CompoundTag compoundTag = (CompoundTag) value;
                return TagValueInput.wrapChild(this.reporterForChild((int)index), this.context, compoundTag);
             } else {
                this.reportIndexUnwrapProblem((int)index, value);
@@ -344,7 +346,8 @@ public class TagValueInput implements ValueInput {
                while (iterator.hasNext()) {
                   Tag value = iterator.next();
                   int currentIndex = this.index++;
-                  if (value instanceof CompoundTag compoundTag) {
+                  if (value instanceof CompoundTag) {
+                      CompoundTag compoundTag = (CompoundTag) value;
                      return TagValueInput.wrapChild(ListWrapper.this.reporterForChild(currentIndex), ListWrapper.this.context, compoundTag);
                   }
 

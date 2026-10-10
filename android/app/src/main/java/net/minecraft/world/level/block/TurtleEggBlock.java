@@ -66,8 +66,7 @@ public class TurtleEggBlock extends Block {
 
    private void destroyEgg(final Level level, final BlockState state, final BlockPos pos, final Entity entity, final int randomness) {
       if (state.is(Blocks.TURTLE_EGG)
-         && level instanceof ServerLevel serverLevel
-         && this.canDestroyEgg(serverLevel, pos, entity)
+         && level instanceof ServerLevel && this.canDestroyEgg(serverLevel, pos, entity)
          && level.getRandom().nextInt(randomness) == 0) {
          this.decreaseEggs(serverLevel, pos, state);
       }
@@ -171,7 +170,8 @@ public class TurtleEggBlock extends Block {
    private boolean canDestroyEgg(final ServerLevel level, final BlockPos pos, final Entity entity) {
       if (entity instanceof Turtle || entity instanceof Bat) {
          return false;
-      } else if (entity instanceof Player player) {
+      } else if (entity instanceof Player) {
+         Player player = (Player) entity;
          return !level.getServer().isUnderSpawnProtection(level, pos, player);
       } else {
          return entity instanceof LivingEntity ? level.getGameRules().get(GameRules.MOB_GRIEFING) : false;

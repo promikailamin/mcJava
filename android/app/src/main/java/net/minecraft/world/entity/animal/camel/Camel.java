@@ -471,7 +471,7 @@ public class Camel extends AbstractHorse {
 
    @Override
    public boolean canMate(final Animal partner) {
-      return partner != this && partner instanceof Camel camel && this.canParent() && camel.canParent();
+      return partner != this && partner instanceof Camel && this.canParent() && camel.canParent();
    }
 
    public @Nullable Camel getBreedOffspring(final ServerLevel level, final AgeableMob partner) {

@@ -77,7 +77,8 @@ public record Consumable(
    public ItemStack onConsume(final Level level, final LivingEntity user, final ItemStack stack) {
       RandomSource random = user.getRandom();
       this.emitParticlesAndSounds(random, user, stack, 16);
-      if (user instanceof ServerPlayer serverPlayer) {
+      if (user instanceof ServerPlayer) {
+          ServerPlayer serverPlayer = (ServerPlayer) user;
          serverPlayer.awardStat(Stats.ITEM_USED.get(stack.getItem()));
          CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, stack);
       }
@@ -94,7 +95,7 @@ public record Consumable(
 
    public boolean canConsume(final LivingEntity user, final ItemStack stack) {
       FoodProperties foodProperties = stack.get(DataComponents.FOOD);
-      return foodProperties != null && user instanceof Player player ? player.canEat(foodProperties.canAlwaysEat()) : true;
+      return foodProperties != null && user instanceof Player ? ((Player) user).canEat(foodProperties.canAlwaysEat())  : true;
    }
 
    public int consumeTicks() {
@@ -112,7 +113,7 @@ public record Consumable(
          user.spawnItemParticles(itemStack, particleCount);
       }
 
-      SoundEvent consumeSound = user instanceof Consumable.OverrideConsumeSound override ? override.getConsumeSound(itemStack) : this.sound.value();
+      SoundEvent consumeSound = user instanceof Consumable.OverrideConsumeSound ? getConsumeSound(itemStack) : this.sound.value();
       user.playSound(consumeSound, consumableVolume, consumablePitch);
    }
 

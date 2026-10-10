@@ -148,7 +148,8 @@ public abstract class AbstractReportScreen<B extends Report.Builder<?>> extends 
    private void onReportSendError(final Throwable throwable) {
       LOGGER.error("Encountered error while sending abuse report", throwable);
       Component message;
-      if (throwable.getCause() instanceof ThrowingComponent error) {
+      if (throwable.getCause() instanceof ThrowingComponent) {
+          ThrowingComponent error = (ThrowingComponent) throwable.getCause();
          message = error.getComponent();
       } else {
          message = REPORT_SEND_GENERIC_ERROR;

@@ -15,7 +15,7 @@ public record IsSelected() implements ConditionalItemModelProperty {
    public boolean get(
       final ItemStack itemStack, final @Nullable ClientLevel level, final @Nullable LivingEntity owner, final int seed, final ItemDisplayContext displayContext
    ) {
-      return owner instanceof LocalPlayer player && player.getInventory().getSelectedItem() == itemStack;
+      return owner instanceof LocalPlayer && player.getInventory().getSelectedItem() == itemStack;
    }
 
    @Override

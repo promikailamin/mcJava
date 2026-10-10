@@ -126,7 +126,7 @@ public class NbtOps implements DynamicOps<Tag> {
       if (!(map instanceof CompoundTag) && !(map instanceof EndTag)) {
          return DataResult.error(() -> "mergeToMap called with not a map: " + map, map);
       } else if (key instanceof StringTag(String stringKey)) {
-         CompoundTag output = map instanceof CompoundTag tag ? tag.shallowCopy() : new CompoundTag();
+         CompoundTag output = map instanceof CompoundTag ? shallowCopy() : new CompoundTag();
          output.put(stringKey, value);
          return DataResult.success(output);
       } else {
@@ -144,7 +144,7 @@ public class NbtOps implements DynamicOps<Tag> {
          return map == this.empty() ? DataResult.success(this.emptyMap()) : DataResult.success(map);
       }
 
-      CompoundTag output = map instanceof CompoundTag tag ? tag.shallowCopy() : new CompoundTag();
+      CompoundTag output = map instanceof CompoundTag ? shallowCopy() : new CompoundTag();
       List<Tag> missed = new ArrayList<>();
       valuesIterator.forEachRemaining(entry -> {
          Tag key = (Tag)entry.getFirst();
@@ -166,7 +166,7 @@ public class NbtOps implements DynamicOps<Tag> {
          return map == this.empty() ? DataResult.success(this.emptyMap()) : DataResult.success(map);
       }
 
-      CompoundTag output = map instanceof CompoundTag tag ? tag.shallowCopy() : new CompoundTag();
+      CompoundTag output = map instanceof CompoundTag ? shallowCopy() : new CompoundTag();
       List<Tag> missed = new ArrayList<>();
 
       for (Entry<Tag, Tag> entry : values.entrySet()) {
@@ -182,26 +182,25 @@ public class NbtOps implements DynamicOps<Tag> {
    }
 
    public DataResult<Stream<Pair<Tag, Tag>>> getMapValues(final Tag input) {
-      return input instanceof CompoundTag tag
-         ? DataResult.success(tag.entrySet().stream().map(entry -> Pair.of(this.createString(entry.getKey()), entry.getValue())))
-         : DataResult.error(() -> "Not a map: " + input);
+      return input instanceof CompoundTag ? DataResult.success(((CompoundTag) input).entrySet().stream().map(entry -> Pair.of(this.createString(entry.getKey()), entry.getValue())))
+          : DataResult.error(() -> "Not a map: " + input);
    }
 
    public DataResult<Consumer<BiConsumer<Tag, Tag>>> getMapEntries(final Tag input) {
-      return input instanceof CompoundTag tag ? DataResult.success((Consumer<BiConsumer>)c -> {
-         for (Entry<String, Tag> entry : tag.entrySet()) {
+      return input instanceof CompoundTag ? DataResult.success((Consumer<BiConsumer>)c -> {
+         for (Entry<String, Tag> entry  : tag.entrySet()) {
             c.accept(this.createString(entry.getKey()), entry.getValue());
          }
       }) : DataResult.error(() -> "Not a map: " + input);
    }
 
    public DataResult<MapLike<Tag>> getMap(final Tag input) {
-      return input instanceof CompoundTag tag ? DataResult.success(new MapLike<Tag>() {
+      return input instanceof CompoundTag ? DataResult.success(new MapLike<Tag>() {
          public @Nullable Tag get(final Tag key) {
             if (key instanceof StringTag(String stringKey)) {
-               return tag.get(stringKey);
+               return ((CompoundTag) input).get(stringKey);
             } else {
-               throw new UnsupportedOperationException("Cannot get map entry with non-string key: " + key);
+               throw new UnsupportedOperationException("Cannot get map entry with non-string key : " + key);
             }
          }
 
@@ -235,15 +234,15 @@ public class NbtOps implements DynamicOps<Tag> {
    }
 
    public DataResult<Stream<Tag>> getStream(final Tag input) {
-      return input instanceof CollectionTag collection ? DataResult.success(collection.stream()) : DataResult.error(() -> "Not a list");
+      return input instanceof CollectionTag ? DataResult.success(((CollectionTag) input).stream())  : DataResult.error(() -> "Not a list");
    }
 
-   public DataResult<Consumer<Consumer<Tag>>> getList(final Tag input) {
-      return input instanceof CollectionTag collection ? DataResult.success(collection::forEach) : DataResult.error(() -> "Not a list: " + input);
-   }
+public DataResult<Consumer<Consumer<Tag>>> getList(final Tag input) {
+       return input instanceof CollectionTag ? DataResult.success(collection::forEach) : DataResult.error(() -> "Not a list: " + input);
+    }
 
    public DataResult<ByteBuffer> getByteBuffer(final Tag input) {
-      return input instanceof ByteArrayTag array ? DataResult.success(ByteBuffer.wrap(array.getAsByteArray())) : super.getByteBuffer(input);
+      return input instanceof ByteArrayTag ? DataResult.success(ByteBuffer.wrap(((ByteArrayTag) input).getAsByteArray()))  : super.getByteBuffer(input);
    }
 
    public Tag createByteList(final ByteBuffer input) {
@@ -254,7 +253,7 @@ public class NbtOps implements DynamicOps<Tag> {
    }
 
    public DataResult<IntStream> getIntStream(final Tag input) {
-      return input instanceof IntArrayTag array ? DataResult.success(Arrays.stream(array.getAsIntArray())) : super.getIntStream(input);
+      return input instanceof IntArrayTag ? DataResult.success(Arrays.stream(((IntArrayTag) input).getAsIntArray()))  : super.getIntStream(input);
    }
 
    public Tag createIntList(final IntStream input) {
@@ -262,7 +261,7 @@ public class NbtOps implements DynamicOps<Tag> {
    }
 
    public DataResult<LongStream> getLongStream(final Tag input) {
-      return input instanceof LongArrayTag array ? DataResult.success(Arrays.stream(array.getAsLongArray())) : super.getLongStream(input);
+      return input instanceof LongArrayTag ? DataResult.success(Arrays.stream(((LongArrayTag) input).getAsLongArray()))  : super.getLongStream(input);
    }
 
    public Tag createLongList(final LongStream input) {
@@ -274,7 +273,8 @@ public class NbtOps implements DynamicOps<Tag> {
    }
 
    public Tag remove(final Tag input, final String key) {
-      if (input instanceof CompoundTag tag) {
+      if (input instanceof CompoundTag) {
+          CompoundTag tag = (CompoundTag) input;
          CompoundTag result = tag.shallowCopy();
          result.remove(key);
          return result;
@@ -297,7 +297,8 @@ public class NbtOps implements DynamicOps<Tag> {
          return Optional.of(new NbtOps.GenericListCollector());
       }
 
-      if (tag instanceof CollectionTag collection) {
+      if (tag instanceof CollectionTag) {
+          CollectionTag collection = (CollectionTag) tag;
          if (collection.isEmpty()) {
             return Optional.of(new NbtOps.GenericListCollector());
          }
@@ -323,7 +324,8 @@ public class NbtOps implements DynamicOps<Tag> {
 
       @Override
       public NbtOps.ListCollector accept(final Tag tag) {
-         if (tag instanceof ByteTag byteTag) {
+         if (tag instanceof ByteTag) {
+             ByteTag byteTag = (ByteTag) tag;
             this.values.add(byteTag.byteValue());
             return this;
          } else {
@@ -380,7 +382,8 @@ public class NbtOps implements DynamicOps<Tag> {
 
       @Override
       public NbtOps.ListCollector accept(final Tag tag) {
-         if (tag instanceof IntTag intTag) {
+         if (tag instanceof IntTag) {
+             IntTag intTag = (IntTag) tag;
             this.values.add(intTag.intValue());
             return this;
          } else {
@@ -419,7 +422,8 @@ public class NbtOps implements DynamicOps<Tag> {
 
       @Override
       public NbtOps.ListCollector accept(final Tag tag) {
-         if (tag instanceof LongTag longTag) {
+         if (tag instanceof LongTag) {
+             LongTag longTag = (LongTag) tag;
             this.values.add(longTag.longValue());
             return this;
          } else {
@@ -450,7 +454,7 @@ public class NbtOps implements DynamicOps<Tag> {
       protected DataResult<Tag> build(final CompoundTag builder, final Tag prefix) {
          if (prefix == null || prefix == EndTag.INSTANCE) {
             return DataResult.success(builder);
-         } else if (!(prefix instanceof CompoundTag compound)) {
+         } else if (!(prefix instanceof CompoundTag)) {
             return DataResult.error(() -> "mergeToMap called with not a map: " + prefix, prefix);
          } else {
             CompoundTag result = compound.shallowCopy();

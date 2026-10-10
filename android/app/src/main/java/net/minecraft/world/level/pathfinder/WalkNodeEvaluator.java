@@ -545,7 +545,8 @@ public class WalkNodeEvaluator extends NodeEvaluator {
             return PathType.FIRE;
          }
 
-         if (block instanceof DoorBlock door) {
+         if (block instanceof DoorBlock) {
+             DoorBlock door = (DoorBlock) block;
             if (blockState.getValue(DoorBlock.OPEN)) {
                return PathType.DOOR_OPEN;
             } else {

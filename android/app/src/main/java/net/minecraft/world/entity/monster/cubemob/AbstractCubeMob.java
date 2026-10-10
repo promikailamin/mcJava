@@ -232,8 +232,7 @@ public abstract class AbstractCubeMob extends AgeableMob {
    }
 
    protected void dealDamage(final LivingEntity target) {
-      if (this.level() instanceof ServerLevel level
-         && this.isAlive()
+      if (this.level() instanceof ServerLevel && this.isAlive()
          && this.doTeamsAllowDamage(target)
          && this.isWithinMeleeAttackRange(target)
          && this.hasLineOfSight(target)) {
@@ -375,7 +374,8 @@ public abstract class AbstractCubeMob extends AgeableMob {
             this.cubeMob.lookAt(target, 10.0F, 10.0F);
          }
 
-         if (this.cubeMob.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl cubeMobMoveControl) {
+         if (this.cubeMob.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl) {
+             AbstractCubeMob.CubeMobMoveControl cubeMobMoveControl = (AbstractCubeMob.CubeMobMoveControl) this.cubeMob.getMoveControl();
             cubeMobMoveControl.setDirection(this.cubeMob.getYRot(), this.cubeMob.canDealDamage());
          }
       }
@@ -406,7 +406,8 @@ public abstract class AbstractCubeMob extends AgeableMob {
             this.cubeMob.getJumpControl().jump();
          }
 
-         if (this.cubeMob.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl cubeMobMoveControl) {
+         if (this.cubeMob.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl) {
+             AbstractCubeMob.CubeMobMoveControl cubeMobMoveControl = (AbstractCubeMob.CubeMobMoveControl) this.cubeMob.getMoveControl();
             cubeMobMoveControl.setWantedMovement(1.2);
          }
       }
@@ -427,7 +428,8 @@ public abstract class AbstractCubeMob extends AgeableMob {
 
       @Override
       public void tick() {
-         if (this.cubeMob.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl cubeMobMoveControl) {
+         if (this.cubeMob.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl) {
+             AbstractCubeMob.CubeMobMoveControl cubeMobMoveControl = (AbstractCubeMob.CubeMobMoveControl) this.cubeMob.getMoveControl();
             cubeMobMoveControl.setWantedMovement(1.0);
          }
       }
@@ -510,7 +512,8 @@ public abstract class AbstractCubeMob extends AgeableMob {
             this.chosenDegrees = this.cubeMob.getRandom().nextInt(360);
          }
 
-         if (this.cubeMob.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl cubeMobMoveControl) {
+         if (this.cubeMob.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl) {
+             AbstractCubeMob.CubeMobMoveControl cubeMobMoveControl = (AbstractCubeMob.CubeMobMoveControl) this.cubeMob.getMoveControl();
             cubeMobMoveControl.setDirection(this.chosenDegrees, false);
          }
       }

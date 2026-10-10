@@ -226,7 +226,7 @@ public class ItemFrame extends HangingEntity {
             if (causedBy == null) {
                this.removeFramedMap(itemStack);
             }
-         } else if (causedBy instanceof Player player && player.hasInfiniteMaterials()) {
+         } else if (causedBy instanceof Player && player.hasInfiniteMaterials()) {
             this.removeFramedMap(itemStack);
          } else {
             if (withFrame) {

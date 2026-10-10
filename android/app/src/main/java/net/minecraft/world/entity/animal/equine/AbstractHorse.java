@@ -90,7 +90,7 @@ public abstract class AbstractHorse extends Animal implements PlayerRideableJump
    private static final float MAX_HEALTH = generateMaxHealth(i -> i - 1);
    private static final float BACKWARDS_MOVE_SPEED_FACTOR = 0.25F;
    private static final float SIDEWAYS_MOVE_SPEED_FACTOR = 0.5F;
-   private static final TargetingConditions.Selector PARENT_HORSE_SELECTOR = (target, level) -> target instanceof AbstractHorse horse && horse.isBred();
+   private static final TargetingConditions.Selector PARENT_HORSE_SELECTOR = (target, level) -> target instanceof AbstractHorse && horse.isBred();
    private static final TargetingConditions MOMMY_TARGETING = TargetingConditions.forNonCombat()
       .range(16.0)
       .ignoreLineOfSight()
@@ -537,7 +537,7 @@ public abstract class AbstractHorse extends Animal implements PlayerRideableJump
       }
 
       super.aiStep();
-      if (this.level() instanceof ServerLevel level && this.isAlive()) {
+      if (this.level() instanceof ServerLevel && this.isAlive()) {
          if (this.random.nextInt(900) == 0 && this.deathTime == 0) {
             this.heal(1.0F);
          }
@@ -711,7 +711,8 @@ public abstract class AbstractHorse extends Animal implements PlayerRideableJump
    public boolean tameWithName(final Player player) {
       this.setOwner(player);
       this.setTamed(true);
-      if (player instanceof ServerPlayer serverPlayer) {
+      if (player instanceof ServerPlayer) {
+          ServerPlayer serverPlayer = (ServerPlayer) player;
          CriteriaTriggers.TAME_ANIMAL.trigger(serverPlayer, this);
       }
 
@@ -931,7 +932,8 @@ public abstract class AbstractHorse extends Animal implements PlayerRideableJump
    @Override
    protected void positionRider(final Entity passenger, final Entity.MoveFunction moveFunction) {
       super.positionRider(passenger, moveFunction);
-      if (passenger instanceof LivingEntity livingEntity) {
+      if (passenger instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) passenger;
          livingEntity.yBodyRot = this.yBodyRot;
       }
    }
@@ -961,7 +963,7 @@ public abstract class AbstractHorse extends Animal implements PlayerRideableJump
 
    @Override
    public @Nullable LivingEntity getControllingPassenger() {
-      return this.isSaddled() && this.getFirstPassenger() instanceof Player passenger ? passenger : super.getControllingPassenger();
+      return this.isSaddled() && this.getFirstPassenger() instanceof Player ? passenger  : super.getControllingPassenger();
    }
 
    private @Nullable Vec3 getDismountLocationInDirection(final Vec3 direction, final LivingEntity passenger) {

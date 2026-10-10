@@ -130,23 +130,19 @@ public record WorldDimensions(Map<ResourceKey<LevelStem>, LevelStem> dimensions)
       return !dimensionType.is(BuiltinDimensionTypes.OVERWORLD) && !dimensionType.is(BuiltinDimensionTypes.OVERWORLD_CAVES)
          ? false
          : !(
-            dimension.generator().getBiomeSource() instanceof MultiNoiseBiomeSource biomeSource
-               && !biomeSource.stable(MultiNoiseBiomeSourceParameterLists.OVERWORLD)
+            dimension.generator().getBiomeSource() instanceof MultiNoiseBiomeSource && !biomeSource.stable(MultiNoiseBiomeSourceParameterLists.OVERWORLD)
          );
    }
 
    private static boolean isStableNether(final LevelStem dimension) {
       return dimension.type().is(BuiltinDimensionTypes.NETHER)
-         && dimension.generator() instanceof NoiseBasedChunkGenerator generator
-         && generator.stable(NoiseGeneratorSettings.NETHER)
-         && generator.getBiomeSource() instanceof MultiNoiseBiomeSource biomeSource
-         && biomeSource.stable(MultiNoiseBiomeSourceParameterLists.NETHER);
+         && dimension.generator() instanceof NoiseBasedChunkGenerator && generator.stable(NoiseGeneratorSettings.NETHER)
+         && generator.getBiomeSource() instanceof MultiNoiseBiomeSource && biomeSource.stable(MultiNoiseBiomeSourceParameterLists.NETHER);
    }
 
    private static boolean isStableEnd(final LevelStem dimension) {
       return dimension.type().is(BuiltinDimensionTypes.END)
-         && dimension.generator() instanceof NoiseBasedChunkGenerator generator
-         && generator.stable(NoiseGeneratorSettings.END)
+         && dimension.generator() instanceof NoiseBasedChunkGenerator && generator.stable(NoiseGeneratorSettings.END)
          && generator.getBiomeSource() instanceof TheEndBiomeSource;
    }
 

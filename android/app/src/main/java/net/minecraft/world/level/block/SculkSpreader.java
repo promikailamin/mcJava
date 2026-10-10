@@ -253,7 +253,7 @@ public class SculkSpreader {
          } else if (isWorldGen) {
             return true;
          } else {
-            return level instanceof ServerLevel serverLevel ? serverLevel.shouldTickBlocksAt(pos) : false;
+            return level instanceof ServerLevel ? shouldTickBlocksAt(pos) : false;
          }
       }
 
@@ -308,7 +308,7 @@ public class SculkSpreader {
       }
 
       private static SculkBehaviour getBlockBehaviour(final BlockState state) {
-         return state.getBlock() instanceof SculkBehaviour behaviour ? behaviour : SculkBehaviour.DEFAULT;
+         return state.getBlock() instanceof SculkBehaviour ? behaviour  : SculkBehaviour.DEFAULT;
       }
 
       private static List<Vec3i> getRandomizedNonCornerNeighbourOffsets(final RandomSource random) {

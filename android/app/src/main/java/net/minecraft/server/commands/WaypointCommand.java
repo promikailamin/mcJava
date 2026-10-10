@@ -143,7 +143,8 @@ public class WaypointCommand {
             waypoints.stream()
                .map(
                   transmitter -> {
-                     if (transmitter instanceof LivingEntity livingEntity) {
+                     if (transmitter instanceof LivingEntity) {
+                         LivingEntity livingEntity = (LivingEntity) transmitter;
                         BlockPos pos = livingEntity.blockPosition();
                         return livingEntity.getFeedbackDisplayName()
                            .copy()

@@ -250,7 +250,8 @@ public class Panda extends Animal {
    public @Nullable AgeableMob getBreedOffspring(final ServerLevel level, final AgeableMob partner) {
       Panda baby = EntityTypes.PANDA.create(level, EntitySpawnReason.BREEDING);
       if (baby != null) {
-         if (partner instanceof Panda partnerPanda) {
+         if (partner instanceof Panda) {
+             Panda partnerPanda = (Panda) partner;
             baby.setGeneFromParents(this, partnerPanda);
          }
 
@@ -522,7 +523,7 @@ public class Panda extends Animal {
          }
       }
 
-      if (this.level() instanceof ServerLevel serverLevel && serverLevel.getGameRules().get(GameRules.MOB_DROPS)) {
+      if (this.level() instanceof ServerLevel && serverLevel.getGameRules().get(GameRules.MOB_DROPS)) {
          this.dropFromGiftLootTable(serverLevel, BuiltInLootTables.PANDA_SNEEZE, this::spawnAtLocation);
       }
    }
@@ -637,7 +638,7 @@ public class Panda extends Animal {
                this.usePlayerItem(player, hand, interactionItemStack);
                this.setInLove(player);
             } else {
-               if (!(this.level() instanceof ServerLevel level) || this.isSitting() || this.isInWater()) {
+               if (!(this.level() instanceof ServerLevel) || this.isSitting() || this.isInWater()) {
                   return InteractionResult.PASS;
                }
 

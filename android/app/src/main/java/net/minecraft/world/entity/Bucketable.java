@@ -86,11 +86,13 @@ public interface Bucketable {
          ItemStack result = ItemUtils.createFilledResult(itemStack, player, bucket, false);
          player.setItemInHand(hand, result);
          Level level = pickupEntity.level();
-         if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
+         if (!level.isClientSide() && player instanceof ServerPlayer) {
+             ServerPlayer serverPlayer = (ServerPlayer) !level.isClientSide() && player;
             CriteriaTriggers.FILLED_BUCKET.trigger(serverPlayer, bucket);
          }
 
-         if (pickupEntity instanceof Leashable leashable) {
+         if (pickupEntity instanceof Leashable) {
+             Leashable leashable = (Leashable) pickupEntity;
             leashable.dropLeash();
          }
 

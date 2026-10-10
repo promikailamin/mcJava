@@ -384,7 +384,8 @@ public class LevelExtractor implements ResourceManagerReloadListener {
 
    private void extractBlockOutline(final Camera camera, final LevelRenderState levelRenderState) {
       levelRenderState.blockOutlineRenderState = null;
-      if (this.minecraft.hitResult instanceof BlockHitResult blockHitResult) {
+      if (this.minecraft.hitResult instanceof BlockHitResult) {
+          BlockHitResult blockHitResult = (BlockHitResult) this.minecraft.hitResult;
          if (blockHitResult.getType() != HitResult.Type.MISS) {
             BlockPos pos = blockHitResult.getBlockPos();
             BlockState state = this.level.getBlockState(pos);
@@ -425,7 +426,8 @@ public class LevelExtractor implements ResourceManagerReloadListener {
       if (player != null && this.level != null) {
          state.hasPlayer = true;
          float playerPartialTick = deltaTracker.getGameTimeDeltaPartialTick(!this.level.tickRateManager().isEntityFrozen(player));
-         if (this.extractEntity(player, playerPartialTick) instanceof AvatarRenderState avatarRenderState) {
+         if (this.extractEntity(player, playerPartialTick) instanceof AvatarRenderState) {
+             AvatarRenderState avatarRenderState = (AvatarRenderState) this.extractEntity(player, playerPartialTick);
             state.avatarRenderState = avatarRenderState;
             player.firstPersonHandsAndItems().extractRenderState(player, playerPartialTick, state.firstPersonHandsAndItems);
             state.portalEffectIntensity = Mth.lerp(worldPartialTicks, player.oPortalEffectIntensity, player.portalEffectIntensity);
@@ -444,7 +446,7 @@ public class LevelExtractor implements ResourceManagerReloadListener {
                state.itemActivation = activationState;
             }
 
-            if (!(camera.entity() instanceof LivingEntity livingEntity && livingEntity.isSleeping())) {
+            if (!(camera.entity() instanceof LivingEntity && livingEntity.isSleeping())) {
                BlockState viewBlockingState = getViewBlockingState(player, camera.getCullFrustum());
                if (viewBlockingState != null) {
                   TextureAtlasSprite sprite = this.minecraft.getModelManager().getBlockStateModelSet().getParticleMaterial(viewBlockingState).sprite();

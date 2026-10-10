@@ -143,7 +143,8 @@ public class Nautilus extends AbstractNautilus {
    public void baseTick() {
       int airSupply = this.getAirSupply();
       super.baseTick();
-      if (!this.isNoAi() && this.level() instanceof ServerLevel serverLevel) {
+      if (!this.isNoAi() && this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) !this.isNoAi() && this.level();
          this.handleAirSupply(serverLevel, airSupply);
       }
    }

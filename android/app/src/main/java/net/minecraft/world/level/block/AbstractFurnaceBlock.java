@@ -82,10 +82,9 @@ public abstract class AbstractFurnaceBlock extends BaseEntityBlock {
    protected static <T extends BlockEntity> @Nullable BlockEntityTicker<T> createFurnaceTicker(
       final Level level, final BlockEntityType<T> actualType, final BlockEntityType<? extends AbstractFurnaceBlockEntity> expectedType
    ) {
-      return level instanceof ServerLevel serverLevel
-         ? createTickerHelper(
+      return level instanceof ServerLevel ? createTickerHelper(
             actualType, expectedType, (innerLevel, pos, state, entity) -> AbstractFurnaceBlockEntity.serverTick(serverLevel, pos, state, entity)
          )
-         : null;
+          : null;
    }
 }

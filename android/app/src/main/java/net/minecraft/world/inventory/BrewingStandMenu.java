@@ -185,7 +185,8 @@ public class BrewingStandMenu extends AbstractContainerMenu {
       @Override
       public void onTake(final Player player, final ItemStack carried) {
          PotionContents potionContents = carried.get(DataComponents.POTION_CONTENTS);
-         if (potionContents != null && player instanceof ServerPlayer serverPlayer) {
+         if (potionContents != null && player instanceof ServerPlayer) {
+             ServerPlayer serverPlayer = (ServerPlayer) potionContents != null && player;
             CriteriaTriggers.BREWED_POTION.trigger(serverPlayer, potionContents);
          }
 

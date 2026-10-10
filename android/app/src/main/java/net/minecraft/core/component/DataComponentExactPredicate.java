@@ -61,7 +61,7 @@ public final class DataComponentExactPredicate implements Predicate<DataComponen
 
    @Override
    public boolean equals(final Object obj) {
-      return obj instanceof DataComponentExactPredicate predicate && this.expectedComponents.equals(predicate.expectedComponents);
+      return obj instanceof DataComponentExactPredicate && this.expectedComponents.equals(predicate.expectedComponents);
    }
 
    @Override

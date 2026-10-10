@@ -40,7 +40,8 @@ public record FoodProperties(int nutrition, float saturation, boolean canAlwaysE
    public void onConsume(final Level level, final LivingEntity user, final ItemStack stack, final Consumable consumable) {
       RandomSource random = user.getRandom();
       level.playSound(null, user.getX(), user.getY(), user.getZ(), consumable.sound().value(), SoundSource.NEUTRAL, 1.0F, random.triangle(1.0F, 0.4F));
-      if (user instanceof Player player) {
+      if (user instanceof Player) {
+          Player player = (Player) user;
          player.getFoodData().eat(this);
          level.playSound(
             null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 0.5F, Mth.randomBetween(random, 0.9F, 1.0F)

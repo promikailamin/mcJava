@@ -105,7 +105,8 @@ public class ChunkGeneratorStructureState {
             }
          }
 
-         if (hasAnyPlaceableStructures && set.placement() instanceof ConcentricRingsStructurePlacement ringsPlacement) {
+         if (hasAnyPlaceableStructures && set.placement() instanceof ConcentricRingsStructurePlacement) {
+             ConcentricRingsStructurePlacement ringsPlacement = (ConcentricRingsStructurePlacement) hasAnyPlaceableStructures && set.placement();
             this.ringPositions.put(ringsPlacement, this.generateRingPositions((Holder<StructureSet>)setHolder, ringsPlacement));
          }
       });

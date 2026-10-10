@@ -31,7 +31,8 @@ public abstract class AbstractFriendsTab implements Tab {
 
    final void disable() {
       this.entriesContainer().visitWidgets(widget -> {
-         if (widget instanceof AbstractFriendsEntryContainerWidget entry) {
+         if (widget instanceof AbstractFriendsEntryContainerWidget) {
+             AbstractFriendsEntryContainerWidget entry = (AbstractFriendsEntryContainerWidget) widget;
             entry.disable();
          }
       });

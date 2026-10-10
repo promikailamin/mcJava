@@ -140,9 +140,8 @@ public class DeathScreen extends Screen {
       ActiveTextCollector.ClickableStyleFinder finder = new ActiveTextCollector.ClickableStyleFinder(this.getFont(), (int)event.x(), (int)event.y());
       this.visitText(finder);
       Style clickedStyle = finder.result();
-      return clickedStyle != null && clickedStyle.getClickEvent() instanceof ClickEvent.OpenUrl openUrl
-         ? clickUrlAction(this.minecraft, this, openUrl.uri())
-         : super.mouseClicked(event, doubleClick);
+      return clickedStyle != null && clickedStyle.getClickEvent() instanceof ClickEvent.OpenUrl ? clickUrlAction(this.minecraft, this, ((ClickEvent.OpenUrl) clickedStyle.getClickEvent()).uri())
+          : super.mouseClicked(event, doubleClick);
    }
 
    @Override

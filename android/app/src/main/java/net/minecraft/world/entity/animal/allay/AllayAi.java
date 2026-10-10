@@ -149,7 +149,8 @@ public class AllayAi {
 
    public static Optional<ServerPlayer> getLikedPlayer(final LivingEntity allay) {
       Level level = allay.level();
-      if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
+      if (!level.isClientSide() && level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) !level.isClientSide() && level;
          Optional<UUID> likedPlayer = allay.getBrain().getMemory(MemoryModuleType.LIKED_PLAYER);
          if (likedPlayer.isPresent()) {
             if (serverLevel.getEntity(likedPlayer.get()) instanceof ServerPlayer serverPlayer

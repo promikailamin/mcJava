@@ -138,9 +138,8 @@ public class CopperGolemStatueBlock extends BaseEntityBlock implements SimpleWat
 
    @Override
    protected ItemStack getCloneItemStack(final LevelReader level, final BlockPos pos, final BlockState state, final boolean includeData) {
-      return level.getBlockEntity(pos) instanceof CopperGolemStatueBlockEntity entity
-         ? entity.getItem(this.asItem().getDefaultInstance(), state.getValue(POSE))
-         : super.getCloneItemStack(level, pos, state, includeData);
+      return level.getBlockEntity(pos) instanceof CopperGolemStatueBlockEntity ? ((CopperGolemStatueBlockEntity) level.getBlockEntity(pos)).getItem(this.asItem().getDefaultInstance(), state.getValue(POSE))
+          : super.getCloneItemStack(level, pos, state, includeData);
    }
 
    @Override

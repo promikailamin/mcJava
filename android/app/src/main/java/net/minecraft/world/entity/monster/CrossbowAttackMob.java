@@ -18,7 +18,8 @@ public interface CrossbowAttackMob extends RangedAttackMob {
    default void performCrossbowAttack(final LivingEntity body, final float crossbowPower) {
       InteractionHand hand = ProjectileUtil.getWeaponHoldingHand(body, Items.CROSSBOW);
       ItemStack usedItem = body.getItemInHand(hand);
-      if (usedItem.getItem() instanceof CrossbowItem crossbow) {
+      if (usedItem.getItem() instanceof CrossbowItem) {
+          CrossbowItem crossbow = (CrossbowItem) usedItem.getItem();
          crossbow.performShooting(body.level(), body, hand, usedItem, crossbowPower, this.rangedAttackUncertainty(body.level()), this.getTarget());
       }
 

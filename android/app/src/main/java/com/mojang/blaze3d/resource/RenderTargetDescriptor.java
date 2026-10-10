@@ -34,7 +34,7 @@ public record RenderTargetDescriptor(
 
    @Override
    public boolean canUsePhysicalResource(final ResourceDescriptor<?> other) {
-      return !(other instanceof RenderTargetDescriptor descriptor)
+      return !(other instanceof RenderTargetDescriptor)
          ? false
          : this.width == descriptor.width
             && this.height == descriptor.height

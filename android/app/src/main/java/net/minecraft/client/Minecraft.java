@@ -1435,7 +1435,8 @@ public class Minecraft extends ReentrantBlockableEventLoop<Runnable> implements 
       if (this.options.fullscreen().get() != fullscreen) {
          this.options.fullscreen().set(fullscreen);
          this.options.save();
-         if (this.gui != null && this.gui.screen() instanceof VideoSettingsScreen videoSettingsScreen) {
+         if (this.gui != null && this.gui.screen() instanceof VideoSettingsScreen) {
+             VideoSettingsScreen videoSettingsScreen = (VideoSettingsScreen) this.gui != null && this.gui.screen();
             videoSettingsScreen.updateFullscreenButton(fullscreen);
          }
       }
@@ -1637,7 +1638,8 @@ public class Minecraft extends ReentrantBlockableEventLoop<Runnable> implements 
          }
 
          if (this.gameMode.isSpectator()) {
-            if (this.hitResult instanceof EntityHitResult entityHitResult) {
+            if (this.hitResult instanceof EntityHitResult) {
+                EntityHitResult entityHitResult = (EntityHitResult) this.hitResult;
                this.gameMode.spectate(entityHitResult.getEntity());
             } else {
                this.gameMode.spectatorNoAction();
@@ -1731,7 +1733,8 @@ public class Minecraft extends ReentrantBlockableEventLoop<Runnable> implements 
                         BlockHitResult blockHit = (BlockHitResult)this.hitResult;
                         int oldCount = heldItem.getCount();
                         InteractionResult useResult = this.gameMode.useItemOn(this.player, hand, blockHit);
-                        if (useResult instanceof InteractionResult.Success success) {
+                        if (useResult instanceof InteractionResult.Success) {
+                            InteractionResult.Success success = (InteractionResult.Success) useResult;
                            if (success.swingSource() == InteractionResult.SwingSource.PREDICTED) {
                               this.player.swing(hand, swingAnimation, false);
                               if (!heldItem.isEmpty() && (heldItem.getCount() != oldCount || this.player.hasInfiniteMaterials())) {
@@ -1748,7 +1751,8 @@ public class Minecraft extends ReentrantBlockableEventLoop<Runnable> implements 
                   }
                }
 
-               if (!heldItem.isEmpty() && this.gameMode.useItem(this.player, hand) instanceof InteractionResult.Success success) {
+               if (!heldItem.isEmpty() && this.gameMode.useItem(this.player, hand) instanceof InteractionResult.Success) {
+                   InteractionResult.Success success = (InteractionResult.Success) !heldItem.isEmpty() && this.gameMode.useItem(this.player, hand);
                   if (success.swingSource() == InteractionResult.SwingSource.PREDICTED) {
                      this.player.swing(hand, swingAnimation, false);
                   }
@@ -2290,7 +2294,8 @@ public class Minecraft extends ReentrantBlockableEventLoop<Runnable> implements 
       boolean fullscreen = !this.options.fullscreen().get();
       this.options.fullscreen().set(fullscreen);
       this.options.save();
-      if (this.gui != null && this.gui.screen() instanceof VideoSettingsScreen videoSettingsScreen) {
+      if (this.gui != null && this.gui.screen() instanceof VideoSettingsScreen) {
+          VideoSettingsScreen videoSettingsScreen = (VideoSettingsScreen) this.gui != null && this.gui.screen();
          videoSettingsScreen.updateFullscreenButton(fullscreen);
       }
    }
@@ -2298,7 +2303,8 @@ public class Minecraft extends ReentrantBlockableEventLoop<Runnable> implements 
    private boolean toggleFriendsScreen() {
       if (!this.isDemo() && !this.isOfflineDeveloperMode()) {
          Screen current = this.gui.screen();
-         if (current instanceof FriendsOverlayScreen friends) {
+         if (current instanceof FriendsOverlayScreen) {
+             FriendsOverlayScreen friends = (FriendsOverlayScreen) current;
             friends.onClose();
             return true;
          } else {
@@ -2976,7 +2982,7 @@ public class Minecraft extends ReentrantBlockableEventLoop<Runnable> implements 
          if (this.level != null && this.player != null) {
             Profiler.get().push("pick");
             this.hitResult = this.player.raycastHitResult(partialTicks, cameraEntity);
-            this.crosshairPickEntity = this.hitResult instanceof EntityHitResult entityHitResult ? entityHitResult.getEntity() : null;
+            this.crosshairPickEntity = this.hitResult instanceof EntityHitResult ? getEntity() : null;
             Profiler.get().pop();
          }
       }

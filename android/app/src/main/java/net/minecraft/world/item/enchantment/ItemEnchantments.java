@@ -109,7 +109,7 @@ public class ItemEnchantments implements TooltipProvider {
       if (this == obj) {
          return true;
       } else {
-         return obj instanceof ItemEnchantments that ? this.enchantments.equals(that.enchantments) : false;
+         return obj instanceof ItemEnchantments ? this.enchantments.equals(((ItemEnchantments) obj).enchantments)  : false;
       }
    }
 

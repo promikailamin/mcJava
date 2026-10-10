@@ -66,7 +66,7 @@ public class CreakingAi {
 
    private static boolean isAttackTargetStillReachable(final Creaking creaking, final LivingEntity target) {
       Optional<List<Player>> visibleAttackablePlayers = creaking.getBrain().getMemory(MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYERS);
-      return visibleAttackablePlayers.<Boolean>map(players -> target instanceof Player player && players.contains(player)).orElse(false);
+      return visibleAttackablePlayers.<Boolean>map(players -> target instanceof Player && players.contains(player)).orElse(false);
    }
 
    protected static List<ActivityData<Creaking>> getActivities(final Creaking creaking) {

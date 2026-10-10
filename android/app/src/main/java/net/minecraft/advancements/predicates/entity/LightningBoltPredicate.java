@@ -25,7 +25,7 @@ public record LightningBoltPredicate(MinMaxBounds.Ints blocksSetOnFire, Optional
 
    @Override
    public boolean matches(final Entity entity, final ServerLevel level, final @Nullable Vec3 position) {
-      return !(entity instanceof LightningBolt bolt)
+      return !(entity instanceof LightningBolt)
          ? false
          : this.blocksSetOnFire.matches(bolt.getBlocksSetOnFire())
             && (this.entityStruck.isEmpty() || bolt.getHitEntities().anyMatch(e -> this.entityStruck.get().matches(level, position, e)));

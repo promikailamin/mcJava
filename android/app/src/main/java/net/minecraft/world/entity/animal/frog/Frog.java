@@ -313,7 +313,7 @@ public class Frog extends Animal {
    }
 
    public static boolean canEat(final LivingEntity entity) {
-      return entity instanceof AbstractCubeMob cubeMob && cubeMob.getSize() != 1 ? false : entity.is(EntityTypeTags.FROG_FOOD);
+      return entity instanceof AbstractCubeMob && cubeMob.getSize() != 1 ? false : entity.is(EntityTypeTags.FROG_FOOD);
    }
 
    @Override

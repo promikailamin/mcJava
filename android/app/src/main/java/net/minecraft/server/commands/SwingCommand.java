@@ -90,7 +90,8 @@ public class SwingCommand {
       SwingAnimation animation = new SwingAnimation(animationType, duration);
 
       for (Entity entity : targets) {
-         if (entity instanceof LivingEntity livingEntity) {
+         if (entity instanceof LivingEntity) {
+             LivingEntity livingEntity = (LivingEntity) entity;
             livingEntity.swing(hand, animation, true);
             tracker.track(livingEntity);
          }

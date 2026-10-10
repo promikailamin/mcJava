@@ -116,7 +116,8 @@ public class FireworkRocketEntity extends Projectile implements ItemSupplier {
       if (this.isAttachedToEntity()) {
          if (this.attachedToEntity == null) {
             this.entityData.get(DATA_ATTACHED_TO_TARGET).ifPresent(id -> {
-               if (this.level().getEntity(id) instanceof LivingEntity livingEntity) {
+               if (this.level().getEntity(id) instanceof LivingEntity) {
+                   LivingEntity livingEntity = (LivingEntity) this.level().getEntity(id);
                   this.attachedToEntity = livingEntity;
                }
             });
@@ -184,7 +185,8 @@ public class FireworkRocketEntity extends Projectile implements ItemSupplier {
             );
       }
 
-      if (this.life > this.lifetime && this.level() instanceof ServerLevel level) {
+      if (this.life > this.lifetime && this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.life > this.lifetime && this.level();
          this.explode(level);
       }
    }
@@ -199,7 +201,8 @@ public class FireworkRocketEntity extends Projectile implements ItemSupplier {
    @Override
    protected void onHitEntity(final EntityHitResult hitResult) {
       super.onHitEntity(hitResult);
-      if (this.level() instanceof ServerLevel level) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.level();
          this.explode(level);
       }
    }
@@ -208,7 +211,7 @@ public class FireworkRocketEntity extends Projectile implements ItemSupplier {
    protected void onHitBlock(final BlockHitResult hitResult) {
       BlockPos pos = hitResult.getBlockPos().immutable();
       this.level().getBlockState(pos).entityInside(this.level(), pos, this, InsideBlockEffectApplier.NOOP, true);
-      if (this.level() instanceof ServerLevel level && this.hasExplosion()) {
+      if (this.level() instanceof ServerLevel && this.hasExplosion()) {
          this.explode(level);
       }
 

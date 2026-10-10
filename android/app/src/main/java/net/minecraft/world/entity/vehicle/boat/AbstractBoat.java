@@ -693,7 +693,8 @@ public abstract class AbstractBoat extends VehicleEntity implements Leashable {
    protected float clampRotation(final Entity passenger) {
       float passengerBodyYRot = this.calculatePassengerBodyYRot(passenger);
       passenger.setYBodyRot(passengerBodyYRot);
-      if (passenger instanceof Mob mob) {
+      if (passenger instanceof Mob) {
+          Mob mob = (Mob) passenger;
          passenger.setYRot(passengerBodyYRot);
          mob.clampHeadRotationToBody();
          return Mth.wrapDegrees(passengerBodyYRot - passenger.getYRot());
@@ -788,7 +789,7 @@ public abstract class AbstractBoat extends VehicleEntity implements Leashable {
 
    @Override
    public @Nullable LivingEntity getControllingPassenger() {
-      return this.getFirstPassenger() instanceof Player passenger ? passenger : super.getControllingPassenger();
+      return this.getFirstPassenger() instanceof Player ? passenger  : super.getControllingPassenger();
    }
 
    public void setInput(final boolean left, final boolean right, final boolean up, final boolean down) {

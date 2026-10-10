@@ -258,7 +258,8 @@ public class BlockStateParser {
 
    private static <T extends Comparable<T>> SuggestionsBuilder addSuggestions(final SuggestionsBuilder builder, final Property<T> property) {
       for (T value : property.getPossibleValues()) {
-         if (value instanceof Integer v) {
+         if (value instanceof Integer) {
+             Integer v = (Integer) value;
             builder.suggest(v);
          } else {
             builder.suggest(property.getName(value));

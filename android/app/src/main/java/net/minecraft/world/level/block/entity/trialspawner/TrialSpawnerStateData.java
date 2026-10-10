@@ -182,7 +182,8 @@ public class TrialSpawnerStateData {
       this.currentMobs.stream().map(level::getEntity).forEach(entity -> {
          if (entity != null) {
             level.levelEvent(3012, entity.blockPosition(), TrialSpawner.FlameParticle.NORMAL.encode());
-            if (entity instanceof Mob mob) {
+            if (entity instanceof Mob) {
+                Mob mob = (Mob) entity;
                mob.dropPreservedEquipment(level);
             }
 

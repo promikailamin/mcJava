@@ -569,7 +569,8 @@ public class ClientLevel extends Level implements BlockAndTintGetter, CacheSlot.
       if (this.minecraft.gameMode.getPlayerMode() == GameType.CREATIVE) {
          ItemStack carriedItemStack = this.minecraft.player.getMainHandItem();
          Item carriedItem = carriedItemStack.getItem();
-         if (MARKER_PARTICLE_ITEMS.contains(carriedItem) && carriedItem instanceof BlockItem blockItem) {
+         if (MARKER_PARTICLE_ITEMS.contains(carriedItem) && carriedItem instanceof BlockItem) {
+             BlockItem blockItem = (BlockItem) MARKER_PARTICLE_ITEMS.contains(carriedItem) && carriedItem;
             return blockItem.getBlock();
          }
       }

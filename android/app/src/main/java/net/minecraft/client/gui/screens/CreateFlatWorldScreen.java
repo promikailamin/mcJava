@@ -70,7 +70,8 @@ public class CreateFlatWorldScreen extends Screen {
       LinearLayout topFooterButtons = footer.addChild(LinearLayout.horizontal().spacing(8));
       LinearLayout bottomFooterButtons = footer.addChild(LinearLayout.horizontal().spacing(8));
       this.deleteLayerButton = topFooterButtons.addChild(Button.builder(Component.translatable("createWorld.customize.flat.removeLayer"), button -> {
-         if (this.list != null && this.list.getSelected() instanceof CreateFlatWorldScreen.DetailsList.LayerEntry selectedLayerEntry) {
+         if (this.list != null && this.list.getSelected() instanceof CreateFlatWorldScreen.DetailsList.LayerEntry) {
+             CreateFlatWorldScreen.DetailsList.LayerEntry selectedLayerEntry = (CreateFlatWorldScreen.DetailsList.LayerEntry) this.list != null && this.list.getSelected();
             this.list.deleteLayer(selectedLayerEntry);
          }
       }).build());

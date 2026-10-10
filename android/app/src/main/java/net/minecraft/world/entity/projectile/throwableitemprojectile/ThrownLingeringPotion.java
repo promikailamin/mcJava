@@ -33,13 +33,15 @@ public class ThrownLingeringPotion extends AbstractThrownPotion {
    @Override
    public void onHitAsPotion(final ServerLevel level, final ItemStack potionItem, final HitResult hitResult) {
       AreaEffectCloud cloud;
-      if (hitResult instanceof EntityHitResult entityHitResult) {
+      if (hitResult instanceof EntityHitResult) {
+          EntityHitResult entityHitResult = (EntityHitResult) hitResult;
          cloud = new AreaEffectCloud(this.level(), entityHitResult.getEntity().getX(), entityHitResult.getEntity().getY(), entityHitResult.getEntity().getZ());
       } else {
          cloud = new AreaEffectCloud(this.level(), this.getX(), this.getY(), this.getZ());
       }
 
-      if (this.getOwner() instanceof LivingEntity livingEntity) {
+      if (this.getOwner() instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) this.getOwner();
          cloud.setOwner(livingEntity);
       }
 

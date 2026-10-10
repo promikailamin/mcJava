@@ -79,7 +79,7 @@ public class ArmorStand extends LivingEntity {
    public static final EntityDataAccessor<Rotations> DATA_RIGHT_ARM_POSE = SynchedEntityData.defineId(ArmorStand.class, EntityDataSerializers.ROTATIONS);
    public static final EntityDataAccessor<Rotations> DATA_LEFT_LEG_POSE = SynchedEntityData.defineId(ArmorStand.class, EntityDataSerializers.ROTATIONS);
    public static final EntityDataAccessor<Rotations> DATA_RIGHT_LEG_POSE = SynchedEntityData.defineId(ArmorStand.class, EntityDataSerializers.ROTATIONS);
-   private static final Predicate<Entity> RIDABLE_MINECARTS = entity -> entity instanceof AbstractMinecart minecart && minecart.isRideable();
+   private static final Predicate<Entity> RIDABLE_MINECARTS = entity -> entity instanceof AbstractMinecart && minecart.isRideable();
    private static final boolean DEFAULT_INVISIBLE = false;
    private static final int DEFAULT_DISABLED_SLOTS = 0;
    private static final boolean DEFAULT_SMALL = false;
@@ -317,7 +317,7 @@ public class ArmorStand extends LivingEntity {
          boolean shouldKill = source.is(DamageTypeTags.ALWAYS_KILLS_ARMOR_STANDS);
          if (!allowIncrementalBreaking && !shouldKill) {
             return false;
-         } else if (source.getEntity() instanceof Player player && !player.getAbilities().mayBuild) {
+         } else if (source.getEntity() instanceof Player && !player.getAbilities().mayBuild) {
             return false;
          } else {
             if (source.isCreativePlayer()) {
@@ -576,7 +576,7 @@ public class ArmorStand extends LivingEntity {
 
    @Override
    public boolean skipAttackInteraction(final Entity source) {
-      return source instanceof Player playerSource && !this.level().mayInteract(playerSource, this.blockPosition());
+      return source instanceof Player && !this.level().mayInteract(playerSource, this.blockPosition());
    }
 
    @Override

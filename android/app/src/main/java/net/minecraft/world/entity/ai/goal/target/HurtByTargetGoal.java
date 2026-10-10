@@ -85,7 +85,7 @@ public class HurtByTargetGoal extends TargetGoal {
             other = (Mob)var5.next();
             if (this.mob != other
                && other.getTarget() == null
-               && (!(this.mob instanceof TamableAnimal tamableAnimal) || tamableAnimal.getOwner() == ((TamableAnimal)other).getOwner())
+               && (!(this.mob instanceof TamableAnimal) || tamableAnimal.getOwner() == ((TamableAnimal)other).getOwner())
                && !other.isAlliedTo(this.mob.getLastHurtByMob())) {
                if (this.toIgnoreAlert == null) {
                   break;

@@ -284,7 +284,8 @@ public class OverlayRecipeComponent implements GuiEventListener, Renderable {
       }
 
       private static List<OverlayRecipeComponent.OverlayRecipeButton.Pos> calculateIngredientsPositions(final RecipeDisplay recipe, final ContextMap context) {
-         if (recipe instanceof FurnaceRecipeDisplay furnaceRecipe) {
+         if (recipe instanceof FurnaceRecipeDisplay) {
+             FurnaceRecipeDisplay furnaceRecipe = (FurnaceRecipeDisplay) recipe;
             List<ItemStack> items = furnaceRecipe.ingredient().resolveForStacks(context);
             if (!items.isEmpty()) {
                return List.of(createGridPos(1, 1, items));

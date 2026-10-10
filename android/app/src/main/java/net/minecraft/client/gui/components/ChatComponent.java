@@ -459,7 +459,8 @@ public class ChatComponent {
    }
 
    public void preserveCurrentChatScreen() {
-      if (this.minecraft.gui.screen() instanceof ChatScreen chatScreen) {
+      if (this.minecraft.gui.screen() instanceof ChatScreen) {
+          ChatScreen chatScreen = (ChatScreen) this.minecraft.gui.screen();
          this.preservedScreen = chatScreen;
       }
    }

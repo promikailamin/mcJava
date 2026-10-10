@@ -30,7 +30,8 @@ public final class RegistryFileCodec<E> implements Codec<Holder<E>> {
    }
 
    public <T> DataResult<T> encode(final Holder<E> input, final DynamicOps<T> ops, final T prefix) {
-      if (ops instanceof RegistryOps<?> registryOps) {
+      if (ops instanceof RegistryOps<?>) {
+          RegistryOps<?> registryOps = (RegistryOps<?>) ops;
          Optional<? extends HolderOwner<E>> maybeOwner = registryOps.getter(this.registryKey);
          if (maybeOwner.isPresent()) {
             if (!input.canSerializeIn((HolderOwner<E>)maybeOwner.get())) {
@@ -46,7 +47,8 @@ public final class RegistryFileCodec<E> implements Codec<Holder<E>> {
    }
 
    public <T> DataResult<Pair<Holder<E>, T>> decode(final DynamicOps<T> ops, final T input) {
-      if (ops instanceof RegistryOps<?> registryOps) {
+      if (ops instanceof RegistryOps<?>) {
+          RegistryOps<?> registryOps = (RegistryOps<?>) ops;
          DataResult<Pair<Identifier, T>> decoded = Identifier.CODEC.decode(ops, input);
          if (decoded.result().isEmpty()) {
             return !this.allowInline

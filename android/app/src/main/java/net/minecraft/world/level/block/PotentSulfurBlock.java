@@ -77,7 +77,8 @@ public class PotentSulfurBlock extends BaseEntityBlock {
 
       if (belowState.is(BlockTags.CAUSES_PERIODIC_GEYSER_ERUPTIONS) && isSourceIfFluid(belowState)) {
          boolean isGeyser = state.getValue(STATE) == PotentSulfurState.ERUPTING || state.getValue(STATE) == PotentSulfurState.DORMANT;
-         if (!isGeyser && level.getBlockEntity(pos) instanceof PotentSulfurBlockEntity potentSulfurEntity) {
+         if (!isGeyser && level.getBlockEntity(pos) instanceof PotentSulfurBlockEntity) {
+             PotentSulfurBlockEntity potentSulfurEntity = (PotentSulfurBlockEntity) !isGeyser && level.getBlockEntity(pos);
             potentSulfurEntity.resetCountdown();
          }
 
@@ -128,7 +129,8 @@ public class PotentSulfurBlock extends BaseEntityBlock {
 
    @Override
    protected boolean triggerEvent(final BlockState state, final Level level, final BlockPos pos, final int b0, final int b1) {
-      if (level.getBlockEntity(pos) instanceof PotentSulfurBlockEntity entity) {
+      if (level.getBlockEntity(pos) instanceof PotentSulfurBlockEntity) {
+          PotentSulfurBlockEntity entity = (PotentSulfurBlockEntity) level.getBlockEntity(pos);
          entity.eruptionTick = level.getGameTime();
       }
 

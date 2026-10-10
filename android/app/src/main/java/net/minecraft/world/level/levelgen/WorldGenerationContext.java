@@ -11,9 +11,8 @@ public class WorldGenerationContext {
    private final int seaLevel;
 
    public static WorldGenerationContext of(final LevelAccessor level) {
-      return level instanceof WorldGenLevel worldGenLevel
-         ? new WorldGenerationContext(worldGenLevel.getLevel().getChunkSource().getGenerator(), level)
-         : new WorldGenerationContext(level);
+      return level instanceof WorldGenLevel ? new WorldGenerationContext(((WorldGenLevel) level).getLevel().getChunkSource().getGenerator(), level)
+          : new WorldGenerationContext(level);
    }
 
    public WorldGenerationContext(final ChunkGenerator generator, final LevelHeightAccessor heightAccessor) {

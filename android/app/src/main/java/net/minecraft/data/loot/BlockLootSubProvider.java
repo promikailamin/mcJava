@@ -652,8 +652,7 @@ public abstract class BlockLootSubProvider implements LootTableSubProvider {
    }
 
    public LootTable.Builder createSegmentedBlockDrops(final Block block) {
-      return block instanceof SegmentableBlock segmentableBlock
-         ? LootTable.lootTable()
+      return block instanceof SegmentableBlock ? LootTable.lootTable()
             .withPool(
                LootPool.lootPool()
                   .setRolls(ContextIntProviders.exactly(1))
@@ -668,14 +667,14 @@ public abstract class BlockLootSubProvider implements LootTableSubProvider {
                                     MatchBlock.blockMatches(
                                        this.blocks,
                                        block,
-                                       StatePropertiesPredicate.Builder.properties().hasProperty(segmentableBlock.getSegmentAmountProperty(), count.intValue())
+                                       StatePropertiesPredicate.Builder.properties().hasProperty(((SegmentableBlock) block).getSegmentAmountProperty(), count.intValue())
                                     )
                                  )
                            )
                      )
                   )
             )
-         : noDrop();
+          : noDrop();
    }
 
    protected static LootTable.Builder createCandleCakeDrops(final Block candle) {

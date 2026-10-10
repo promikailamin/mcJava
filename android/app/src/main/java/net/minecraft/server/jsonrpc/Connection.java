@@ -243,7 +243,8 @@ public class Connection extends SimpleChannelInboundHandler<JsonElement> {
          try {
             return this.minecraftApi.<JsonElement>submit(() -> incomingRpcMethod.get().apply(this.minecraftApi, params, this.clientInfo)).join();
          } catch (CompletionException e) {
-            if (e.getCause() instanceof RuntimeException re) {
+            if (e.getCause() instanceof RuntimeException) {
+                RuntimeException re = (RuntimeException) e.getCause();
                throw re;
             } else {
                throw e;

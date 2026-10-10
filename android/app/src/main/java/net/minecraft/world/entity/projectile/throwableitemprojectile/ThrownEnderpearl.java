@@ -54,20 +54,22 @@ public class ThrownEnderpearl extends ThrowableItemProjectile {
    }
 
    private void deregisterFromCurrentOwner() {
-      if (this.getOwner() instanceof ServerPlayer serverPlayer) {
+      if (this.getOwner() instanceof ServerPlayer) {
+          ServerPlayer serverPlayer = (ServerPlayer) this.getOwner();
          serverPlayer.deregisterEnderPearl(this);
       }
    }
 
    private void registerToCurrentOwner() {
-      if (this.getOwner() instanceof ServerPlayer serverPlayer) {
+      if (this.getOwner() instanceof ServerPlayer) {
+          ServerPlayer serverPlayer = (ServerPlayer) this.getOwner();
          serverPlayer.registerEnderPearl(this);
       }
    }
 
    @Override
    public @Nullable Entity getOwner() {
-      return this.owner != null && this.level() instanceof ServerLevel serverLevel ? this.owner.getEntity(serverLevel, Entity.class) : super.getOwner();
+      return this.owner != null && this.level() instanceof ServerLevel ? this.owner.getEntity(serverLevel, Entity.class)  : super.getOwner();
    }
 
    private static @Nullable Entity findOwnerIncludingDeadPlayer(final ServerLevel serverLevel, final UUID uuid) {
@@ -98,11 +100,12 @@ public class ThrownEnderpearl extends ThrowableItemProjectile {
             );
       }
 
-      if (this.level() instanceof ServerLevel level && !this.isRemoved()) {
+      if (this.level() instanceof ServerLevel && !this.isRemoved()) {
          Entity owner = this.getOwner();
          if (owner != null && isAllowedToTeleportOwner(owner, level)) {
             Vec3 teleportPos = this.oldPosition();
-            if (owner instanceof ServerPlayer player) {
+            if (owner instanceof ServerPlayer) {
+                ServerPlayer player = (ServerPlayer) owner;
                if (player.connection.isAcceptingMessages()) {
                   if (this.random.nextFloat() < 0.05F && level.isSpawningMonsters() && level.getLevelData().getDifficulty() != Difficulty.PEACEFUL) {
                      Endermite endermite = EntityTypes.ENDERMITE.create(level, EntitySpawnReason.TRIGGERED);
@@ -135,7 +138,8 @@ public class ThrownEnderpearl extends ThrowableItemProjectile {
                   newOwner.resetFallDistance();
                }
 
-               if (newOwner instanceof LivingEntity livingEntity) {
+               if (newOwner instanceof LivingEntity) {
+                   LivingEntity livingEntity = (LivingEntity) newOwner;
                   livingEntity.resetCurrentImpulseContext();
                }
 
@@ -151,7 +155,7 @@ public class ThrownEnderpearl extends ThrowableItemProjectile {
 
    private static boolean isAllowedToTeleportOwner(final Entity owner, final Level newLevel) {
       if (owner.level().dimension() == newLevel.dimension()) {
-         return !(owner instanceof LivingEntity livingOwner) ? owner.isAlive() : livingOwner.isAlive() && !livingOwner.isSleeping();
+         return !(owner instanceof LivingEntity) ? owner.isAlive() : livingOwner.isAlive() && !livingOwner.isSleeping();
       } else {
          return owner.canUsePortal(true);
       }
@@ -159,12 +163,12 @@ public class ThrownEnderpearl extends ThrowableItemProjectile {
 
    @Override
    public void tick() {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          int var7 = SectionPos.blockToSectionCoord(this.position().x());
          int previousChunkZ = SectionPos.blockToSectionCoord(this.position().z());
          Entity owner = this.owner != null ? findOwnerIncludingDeadPlayer(serverLevel, this.owner.getUUID()) : null;
-         if (owner instanceof ServerPlayer serverPlayer
-            && !owner.isAlive()
+         if (owner instanceof ServerPlayer && !owner.isAlive()
             && !serverPlayer.wonGame
             && serverPlayer.level().getGameRules().get(GameRules.ENDER_PEARLS_VANISH_ON_DEATH)) {
             this.discard();
@@ -173,15 +177,16 @@ public class ThrownEnderpearl extends ThrowableItemProjectile {
          }
 
          if (this.isAlive()) {
-            BlockPos currentPos = BlockPos.containing(this.position());
-            if ((
-                  --this.ticketTimer <= 0L
-                     || var7 != SectionPos.blockToSectionCoord(currentPos.getX())
-                     || previousChunkZ != SectionPos.blockToSectionCoord(currentPos.getZ())
-               )
-               && owner instanceof ServerPlayer serverPlayer) {
-               this.ticketTimer = serverPlayer.registerAndUpdateEnderPearlTicket(this);
-            }
+BlockPos currentPos = BlockPos.containing(this.position());
+             if ((
+                   --this.ticketTimer <= 0L
+                      || var7 != SectionPos.blockToSectionCoord(currentPos.getX())
+                      || previousChunkZ != SectionPos.blockToSectionCoord(currentPos.getZ())
+                )
+                && owner instanceof ServerPlayer) {
+                ServerPlayer serverPlayer = (ServerPlayer) owner;
+                this.ticketTimer = serverPlayer.registerAndUpdateEnderPearlTicket(this);
+             }
          }
       } else {
          super.tick();
@@ -204,15 +209,15 @@ public class ThrownEnderpearl extends ThrowableItemProjectile {
 
    @Override
    public boolean canTeleport(final Level from, final Level to) {
-      return from.dimension() == Level.END && to.dimension() == Level.OVERWORLD && this.getOwner() instanceof ServerPlayer player
-         ? super.canTeleport(from, to) && player.seenCredits
-         : super.canTeleport(from, to);
+      return from.dimension() == Level.END && to.dimension() == Level.OVERWORLD && this.getOwner() instanceof ServerPlayer ? super.canTeleport(from, to) && ((ServerPlayer) this.getOwner()).seenCredits
+          : super.canTeleport(from, to);
    }
 
    @Override
    protected void onInsideBlock(final BlockState state) {
       super.onInsideBlock(state);
-      if (state.is(Blocks.END_GATEWAY) && this.getOwner() instanceof ServerPlayer player) {
+      if (state.is(Blocks.END_GATEWAY) && this.getOwner() instanceof ServerPlayer) {
+          ServerPlayer player = (ServerPlayer) state.is(Blocks.END_GATEWAY) && this.getOwner();
          player.onInsideBlock(state);
       }
    }

@@ -107,7 +107,7 @@ public abstract sealed class ResolvableProfile implements TooltipProvider permit
 
       @Override
       public boolean equals(final Object o) {
-         return this == o || o instanceof ResolvableProfile.Dynamic that && this.nameOrId.equals(that.nameOrId) && this.skinPatch.equals(that.skinPatch);
+         return this == o || o instanceof ResolvableProfile.Dynamic && this.nameOrId.equals(that.nameOrId) && this.skinPatch.equals(that.skinPatch);
       }
 
       @Override
@@ -185,7 +185,7 @@ public abstract sealed class ResolvableProfile implements TooltipProvider permit
 
       @Override
       public boolean equals(final Object o) {
-         return this == o || o instanceof ResolvableProfile.Static that && this.contents.equals(that.contents) && this.skinPatch.equals(that.skinPatch);
+         return this == o || o instanceof ResolvableProfile.Static && this.contents.equals(that.contents) && this.skinPatch.equals(that.skinPatch);
       }
 
       @Override

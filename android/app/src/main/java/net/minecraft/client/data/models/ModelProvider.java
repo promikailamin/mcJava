@@ -112,7 +112,7 @@ public class ModelProvider implements DataProvider {
       public void finalizeAndValidate() {
          BuiltInRegistries.ITEM.forEach(item -> {
             if (!this.copies.containsKey(item)) {
-               if (item instanceof BlockItem blockItem && !this.itemInfos.containsKey(blockItem)) {
+               if (item instanceof BlockItem && !this.itemInfos.containsKey(blockItem)) {
                   Identifier targetModel = ModelLocationUtils.getModelLocation(blockItem.getBlock());
                   this.accept(blockItem, ItemModelUtils.plainModel(targetModel));
                }

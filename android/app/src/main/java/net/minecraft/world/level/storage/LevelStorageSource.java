@@ -289,7 +289,8 @@ public class LevelStorageSource {
                }
             }
 
-            if (readLightweightData(dataFile) instanceof CompoundTag root) {
+            if (readLightweightData(dataFile) instanceof CompoundTag) {
+                CompoundTag root = (CompoundTag) readLightweightData(dataFile);
                CompoundTag tag = root.getCompoundOrEmpty("Data");
                int dataVersion = NbtUtils.getDataVersion(tag);
                Dynamic<?> updated = DataFixTypes.LEVEL_SUMMARY.updateToCurrentVersion(this.fixerUpper, new Dynamic(NbtOps.INSTANCE, tag), dataVersion);

@@ -39,14 +39,16 @@ public class ThrownExperienceBottle extends ThrowableItemProjectile {
    @Override
    protected void onHit(final HitResult hitResult) {
       super.onHit(hitResult);
-      if (this.level() instanceof ServerLevel level) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.level();
          level.levelEvent(2002, this.blockPosition(), -13083194);
          if (!this.isSilent()) {
             level.levelEvent(1053, this.blockPosition(), 0);
          }
 
          int xpCount = 3 + this.random.nextInt(5) + this.random.nextInt(5);
-         if (hitResult instanceof BlockHitResult blockHitResult) {
+         if (hitResult instanceof BlockHitResult) {
+             BlockHitResult blockHitResult = (BlockHitResult) hitResult;
             Vec3 blockNormalHit = blockHitResult.getDirection().getUnitVec3();
             ExperienceOrb.awardWithDirection(level, hitResult.getLocation(), blockNormalHit, xpCount);
          } else {

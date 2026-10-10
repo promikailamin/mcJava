@@ -60,7 +60,8 @@ public class TridentItem extends Item implements ProjectileItem {
 
    @Override
    public boolean releaseUsing(final ItemStack itemStack, final Level level, final LivingEntity entity, final int remainingTime) {
-      if (entity instanceof Player player) {
+      if (entity instanceof Player) {
+          Player player = (Player) entity;
          int timeHeld = this.getUseDuration(itemStack, entity) - remainingTime;
          if (timeHeld < 10) {
             return false;
@@ -75,7 +76,8 @@ public class TridentItem extends Item implements ProjectileItem {
             Holder<SoundEvent> sound = EnchantmentHelper.pickHighestLevel(itemStack, EnchantmentEffectComponents.TRIDENT_SOUND)
                .orElse(SoundEvents.TRIDENT_THROW);
             player.awardStat(Stats.ITEM_USED.get(this));
-            if (level instanceof ServerLevel serverLevel) {
+            if (level instanceof ServerLevel) {
+                ServerLevel serverLevel = (ServerLevel) level;
                itemStack.hurtWithoutBreaking(1, player);
                if (riptideStrength == 0.0F) {
                   ItemStack thrownItemStack = itemStack.consumeAndReturn(1, player);

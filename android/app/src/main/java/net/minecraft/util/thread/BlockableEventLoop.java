@@ -190,7 +190,7 @@ public abstract class BlockableEventLoop<R extends Runnable> implements Executor
    }
 
    public static boolean isNonRecoverable(final Throwable t) {
-      return t instanceof ReportedException r ? isNonRecoverable(r.getCause()) : t instanceof OutOfMemoryError || t instanceof StackOverflowError;
+      return t instanceof ReportedException ? isNonRecoverable(((ReportedException) t).getCause())  : t instanceof OutOfMemoryError || t instanceof StackOverflowError;
    }
 
    private void throwDelayedException() {

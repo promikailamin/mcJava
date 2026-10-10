@@ -28,7 +28,7 @@ public class FollowPlayerRiddenEntityGoal extends Goal {
       }
 
       for (Entity entity : this.mob.level().getEntitiesOfClass(this.entityTypeToFollow, this.mob.getBoundingBox().inflate(5.0))) {
-         if (entity.getControllingPassenger() instanceof Player controllingPlayer && controllingPlayer.hasMovedHorizontallyRecently()) {
+         if (entity.getControllingPassenger() instanceof Player && controllingPlayer.hasMovedHorizontallyRecently()) {
             return true;
          }
       }
@@ -49,7 +49,8 @@ public class FollowPlayerRiddenEntityGoal extends Goal {
    @Override
    public void start() {
       for (Entity entity : this.mob.level().getEntitiesOfClass(this.entityTypeToFollow, this.mob.getBoundingBox().inflate(5.0))) {
-         if (entity.getControllingPassenger() instanceof Player player) {
+         if (entity.getControllingPassenger() instanceof Player) {
+             Player player = (Player) entity.getControllingPassenger();
             this.following = player;
             break;
          }

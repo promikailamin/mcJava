@@ -25,7 +25,8 @@ public class CopperBulbBlock extends Block {
 
    @Override
    protected void onPlace(final BlockState state, final Level level, final BlockPos pos, final BlockState oldState, final boolean movedByPiston) {
-      if (oldState.getBlock() != state.getBlock() && level instanceof ServerLevel serverLevel) {
+      if (oldState.getBlock() != state.getBlock() && level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) oldState.getBlock() != state.getBlock() && level;
          this.checkAndFlip(state, serverLevel, pos);
       }
    }
@@ -34,7 +35,8 @@ public class CopperBulbBlock extends Block {
    protected void neighborChanged(
       final BlockState state, final Level level, final BlockPos pos, final Block block, final @Nullable Orientation orientation, final boolean movedByPiston
    ) {
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          this.checkAndFlip(state, serverLevel, pos);
       }
    }

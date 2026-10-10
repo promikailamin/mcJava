@@ -85,7 +85,8 @@ public class HappyGhast extends Animal {
    }
 
    private void setServerStillTimeout(final int serverStillTimeout) {
-      if (this.serverStillTimeout <= 0 && serverStillTimeout > 0 && this.level() instanceof ServerLevel serverLevel) {
+      if (this.serverStillTimeout <= 0 && serverStillTimeout > 0 && this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.serverStillTimeout <= 0 && serverStillTimeout > 0 && this.level();
          this.syncPacketPositionCodec(this.getX(), this.getY(), this.getZ());
          serverLevel.getChunkSource().chunkMap.sendToTrackingPlayers(this, ClientboundEntityPositionSyncPacket.of(this));
       }
@@ -121,7 +122,8 @@ public class HappyGhast extends Animal {
       this.moveControl = new Ghast.GhastMoveControl<>(this, true, this::isOnStillTimeout);
       this.lookControl = new HappyGhast.HappyGhastLookControl();
       this.navigation = this.createNavigation(this.level());
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          this.removeAllGoals(goal -> true);
          this.registerGoals();
          this.getBrain().stopAll(serverLevel, this);
@@ -341,9 +343,8 @@ public class HappyGhast extends Animal {
 
    @Override
    public @Nullable LivingEntity getControllingPassenger() {
-      return this.isWearingBodyArmor() && !this.isOnStillTimeout() && this.getFirstPassenger() instanceof Player player
-         ? player
-         : super.getControllingPassenger();
+      return this.isWearingBodyArmor() && !this.isOnStillTimeout() && this.getFirstPassenger() instanceof Player ? player
+          : super.getControllingPassenger();
    }
 
    @Override
@@ -459,7 +460,7 @@ public class HappyGhast extends Animal {
    }
 
    private void continuousHeal() {
-      if (this.level() instanceof ServerLevel level && this.isAlive() && this.deathTime == 0 && this.getMaxHealth() != this.getHealth()) {
+      if (this.level() instanceof ServerLevel && this.isAlive() && this.deathTime == 0 && this.getMaxHealth() != this.getHealth()) {
          boolean isFastHealing = this.isInClouds() || level.precipitationAt(this.blockPosition()) != Biome.Precipitation.NONE;
          if (this.tickCount % (isFastHealing ? 20 : 600) == 0) {
             this.heal(1.0F);

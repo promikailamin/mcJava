@@ -31,7 +31,7 @@ public class DebugEntryChunkGeneration implements DebugScreenEntry {
    ) {
       Minecraft minecraft = Minecraft.getInstance();
       Entity entity = minecraft.getCameraEntity();
-      ServerLevel serverLevel = serverOrClientLevel instanceof ServerLevel level ? level : null;
+      ServerLevel serverLevel = serverOrClientLevel instanceof ServerLevel ? level  : null;
       if (entity != null && serverLevel != null) {
          BlockPos feetPos = entity.blockPosition();
          if (!feetPos.equals(this.lastPos)) {

@@ -94,7 +94,8 @@ public class DecoratedPotBlock extends BaseEntityBlock implements SimpleWaterlog
       final InteractionHand hand,
       final BlockHitResult hitResult
    ) {
-      if (level.getBlockEntity(pos) instanceof DecoratedPotBlockEntity decoratedPot) {
+      if (level.getBlockEntity(pos) instanceof DecoratedPotBlockEntity) {
+          DecoratedPotBlockEntity decoratedPot = (DecoratedPotBlockEntity) level.getBlockEntity(pos);
          if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
          }
@@ -115,7 +116,8 @@ public class DecoratedPotBlock extends BaseEntityBlock implements SimpleWaterlog
             }
 
             level.playSound(null, pos, SoundEvents.DECORATED_POT_INSERT, SoundSource.BLOCKS, 1.0F, 0.7F + 0.5F * pitchBend);
-            if (level instanceof ServerLevel serverLevel) {
+            if (level instanceof ServerLevel) {
+                ServerLevel serverLevel = (ServerLevel) level;
                serverLevel.sendParticles(ParticleTypes.DUST_PLUME, pos.getX() + 0.5, pos.getY() + 1.2, pos.getZ() + 0.5, 7, 0.0, 0.0, 0.0, 0.0);
             }
 
@@ -134,7 +136,8 @@ public class DecoratedPotBlock extends BaseEntityBlock implements SimpleWaterlog
    protected InteractionResult useWithoutItem(
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
-      if (level.getBlockEntity(pos) instanceof DecoratedPotBlockEntity decoratedPot) {
+      if (level.getBlockEntity(pos) instanceof DecoratedPotBlockEntity) {
+          DecoratedPotBlockEntity decoratedPot = (DecoratedPotBlockEntity) level.getBlockEntity(pos);
          level.playSound(null, pos, SoundEvents.DECORATED_POT_INSERT_FAIL, SoundSource.BLOCKS, 1.0F, 1.0F);
          decoratedPot.wobble(DecoratedPotBlockEntity.WobbleStyle.NEGATIVE);
          level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
@@ -172,7 +175,8 @@ public class DecoratedPotBlock extends BaseEntityBlock implements SimpleWaterlog
    @Override
    protected List<ItemStack> getDrops(final BlockState state, final LootParams.Builder params) {
       BlockEntity maybeEntity = params.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-      if (maybeEntity instanceof DecoratedPotBlockEntity entity) {
+      if (maybeEntity instanceof DecoratedPotBlockEntity) {
+          DecoratedPotBlockEntity entity = (DecoratedPotBlockEntity) maybeEntity;
          params.withDynamicDrop(SHERDS_DYNAMIC_DROP_ID, output -> {
             entity.getDecorations().left().ifPresent(item -> output.accept(item.create()));
             entity.getDecorations().back().ifPresent(item -> output.accept(item.create()));
@@ -209,7 +213,7 @@ public class DecoratedPotBlock extends BaseEntityBlock implements SimpleWaterlog
    @Override
    protected void onProjectileHit(final Level level, final BlockState state, final BlockHitResult blockHit, final Projectile projectile) {
       BlockPos pos = blockHit.getBlockPos();
-      if (level instanceof ServerLevel serverLevel && projectile.mayInteract(serverLevel, pos) && projectile.mayBreak(serverLevel, pos)) {
+      if (level instanceof ServerLevel && projectile.mayInteract(serverLevel, pos) && projectile.mayBreak(serverLevel, pos)) {
          level.setBlock(pos, state.setValue(CRACKED, true), 260);
          level.destroyBlock(pos, true, projectile);
       }
@@ -217,7 +221,8 @@ public class DecoratedPotBlock extends BaseEntityBlock implements SimpleWaterlog
 
    @Override
    protected ItemStack getCloneItemStack(final LevelReader level, final BlockPos pos, final BlockState state, final boolean includeData) {
-      if (level.getBlockEntity(pos) instanceof DecoratedPotBlockEntity decoratedPotBlockEntity) {
+      if (level.getBlockEntity(pos) instanceof DecoratedPotBlockEntity) {
+          DecoratedPotBlockEntity decoratedPotBlockEntity = (DecoratedPotBlockEntity) level.getBlockEntity(pos);
          PotDecorations decorations = decoratedPotBlockEntity.getDecorations();
          return DecoratedPotBlockEntity.createDecoratedPotInstance(decorations);
       } else {

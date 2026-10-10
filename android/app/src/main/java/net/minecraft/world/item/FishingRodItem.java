@@ -49,7 +49,8 @@ public class FishingRodItem extends Item {
             0.5F,
             0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F)
          );
-         if (level instanceof ServerLevel serverLevel) {
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
             int lureSpeed = (int)(EnchantmentHelper.getFishingTimeReduction(serverLevel, itemStack, player) * 20.0F);
             int luck = EnchantmentHelper.getFishingLuckBonus(serverLevel, itemStack, player);
             Projectile.spawnProjectile(new FishingHook(player, level, luck, lureSpeed), serverLevel, itemStack);

@@ -35,7 +35,7 @@ public final class IntegerProperty extends Property<Integer> {
       if (this == o) {
          return true;
       } else {
-         return o instanceof IntegerProperty that && super.equals(o) ? this.values.equals(that.values) : false;
+         return o instanceof IntegerProperty && super.equals(o) ? this.values.equals(that.values) : false;
       }
    }
 

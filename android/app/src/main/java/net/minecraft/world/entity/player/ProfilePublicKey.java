@@ -78,7 +78,7 @@ public record ProfilePublicKey(ProfilePublicKey.Data data) {
 
       @Override
       public boolean equals(final Object o) {
-         return !(o instanceof ProfilePublicKey.Data data)
+         return !(o instanceof ProfilePublicKey.Data)
             ? false
             : this.expiresAt.equals(data.expiresAt) && this.key.equals(data.key) && Arrays.equals(this.keySignature, data.keySignature);
       }

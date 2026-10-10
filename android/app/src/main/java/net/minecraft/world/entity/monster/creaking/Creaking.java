@@ -166,7 +166,7 @@ public class Creaking extends Monster {
          this.invulnerabilityAnimationRemainingTicks = 8;
          this.level().broadcastEntityEvent(this, (byte)66);
          this.gameEvent(GameEvent.ENTITY_ACTION);
-         if (this.level().getBlockEntity(homePos) instanceof CreakingHeartBlockEntity creakingHeartBlockEntity && creakingHeartBlockEntity.isProtector(this)) {
+         if (this.level().getBlockEntity(homePos) instanceof CreakingHeartBlockEntity && creakingHeartBlockEntity.isProtector(this)) {
             if (responsiblePlayer != null) {
                creakingHeartBlockEntity.creakingHurt();
             }
@@ -245,8 +245,7 @@ public class Creaking extends Monster {
       if (!this.level().isClientSide()) {
          BlockPos homePos = this.getHomePos();
          if (homePos != null) {
-            boolean hasProtectionFromCreakingHeart = this.level().getBlockEntity(homePos) instanceof CreakingHeartBlockEntity creakingHeartBlockEntity
-               && creakingHeartBlockEntity.isProtector(this);
+            boolean hasProtectionFromCreakingHeart = this.level().getBlockEntity(homePos) instanceof CreakingHeartBlockEntity && creakingHeartBlockEntity.isProtector(this);
             if (!hasProtectionFromCreakingHeart) {
                this.setHealth(0.0F);
             }
@@ -285,7 +284,8 @@ public class Creaking extends Monster {
    }
 
    public void tearDown() {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          AABB box = this.getBoundingBox();
          Vec3 center = box.getCenter();
          double xSpread = box.getXsize() * 0.3;

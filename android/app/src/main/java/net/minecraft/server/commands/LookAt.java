@@ -13,7 +13,8 @@ public interface LookAt {
    record LookAtEntity(Entity entity, EntityAnchorArgument.Anchor anchor) implements LookAt {
       @Override
       public void perform(final CommandSourceStack source, final Entity target) {
-         if (target instanceof ServerPlayer targetPlayer) {
+         if (target instanceof ServerPlayer) {
+             ServerPlayer targetPlayer = (ServerPlayer) target;
             targetPlayer.lookAt(source.getAnchor(), this.entity, this.anchor);
          } else {
             target.lookAt(source.getAnchor(), this.anchor.apply(this.entity));

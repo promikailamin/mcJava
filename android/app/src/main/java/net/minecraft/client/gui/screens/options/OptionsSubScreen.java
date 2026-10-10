@@ -40,7 +40,8 @@ public abstract class OptionsSubScreen extends Screen {
    protected void addContents() {
       this.list = this.layout.addToContents(new OptionsList(this.minecraft, this.width, this));
       this.addOptions();
-      if (this.list.findOption(this.options.narrator()) instanceof CycleButton<?> cycleButton) {
+      if (this.list.findOption(this.options.narrator()) instanceof CycleButton<?>) {
+          CycleButton<?> cycleButton = (CycleButton<?>) this.list.findOption(this.options.narrator());
          this.narratorButton = (CycleButton<NarratorStatus>)cycleButton;
          this.narratorButton.active = this.minecraft.getNarrator().isActive();
       }

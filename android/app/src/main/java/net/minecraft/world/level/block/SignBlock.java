@@ -92,10 +92,12 @@ public abstract class SignBlock extends BaseEntityBlock implements SimpleWaterlo
       final InteractionHand hand,
       final BlockHitResult hitResult
    ) {
-      if (level.getBlockEntity(pos) instanceof SignBlockEntity sign) {
-         SignApplicator signApplicator = itemStack.getItem() instanceof SignApplicator applicator ? applicator : null;
+      if (level.getBlockEntity(pos) instanceof SignBlockEntity) {
+          SignBlockEntity sign = (SignBlockEntity) level.getBlockEntity(pos);
+         SignApplicator signApplicator = itemStack.getItem() instanceof SignApplicator ? applicator  : null;
          boolean hasApplicatorToUse = signApplicator != null && player.mayBuild();
-         if (level instanceof ServerLevel serverLevel) {
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
             if (hasApplicatorToUse && !sign.isWaxed() && !this.otherPlayerIsEditingSign(player, sign)) {
                SignTextSlot textSlot = sign.getSlotPlayerIsFacing(player);
                if (signApplicator.canApplyToSign(sign.getText(textSlot), itemStack, player)
@@ -123,8 +125,10 @@ public abstract class SignBlock extends BaseEntityBlock implements SimpleWaterlo
    protected InteractionResult useWithoutItem(
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
-      if (level.getBlockEntity(pos) instanceof SignBlockEntity sign) {
-         if (level instanceof ServerLevel serverLevel) {
+      if (level.getBlockEntity(pos) instanceof SignBlockEntity) {
+          SignBlockEntity sign = (SignBlockEntity) level.getBlockEntity(pos);
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
             SignTextSlot textSlot = sign.getSlotPlayerIsFacing(player);
             boolean executedClickCommand = sign.executeClickCommandsIfPresent(serverLevel, player, pos, textSlot);
             if (sign.isWaxed()) {
@@ -165,7 +169,7 @@ public abstract class SignBlock extends BaseEntityBlock implements SimpleWaterlo
    }
 
    public static WoodType getWoodType(final Block block) {
-      return block instanceof SignBlock signBlock ? signBlock.type() : WoodType.OAK;
+      return block instanceof SignBlock ? type() : WoodType.OAK;
    }
 
    public void openTextEdit(final Player player, final SignBlockEntity sign, final SignTextSlot slot) {
@@ -186,10 +190,7 @@ public abstract class SignBlock extends BaseEntityBlock implements SimpleWaterlo
    @Override
    public void setPlacedBy(final Level level, final BlockPos pos, final BlockState state, final @Nullable LivingEntity by, final ItemStack itemStack) {
       if (!level.isClientSide()
-         && by instanceof ServerPlayer player
-         && state.getBlock() instanceof SignBlock sign
-         && level.getBlockEntity(pos) instanceof SignBlockEntity signEntity
-         && !signEntity.isWaxed()
+         && by instanceof ServerPlayer && state.getBlock() instanceof SignBlock && level.getBlockEntity(pos) instanceof SignBlockEntity && !signEntity.isWaxed()
          && signEntity.getText(SignTextSlot.FRONT).hasEditableText(player.isTextFilteringEnabled())) {
          sign.openTextEdit(player, signEntity, SignTextSlot.FRONT);
       }

@@ -24,7 +24,8 @@ public class BowItem extends ProjectileWeaponItem {
 
    @Override
    public boolean releaseUsing(final ItemStack itemStack, final Level level, final LivingEntity entity, final int remainingTime) {
-      if (entity instanceof Player player) {
+      if (entity instanceof Player) {
+          Player player = (Player) entity;
          ItemStack projectile = player.getProjectile(itemStack);
          if (projectile.isEmpty()) {
             return false;
@@ -37,7 +38,7 @@ public class BowItem extends ProjectileWeaponItem {
          }
 
          List<ItemStack> firedProjectiles = draw(itemStack, projectile, player);
-         if (level instanceof ServerLevel serverLevel && !firedProjectiles.isEmpty()) {
+         if (level instanceof ServerLevel && !firedProjectiles.isEmpty()) {
             this.shoot(serverLevel, player, player.getUsedItemHand(), itemStack, firedProjectiles, pow * 3.0F, 1.0F, pow == 1.0F, null);
          }
 

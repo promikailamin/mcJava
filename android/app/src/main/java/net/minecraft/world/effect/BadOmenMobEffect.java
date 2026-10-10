@@ -18,8 +18,7 @@ class BadOmenMobEffect extends MobEffect {
 
    @Override
    public boolean applyEffectTick(final ServerLevel level, final LivingEntity mob, final int amplification) {
-      if (mob instanceof ServerPlayer player
-         && !player.isSpectator()
+      if (mob instanceof ServerPlayer && !player.isSpectator()
          && level.getDifficulty() != Difficulty.PEACEFUL
          && level.isVillage(player.blockPosition())) {
          Raid raid = level.getRaidAt(player.blockPosition());

@@ -214,7 +214,8 @@ public class CrashReportCategory {
       private static String toStringValue(final @Nullable Object rawValue) {
          if (rawValue == null) {
             return "~~NULL~~";
-         } else if (rawValue instanceof Throwable t) {
+         else if (rawValue instanceof Throwable) {
+             Throwable t = (Throwable) rawValue;
             return "~~ERROR~~ " + t.getClass().getSimpleName() + ": " + t.getMessage();
          } else {
             return rawValue.toString();

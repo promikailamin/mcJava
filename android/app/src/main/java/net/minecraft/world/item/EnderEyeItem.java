@@ -83,7 +83,8 @@ public class EnderEyeItem extends Item {
       }
 
       player.startUsingItem(hand);
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          BlockPos nearestMapFeature = serverLevel.findNearestMapStructure(StructureTags.EYE_OF_ENDER_LOCATED, player.blockPosition(), 100, false);
          if (nearestMapFeature == null) {
             return InteractionResult.CONSUME;
@@ -94,7 +95,8 @@ public class EnderEyeItem extends Item {
          eyeOfEnder.signalTo(Vec3.atLowerCornerOf(nearestMapFeature));
          level.gameEvent(GameEvent.PROJECTILE_SHOOT, eyeOfEnder.position(), GameEvent.Context.of(player));
          level.addFreshEntity(eyeOfEnder);
-         if (player instanceof ServerPlayer serverPlayer) {
+         if (player instanceof ServerPlayer) {
+             ServerPlayer serverPlayer = (ServerPlayer) player;
             CriteriaTriggers.USED_ENDER_EYE.trigger(serverPlayer, nearestMapFeature);
          }
 

@@ -277,7 +277,8 @@ public interface VibrationSystem {
 
    interface Ticker {
       static void tick(final Level level, final VibrationSystem.Data data, final VibrationSystem.User user) {
-         if (level instanceof ServerLevel serverLevel) {
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
             if (data.currentVibration == null) {
                trySelectAndScheduleVibration(serverLevel, data, user);
             }
@@ -414,7 +415,8 @@ public interface VibrationSystem {
             }
 
             if (sourceEntity.isSteppingCarefully() && event.is(GameEventTags.IGNORE_VIBRATIONS_SNEAKING)) {
-               if (this.canTriggerAvoidVibration() && sourceEntity instanceof ServerPlayer player) {
+               if (this.canTriggerAvoidVibration() && sourceEntity instanceof ServerPlayer) {
+                   ServerPlayer player = (ServerPlayer) this.canTriggerAvoidVibration() && sourceEntity;
                   CriteriaTriggers.AVOID_VIBRATION.trigger(player);
                }
 

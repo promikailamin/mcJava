@@ -43,7 +43,8 @@ public class DesertPyramidStructure extends SinglePieceStructure {
       Set<BlockPos> uniqueSandPlacements = SortedArraySet.create(Vec3i::compareTo);
 
       for (StructurePiece piece : pieces.pieces()) {
-         if (piece instanceof DesertPyramidPiece desertPyramidPiece) {
+         if (piece instanceof DesertPyramidPiece) {
+             DesertPyramidPiece desertPyramidPiece = (DesertPyramidPiece) piece;
             uniqueSandPlacements.addAll(desertPyramidPiece.getPotentialSuspiciousSandWorldPositions());
             placeSuspiciousSand(chunkBB, level, desertPyramidPiece.getRandomCollapsedRoofPos());
          }

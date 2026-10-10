@@ -74,7 +74,7 @@ public abstract class Property<T extends Comparable<T>> {
       if (this == o) {
          return true;
       } else {
-         return !(o instanceof Property<?> that) ? false : this.clazz.equals(that.clazz) && this.name.equals(that.name);
+         return !(o instanceof Property<?>) ? false : this.clazz.equals(that.clazz) && this.name.equals(that.name);
       }
    }
 

@@ -96,7 +96,8 @@ public final class AL10 {
     }
 
     public static void alBufferData(int buffer, int format, Buffer data, int freq) {
-        if (data instanceof ByteBuffer b) {
+        if (data instanceof ByteBuffer) {
+            ByteBuffer b = (ByteBuffer) data;
             alBufferData(buffer, format, b, freq);
         }
     }

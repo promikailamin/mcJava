@@ -171,9 +171,11 @@ public record StatePropertiesPredicate(List<StatePropertiesPredicate.PropertyMat
             StatePropertiesPredicate.ExactMatcher.CODEC, StatePropertiesPredicate.RangedMatcher.CODEC
          )
          .xmap(Either::unwrap, matcher -> {
-            if (matcher instanceof StatePropertiesPredicate.ExactMatcher exact) {
+            if (matcher instanceof StatePropertiesPredicate.ExactMatcher) {
+               StatePropertiesPredicate.ExactMatcher exact = (StatePropertiesPredicate.ExactMatcher) matcher;
                return Either.left(exact);
-            } else if (matcher instanceof StatePropertiesPredicate.RangedMatcher ranged) {
+            } else if (matcher instanceof StatePropertiesPredicate.RangedMatcher) {
+               StatePropertiesPredicate.RangedMatcher ranged = (StatePropertiesPredicate.RangedMatcher) matcher;
                return Either.right(ranged);
             } else {
                throw new UnsupportedOperationException();
@@ -183,9 +185,11 @@ public record StatePropertiesPredicate(List<StatePropertiesPredicate.PropertyMat
             StatePropertiesPredicate.ExactMatcher.STREAM_CODEC, StatePropertiesPredicate.RangedMatcher.STREAM_CODEC
          )
          .map(Either::unwrap, matcher -> {
-            if (matcher instanceof StatePropertiesPredicate.ExactMatcher exact) {
+            if (matcher instanceof StatePropertiesPredicate.ExactMatcher) {
+               StatePropertiesPredicate.ExactMatcher exact = (StatePropertiesPredicate.ExactMatcher) matcher;
                return Either.left(exact);
-            } else if (matcher instanceof StatePropertiesPredicate.RangedMatcher ranged) {
+            } else if (matcher instanceof StatePropertiesPredicate.RangedMatcher) {
+               StatePropertiesPredicate.RangedMatcher ranged = (StatePropertiesPredicate.RangedMatcher) matcher;
                return Either.right(ranged);
             } else {
                throw new UnsupportedOperationException();

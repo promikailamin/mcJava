@@ -47,7 +47,8 @@ public class CushionItem extends Item {
       }
 
       ItemStack itemStack = context.getItemInHand();
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          if (!serverLevel.getEntitiesOfClass(Cushion.class, spawnAABB).isEmpty()) {
             return InteractionResult.FAIL;
          }

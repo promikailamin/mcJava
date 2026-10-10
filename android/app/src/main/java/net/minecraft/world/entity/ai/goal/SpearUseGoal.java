@@ -85,7 +85,8 @@ public class SpearUseGoal<T extends Monster> extends Goal {
          double targetDistSqr = this.mob.distanceToSqr(target.getX(), target.getY(), target.getZ());
          Entity mount = this.mob.getRootVehicle();
          float speedModifier = 1.0F;
-         if (mount instanceof Mob vehicleMob) {
+         if (mount instanceof Mob) {
+             Mob vehicleMob = (Mob) mount;
             speedModifier = vehicleMob.chargeSpeedModifier();
          }
 

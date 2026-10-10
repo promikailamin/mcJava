@@ -100,7 +100,8 @@ public class HopperBlock extends BaseEntityBlock {
    protected InteractionResult useWithoutItem(
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
-      if (!level.isClientSide() && level.getBlockEntity(pos) instanceof HopperBlockEntity hopper) {
+      if (!level.isClientSide() && level.getBlockEntity(pos) instanceof HopperBlockEntity) {
+          HopperBlockEntity hopper = (HopperBlockEntity) !level.isClientSide() && level.getBlockEntity(pos);
          player.openMenu(hopper);
          player.awardStat(Stats.INSPECT_HOPPER);
       }
@@ -156,7 +157,8 @@ public class HopperBlock extends BaseEntityBlock {
    protected void entityInside(
       final BlockState state, final Level level, final BlockPos pos, final Entity entity, final InsideBlockEffectApplier effectApplier, final boolean isPrecise
    ) {
-      if (level.getBlockEntity(pos) instanceof HopperBlockEntity hopperBlockEntity) {
+      if (level.getBlockEntity(pos) instanceof HopperBlockEntity) {
+          HopperBlockEntity hopperBlockEntity = (HopperBlockEntity) level.getBlockEntity(pos);
          HopperBlockEntity.entityInside(level, pos, state, entity, hopperBlockEntity);
       }
    }

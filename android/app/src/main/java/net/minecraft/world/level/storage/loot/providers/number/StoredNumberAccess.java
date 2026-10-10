@@ -26,7 +26,8 @@ public record StoredNumberAccess(Identifier storage, NbtPathArgument.NbtPath pat
 
       try {
          List<Tag> selectedTags = this.path.get(value);
-         if (selectedTags.size() == 1 && selectedTags.getFirst() instanceof NumericTag result) {
+         if (selectedTags.size() == 1 && selectedTags.getFirst() instanceof NumericTag) {
+             NumericTag result = (NumericTag) selectedTags.size() == 1 && selectedTags.getFirst();
             return result.box();
          }
       } catch (CommandSyntaxException var6) {

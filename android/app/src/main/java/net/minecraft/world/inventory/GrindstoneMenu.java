@@ -66,7 +66,8 @@ public class GrindstoneMenu extends AbstractContainerMenu {
          @Override
          public void onTake(final Player player, final ItemStack carried) {
             access.execute((level, pos) -> {
-               if (level instanceof ServerLevel serverLevel) {
+               if (level instanceof ServerLevel) {
+                   ServerLevel serverLevel = (ServerLevel) level;
                   ExperienceOrb.award(serverLevel, Vec3.atCenterOf(pos), this.getExperienceAmount(level));
                }
 

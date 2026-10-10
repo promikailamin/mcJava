@@ -18,7 +18,7 @@ class RaidOmenMobEffect extends MobEffect {
 
    @Override
    public boolean applyEffectTick(final ServerLevel level, final LivingEntity mob, final int amplification) {
-      if (mob instanceof ServerPlayer player && !mob.isSpectator()) {
+      if (mob instanceof ServerPlayer && !mob.isSpectator()) {
          BlockPos raidOmenPosition = player.getRaidOmenPosition();
          if (raidOmenPosition != null) {
             level.getRaids().createOrExtendRaid(player, raidOmenPosition);

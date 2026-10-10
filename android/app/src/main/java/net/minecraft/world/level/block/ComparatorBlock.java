@@ -58,7 +58,7 @@ public class ComparatorBlock extends DiodeBlock implements EntityBlock {
 
    @Override
    protected int getOutputSignal(final BlockGetter level, final BlockPos pos, final BlockState state) {
-      return level.getBlockEntity(pos) instanceof ComparatorBlockEntity comparatorBlockEntity ? comparatorBlockEntity.getOutputSignal() : 0;
+      return level.getBlockEntity(pos) instanceof ComparatorBlockEntity ? getOutputSignal() : 0;
    }
 
    private int calculateOutputSignal(final Level level, final BlockPos pos, final BlockState state) {
@@ -140,7 +140,7 @@ public class ComparatorBlock extends DiodeBlock implements EntityBlock {
    protected void checkTickOnNeighbor(final Level level, final BlockPos pos, final BlockState state) {
       if (!level.getBlockTicks().willTickThisTick(pos, this)) {
          int outputValue = this.calculateOutputSignal(level, pos, state);
-         int oldValue = level.getBlockEntity(pos) instanceof ComparatorBlockEntity comparatorBlockEntity ? comparatorBlockEntity.getOutputSignal() : 0;
+         int oldValue = level.getBlockEntity(pos) instanceof ComparatorBlockEntity ? getOutputSignal() : 0;
          if (outputValue != oldValue || state.getValue(POWERED) != this.shouldTurnOn(level, pos, state)) {
             TickPriority priority = this.shouldPrioritize(level, pos, state) ? TickPriority.HIGH : TickPriority.NORMAL;
             level.scheduleTick(pos, this, 2, priority);
@@ -152,7 +152,8 @@ public class ComparatorBlock extends DiodeBlock implements EntityBlock {
       int outputValue = this.calculateOutputSignal(level, pos, state);
       BlockEntity blockEntity = level.getBlockEntity(pos);
       int oldValue = 0;
-      if (blockEntity instanceof ComparatorBlockEntity comparatorBlockEntity) {
+      if (blockEntity instanceof ComparatorBlockEntity) {
+          ComparatorBlockEntity comparatorBlockEntity = (ComparatorBlockEntity) blockEntity;
          oldValue = comparatorBlockEntity.getOutputSignal();
          comparatorBlockEntity.setOutputSignal(outputValue);
       }

@@ -41,7 +41,7 @@ public class EntityCollisionContext implements CollisionContext {
          entity.isDescending(),
          placement,
          entity.getY(),
-         entity instanceof LivingEntity livingEntity ? livingEntity.getMainHandItem() : ItemStack.EMPTY,
+         entity instanceof LivingEntity ? getMainHandItem() : ItemStack.EMPTY,
          alwaysCollideWithFluid,
          entity
       );
@@ -59,7 +59,7 @@ public class EntityCollisionContext implements CollisionContext {
 
    @Override
    public boolean canStandOnFluid(final FluidState fluidStateAbove, final FluidState fluid) {
-      return !(this.entity instanceof LivingEntity livingEntity)
+      return !(this.entity instanceof LivingEntity)
          ? false
          : livingEntity.canStandOnFluid(fluid) && !fluidStateAbove.getType().isSame(fluid.getType());
    }

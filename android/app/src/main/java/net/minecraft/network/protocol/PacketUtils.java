@@ -26,7 +26,8 @@ public class PacketUtils {
    }
 
    public static <T extends PacketListener> ReportedException makeReportedException(final Exception cause, final Packet<T> packet, final T listener) {
-      if (cause instanceof ReportedException re) {
+      if (cause instanceof ReportedException) {
+          ReportedException re = (ReportedException) cause;
          fillCrashReport(re.getReport(), listener, packet);
          return re;
       } else {

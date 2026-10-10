@@ -300,7 +300,8 @@ public class SoundEngine {
          Entry<SoundInstance, Integer> next = queueIterator.next();
          if (this.tickCount >= next.getValue()) {
             SoundInstance instance = next.getKey();
-            if (instance instanceof TickableSoundInstance tickableSoundInstance) {
+            if (instance instanceof TickableSoundInstance) {
+                TickableSoundInstance tickableSoundInstance = (TickableSoundInstance) instance;
                tickableSoundInstance.tick();
             }
 
@@ -456,7 +457,8 @@ public class SoundEngine {
                }));
             }
 
-            if (instance instanceof TickableSoundInstance tickableSoundInstance) {
+            if (instance instanceof TickableSoundInstance) {
+                TickableSoundInstance tickableSoundInstance = (TickableSoundInstance) instance;
                this.tickingSounds.add(tickableSoundInstance);
             }
 

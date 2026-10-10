@@ -60,7 +60,7 @@ public class CrafterBlock extends BaseEntityBlock {
 
    @Override
    protected int getAnalogOutputSignal(final BlockState state, final Level level, final BlockPos pos, final Direction direction) {
-      return level.getBlockEntity(pos) instanceof CrafterBlockEntity crafterBlockEntity ? crafterBlockEntity.getRedstoneSignal() : 0;
+      return level.getBlockEntity(pos) instanceof CrafterBlockEntity ? getRedstoneSignal() : 0;
    }
 
    @Override
@@ -91,7 +91,8 @@ public class CrafterBlock extends BaseEntityBlock {
    }
 
    private void setBlockEntityTriggered(final @Nullable BlockEntity blockEntity, final boolean triggered) {
-      if (blockEntity instanceof CrafterBlockEntity crafterBlockEntity) {
+      if (blockEntity instanceof CrafterBlockEntity) {
+          CrafterBlockEntity crafterBlockEntity = (CrafterBlockEntity) blockEntity;
          crafterBlockEntity.setTriggered(triggered);
       }
    }
@@ -133,7 +134,8 @@ public class CrafterBlock extends BaseEntityBlock {
    protected InteractionResult useWithoutItem(
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
-      if (!level.isClientSide() && level.getBlockEntity(pos) instanceof CrafterBlockEntity crafter) {
+      if (!level.isClientSide() && level.getBlockEntity(pos) instanceof CrafterBlockEntity) {
+          CrafterBlockEntity crafter = (CrafterBlockEntity) !level.isClientSide() && level.getBlockEntity(pos);
          player.openMenu(crafter);
       }
 
@@ -141,7 +143,8 @@ public class CrafterBlock extends BaseEntityBlock {
    }
 
    protected void dispenseFrom(final BlockState state, final ServerLevel level, final BlockPos pos) {
-      if (level.getBlockEntity(pos) instanceof CrafterBlockEntity blockEntity) {
+      if (level.getBlockEntity(pos) instanceof CrafterBlockEntity) {
+          CrafterBlockEntity blockEntity = (CrafterBlockEntity) level.getBlockEntity(pos);
          CraftingInput var11 = blockEntity.asCraftInput();
          Optional<RecipeHolder<CraftingRecipe>> recipe = getPotentialResults(level, var11);
          if (recipe.isEmpty()) {

@@ -399,7 +399,8 @@ public class Zombie extends Monster {
    @Override
    public boolean killedEntity(final ServerLevel level, final LivingEntity entity, final DamageSource source) {
       boolean perished = super.killedEntity(level, entity, source);
-      if ((level.getDifficulty() == Difficulty.NORMAL || level.getDifficulty() == Difficulty.HARD) && entity instanceof Villager villager) {
+      if ((level.getDifficulty() == Difficulty.NORMAL || level.getDifficulty() == Difficulty.HARD) && entity instanceof Villager) {
+          Villager villager = (Villager) (level.getDifficulty() == Difficulty.NORMAL || level.getDifficulty() == Difficulty.HARD) && entity;
          if (level.getDifficulty() != Difficulty.HARD && this.random.nextBoolean()) {
             return perished;
          }
@@ -442,7 +443,8 @@ public class Zombie extends Monster {
          groupData = new Zombie.ZombieGroupData(getSpawnAsBabyOdds(random), true);
       }
 
-      if (groupData instanceof Zombie.ZombieGroupData zombieData) {
+      if (groupData instanceof Zombie.ZombieGroupData) {
+          Zombie.ZombieGroupData zombieData = (Zombie.ZombieGroupData) groupData;
          if (zombieData.isBaby) {
             this.setBaby(true);
             if (zombieData.canSpawnJockey) {
@@ -486,7 +488,8 @@ public class Zombie extends Monster {
 
    @Override
    protected void onOffspringSpawnedFromEgg(final Player spawner, final Mob offspring) {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          float difficultyModifier = serverLevel.getCurrentDifficultyAt(offspring.blockPosition()).getSpecialMultiplier();
          offspring.setCanPickUpLoot(this.random.nextFloat() < 0.55F * difficultyModifier);
       }

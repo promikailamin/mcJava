@@ -30,7 +30,8 @@ public class DebugPathCommand {
    }
 
    private static int fillBlocks(final CommandSourceStack source, final BlockPos target) throws CommandSyntaxException {
-      if (source.getEntity() instanceof Mob mob) {
+      if (source.getEntity() instanceof Mob) {
+          Mob mob = (Mob) source.getEntity();
          PathNavigation pathNavigation = new GroundPathNavigation(mob, source.getLevel());
          Path path = pathNavigation.createPath(target, 0);
          if (path == null) {

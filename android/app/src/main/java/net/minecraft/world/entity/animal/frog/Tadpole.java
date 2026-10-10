@@ -236,7 +236,8 @@ public class Tadpole extends AbstractFish {
    }
 
    private void ageUp() {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          this.convertTo(EntityTypes.FROG, ConversionParams.single(this, false, false), frog -> {
             frog.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(frog.blockPosition()), EntitySpawnReason.CONVERSION, null);
             frog.setPersistenceRequired();

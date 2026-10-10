@@ -63,7 +63,8 @@ public interface SlotDisplay {
       final RandomSource randomSource,
       final BinaryOperator<ItemStack> operation
    ) {
-      if (factory instanceof DisplayContentsFactory.ForStacks<T> stacks) {
+      if (factory instanceof DisplayContentsFactory.ForStacks<T>) {
+          DisplayContentsFactory.ForStacks<T> stacks = (DisplayContentsFactory.ForStacks<T>) factory;
          List<ItemStack> firstItems = firstDisplay.resolveForStacks(context);
          if (firstItems.isEmpty()) {
             return Stream.empty();
@@ -87,7 +88,8 @@ public interface SlotDisplay {
       final SlotDisplay secondDisplay,
       final BinaryOperator<ItemStack> operation
    ) {
-      if (factory instanceof DisplayContentsFactory.ForStacks<T> stacks) {
+      if (factory instanceof DisplayContentsFactory.ForStacks<T>) {
+          DisplayContentsFactory.ForStacks<T> stacks = (DisplayContentsFactory.ForStacks<T>) factory;
          List<ItemStack> firstItems = firstDisplay.resolveForStacks(context);
          if (firstItems.isEmpty()) {
             return Stream.empty();
@@ -133,7 +135,8 @@ public interface SlotDisplay {
 
       @Override
       public <T> Stream<T> resolve(final ContextMap context, final DisplayContentsFactory<T> factory) {
-         if (factory instanceof DisplayContentsFactory.ForStacks<T> stacks) {
+         if (factory instanceof DisplayContentsFactory.ForStacks<T>) {
+             DisplayContentsFactory.ForStacks<T> stacks = (DisplayContentsFactory.ForStacks<T>) factory;
             RegistryAccess registries = context.get(SlotDisplayContext.REGISTRIES);
             if (registries != null) {
                return registries.lookupOrThrow(Registries.ITEM).componentLookup().findAll(DataComponents.COOKING_FUEL).stream().map(stacks::forStack);
@@ -242,7 +245,7 @@ public interface SlotDisplay {
 
       @Override
       public <T> Stream<T> resolve(final ContextMap context, final DisplayContentsFactory<T> factory) {
-         return factory instanceof DisplayContentsFactory.ForStacks<T> stacks ? Stream.of(stacks.forStack(this.item)) : Stream.empty();
+         return factory instanceof DisplayContentsFactory.ForStacks<T> ? Stream.of(((DisplayContentsFactory.ForStacks<T>) factory).forStack(this.item))  : Stream.empty();
       }
 
       @Override
@@ -276,7 +279,7 @@ public interface SlotDisplay {
 
       @Override
       public <T> Stream<T> resolve(final ContextMap context, final DisplayContentsFactory<T> factory) {
-         return factory instanceof DisplayContentsFactory.ForStacks<T> stacks ? Stream.of(stacks.forStack(this.stack.create())) : Stream.empty();
+         return factory instanceof DisplayContentsFactory.ForStacks<T> ? Stream.of(((DisplayContentsFactory.ForStacks<T>) factory).forStack(this.stack.create()))  : Stream.empty();
       }
 
       @Override
@@ -302,12 +305,11 @@ public interface SlotDisplay {
       );
       public static final SlotDisplay.Type<SlotDisplay.OnlyWithComponent> TYPE = new SlotDisplay.Type<>(MAP_CODEC, STREAM_CODEC);
 
-      @Override
-      public <T> Stream<T> resolve(final ContextMap context, final DisplayContentsFactory<T> builder) {
-         return builder instanceof DisplayContentsFactory.ForStacks<T> stacks
-            ? this.source.resolve(context, SlotDisplay.ItemStackContentsFactory.INSTANCE).filter(s -> s.has(this.component)).map(stacks::forStack)
-            : Stream.empty();
-      }
+@Override
+       public <T> Stream<T> resolve(final ContextMap context, final DisplayContentsFactory<T> builder) {
+          return builder instanceof DisplayContentsFactory.ForStacks<T> ? this.source.resolve(context, SlotDisplay.ItemStackContentsFactory.INSTANCE).filter(s -> s.has(this.component)).map(stacks::forStack)
+             : Stream.empty();
+       }
 
       @Override
       public SlotDisplay.Type<SlotDisplay.OnlyWithComponent> type() {
@@ -363,10 +365,10 @@ public interface SlotDisplay {
          return TYPE;
       }
 
-      @Override
-      public <T> Stream<T> resolve(final ContextMap context, final DisplayContentsFactory<T> factory) {
-         return factory instanceof DisplayContentsFactory.ForStacks<T> stacks ? this.tag.stream().map(stacks::forStack) : Stream.empty();
-      }
+@Override
+       public <T> Stream<T> resolve(final ContextMap context, final DisplayContentsFactory<T> factory) {
+          return factory instanceof DisplayContentsFactory.ForStacks<T> ? this.tag.stream().map(stacks::forStack) : Stream.empty();
+       }
    }
 
    record Type<T extends SlotDisplay>(MapCodec<T> codec, StreamCodec<RegistryFriendlyByteBuf, T> streamCodec) {
@@ -388,7 +390,8 @@ public interface SlotDisplay {
 
       @Override
       public <T> Stream<T> resolve(final ContextMap context, final DisplayContentsFactory<T> factory) {
-         if (factory instanceof DisplayContentsFactory.ForStacks<T> stacks) {
+         if (factory instanceof DisplayContentsFactory.ForStacks<T>) {
+             DisplayContentsFactory.ForStacks<T> stacks = (DisplayContentsFactory.ForStacks<T>) factory;
             List<ItemStack> displayItems = this.display.resolveForStacks(context);
             Optional<? extends HolderLookup.RegistryLookup<Potion>> potions = Optional.ofNullable(context.get(SlotDisplayContext.REGISTRIES))
                .flatMap(r -> r.lookup(Registries.POTION));
@@ -430,7 +433,8 @@ public interface SlotDisplay {
 
       @Override
       public <T> Stream<T> resolve(final ContextMap context, final DisplayContentsFactory<T> factory) {
-         if (factory instanceof DisplayContentsFactory.ForRemainders<T> remainders) {
+         if (factory instanceof DisplayContentsFactory.ForRemainders<T>) {
+             DisplayContentsFactory.ForRemainders<T> remainders = (DisplayContentsFactory.ForRemainders<T>) factory;
             List<T> resolvedRemainders = this.remainder.resolve(context, factory).toList();
             return this.input.resolve(context, factory).map(input -> remainders.addRemainder((T)input, resolvedRemainders));
          } else {

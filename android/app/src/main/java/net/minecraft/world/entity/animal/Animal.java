@@ -142,7 +142,7 @@ public abstract class Animal extends AgeableMob {
       ItemStack itemStack = player.getItemInHand(hand);
       if (this.isFood(itemStack)) {
          int age = this.getAge();
-         if (player instanceof ServerPlayer serverPlayer && age == 0 && this.canFallInLove()) {
+         if (player instanceof ServerPlayer && age == 0 && this.canFallInLove()) {
             this.usePlayerItem(player, hand, itemStack);
             this.setInLove(serverPlayer);
             this.playEatingSound();
@@ -173,7 +173,8 @@ public abstract class Animal extends AgeableMob {
 
    public void setInLove(final @Nullable Player player) {
       this.inLove = 600;
-      if (player instanceof ServerPlayer serverPlayer) {
+      if (player instanceof ServerPlayer) {
+          ServerPlayer serverPlayer = (ServerPlayer) player;
          this.loveCause = EntityReference.of(serverPlayer);
       }
 

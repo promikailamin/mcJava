@@ -325,7 +325,8 @@ public class MappedRegistry<T> implements WritableRegistry<T> {
    private Holder.Reference<T> validateAndUnwrapTagElement(final TagKey<T> id, final Holder<T> value) {
       if (!value.canSerializeIn(this)) {
          throw new IllegalStateException("Can't create named set " + id + " containing value " + value + " from outside registry " + this);
-      } else if (value instanceof Holder.Reference<T> reference) {
+      } else if (value instanceof Holder.Reference<T>) {
+         Holder.Reference<T> reference = (Holder.Reference<T>) value;
          return reference;
       } else {
          throw new IllegalStateException("Found direct holder " + value + " value in tag " + id);

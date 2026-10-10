@@ -17,7 +17,8 @@ public class EmptyMapItem extends Item {
    @Override
    public InteractionResult use(final Level level, final Player player, final InteractionHand hand) {
       ItemStack itemStack = player.getItemInHand(hand);
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          itemStack.consume(1, player);
          player.awardStat(Stats.ITEM_USED.get(this));
          serverLevel.playSound(null, player, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, player.getSoundSource(), 1.0F, 1.0F);

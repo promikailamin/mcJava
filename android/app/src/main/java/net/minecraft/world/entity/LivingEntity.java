@@ -215,7 +215,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
    public static final float BASE_SWIM_SPEED = 0.02F;
    private int currentImpulseContextResetGraceTime = 0;
    public static final Predicate<LivingEntity> PLAYER_NOT_WEARING_DISGUISE_ITEM = livingEntity -> {
-      if (livingEntity instanceof Player player) {
+      if (livingEntity instanceof Player) {
+          Player player = (Player) livingEntity;
          ItemStack helmet = player.getItemBySlot(EquipmentSlot.HEAD);
          return !helmet.is(ItemTags.GAZE_DISGUISE_EQUIPMENT);
       } else {
@@ -366,7 +367,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          this.updateFluidInteraction();
       }
 
-      if (this.level() instanceof ServerLevel level && onGround && this.fallDistance > 0.0) {
+      if (this.level() instanceof ServerLevel && onGround && this.fallDistance > 0.0) {
          this.onChangedBlock(level, pos);
          double power = Math.max(0, Mth.floor(this.calculateFallPower(this.fallDistance)));
          if (power > 0.0 && !onState.isAir()) {
@@ -417,14 +418,16 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          });
       }
 
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          EnchantmentHelper.tickEffects(serverLevel, this);
       }
 
       super.baseTick();
       ProfilerFiller profiler = Profiler.get();
       profiler.push("livingEntityBaseTick");
-      if (this.isAlive() && this.level() instanceof ServerLevel level) {
+      if (this.isAlive() && this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.isAlive() && this.level();
          boolean isPlayer = this instanceof Player;
          if (this.isInWall()) {
             this.hurtServer(level, this.damageSources().inWall(), 1.0F);
@@ -660,7 +663,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
    }
 
    public void setLastHurtMob(final Entity target) {
-      if (target instanceof LivingEntity livingEntity) {
+      if (target instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) target;
          this.lastHurtMob = livingEntity;
       } else {
          this.lastHurtMob = null;
@@ -721,7 +725,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
 
    @Override
    public void remove(final Entity.RemovalReason reason) {
-      if ((reason == Entity.RemovalReason.KILLED || reason == Entity.RemovalReason.DISCARDED) && this.level() instanceof ServerLevel level) {
+      if ((reason == Entity.RemovalReason.KILLED || reason == Entity.RemovalReason.DISCARDED) && this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) (reason == Entity.RemovalReason.KILLED || reason == Entity.RemovalReason.DISCARDED) && this.level();
          this.triggerOnDeathMobEffects(level, reason);
       }
 
@@ -733,7 +738,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
    @Override
    public void onRemoval(final Entity.RemovalReason reason) {
       super.onRemoval(reason);
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          serverLevel.getWaypointManager().untrackWaypoint(this);
       }
    }
@@ -843,7 +849,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
    }
 
    protected void tickEffects() {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          Iterator<Holder<MobEffect>> iterator = this.activeEffects.keySet().iterator();
 
          try {
@@ -1080,7 +1087,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
 
    public void sendEffectToPassengers(final MobEffectInstance effect) {
       for (Entity passenger : this.getPassengers()) {
-         if (passenger instanceof ServerPlayer serverPlayer) {
+         if (passenger instanceof ServerPlayer) {
+             ServerPlayer serverPlayer = (ServerPlayer) passenger;
             serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(this.getId(), effect, false));
          }
       }
@@ -1108,7 +1116,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
             effect.getEffect().value().removeAttributeModifiers(this.getAttributes());
 
             for (Entity passenger : this.getPassengers()) {
-               if (passenger instanceof ServerPlayer serverPlayer) {
+               if (passenger instanceof ServerPlayer) {
+                   ServerPlayer serverPlayer = (ServerPlayer) passenger;
                   serverPlayer.connection.send(new ClientboundRemoveMobEffectPacket(this.getId(), effect.getEffect()));
                }
             }
@@ -1141,13 +1150,17 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          }
       } else if (attribute.is(Attributes.SCALE)) {
          this.refreshDimensions();
-      } else if (attribute.is(Attributes.WAYPOINT_TRANSMIT_RANGE) && this.level() instanceof ServerLevel serverLevel) {
-         ServerWaypointManager waypointManager = serverLevel.getWaypointManager();
-         if (this.attributes.getValue(attribute) > 0.0) {
-            waypointManager.trackWaypoint(this);
-         } else {
-            waypointManager.untrackWaypoint(this);
-         }
+} else if (attribute.is(Attributes.WAYPOINT_TRANSMIT_RANGE)) {
+          Level level = this.level();
+          if (level instanceof ServerLevel) {
+              ServerLevel serverLevel = (ServerLevel) level;
+             ServerWaypointManager waypointManager = serverLevel.getWaypointManager();
+             if (this.attributes.getValue(attribute) > 0.0) {
+                waypointManager.trackWaypoint(this);
+             } else {
+                waypointManager.untrackWaypoint(this);
+             }
+          }
       }
    }
 
@@ -1276,14 +1289,16 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          }
       }
 
-      if (this instanceof ServerPlayer serverPlayer) {
+      if (this instanceof ServerPlayer) {
+          ServerPlayer serverPlayer = (ServerPlayer) this;
          CriteriaTriggers.ENTITY_HURT_PLAYER.trigger(serverPlayer, source, originalDamage, damage, blocked);
          if (damageBlocked > 0.0F && damageBlocked < 3.4028235E37F) {
             serverPlayer.awardStat(Stats.DAMAGE_BLOCKED_BY_SHIELD, Math.round(damageBlocked * 10.0F));
          }
       }
 
-      if (source.getEntity() instanceof ServerPlayer sourcePlayer) {
+      if (source.getEntity() instanceof ServerPlayer) {
+          ServerPlayer sourcePlayer = (ServerPlayer) source.getEntity();
          CriteriaTriggers.PLAYER_HURT_ENTITY.trigger(sourcePlayer, this, source, originalDamage, damage, blocked);
       }
 
@@ -1293,7 +1308,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
    public void dealDefaultKnockback(final DamageSource source, final float damage, final boolean blocked) {
       double xd = 0.0;
       double zd = 0.0;
-      if (source.getDirectEntity() instanceof Projectile projectile) {
+      if (source.getDirectEntity() instanceof Projectile) {
+          Projectile projectile = (Projectile) source.getDirectEntity();
          DoubleDoubleImmutablePair knockbackDirection = projectile.calculateHorizontalHurtKnockbackDirection(this, source);
          xd = -knockbackDirection.leftDouble();
          zd = -knockbackDirection.rightDouble();
@@ -1320,7 +1336,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
 
       BlocksAttacks blocksAttacks = blockingWith.get(DataComponents.BLOCKS_ATTACKS);
       if (blocksAttacks != null && !blocksAttacks.bypassedBy().map(t -> t.contains(source.typeHolder())).orElse(false)) {
-         if (source.getDirectEntity() instanceof AbstractArrow abstractArrow && abstractArrow.getPierceLevel() > 0) {
+         if (source.getDirectEntity() instanceof AbstractArrow && abstractArrow.getPierceLevel() > 0) {
             return 0.0F;
          } else {
             Vec3 sourcePosition = source.getSourcePosition();
@@ -1336,7 +1352,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
 
             float damageBlocked = blocksAttacks.resolveBlockedDamage(source, damage, angle);
             blocksAttacks.hurtBlockingItem(this.level(), blockingWith, this, this.getUsedItemHand(), damageBlocked);
-            if (damageBlocked > 0.0F && !source.is(DamageTypeTags.IS_PROJECTILE) && source.getDirectEntity() instanceof LivingEntity livingEntity) {
+            if (damageBlocked > 0.0F && !source.is(DamageTypeTags.IS_PROJECTILE) && source.getDirectEntity() instanceof LivingEntity) {
+                LivingEntity livingEntity = (LivingEntity) damageBlocked > 0.0F && !source.is(DamageTypeTags.IS_PROJECTILE) && source.getDirectEntity();
                this.blockUsingItem(level, livingEntity, source, damage, damageBlocked >= damage);
             }
 
@@ -1355,8 +1372,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
    }
 
    protected void resolveMobResponsibleForDamage(final DamageSource source) {
-      if (source.getEntity() instanceof LivingEntity livingSource
-         && !source.is(DamageTypeTags.NO_ANGER)
+      if (source.getEntity() instanceof LivingEntity && !source.is(DamageTypeTags.NO_ANGER)
          && (!source.is(DamageTypes.WIND_CHARGE) || !this.is(EntityTypeTags.NO_ANGER_FROM_WIND_CHARGE))) {
          this.setLastHurtByMob(livingSource);
       }
@@ -1364,9 +1380,10 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
 
    protected @Nullable Player resolvePlayerResponsibleForDamage(final DamageSource source) {
       Entity sourceEntity = source.getEntity();
-      if (sourceEntity instanceof Player playerSource) {
+      if (sourceEntity instanceof Player) {
+          Player playerSource = (Player) sourceEntity;
          this.setLastHurtByPlayer(playerSource, 100);
-      } else if (sourceEntity instanceof Wolf wolf && wolf.isTame()) {
+      } else if (sourceEntity instanceof Wolf && wolf.isTame()) {
          if (wolf.getOwnerReference() != null) {
             this.setLastHurtByPlayer(wolf.getOwnerReference().getUUID(), 100);
          } else {
@@ -1409,7 +1426,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
       }
 
       if (protectionItem != null) {
-         if (this instanceof ServerPlayer player) {
+         if (this instanceof ServerPlayer) {
+             ServerPlayer player = (ServerPlayer) this;
             player.awardStat(Stats.ITEM_USED.get(protectionItem.getItem()));
             CriteriaTriggers.USED_TOTEM.trigger(player, protectionItem);
             protectionItem.causeUseVibration(this, GameEvent.ITEM_INTERACT_FINISH);
@@ -1473,7 +1491,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          }
 
          this.handleKillingBlow();
-         if (this.level() instanceof ServerLevel serverLevel) {
+         if (this.level() instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) this.level();
             if (sourceEntity == null || sourceEntity.killedEntity(serverLevel, this, source)) {
                this.gameEvent(GameEvent.ENTITY_DIE);
                this.dropAllDeathLoot(serverLevel, source);
@@ -1492,7 +1511,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
    }
 
    protected void createWitherRose(final @Nullable LivingEntity killer) {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          boolean var6 = false;
          if (killer instanceof WitherBoss) {
             if (serverLevel.getGameRules().get(GameRules.MOB_GRIEFING)) {
@@ -1545,9 +1565,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
 
    protected float getKnockback(final Entity target, final DamageSource damageSource) {
       float knockback = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
-      return this.level() instanceof ServerLevel level
-         ? EnchantmentHelper.modifyKnockback(level, this.getWeaponItem(), target, damageSource, knockback) / 2.0F
-         : knockback / 2.0F;
+      return this.level() instanceof ServerLevel ? EnchantmentHelper.modifyKnockback(level, this.getWeaponItem(), target, damageSource, knockback) / 2.0F
+          : knockback / 2.0F;
    }
 
    protected void dropFromLootTable(final ServerLevel level, final DamageSource source, final boolean playerKilled) {
@@ -1712,7 +1731,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
    }
 
    public void postPiercingAttack() {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          EnchantmentHelper.doPostPiercingAttackEffects(serverLevel, this);
       }
    }
@@ -1927,7 +1947,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          damage = Math.max(v / 25.0F, 0.0F);
          float damageResisted = oldDamage - damage;
          if (damageResisted > 0.0F && damageResisted < 3.4028235E37F) {
-            if (this instanceof ServerPlayer serverPlayer) {
+            if (this instanceof ServerPlayer) {
+                ServerPlayer serverPlayer = (ServerPlayer) this;
                serverPlayer.awardStat(Stats.DAMAGE_RESISTED, Math.round(damageResisted * 10.0F));
             } else if (damageSource.getEntity() instanceof ServerPlayer) {
                ((ServerPlayer)damageSource.getEntity()).awardStat(Stats.DAMAGE_DEALT_RESISTED, Math.round(damageResisted * 10.0F));
@@ -1944,7 +1965,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
       }
 
       float enchantmentArmor;
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          enchantmentArmor = EnchantmentHelper.getDamageProtection(serverLevel, this, damageSource);
       } else {
          enchantmentArmor = 0.0F;
@@ -1965,7 +1987,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          dmg = Math.max(dmg - this.getAbsorptionAmount(), 0.0F);
          this.setAbsorptionAmount(this.getAbsorptionAmount() - (originalDamage - dmg));
          float absorbedDamage = originalDamage - dmg;
-         if (absorbedDamage > 0.0F && absorbedDamage < 3.4028235E37F && source.getEntity() instanceof ServerPlayer serverPlayer) {
+         if (absorbedDamage > 0.0F && absorbedDamage < 3.4028235E37F && source.getEntity() instanceof ServerPlayer) {
+             ServerPlayer serverPlayer = (ServerPlayer) absorbedDamage > 0.0F && absorbedDamage < 3.4028235E37F && source.getEntity();
             serverPlayer.awardStat(Stats.DAMAGE_DEALT_ABSORBED, Math.round(absorbedDamage * 10.0F));
          }
 
@@ -2030,7 +2053,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
 
    public boolean swing(final InteractionHand hand, final SwingAnimation animation, final boolean sendToSwingingEntity) {
       if (this.swingState.startIfAble(hand, animation, this.getModifiedSwingDuration(animation))) {
-         if (this.level() instanceof ServerLevel serverLevel) {
+         if (this.level() instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) this.level();
             ClientboundSwingAnimationPacket packet = new ClientboundSwingAnimationPacket(this, hand, animation);
             ServerChunkCache chunkSource = serverLevel.getChunkSource();
             if (sendToSwingingEntity) {
@@ -2730,7 +2754,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
    public void causeExtraKnockback(
       final Entity target, final float knockback, final Vec3 oldMovement, final DamageSource damageSource, final float damage, final boolean comesFromEffect
    ) {
-      if (knockback > 0.0F && target instanceof LivingEntity livingTarget) {
+      if (knockback > 0.0F && target instanceof LivingEntity) {
+          LivingEntity livingTarget = (LivingEntity) knockback > 0.0F && target;
          livingTarget.knockback(
             knockback,
             Mth.sin(this.getYRot() * (float) (Math.PI / 180.0)),
@@ -2890,7 +2915,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
       final boolean dealsKnockback,
       final boolean dismounts
    ) {
-      if (!(this.level() instanceof ServerLevel serverLevel)) {
+      if (!(this.level() instanceof ServerLevel)) {
          return false;
       } else {
          ItemStack weaponItem = this.getItemBySlot(weaponSlot);
@@ -2910,7 +2935,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
             target.stopRiding();
          }
 
-         if (target instanceof LivingEntity livingTarget) {
+         if (target instanceof LivingEntity) {
+             LivingEntity livingTarget = (LivingEntity) target;
             weaponItem.hurtEnemy(livingTarget, this);
          }
 
@@ -2972,7 +2998,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
                      instance.addTransientModifier(modifier);
                   }
                });
-               if (this.level() instanceof ServerLevel serverLevel) {
+               if (this.level() instanceof ServerLevel) {
+                   ServerLevel serverLevel = (ServerLevel) this.level();
                   EnchantmentHelper.runLocationChangedEffects(serverLevel, current, this, slot);
                }
             }
@@ -3121,7 +3148,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          this.resetFallDistance();
       }
 
-      if (this.getControllingPassenger() instanceof Player controller && this.isAlive()) {
+      if (this.getControllingPassenger() instanceof Player && this.isAlive()) {
          this.travelRidden(controller, input);
       } else if (this.canSimulateMovement() && this.isEffectiveAi()) {
          this.travel(input);
@@ -3136,7 +3163,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
       }
 
       profiler.pop();
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          profiler.push("freezing");
          if (!this.isInPowderSnow || !this.canFreeze()) {
             this.setTicksFrozen(Math.max(0, this.getTicksFrozen() - 2));
@@ -3159,7 +3187,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
 
       this.pushEntities();
       profiler.pop();
-      if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater() && this.isInWaterOrRain()) {
+      if (this.level() instanceof ServerLevel && this.isSensitiveToWater() && this.isInWaterOrRain()) {
          this.hurtServer(serverLevel, this.damageSources().drown(), 1.0F);
       }
    }
@@ -3219,7 +3247,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
    protected void pushEntities() {
       List<Entity> pushableEntities = this.level().getPushableEntities(this, this.getBoundingBox());
       if (!pushableEntities.isEmpty()) {
-         if (this.level() instanceof ServerLevel serverLevel) {
+         if (this.level() instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) this.level();
             int maxCramming = serverLevel.getGameRules().get(GameRules.MAX_ENTITY_CRAMMING);
             if (maxCramming > 0 && pushableEntities.size() > maxCramming - 1 && this.random.nextInt(4) == 0) {
                int count = 0;
@@ -3247,7 +3276,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
       List<Entity> entities = this.level().getEntities(this, minmax);
       if (!entities.isEmpty()) {
          for (Entity entity : entities) {
-            if (entity instanceof LivingEntity livingEntity) {
+            if (entity instanceof LivingEntity) {
+                LivingEntity livingEntity = (LivingEntity) entity;
                this.doAutoAttackOnTouch(livingEntity);
                this.autoSpinAttackTicks = 0;
                this.setDeltaMovement(this.getDeltaMovement().scale(-0.2));
@@ -3307,7 +3337,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
    }
 
    public void onItemPickup(final ItemEntity entity) {
-      if (entity.getOwner() instanceof ServerPlayer serverPlayer) {
+      if (entity.getOwner() instanceof ServerPlayer) {
+          ServerPlayer serverPlayer = (ServerPlayer) entity.getOwner();
          CriteriaTriggers.THROWN_ITEM_PICKED_UP_BY_ENTITY.trigger(serverPlayer, entity.getItem(), this);
       }
    }
@@ -3364,7 +3395,7 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
 
    @Override
    public boolean isPushable() {
-      return !this.isAlwaysTicking() && this.level() instanceof ServerLevel level && !level.isPositionEntityTicking(this.blockPosition())
+      return !this.isAlwaysTicking() && this.level() instanceof ServerLevel && !level.isPositionEntityTicking(this.blockPosition())
          ? false
          : this.isAlive() && !this.isSpectator() && !this.onClimbable();
    }
@@ -3717,7 +3748,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
                level.broadcastEntityEvent(this, (byte)46);
             }
 
-            if (this instanceof PathfinderMob pathfinderMob) {
+            if (this instanceof PathfinderMob) {
+                PathfinderMob pathfinderMob = (PathfinderMob) this;
                pathfinderMob.getNavigation().stop();
             }
 
@@ -3795,7 +3827,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
 
    public boolean startSleeping(final BlockPos bedPosition) {
       BlockState blockState = this.level().getBlockState(bedPosition);
-      if (blockState.getBlock() instanceof AbstractBedBlock bedBlock) {
+      if (blockState.getBlock() instanceof AbstractBedBlock) {
+          AbstractBedBlock bedBlock = (AbstractBedBlock) blockState.getBlock();
          OptionalDouble sleepHeight = bedBlock.getSleepHeight(blockState, this.level(), bedPosition);
          if (sleepHeight.isEmpty()) {
             return false;
@@ -3819,7 +3852,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
 
    private boolean setPosToBed(final BlockPos bedPosition) {
       BlockState state = this.level().getBlockState(bedPosition);
-      if (state.getBlock() instanceof AbstractBedBlock bedBlock) {
+      if (state.getBlock() instanceof AbstractBedBlock) {
+          AbstractBedBlock bedBlock = (AbstractBedBlock) state.getBlock();
          OptionalDouble sleepHeight = bedBlock.getSleepHeight(state, this.level(), bedPosition);
          if (sleepHeight.isEmpty()) {
             return false;
@@ -3840,14 +3874,15 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
    private boolean checkBedExists() {
       return this.getSleepingPos().map(bedPosition -> {
          BlockState state = this.level().getBlockState(bedPosition);
-         return state.getBlock() instanceof AbstractBedBlock bedBlock && bedBlock.getSleepHeight(state, this.level(), bedPosition).isPresent();
+         return state.getBlock() instanceof AbstractBedBlock && bedBlock.getSleepHeight(state, this.level(), bedPosition).isPresent();
       }).orElse(false);
    }
 
    public void stopSleeping() {
       this.getSleepingPos().filter(this.level()::hasChunkAt).ifPresent(bedPosition -> {
          BlockState state = this.level().getBlockState(bedPosition);
-         if (state.getBlock() instanceof AbstractBedBlock bedBlock) {
+         if (state.getBlock() instanceof AbstractBedBlock) {
+             AbstractBedBlock bedBlock = (AbstractBedBlock) state.getBlock();
             Direction facing = state.getValue(BedBlock.FACING);
             this.level().setBlockAndUpdate(bedPosition, state.setValue(BedBlock.OCCUPIED, false));
             bedBlock.onStopSleeping(this.level(), bedPosition);

@@ -81,7 +81,8 @@ public record BlocksAttacks(
    public void disable(final ServerLevel level, final LivingEntity user, final float baseSeconds, final ItemStack blockingWith) {
       int cooldownTicks = this.disableBlockingForTicks(baseSeconds);
       if (cooldownTicks > 0) {
-         if (user instanceof Player player) {
+         if (user instanceof Player) {
+             Player player = (Player) user;
             player.getCooldowns().addCooldown(blockingWith, cooldownTicks);
          }
 
@@ -103,7 +104,8 @@ public record BlocksAttacks(
    }
 
    public void hurtBlockingItem(final Level level, final ItemStack item, final LivingEntity user, final InteractionHand hand, final float damage) {
-      if (user instanceof Player player) {
+      if (user instanceof Player) {
+          Player player = (Player) user;
          if (!level.isClientSide()) {
             player.awardStat(Stats.ITEM_USED.get(item.getItem()));
          }

@@ -47,7 +47,7 @@ public class Vec2 {
       if (this == rhs) {
          return true;
       } else {
-         return !(rhs instanceof Vec2 other) ? false : this.x == other.x && this.y == other.y;
+         return !(rhs instanceof Vec2) ? false : this.x == other.x && this.y == other.y;
       }
    }
 

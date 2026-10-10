@@ -79,11 +79,11 @@ public class BarrierBlock extends Block implements SimpleWaterloggedBlock {
 
    @Override
    public ItemStack pickupBlock(final @Nullable LivingEntity user, final LevelAccessor level, final BlockPos pos, final BlockState state) {
-      return user instanceof Player player && player.isCreative() ? SimpleWaterloggedBlock.super.pickupBlock(user, level, pos, state) : ItemStack.EMPTY;
+      return user instanceof Player && player.isCreative() ? SimpleWaterloggedBlock.super.pickupBlock(user, level, pos, state) : ItemStack.EMPTY;
    }
 
    @Override
    public boolean canPlaceLiquid(final @Nullable LivingEntity user, final BlockGetter level, final BlockPos pos, final BlockState state, final Fluid type) {
-      return user instanceof Player player && player.isCreative() ? SimpleWaterloggedBlock.super.canPlaceLiquid(user, level, pos, state, type) : false;
+      return user instanceof Player && player.isCreative() ? SimpleWaterloggedBlock.super.canPlaceLiquid(user, level, pos, state, type) : false;
    }
 }

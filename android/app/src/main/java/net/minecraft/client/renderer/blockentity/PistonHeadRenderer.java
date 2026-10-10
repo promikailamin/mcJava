@@ -38,7 +38,7 @@ public class PistonHeadRenderer implements BlockEntityRenderer<PistonMovingBlock
       state.block = null;
       state.base = null;
       BlockState blockState = blockEntity.getMovedState();
-      if (blockEntity.getLevel() instanceof ClientLevel level && !blockState.isAir()) {
+      if (blockEntity.getLevel() instanceof ClientLevel && !blockState.isAir()) {
          BlockPos pos = blockEntity.getBlockPos().relative(blockEntity.getMovementDirection().getOpposite());
          Holder<Biome> biome = level.getBiome(pos);
          if (blockState.is(Blocks.PISTON_HEAD) && blockEntity.getProgress(partialTicks) <= 4.0F) {

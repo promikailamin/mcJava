@@ -131,7 +131,8 @@ public class LecternBlock extends BaseEntityBlock {
    }
 
    private static void placeBook(final @Nullable LivingEntity sourceEntity, final Level level, final BlockPos pos, final BlockState state, final ItemStack book) {
-      if (level.getBlockEntity(pos) instanceof LecternBlockEntity lectern) {
+      if (level.getBlockEntity(pos) instanceof LecternBlockEntity) {
+          LecternBlockEntity lectern = (LecternBlockEntity) level.getBlockEntity(pos);
          lectern.setBook(book.consumeAndReturn(1, sourceEntity));
          resetBookState(sourceEntity, level, pos, state, true);
          level.playSound(null, pos, SoundEvents.BOOK_PUT, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -195,9 +196,7 @@ public class LecternBlock extends BaseEntityBlock {
 
    @Override
    protected int getAnalogOutputSignal(final BlockState state, final Level level, final BlockPos pos, final Direction direction) {
-      return state.getValue(HAS_BOOK) && level.getBlockEntity(pos) instanceof LecternBlockEntity lecternBlockEntity
-         ? lecternBlockEntity.getRedstoneSignal()
-         : 0;
+      return state.getValue(HAS_BOOK) && level.getBlockEntity(pos) instanceof LecternBlockEntity ? getRedstoneSignal() : 0;
    }
 
    @Override
@@ -240,7 +239,8 @@ public class LecternBlock extends BaseEntityBlock {
    }
 
    private void openScreen(final Level level, final BlockPos pos, final Player player) {
-      if (level.getBlockEntity(pos) instanceof LecternBlockEntity lecternBlockEntity) {
+      if (level.getBlockEntity(pos) instanceof LecternBlockEntity) {
+          LecternBlockEntity lecternBlockEntity = (LecternBlockEntity) level.getBlockEntity(pos);
          player.openMenu(lecternBlockEntity);
          player.awardStat(Stats.INTERACT_WITH_LECTERN);
       }

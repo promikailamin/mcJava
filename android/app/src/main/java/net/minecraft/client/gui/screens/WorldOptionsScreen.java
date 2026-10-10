@@ -507,7 +507,8 @@ public class WorldOptionsScreen extends Screen implements HasGamemasterPermissio
       this.updatePermissionDependentButtons(singleplayerServer, hasGamemasterPermission, true);
       if (!hasGamemasterPermission && !this.minecraft.hasSingleplayerServer()) {
          this.minecraft.gui.setScreen(this.lastScreen);
-         if (this.minecraft.gui.screen() instanceof HasGamemasterPermissionReaction screen) {
+         if (this.minecraft.gui.screen() instanceof HasGamemasterPermissionReaction) {
+             HasGamemasterPermissionReaction screen = (HasGamemasterPermissionReaction) this.minecraft.gui.screen();
             screen.onGamemasterPermissionChanged(hasGamemasterPermission);
          }
       }
@@ -694,7 +695,8 @@ public class WorldOptionsScreen extends Screen implements HasGamemasterPermissio
          screen.wantedDifficultyLocked = isDifficultyLocked(level);
          screen.initialDifficultyLocked = screen.wantedDifficultyLocked;
          LockIconButton lockButton = new LockIconButton(0, 0, button -> {
-            if (button instanceof LockIconButton lockIconButton) {
+            if (button instanceof LockIconButton) {
+                LockIconButton lockIconButton = (LockIconButton) button;
                lockIconButton.setLocked(!screen.wantedDifficultyLocked);
             }
 

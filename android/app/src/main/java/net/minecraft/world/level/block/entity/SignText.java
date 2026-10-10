@@ -139,7 +139,7 @@ public class SignText {
 
    @Override
    public boolean equals(final Object object) {
-      return !(object instanceof SignText signText)
+      return !(object instanceof SignText)
          ? false
          : this.hasGlowingText == signText.hasGlowingText
             && this.messages.equals(signText.messages)

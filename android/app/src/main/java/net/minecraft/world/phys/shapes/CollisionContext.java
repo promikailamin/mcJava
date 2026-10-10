@@ -54,7 +54,7 @@ public interface CollisionContext {
          entity != null ? entity.isDescending() : false,
          true,
          entity != null ? position : -Double.MAX_VALUE,
-         entity instanceof LivingEntity livingEntity ? livingEntity.getMainHandItem() : ItemStack.EMPTY,
+         entity instanceof LivingEntity ? getMainHandItem() : ItemStack.EMPTY,
          false,
          entity
       );

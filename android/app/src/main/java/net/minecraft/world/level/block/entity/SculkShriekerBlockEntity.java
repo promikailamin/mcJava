@@ -85,17 +85,34 @@ public class SculkShriekerBlockEntity extends BlockEntity implements GameEventLi
       output.store("listener", VibrationSystem.Data.CODEC, this.vibrationData);
    }
 
-   public static @Nullable ServerPlayer tryGetPlayer(final @Nullable Entity sourceEntity) {
-      if (sourceEntity instanceof ServerPlayer player) {
-         return player;
-      } else if (sourceEntity != null && sourceEntity.getControllingPassenger() instanceof ServerPlayer player) {
-         return player;
-      } else if (sourceEntity instanceof Projectile projectile && projectile.getOwner() instanceof ServerPlayer player) {
-         return player;
-      } else {
-         return sourceEntity instanceof ItemEntity item && item.getOwner() instanceof ServerPlayer player ? player : null;
-      }
-   }
+public static @Nullable ServerPlayer tryGetPlayer(final @Nullable Entity sourceEntity) {
+       if (sourceEntity instanceof ServerPlayer) {
+           ServerPlayer player = (ServerPlayer) sourceEntity;
+          return player;
+       } else if (sourceEntity != null) {
+          Entity controllingPassenger = sourceEntity.getControllingPassenger();
+          if (controllingPassenger instanceof ServerPlayer) {
+              ServerPlayer player = (ServerPlayer) controllingPassenger;
+             return player;
+          else if (sourceEntity instanceof Projectile) {
+              Projectile projectile = (Projectile) sourceEntity;
+             Entity owner = projectile.getOwner();
+             if (owner instanceof ServerPlayer) {
+                 ServerPlayer player = (ServerPlayer) owner;
+                return player;
+             }
+          else if (sourceEntity instanceof ItemEntity) {
+              ItemEntity item = (ItemEntity) sourceEntity;
+             Entity owner = item.getOwner();
+             if (owner instanceof ServerPlayer) {
+                 ServerPlayer player = (ServerPlayer) owner;
+                return player;
+             }
+          }
+       }
+
+       return null;
+    }
 
    public void tryShriek(final ServerLevel level, final @Nullable ServerPlayer player) {
       if (player != null) {
@@ -132,7 +149,8 @@ public class SculkShriekerBlockEntity extends BlockEntity implements GameEventLi
 
    @Override
    public void preRemoveSideEffects(final BlockPos pos, final BlockState state) {
-      if (state.getValue(SculkShriekerBlock.SHRIEKING) && this.level instanceof ServerLevel serverLevel) {
+      if (state.getValue(SculkShriekerBlock.SHRIEKING) && this.level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) state.getValue(SculkShriekerBlock.SHRIEKING) && this.level;
          this.tryRespond(serverLevel);
       }
    }

@@ -33,7 +33,7 @@ public interface LevelBasedValue {
    Codec<LevelBasedValue> CODEC = Codec.either(LevelBasedValue.Constant.CODEC, DISPATCH_CODEC)
       .xmap(
          either -> (LevelBasedValue)either.map(l -> l, r -> r),
-         levelBasedValue -> levelBasedValue instanceof LevelBasedValue.Constant constant ? Either.left(constant) : Either.right(levelBasedValue)
+         levelBasedValue -> levelBasedValue instanceof LevelBasedValue.Constant ? Either.left(constant)  : Either.right(levelBasedValue)
       );
 
    static MapCodec<? extends LevelBasedValue> bootstrap(final Registry<MapCodec<? extends LevelBasedValue>> registry) {

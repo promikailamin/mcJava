@@ -53,9 +53,8 @@ public class FlowerPotBlock extends Block {
       final InteractionHand hand,
       final BlockHitResult hitResult
    ) {
-      BlockState newContents = (itemStack.getItem() instanceof BlockItem blockItem
-            ? POTTED_BY_CONTENT.getOrDefault(blockItem.getBlock(), Blocks.AIR)
-            : Blocks.AIR)
+      BlockState newContents = (itemStack.getItem() instanceof BlockItem ? POTTED_BY_CONTENT.getOrDefault(((BlockItem) itemStack.getItem()).getBlock(), Blocks.AIR)
+             : Blocks.AIR)
          .defaultBlockState();
       if (newContents.isAir()) {
          return InteractionResult.TRY_WITH_EMPTY_HAND;

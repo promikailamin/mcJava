@@ -203,7 +203,8 @@ public class Vec3 implements Position {
          return true;
       }
 
-      if (o instanceof Vec3 vec3) {
+      if (o instanceof Vec3) {
+          Vec3 vec3 = (Vec3) o;
          if (Double.compare(vec3.x, this.x) != 0) {
             return false;
          } else {

@@ -37,7 +37,8 @@ public class PumpkinBlock extends Block {
    ) {
       if (!itemStack.is(Items.SHEARS)) {
          return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult);
-      } else if (level instanceof ServerLevel serverLevel) {
+      } else if (level instanceof ServerLevel) {
+         ServerLevel serverLevel = (ServerLevel) level;
          Direction clickedDirection = hitResult.getDirection();
          Direction direction = clickedDirection.getAxis() == Direction.Axis.Y ? player.getDirection().getOpposite() : clickedDirection;
          dropFromBlockInteractLootTable(

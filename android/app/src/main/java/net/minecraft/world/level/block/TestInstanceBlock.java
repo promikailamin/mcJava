@@ -25,7 +25,8 @@ public class TestInstanceBlock extends BaseEntityBlock implements GameMasterBloc
    protected InteractionResult useWithoutItem(
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
-      if (level.getBlockEntity(pos) instanceof TestInstanceBlockEntity testInstance) {
+      if (level.getBlockEntity(pos) instanceof TestInstanceBlockEntity) {
+          TestInstanceBlockEntity testInstance = (TestInstanceBlockEntity) level.getBlockEntity(pos);
          if (!player.canUseGameMasterBlocks()) {
             return InteractionResult.PASS;
          }

@@ -102,7 +102,8 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
 
    @Override
    public boolean doHurtTarget(final ServerLevel level, final Entity target) {
-      if (target instanceof LivingEntity livingEntity) {
+      if (target instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) target;
          this.attackAnimationRemainingTicks = 10;
          this.level().broadcastEntityEvent(this, (byte)4);
          this.makeSound(SoundEvents.HOGLIN_ATTACK);
@@ -123,7 +124,8 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
    @Override
    public boolean hurtServer(final ServerLevel level, final DamageSource source, final float damage) {
       boolean wasHurt = super.hurtServer(level, source, damage);
-      if (wasHurt && source.getEntity() instanceof LivingEntity sourceEntity) {
+      if (wasHurt && source.getEntity() instanceof LivingEntity) {
+          LivingEntity sourceEntity = (LivingEntity) wasHurt && source.getEntity();
          HoglinAi.wasHurtBy(level, this, sourceEntity);
       }
 

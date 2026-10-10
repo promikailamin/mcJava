@@ -56,10 +56,8 @@ public class WitherRoseBlock extends FlowerBlock {
    protected void entityInside(
       final BlockState state, final Level level, final BlockPos pos, final Entity entity, final InsideBlockEffectApplier effectApplier, final boolean isPrecise
    ) {
-      if (level instanceof ServerLevel serverLevel
-         && level.getDifficulty() != Difficulty.PEACEFUL
-         && entity instanceof LivingEntity livingEntity
-         && !livingEntity.isInvulnerableTo(serverLevel, level.damageSources().wither())) {
+      if (level instanceof ServerLevel && level.getDifficulty() != Difficulty.PEACEFUL
+         && entity instanceof LivingEntity && !livingEntity.isInvulnerableTo(serverLevel, level.damageSources().wither())) {
          livingEntity.addEffect(this.getBeeInteractionEffect());
       }
    }

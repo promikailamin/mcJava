@@ -205,7 +205,7 @@ public final class NormalNoise {
 
    @Override
    public boolean equals(final Object obj) {
-      return obj == this ? true : obj instanceof NormalNoise noise && this.parameters.equals(noise.parameters);
+      return obj == this ? true : obj instanceof NormalNoise && this.parameters.equals(noise.parameters);
    }
 
    @Override

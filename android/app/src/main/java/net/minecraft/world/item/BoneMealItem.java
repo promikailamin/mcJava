@@ -64,8 +64,9 @@ public class BoneMealItem extends Item {
 
    public static boolean growCrop(final ItemStack itemStack, final Level level, final BlockPos pos) {
       BlockState state = level.getBlockState(pos);
-      if (state.getBlock() instanceof BonemealableBlock block && block.isValidBonemealTarget(level, pos, state, BonemealSource.INTERACTION)) {
-         if (level instanceof ServerLevel serverLevel) {
+      if (state.getBlock() instanceof BonemealableBlock && block.isValidBonemealTarget(level, pos, state, BonemealSource.INTERACTION)) {
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
             if (block.isBonemealSuccess(level, level.getRandom(), pos, state, BonemealSource.INTERACTION)) {
                block.performBonemeal(serverLevel, level.getRandom(), pos, state, BonemealSource.INTERACTION);
             }
@@ -81,7 +82,7 @@ public class BoneMealItem extends Item {
 
    public static boolean growWaterPlant(final ItemStack itemStack, final Level level, final BlockPos pos, final @Nullable Direction clickedFace) {
       if (level.getBlockState(pos).is(Blocks.WATER) && level.getFluidState(pos).isFull()) {
-         if (!(level instanceof ServerLevel serverLevel)) {
+         if (!(level instanceof ServerLevel)) {
             return true;
          } else {
             RandomSource random = level.getRandom();
@@ -144,7 +145,8 @@ public class BoneMealItem extends Item {
 
    public static void addGrowthParticles(final LevelAccessor level, final BlockPos pos, final int count) {
       BlockState blockState = level.getBlockState(pos);
-      if (blockState.getBlock() instanceof BonemealableBlock bonemealableBlock) {
+      if (blockState.getBlock() instanceof BonemealableBlock) {
+          BonemealableBlock bonemealableBlock = (BonemealableBlock) blockState.getBlock();
          BlockPos particlePos = bonemealableBlock.getParticlePos(pos);
          switch (bonemealableBlock.getType()) {
             case NEIGHBOR_SPREADER:

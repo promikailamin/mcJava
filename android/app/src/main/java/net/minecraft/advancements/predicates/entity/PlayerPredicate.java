@@ -75,7 +75,7 @@ public record PlayerPredicate(
 
    @Override
    public boolean matches(final Entity entity, final ServerLevel level, final @Nullable Vec3 position) {
-      if (!(entity instanceof ServerPlayer player)) {
+      if (!(entity instanceof ServerPlayer)) {
          return false;
       } else {
          if (!this.level.matches(player.experienceLevel)) {
@@ -139,9 +139,8 @@ public record PlayerPredicate(
 
          return !this.input.isPresent() || this.input.get().matches(player.getLastClientInput());
       }
-   }
 
-   private record AdvancementCriterionsPredicate(Object2BooleanMap<String> criterions) implements PlayerPredicate.AdvancementPredicate {
+      private record AdvancementCriterionsPredicate(Object2BooleanMap<String> criterions) implements PlayerPredicate.AdvancementPredicate {
       public static final Codec<PlayerPredicate.AdvancementCriterionsPredicate> CODEC = ExtraCodecs.object2BooleanMap(Codec.STRING)
          .xmap(PlayerPredicate.AdvancementCriterionsPredicate::new, PlayerPredicate.AdvancementCriterionsPredicate::criterions);
 
@@ -174,9 +173,11 @@ public record PlayerPredicate(
             PlayerPredicate.AdvancementDonePredicate.CODEC, PlayerPredicate.AdvancementCriterionsPredicate.CODEC
          )
          .xmap(Either::unwrap, predicate -> {
-            if (predicate instanceof PlayerPredicate.AdvancementDonePredicate done) {
+            if (predicate instanceof PlayerPredicate.AdvancementDonePredicate) {
+                PlayerPredicate.AdvancementDonePredicate done = (PlayerPredicate.AdvancementDonePredicate) predicate;
                return Either.left(done);
-            } else if (predicate instanceof PlayerPredicate.AdvancementCriterionsPredicate criterions) {
+            else if (predicate instanceof PlayerPredicate.AdvancementCriterionsPredicate) {
+                PlayerPredicate.AdvancementCriterionsPredicate criterions = (PlayerPredicate.AdvancementCriterionsPredicate) predicate;
                return Either.right(criterions);
             } else {
                throw new UnsupportedOperationException();

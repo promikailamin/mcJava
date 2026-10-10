@@ -58,7 +58,7 @@ public abstract class ContainerOpenersCounter {
    }
 
    private boolean hasContainerOpen(final Entity entity, final BlockPos blockPos) {
-      return entity instanceof ContainerUser containerUser && !containerUser.getLivingEntity().isSpectator()
+      return entity instanceof ContainerUser && !containerUser.getLivingEntity().isSpectator()
          ? containerUser.hasContainerOpen(this, blockPos)
          : false;
    }

@@ -313,7 +313,7 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
 
    @Override
    public boolean canMate(final Animal partner) {
-      return partner != this && partner instanceof Llama llama && this.canParent() && llama.canParent();
+      return partner != this && partner instanceof Llama && this.canParent() && llama.canParent();
    }
 
    public @Nullable Llama getBreedOffspring(final ServerLevel level, final AgeableMob partner) {
@@ -343,7 +343,8 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
       double yd = target.getY(0.3333333333333333) - spit.getY();
       double zd = target.getZ() - this.getZ();
       double yo = Math.sqrt(xd * xd + zd * zd) * 0.2F;
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          Projectile.spawnProjectileUsingShoot(spit, serverLevel, ItemStack.EMPTY, xd, yd + yo, zd, 1.5F, this.rangedAttackUncertainty(serverLevel));
       }
 
@@ -483,7 +484,7 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
 
       @Override
       public boolean canContinueToUse() {
-         if (this.mob instanceof Llama llama && llama.didSpit) {
+         if (this.mob instanceof Llama && llama.didSpit) {
             llama.setDidSpit(false);
             return false;
          } else {

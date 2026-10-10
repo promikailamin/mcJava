@@ -254,12 +254,13 @@ public class TeleportCommand {
             lookAt.perform(source, victim);
          }
 
-         if (!(victim instanceof LivingEntity living && living.isFallFlying())) {
+         if (!(victim instanceof LivingEntity && living.isFallFlying())) {
             victim.setDeltaMovement(victim.getDeltaMovement().multiply(1.0, 0.0, 1.0));
             victim.setOnGround(true);
          }
 
-         if (victim instanceof PathfinderMob mob) {
+         if (victim instanceof PathfinderMob) {
+             PathfinderMob mob = (PathfinderMob) victim;
             mob.getNavigation().stop();
          }
       }

@@ -244,7 +244,7 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
       if (this.hasBodyItem()) {
          if (this.canExplode() && !this.isPrimed()) {
             Entity sourceEntity = source.getDirectEntity();
-            if (source.is(DamageTypeTags.IS_FIRE) || sourceEntity instanceof AbstractArrow projectile && projectile.isOnFire()) {
+            if (source.is(DamageTypeTags.IS_FIRE) || sourceEntity instanceof AbstractArrow && projectile.isOnFire()) {
                this.primeTime(false);
             } else if (source.is(DamageTypeTags.IS_EXPLOSION)) {
                this.primeTime(true);
@@ -297,7 +297,8 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
          if (this.fuse == 0) {
             this.dropLeash();
             this.dead = true;
-            if (this.level() instanceof ServerLevel level) {
+            if (this.level() instanceof ServerLevel) {
+                ServerLevel level = (ServerLevel) this.level();
                if (level.getGameRules().get(GameRules.TNT_EXPLODES)) {
                   Level.ExplosionInteraction explosionInteraction = level.getGameRules().get(GameRules.MOB_GRIEFING)
                      ? Level.ExplosionInteraction.TNT
@@ -324,7 +325,7 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
    }
 
    private void primeWhenOnPoweredPosition() {
-      if (this.level() instanceof ServerLevel level && this.canExplode()) {
+      if (this.level() instanceof ServerLevel && this.canExplode()) {
          BlockPos here = BlockPos.containing(this.position());
          if (level.getBestOwnOrNeighbourSignal(here) != 0) {
             this.primeTime(false);
@@ -335,8 +336,7 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
    public boolean primeTime(final boolean imminent) {
       if (!this.explosionData.isEmpty()
          && this.isAlive()
-         && this.level() instanceof ServerLevel serverLevel
-         && serverLevel.getGameRules().get(GameRules.TNT_EXPLODES)
+         && this.level() instanceof ServerLevel && serverLevel.getGameRules().get(GameRules.TNT_EXPLODES)
          && !this.isPrimed()) {
          int fuse = this.explosionData.get().fuse();
          int fuseTime = imminent ? PrimedTnt.getRandomShortFuse(fuse, this.getRandom()) : fuse;
@@ -453,7 +453,8 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
 
          if (!this.canExplode() || !heldItem.is(Items.FLINT_AND_STEEL) && !heldItem.is(Items.FIRE_CHARGE)) {
             if (heldItem.is(Items.SHEARS) && this.readyForShearing()) {
-               if (this.level() instanceof ServerLevel level) {
+               if (this.level() instanceof ServerLevel) {
+                   ServerLevel level = (ServerLevel) this.level();
                   ItemStack itemStackToShear = this.getItemBySlot(EquipmentSlot.BODY);
                   this.shear(level, SoundSource.PLAYERS, heldItem);
                   this.gameEvent(GameEvent.SHEAR, player);
@@ -473,7 +474,7 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
             } else {
                return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
             }
-         } else if (this.level() instanceof ServerLevel serverLevel && !serverLevel.getGameRules().get(GameRules.TNT_EXPLODES)) {
+         } else if (this.level() instanceof ServerLevel && !serverLevel.getGameRules().get(GameRules.TNT_EXPLODES)) {
             player.sendOverlayMessage(Component.translatable("block.minecraft.tnt.disabled"));
             return InteractionResult.PASS;
          } else {
@@ -502,7 +503,8 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
          }
 
          Vec3 equipmentSpawnOffset = this.getAttachments().getAverage(EntityAttachment.PASSENGER);
-         if (this.level() instanceof ServerLevel serverLevel) {
+         if (this.level() instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) this.level();
             this.spawnAtLocation(serverLevel, this.getItemBySlot(EquipmentSlot.BODY), equipmentSpawnOffset);
          }
       }
@@ -522,7 +524,8 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
    }
 
    private void applyContactDamage(final Entity entity) {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          for (SulfurCubeArchetype.ContactDamage damage : this.contactDamages) {
             Entity damageSource = !damage.attributeToSource() && !(entity instanceof Player) ? null : this;
             entity.hurtServer(serverLevel, new DamageSource(damage.damageType(), damageSource), damage.amount().sample(this.getRandom()));
@@ -988,7 +991,8 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
       @Override
       public void tick() {
          SulfurCube.this.lookAt(this.targetItem, 10.0F, 10.0F);
-         if (SulfurCube.this.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl cubeMobMoveControl) {
+         if (SulfurCube.this.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl) {
+             AbstractCubeMob.CubeMobMoveControl cubeMobMoveControl = (AbstractCubeMob.CubeMobMoveControl) SulfurCube.this.getMoveControl();
             cubeMobMoveControl.setDirection(SulfurCube.this.getYRot(), true);
          }
       }
@@ -1002,7 +1006,8 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
 
       @Override
       protected void stopNavigation() {
-         if (this.mob.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl cubeMobMoveControl) {
+         if (this.mob.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl) {
+             AbstractCubeMob.CubeMobMoveControl cubeMobMoveControl = (AbstractCubeMob.CubeMobMoveControl) this.mob.getMoveControl();
             cubeMobMoveControl.setWantedMovement(0.0);
          }
       }
@@ -1010,7 +1015,8 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
       @Override
       protected void navigateTowards(final Player player) {
          this.mob.lookAt(player, 10.0F, 10.0F);
-         if (this.mob.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl cubeMobMoveControl) {
+         if (this.mob.getMoveControl() instanceof AbstractCubeMob.CubeMobMoveControl) {
+             AbstractCubeMob.CubeMobMoveControl cubeMobMoveControl = (AbstractCubeMob.CubeMobMoveControl) this.mob.getMoveControl();
             cubeMobMoveControl.setDirection(this.mob.getYRot(), true);
          }
       }

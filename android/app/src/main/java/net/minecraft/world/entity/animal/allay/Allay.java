@@ -163,7 +163,7 @@ public class Allay extends PathfinderMob implements InventoryCarrier, VibrationS
    }
 
    private boolean isLikedPlayer(final @Nullable Entity other) {
-      if (!(other instanceof Player player)) {
+      if (!(other instanceof Player)) {
          return false;
       } else {
          Optional<UUID> likedPlayer = this.getBrain().getMemory(MemoryModuleType.LIKED_PLAYER);
@@ -369,7 +369,8 @@ public class Allay extends PathfinderMob implements InventoryCarrier, VibrationS
 
    @Override
    public void updateDynamicGameEventListener(final BiConsumer<DynamicGameEventListener<?>, ServerLevel> action) {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          action.accept(this.dynamicVibrationListener, serverLevel);
          action.accept(this.dynamicJukeboxListener, serverLevel);
       }

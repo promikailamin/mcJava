@@ -152,11 +152,9 @@ public class CreakingHeartBlock extends BaseEntityBlock {
    protected void onExplosionHit(
       final BlockState state, final ServerLevel level, final BlockPos pos, final Explosion explosion, final BiConsumer<ItemStack, BlockPos> onHit
    ) {
-      if (level.getBlockEntity(pos) instanceof CreakingHeartBlockEntity creakingHeartBlockEntity
-         && explosion instanceof ServerExplosion serverExplosion
-         && explosion.getBlockInteraction().shouldAffectBlocklikeEntities()) {
+      if (level.getBlockEntity(pos) instanceof CreakingHeartBlockEntity && explosion instanceof ServerExplosion && explosion.getBlockInteraction().shouldAffectBlocklikeEntities()) {
          creakingHeartBlockEntity.removeProtector(serverExplosion.getDamageSource());
-         if (explosion.getIndirectSourceEntity() instanceof Player player && explosion.getBlockInteraction().shouldAffectBlocklikeEntities()) {
+         if (explosion.getIndirectSourceEntity() instanceof Player && explosion.getBlockInteraction().shouldAffectBlocklikeEntities()) {
             this.tryAwardExperience(player, state, level, pos);
          }
       }
@@ -166,7 +164,8 @@ public class CreakingHeartBlock extends BaseEntityBlock {
 
    @Override
    public BlockState playerWillDestroy(final Level level, final BlockPos pos, final BlockState state, final Player player) {
-      if (level.getBlockEntity(pos) instanceof CreakingHeartBlockEntity creakingHeartBlockEntity) {
+      if (level.getBlockEntity(pos) instanceof CreakingHeartBlockEntity) {
+          CreakingHeartBlockEntity creakingHeartBlockEntity = (CreakingHeartBlockEntity) level.getBlockEntity(pos);
          creakingHeartBlockEntity.removeProtector(player.damageSources().playerAttack(player));
          this.tryAwardExperience(player, state, level, pos);
       }
@@ -175,7 +174,8 @@ public class CreakingHeartBlock extends BaseEntityBlock {
    }
 
    private void tryAwardExperience(final Player player, final BlockState state, final Level level, final BlockPos pos) {
-      if (!player.preventsBlockDrops() && !player.isSpectator() && state.getValue(NATURAL) && level instanceof ServerLevel serverLevel) {
+      if (!player.preventsBlockDrops() && !player.isSpectator() && state.getValue(NATURAL) && level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) !player.preventsBlockDrops() && !player.isSpectator() && state.getValue(NATURAL) && level;
          this.popExperience(serverLevel, pos, level.getRandom().nextIntBetweenInclusive(20, 24));
       }
    }
@@ -190,7 +190,7 @@ public class CreakingHeartBlock extends BaseEntityBlock {
       if (state.getValue(STATE) == CreakingHeartState.UPROOTED) {
          return 0;
       } else {
-         return level.getBlockEntity(pos) instanceof CreakingHeartBlockEntity creakingHeartBlockEntity ? creakingHeartBlockEntity.getAnalogOutputSignal() : 0;
+         return level.getBlockEntity(pos) instanceof CreakingHeartBlockEntity ? getAnalogOutputSignal() : 0;
       }
    }
 }

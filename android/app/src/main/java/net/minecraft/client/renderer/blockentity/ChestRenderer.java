@@ -71,7 +71,8 @@ public class ChestRenderer<T extends BlockEntity & LidBlockEntity> implements Bl
       state.facing = blockState.getValue(ChestBlock.FACING);
       state.material = getChestMaterial(blockEntity, this.xmasTextures);
       DoubleBlockCombiner.NeighborCombineResult<? extends ChestBlockEntity> combineResult;
-      if (hasLevel && blockState.getBlock() instanceof ChestBlock chestBlock) {
+      if (hasLevel && blockState.getBlock() instanceof ChestBlock) {
+          ChestBlock chestBlock = (ChestBlock) hasLevel && blockState.getBlock();
          combineResult = chestBlock.combine(blockState, blockEntity.getLevel(), blockEntity.getBlockPos(), true);
       } else {
          combineResult = DoubleBlockCombiner.Combiner::acceptNone;
@@ -103,7 +104,8 @@ public class ChestRenderer<T extends BlockEntity & LidBlockEntity> implements Bl
    }
 
    private static ChestRenderState.ChestMaterialType getChestMaterial(final BlockEntity entity, final boolean xmasTextures) {
-      if (entity.getBlockState().getBlock() instanceof CopperChestBlock copperChestBlock) {
+      if (entity.getBlockState().getBlock() instanceof CopperChestBlock) {
+          CopperChestBlock copperChestBlock = (CopperChestBlock) entity.getBlockState().getBlock();
          return switch (copperChestBlock.getState()) {
             case UNAFFECTED -> ChestRenderState.ChestMaterialType.COPPER_UNAFFECTED;
             case EXPOSED -> ChestRenderState.ChestMaterialType.COPPER_EXPOSED;

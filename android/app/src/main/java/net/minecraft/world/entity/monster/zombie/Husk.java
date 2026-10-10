@@ -66,7 +66,8 @@ public class Husk extends Zombie {
    @Override
    public boolean doHurtTarget(final ServerLevel level, final Entity target) {
       boolean result = super.doHurtTarget(level, target);
-      if (result && this.getMainHandItem().isEmpty() && target instanceof LivingEntity livingEntity) {
+      if (result && this.getMainHandItem().isEmpty() && target instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) result && this.getMainHandItem().isEmpty() && target;
          float difficulty = level.getCurrentDifficultyAt(this.blockPosition()).getEffectiveDifficulty();
          livingEntity.addEffect(new MobEffectInstance(MobEffects.HUNGER, 140 * (int)difficulty), this);
       }
@@ -105,7 +106,7 @@ public class Husk extends Zombie {
          ((Husk.HuskGroupData)groupData).triedToSpawnCamelHusk = spawnReason != EntitySpawnReason.NATURAL;
       }
 
-      if (groupData instanceof Husk.HuskGroupData huskGroupData && !huskGroupData.triedToSpawnCamelHusk) {
+      if (groupData instanceof Husk.HuskGroupData && !huskGroupData.triedToSpawnCamelHusk) {
          BlockPos pos = this.blockPosition();
          if (level.noCollision(EntityTypes.CAMEL_HUSK.getSpawnAABB(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5))) {
             huskGroupData.triedToSpawnCamelHusk = true;

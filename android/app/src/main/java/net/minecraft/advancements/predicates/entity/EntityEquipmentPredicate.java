@@ -60,7 +60,8 @@ public record EntityEquipmentPredicate(
    }
 
    public boolean matches(final @Nullable Entity entity) {
-      if (entity instanceof LivingEntity livingEntity) {
+      if (entity instanceof LivingEntity) {
+          LivingEntity livingEntity = (LivingEntity) entity;
          if (this.head.isPresent() && !this.head.get().test(livingEntity.getItemBySlot(EquipmentSlot.HEAD))) {
             return false;
          } else if (this.chest.isPresent() && !this.chest.get().test(livingEntity.getItemBySlot(EquipmentSlot.CHEST))) {

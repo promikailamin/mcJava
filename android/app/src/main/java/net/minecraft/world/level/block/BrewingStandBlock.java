@@ -47,11 +47,10 @@ public class BrewingStandBlock extends BaseEntityBlock {
 
    @Override
    public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(final Level level, final BlockState blockState, final BlockEntityType<T> type) {
-      return level instanceof ServerLevel serverLevel
-         ? createTickerHelper(
+      return level instanceof ServerLevel ? createTickerHelper(
             type, BlockEntityTypes.BREWING_STAND, (var1, pos, state, entity) -> BrewingStandBlockEntity.serverTick(serverLevel, pos, state, entity)
          )
-         : null;
+          : null;
    }
 
    @Override
@@ -63,7 +62,8 @@ public class BrewingStandBlock extends BaseEntityBlock {
    protected InteractionResult useWithoutItem(
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
-      if (!level.isClientSide() && level.getBlockEntity(pos) instanceof BrewingStandBlockEntity brewingStandBlockEntity) {
+      if (!level.isClientSide() && level.getBlockEntity(pos) instanceof BrewingStandBlockEntity) {
+          BrewingStandBlockEntity brewingStandBlockEntity = (BrewingStandBlockEntity) !level.isClientSide() && level.getBlockEntity(pos);
          player.openMenu(brewingStandBlockEntity);
          player.awardStat(Stats.INTERACT_WITH_BREWINGSTAND);
       }

@@ -77,7 +77,8 @@ public class CraftingMenu extends AbstractCraftingMenu {
    public void slotsChanged(final Container container) {
       if (!this.placingRecipe) {
          this.access.execute((level, pos) -> {
-            if (level instanceof ServerLevel serverLevel) {
+            if (level instanceof ServerLevel) {
+                ServerLevel serverLevel = (ServerLevel) level;
                slotChangedCraftingGrid(this, serverLevel, this.player, this.craftSlots, this.resultSlots, null);
             }
          });

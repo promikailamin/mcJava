@@ -32,14 +32,16 @@ public class ChestBlockEntity extends RandomizableContainerBlockEntity implement
    private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
       @Override
       protected void onOpen(final Level level, final BlockPos pos, final BlockState blockState) {
-         if (blockState.getBlock() instanceof ChestBlock chestBlock) {
+         if (blockState.getBlock() instanceof ChestBlock) {
+             ChestBlock chestBlock = (ChestBlock) blockState.getBlock();
             ChestBlockEntity.playSound(level, pos, blockState, chestBlock.getOpenChestSound());
          }
       }
 
       @Override
       protected void onClose(final Level level, final BlockPos pos, final BlockState blockState) {
-         if (blockState.getBlock() instanceof ChestBlock chestBlock) {
+         if (blockState.getBlock() instanceof ChestBlock) {
+             ChestBlock chestBlock = (ChestBlock) blockState.getBlock();
             ChestBlockEntity.playSound(level, pos, blockState, chestBlock.getCloseChestSound());
          }
       }
@@ -57,7 +59,7 @@ public class ChestBlockEntity extends RandomizableContainerBlockEntity implement
 
          Container container = ((ChestMenu)player.containerMenu).getContainer();
          return container == ChestBlockEntity.this
-            || container instanceof CompoundContainer compoundContainer && compoundContainer.contains(ChestBlockEntity.this);
+            || container instanceof CompoundContainer && compoundContainer.contains(ChestBlockEntity.this);
       }
    };
    private final ChestLidController chestLidController = new ChestLidController();
@@ -166,9 +168,8 @@ public class ChestBlockEntity extends RandomizableContainerBlockEntity implement
 
    public static int getOpenCount(final BlockGetter level, final BlockPos pos) {
       BlockState state = level.getBlockState(pos);
-      return state.hasBlockEntity() && level.getBlockEntity(pos) instanceof ChestBlockEntity chestBlockEntity
-         ? chestBlockEntity.openersCounter.getOpenerCount()
-         : 0;
+      return state.hasBlockEntity() && level.getBlockEntity(pos) instanceof ChestBlockEntity ? ((ChestBlockEntity) level.getBlockEntity(pos)).openersCounter.getOpenerCount()
+          : 0;
    }
 
    public static void swapContents(final ChestBlockEntity one, final ChestBlockEntity two) {

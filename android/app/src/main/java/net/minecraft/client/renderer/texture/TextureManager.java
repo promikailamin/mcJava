@@ -69,7 +69,8 @@ public class TextureManager implements PreparableReloadListener, AutoCloseable {
             this.safeClose(location, prev);
          }
 
-         if (texture instanceof TickableTexture tickableTexture) {
+         if (texture instanceof TickableTexture) {
+             TickableTexture tickableTexture = (TickableTexture) texture;
             this.tickableTextures.add(tickableTexture);
          }
       }
@@ -126,7 +127,8 @@ public class TextureManager implements PreparableReloadListener, AutoCloseable {
       ResourceManager manager = currentReload.resourceManager();
       List<TextureManager.PendingReload> reloads = new ArrayList<>();
       this.byPath.forEach((var3, texture) -> {
-         if (texture instanceof ReloadableTexture reloadableTexture) {
+         if (texture instanceof ReloadableTexture) {
+             ReloadableTexture reloadableTexture = (ReloadableTexture) texture;
             reloads.add(scheduleLoad(manager, reloadableTexture, taskExecutor));
          }
       });
@@ -148,7 +150,8 @@ public class TextureManager implements PreparableReloadListener, AutoCloseable {
       }
 
       this.byPath.forEach((location, texture) -> {
-         if (texture instanceof Dumpable dumpable) {
+         if (texture instanceof Dumpable) {
+             Dumpable dumpable = (Dumpable) texture;
             try {
                dumpable.dumpContents(location, targetDir);
             } catch (Exception e) {

@@ -77,7 +77,7 @@ public class BellBlock extends BaseEntityBlock {
 
    @Override
    protected void onProjectileHit(final Level level, final BlockState state, final BlockHitResult hitResult, final Projectile projectile) {
-      Player playerOwner = projectile.getOwner() instanceof Player player ? player : null;
+      Player playerOwner = projectile.getOwner() instanceof Player ? player  : null;
       this.onHit(level, state, hitResult, playerOwner, true);
    }
 
@@ -127,7 +127,8 @@ public class BellBlock extends BaseEntityBlock {
    }
 
    public boolean attemptToRing(final @Nullable Entity ringingEntity, final Level level, final BlockPos pos, @Nullable Direction direction) {
-      if (!level.isClientSide() && level.getBlockEntity(pos) instanceof BellBlockEntity bellBlockEntity) {
+      if (!level.isClientSide() && level.getBlockEntity(pos) instanceof BellBlockEntity) {
+          BellBlockEntity bellBlockEntity = (BellBlockEntity) !level.isClientSide() && level.getBlockEntity(pos);
          if (direction == null) {
             direction = level.getBlockState(pos).getValue(FACING);
          }

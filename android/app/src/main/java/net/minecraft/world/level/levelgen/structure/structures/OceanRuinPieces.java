@@ -316,7 +316,8 @@ public class OceanRuinPieces {
       ) {
          if ("chest".equals(markerId)) {
             level.setBlock(position, Blocks.CHEST.defaultBlockState().setValue(ChestBlock.WATERLOGGED, level.getFluidState(position).is(FluidTags.WATER)), 2);
-            if (level.getBlockEntity(position) instanceof ChestBlockEntity chestBlockEntity) {
+            if (level.getBlockEntity(position) instanceof ChestBlockEntity) {
+                ChestBlockEntity chestBlockEntity = (ChestBlockEntity) level.getBlockEntity(position);
                chestBlockEntity.setLootTable(this.isLarge ? BuiltInLootTables.UNDERWATER_RUIN_BIG : BuiltInLootTables.UNDERWATER_RUIN_SMALL, random.nextLong());
             }
          } else if ("drowned".equals(markerId)) {

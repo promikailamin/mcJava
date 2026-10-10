@@ -233,7 +233,7 @@ public final class PatchedDataComponentMap implements DataComponentMap {
    public boolean equals(final Object obj) {
       return this == obj
          ? true
-         : obj instanceof PatchedDataComponentMap otherMap && this.prototype.equals(otherMap.prototype) && this.patch.equals(otherMap.patch);
+         : obj instanceof PatchedDataComponentMap && this.prototype.equals(otherMap.prototype) && this.patch.equals(otherMap.patch);
    }
 
    @Override

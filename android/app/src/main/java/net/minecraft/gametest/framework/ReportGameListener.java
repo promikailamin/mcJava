@@ -99,7 +99,8 @@ public class ReportGameListener implements GameTestListener {
 
    protected static void reportFailure(final GameTestInfo testInfo, final Throwable error) {
       Component description;
-      if (error instanceof GameTestAssertException testException) {
+      if (error instanceof GameTestAssertException) {
+          GameTestAssertException testException = (GameTestAssertException) error;
          description = testException.getDescription();
       } else {
          description = Component.literal(Util.describeError(error));
@@ -114,7 +115,8 @@ public class ReportGameListener implements GameTestListener {
       String failureMessage = (testInfo.isRequired() ? "" : "(optional) ") + testInfo.id() + " failed! " + errorMessage;
       say(testInfo.getLevel(), testInfo.isRequired() ? ChatFormatting.RED : ChatFormatting.YELLOW, failureMessage);
       Throwable rootCause = (Throwable)MoreObjects.firstNonNull(ExceptionUtils.getRootCause(error), error);
-      if (rootCause instanceof GameTestAssertPosException assertError) {
+      if (rootCause instanceof GameTestAssertPosException) {
+          GameTestAssertPosException assertError = (GameTestAssertPosException) rootCause;
          testInfo.getTestInstanceBlockEntity().markError(assertError.getAbsolutePos(), assertError.getMessageToShowAtBlock());
       }
 

@@ -175,7 +175,8 @@ public class LecternBlockEntity extends BlockEntity implements Clearable, MenuPr
    }
 
    private ItemStack resolveBook(final ItemStack book, final @Nullable Player player) {
-      if (this.level instanceof ServerLevel serverLevel) {
+      if (this.level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level;
          ResolutionContext context = ResolutionContext.create(this.createCommandSourceStack(player, serverLevel));
          WrittenBookContent.resolveForItem(book, context, this.level.registryAccess());
       }

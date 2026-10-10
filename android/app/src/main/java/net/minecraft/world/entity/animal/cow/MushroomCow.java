@@ -124,7 +124,8 @@ public class MushroomCow extends AbstractCow implements Shearable {
          this.playSound(milkSound, 1.0F, 1.0F);
          return InteractionResult.SUCCESS;
       } else if (itemStack.is(Items.SHEARS) && this.readyForShearing()) {
-         if (this.level() instanceof ServerLevel level) {
+         if (this.level() instanceof ServerLevel) {
+             ServerLevel level = (ServerLevel) this.level();
             this.shear(level, SoundSource.PLAYERS, itemStack);
             this.gameEvent(GameEvent.SHEAR, player);
             itemStack.hurtAndBreak(1, player, hand.asEquipmentSlot());
@@ -138,7 +139,8 @@ public class MushroomCow extends AbstractCow implements Shearable {
          }
 
          if (this.stewEffects != null) {
-            if (this.level() instanceof ServerLevel level) {
+            if (this.level() instanceof ServerLevel) {
+                ServerLevel level = (ServerLevel) this.level();
                level.sendParticles(
                   ParticleTypes.SMOKE,
                   this.getX(),
@@ -156,7 +158,8 @@ public class MushroomCow extends AbstractCow implements Shearable {
             }
          } else {
             itemStack.consume(1, player);
-            if (this.level() instanceof ServerLevel level) {
+            if (this.level() instanceof ServerLevel) {
+                ServerLevel level = (ServerLevel) this.level();
                SpellParticleOption particle = SpellParticleOption.create(ParticleTypes.EFFECT, -1, 1.0F);
                level.sendParticles(
                   particle,

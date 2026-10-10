@@ -228,7 +228,8 @@ public class Creeper extends Monster {
    }
 
    private void explodeCreeper() {
-      if (this.level() instanceof ServerLevel level) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.level();
          float explosionMultiplier = this.isPowered() ? 2.0F : 1.0F;
          this.dead = true;
          level.explode(this, this.getX(), this.getY(), this.getZ(), this.explosionRadius * explosionMultiplier, Level.ExplosionInteraction.MOB);

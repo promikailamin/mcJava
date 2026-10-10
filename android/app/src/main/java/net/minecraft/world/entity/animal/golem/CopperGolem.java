@@ -217,7 +217,8 @@ public class CopperGolem extends AbstractGolem implements ContainerUser, Shearab
 
       Level level = this.level();
       if (itemStack.is(Items.SHEARS) && this.readyForShearing()) {
-         if (level instanceof ServerLevel serverLevel) {
+         if (level instanceof ServerLevel) {
+             ServerLevel serverLevel = (ServerLevel) level;
             this.shear(serverLevel, SoundSource.PLAYERS, itemStack);
             this.gameEvent(GameEvent.SHEAR, player);
             itemStack.hurtAndBreak(1, player, hand);
@@ -298,7 +299,8 @@ public class CopperGolem extends AbstractGolem implements ContainerUser, Shearab
             .setValue(CopperGolemStatueBlock.POSE, CopperGolemStatueBlock.Pose.values()[this.random.nextInt(0, CopperGolemStatueBlock.Pose.values().length)])
             .setValue(CopperGolemStatueBlock.FACING, Direction.fromYRot(this.getYRot()))
       );
-      if (level.getBlockEntity(pos) instanceof CopperGolemStatueBlockEntity copperGolemStatueBlockEntity) {
+      if (level.getBlockEntity(pos) instanceof CopperGolemStatueBlockEntity) {
+          CopperGolemStatueBlockEntity copperGolemStatueBlockEntity = (CopperGolemStatueBlockEntity) level.getBlockEntity(pos);
          copperGolemStatueBlockEntity.createStatue(this);
          this.dropPreservedEquipment(level);
          this.discard();

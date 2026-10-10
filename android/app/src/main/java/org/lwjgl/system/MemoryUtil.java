@@ -178,9 +178,8 @@ public final class MemoryUtil {
         }
         long base = NEXT_HANDLE.incrementAndGet();
         int len = Math.max(1, buffer.capacity() * 4);
-        ByteBuffer parent = buffer instanceof ByteBuffer bb
-                ? bb.duplicate().order(ByteOrder.nativeOrder())
-                : ByteBuffer.allocateDirect(len).order(ByteOrder.nativeOrder());
+        ByteBuffer parent = buffer instanceof ByteBuffer ? ((ByteBuffer) buffer).duplicate().order(ByteOrder.nativeOrder())
+                 : ByteBuffer.allocateDirect(len).order(ByteOrder.nativeOrder());
         REGIONS.put(base, new Region(base, parent, 0, len));
         HANDLED.put(buffer, base);
         return base;
@@ -411,9 +410,18 @@ public final class MemoryUtil {
     // ---------------------------------------------------------------- misc
 
     public static long memAddressSafe(Object o) {
-        if (o instanceof ByteBuffer bb) return memAddress(bb);
-        if (o instanceof Pointer p) return p.address();
-        if (o instanceof Long l) return l;
+        if (o instanceof ByteBuffer) {
+            ByteBuffer bb = (ByteBuffer) o;
+            return memAddress((ByteBuffer) o);
+        }
+        if (o instanceof Pointer) {
+            Pointer p = (Pointer) o;
+            return (Pointer) o.address();
+        }
+        if (o instanceof Long) {
+            Long l = (Long) o;
+            return (Long) o;
+        }
         return 0L;
     }
 
@@ -422,7 +430,7 @@ public final class MemoryUtil {
     }
 
     public static void checkBufferOverflow(Object buffer, long count) {
-        if (buffer instanceof ByteBuffer bb && count > bb.capacity()) {
+        if (buffer instanceof ByteBuffer && count > bb.capacity()) {
             throw new IllegalArgumentException("buffer size mismatch");
         }
     }

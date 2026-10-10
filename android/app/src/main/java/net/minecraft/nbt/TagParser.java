@@ -23,9 +23,8 @@ public class TagParser<T> {
          s -> {
             try {
                Tag result = NBT_OPS_PARSER.parseFully(s);
-               return result instanceof CompoundTag compoundTag
-                  ? DataResult.success(compoundTag, Lifecycle.stable())
-                  : DataResult.error(() -> "Expected compound tag, got " + result);
+               return result instanceof CompoundTag ? DataResult.success(compoundTag, Lifecycle.stable())
+                   : DataResult.error(() -> "Expected compound tag, got " + result);
             } catch (CommandSyntaxException e) {
                return DataResult.error(e::getMessage);
             }
@@ -50,7 +49,8 @@ public class TagParser<T> {
    }
 
    private static CompoundTag castToCompoundOrThrow(final StringReader reader, final Tag result) throws CommandSyntaxException {
-      if (result instanceof CompoundTag compoundTag) {
+      if (result instanceof CompoundTag) {
+          CompoundTag compoundTag = (CompoundTag) result;
          return compoundTag;
       } else {
          throw ERROR_EXPECTED_COMPOUND.createWithContext(reader);

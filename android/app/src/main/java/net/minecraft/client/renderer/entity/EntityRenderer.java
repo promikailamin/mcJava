@@ -76,7 +76,8 @@ public abstract class EntityRenderer<T extends Entity, S extends EntityRenderSta
          return true;
       }
 
-      if (entity instanceof Leashable leashable) {
+      if (entity instanceof Leashable) {
+          Leashable leashable = (Leashable) entity;
          Entity leashHolder = leashable.getLeashHolder();
          if (leashHolder != null) {
             AABB leasherBox = this.entityRenderDispatcher.getRenderer(leashHolder).getBoundingBoxForCulling(leashHolder, partialTicks);
@@ -169,9 +170,7 @@ public abstract class EntityRenderer<T extends Entity, S extends EntityRenderSta
       state.boundingBoxHeight = entity.getBbHeight();
       state.eyeHeight = entity.getEyeHeight();
       if (entity.isPassenger()
-         && entity.getVehicle() instanceof AbstractMinecart minecart
-         && minecart.getBehavior() instanceof NewMinecartBehavior behavior
-         && behavior.cartHasPosRotLerp()) {
+         && entity.getVehicle() instanceof AbstractMinecart && minecart.getBehavior() instanceof NewMinecartBehavior && behavior.cartHasPosRotLerp()) {
          double cartLerpX = Mth.lerp(partialTicks, minecart.xOld, minecart.getX());
          double cartLerpY = Mth.lerp(partialTicks, minecart.yOld, minecart.getY());
          double cartLerpZ = Mth.lerp(partialTicks, minecart.zOld, minecart.getZ());
@@ -183,7 +182,7 @@ public abstract class EntityRenderer<T extends Entity, S extends EntityRenderSta
       this.extractNameTags(entity, state, partialTicks);
       state.isDiscrete = entity.isDiscrete();
       Level level = entity.level();
-      if (entity instanceof Leashable leashable && leashable.getLeashHolder() != null) {
+      if (entity instanceof Leashable && leashable.getLeashHolder() != null) {
          Entity roper = leashable.getLeashHolder();
          float entityYRot = entity.getPreciseBodyRotation(partialTicks) * (float) (Math.PI / 180.0);
          Vec3 attachOffset = leashable.getLeashOffset(partialTicks);

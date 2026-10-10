@@ -523,7 +523,8 @@ public class LevelEventHandler {
             break;
          case 3008:
             BlockState blockStateForBrushing = Block.stateById(data);
-            if (blockStateForBrushing.getBlock() instanceof BrushableBlock brushableBlock) {
+            if (blockStateForBrushing.getBlock() instanceof BrushableBlock) {
+                BrushableBlock brushableBlock = (BrushableBlock) blockStateForBrushing.getBlock();
                this.level.playLocalSound(pos, brushableBlock.getBrushCompletedSound(), SoundSource.PLAYERS, 1.0F, 1.0F, false);
             }
 
@@ -557,7 +558,8 @@ public class LevelEventHandler {
             TrialSpawner.addEjectItemParticles(this.level, pos, random);
             break;
          case 3015:
-            if (this.level.getBlockEntity(pos) instanceof VaultBlockEntity entity) {
+            if (this.level.getBlockEntity(pos) instanceof VaultBlockEntity) {
+                VaultBlockEntity entity = (VaultBlockEntity) this.level.getBlockEntity(pos);
                VaultBlockEntity.Client.emitActivationParticles(
                   this.level,
                   entity.getBlockPos(),

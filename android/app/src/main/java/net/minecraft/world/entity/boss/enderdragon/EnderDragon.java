@@ -164,7 +164,8 @@ public class EnderDragon extends Mob implements Enemy {
          }
       }
 
-      if (this.dragonFight == null && this.level() instanceof ServerLevel serverLevel) {
+      if (this.dragonFight == null && this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.dragonFight == null && this.level();
          EnderDragonFight maybeOurFight = serverLevel.getDragonFight();
          if (maybeOurFight != null && this.getUUID().equals(maybeOurFight.dragonUUID())) {
             this.dragonFight = maybeOurFight;
@@ -195,7 +196,8 @@ public class EnderDragon extends Mob implements Enemy {
             this.flapTime = 0.5F;
          } else {
             this.flightHistory.record(this.getY(), this.getYRot());
-            if (this.level() instanceof ServerLevel level) {
+            if (this.level() instanceof ServerLevel) {
+                ServerLevel level = (ServerLevel) this.level();
                DragonPhaseInstance currentPhase = this.phaseManager.getCurrentPhase();
                currentPhase.doServerTick(level);
                if (this.phaseManager.getCurrentPhase() != currentPhase) {
@@ -267,7 +269,7 @@ public class EnderDragon extends Mob implements Enemy {
             this.tickPart(this.body, ss1 * 0.5F, 0.0, -cc1 * 0.5F);
             this.tickPart(this.wing1, cc1 * 4.5F, 2.0, ss1 * 4.5F);
             this.tickPart(this.wing2, cc1 * -4.5F, 2.0, ss1 * -4.5F);
-            if (this.level() instanceof ServerLevel serverLevel && !this.wasHurtRecently()) {
+            if (this.level() instanceof ServerLevel && !this.wasHurtRecently()) {
                this.knockBack(
                   serverLevel,
                   serverLevel.getEntities(
@@ -314,7 +316,8 @@ public class EnderDragon extends Mob implements Enemy {
                this.tickPart(part, -(ss1 * 1.5F + ss * dd) * ccTilt, p0.y() - p1.y() - (dd + 1.5F) * ssTilt + 1.5, (cc1 * 1.5F + cc * dd) * ccTilt);
             }
 
-            if (this.level() instanceof ServerLevel level) {
+            if (this.level() instanceof ServerLevel) {
+                ServerLevel level = (ServerLevel) this.level();
                this.inWall = this.checkWalls(level, this.head.getBoundingBox())
                   | this.checkWalls(level, this.neck.getBoundingBox())
                   | this.checkWalls(level, this.body.getBoundingBox());
@@ -380,7 +383,8 @@ public class EnderDragon extends Mob implements Enemy {
       double zm = (this.body.getBoundingBox().minZ + this.body.getBoundingBox().maxZ) / 2.0;
 
       for (Entity entity : entities) {
-         if (entity instanceof LivingEntity livingTarget) {
+         if (entity instanceof LivingEntity) {
+             LivingEntity livingTarget = (LivingEntity) entity;
             double xd = entity.getX() - xm;
             double zd = entity.getZ() - zm;
             double dd = Math.max(xd * xd + zd * zd, 0.1);
@@ -526,7 +530,8 @@ public class EnderDragon extends Mob implements Enemy {
          xpCount = 12000;
       }
 
-      if (this.level() instanceof ServerLevel level) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.level();
          if (this.dragonDeathTime > 150 && this.dragonDeathTime % 5 == 0 && level.getGameRules().get(GameRules.MOB_DROPS)) {
             ExperienceOrb.award(level, this.position(), Mth.floor(xpCount * 0.08F));
          }
@@ -544,7 +549,8 @@ public class EnderDragon extends Mob implements Enemy {
          dragonPart.setPos(dragonPart.position().add(deathMove));
       }
 
-      if (this.dragonDeathTime >= 200 && this.level() instanceof ServerLevel level) {
+      if (this.dragonDeathTime >= 200 && this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.dragonDeathTime >= 200 && this.level();
          if (level.getGameRules().get(GameRules.MOB_DROPS)) {
             ExperienceOrb.award(level, this.position(), Mth.floor(xpCount * 0.2F));
          }
@@ -809,7 +815,8 @@ public class EnderDragon extends Mob implements Enemy {
 
    public void onCrystalDestroyed(final ServerLevel level, final EndCrystal crystal, final BlockPos pos, final DamageSource source) {
       Player player;
-      if (source.getEntity() instanceof Player playerSource) {
+      if (source.getEntity() instanceof Player) {
+          Player playerSource = (Player) source.getEntity();
          player = playerSource;
       } else {
          player = level.getNearestPlayer(CRYSTAL_DESTROY_TARGETING, pos.getX(), pos.getY(), pos.getZ());

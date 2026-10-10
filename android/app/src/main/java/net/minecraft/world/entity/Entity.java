@@ -430,7 +430,7 @@ public abstract class Entity
 
    @Override
    public boolean equals(final Object obj) {
-      return obj instanceof Entity entity ? entity.getId() == this.getId() : false;
+      return obj instanceof Entity ? ((Entity) obj).getId() == this.getId()  : false;
    }
 
    @Override
@@ -555,7 +555,8 @@ public abstract class Entity
       this.wasEyeInWater = this.isEyeInFluid(FluidTags.WATER);
       this.updateFluidInteraction();
       this.updateSwimming();
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          if (this.remainingFireTicks > 0) {
             if (this.fireImmune()) {
                this.clearFire();
@@ -581,7 +582,7 @@ public abstract class Entity
       }
 
       this.firstTick = false;
-      if (this.level() instanceof ServerLevel serverLevel && this instanceof Leashable) {
+      if (this.level() instanceof ServerLevel && this instanceof Leashable) {
          Leashable.tickLeash(serverLevel, (Entity & Leashable)this);
       }
 
@@ -637,8 +638,7 @@ public abstract class Entity
 
    public void lavaHurt() {
       if (!this.fireImmune()) {
-         if (this.level() instanceof ServerLevel serverLevel
-            && this.hurtServer(serverLevel, this.damageSources().lava(), 4.0F)
+         if (this.level() instanceof ServerLevel && this.hurtServer(serverLevel, this.damageSources().lava(), 4.0F)
             && this.shouldPlayLavaHurtSound()
             && !this.isSilent()) {
             serverLevel.playSound(
@@ -1359,8 +1359,7 @@ public abstract class Entity
    ) {
       AABB deflatedBoundingBoxAtTarget = this.makeBoundingBox(to).deflate(1.0E-5F);
       boolean movedFar = from.distanceToSqr(to) > Mth.square(0.9999900000002526);
-      boolean debugEntityBlockIntersections = this.level instanceof ServerLevel serverLevel
-         && serverLevel.getServer().debugSubscribers().hasAnySubscriberFor(DebugSubscriptions.ENTITY_BLOCK_INTERSECTIONS);
+      boolean debugEntityBlockIntersections = this.level instanceof ServerLevel && serverLevel.getServer().debugSubscribers().hasAnySubscriberFor(DebugSubscriptions.ENTITY_BLOCK_INTERSECTIONS);
       AtomicInteger iterations = new AtomicInteger();
       BlockGetter.forEachBlockIntersectedBetween(
          from,
@@ -1971,14 +1970,15 @@ public abstract class Entity
 
    @Deprecated
    public final void hurt(final DamageSource source, final float damage) {
-      if (this.level instanceof ServerLevel serverLevel) {
+      if (this.level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level;
          this.hurtServer(serverLevel, source, damage);
       }
    }
 
    @Deprecated
    public final boolean hurtOrSimulate(final DamageSource source, final float damage) {
-      return this.level instanceof ServerLevel serverLevel ? this.hurtServer(serverLevel, source, damage) : this.hurtClient(source);
+      return this.level instanceof ServerLevel ? this.hurtServer(serverLevel, source, damage)  : this.hurtClient(source);
    }
 
    public abstract boolean hurtServer(ServerLevel level, DamageSource source, float damage);
@@ -2079,7 +2079,8 @@ public abstract class Entity
    }
 
    public void awardKillScore(final Entity victim, final DamageSource killingBlow) {
-      if (victim instanceof ServerPlayer serverPlayer) {
+      if (victim instanceof ServerPlayer) {
+          ServerPlayer serverPlayer = (ServerPlayer) victim;
          CriteriaTriggers.ENTITY_KILLED_PLAYER.trigger(serverPlayer, this, killingBlow);
       }
    }
@@ -2334,10 +2335,9 @@ public abstract class Entity
    public InteractionResult interact(final Player player, final InteractionHand hand, final Vec3 location) {
       if (!this.level().isClientSide()
          && player.isSecondaryUseActive()
-         && this instanceof Leashable leashable
-         && leashable.canBeLeashed()
+         && this instanceof Leashable && leashable.canBeLeashed()
          && this.isAlive()
-         && !(this instanceof LivingEntity le && le.isBaby())) {
+         && !(this instanceof LivingEntity && le.isBaby())) {
          List<Leashable> mobsToLeash = Leashable.leashableInArea(this, l -> l.getLeashHolder() == player);
          if (!mobsToLeash.isEmpty()) {
             boolean anyLeashed = false;
@@ -2361,14 +2361,14 @@ public abstract class Entity
       if (heldItem.is(Items.SHEARS) && this.shearOffAllLeashConnections(player)) {
          heldItem.hurtAndBreak(1, player, hand);
          return InteractionResult.SUCCESS;
-      } else if (this instanceof Mob target
-         && heldItem.is(Items.SHEARS)
+      } else if (this instanceof Mob && heldItem.is(Items.SHEARS)
          && target.canShearEquipment(player)
          && !player.isSecondaryUseActive()
          && target.attemptToShearEquipment(player, hand, heldItem)) {
          return InteractionResult.SUCCESS;
       } else {
-         if (this.isAlive() && this instanceof Leashable leashable) {
+         if (this.isAlive() && this instanceof Leashable) {
+             Leashable leashable = (Leashable) this.isAlive() && this;
             if (leashable.getLeashHolder() == player) {
                if (!this.level().isClientSide()) {
                   if (player.hasInfiniteMaterials()) {
@@ -2409,7 +2409,8 @@ public abstract class Entity
 
    public boolean shearOffAllLeashConnections(final @Nullable Player player) {
       boolean dropped = this.dropAllLeashConnections(player);
-      if (dropped && this.level() instanceof ServerLevel serverLevel) {
+      if (dropped && this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) dropped && this.level();
          serverLevel.playSound(null, this.blockPosition(), SoundEvents.SHEARS_SNIP, player != null ? player.getSoundSource() : this.getSoundSource());
       }
 
@@ -2419,7 +2420,7 @@ public abstract class Entity
    public boolean dropAllLeashConnections(final @Nullable Player player) {
       List<Leashable> leashables = Leashable.leashableLeashedTo(this);
       boolean dropped = !leashables.isEmpty();
-      if (this instanceof Leashable leashableThis && leashableThis.isLeashed()) {
+      if (this instanceof Leashable && leashableThis.isLeashed()) {
          leashableThis.dropLeash();
          dropped = true;
       }
@@ -2673,7 +2674,7 @@ public abstract class Entity
    }
 
    public Vec3 getHandHoldingItemAngle(final Item item) {
-      if (!(this instanceof Player player)) {
+      if (!(this instanceof Player)) {
          return Vec3.ZERO;
       } else {
          boolean itemOnlyInOffhand = player.getOffhandItem().is(item) && !player.getMainHandItem().is(item);
@@ -2704,7 +2705,8 @@ public abstract class Entity
    }
 
    protected void handlePortal() {
-      if (this.level() instanceof ServerLevel level) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel level = (ServerLevel) this.level();
          this.processPortalCooldown();
          if (this.portalProcess != null) {
             if (this.portalProcess.processPortalTeleportation(level, this, this.canUsePortal(false))) {
@@ -2959,7 +2961,8 @@ public abstract class Entity
    }
 
    protected static void sendBubbleColumnParticles(final Level level, final BlockPos pos) {
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          RandomSource random = level.getRandom();
 
          for (int i = 0; i < 2; i++) {
@@ -3161,7 +3164,7 @@ public abstract class Entity
    }
 
    public @Nullable Entity teleport(final TeleportTransition transition) {
-      if (this.level() instanceof ServerLevel serverLevel && !this.isRemoved()) {
+      if (this.level() instanceof ServerLevel && !this.isRemoved()) {
          ServerLevel newLevel = transition.newLevel();
          boolean otherDimension = newLevel.dimension() != serverLevel.dimension();
          if (!transition.asPassenger()) {
@@ -3254,7 +3257,8 @@ public abstract class Entity
       List<Entity> passengers = this.getIndirectPassengersStream().toList();
 
       for (Entity passenger : passengers) {
-         if (passenger instanceof ServerPlayer player) {
+         if (passenger instanceof ServerPlayer) {
+             ServerPlayer player = (ServerPlayer) passenger;
             if (controller != null && player.getId() == controller.getId()) {
                player.connection
                   .send(ClientboundTeleportEntityPacket.teleport(this.getId(), PositionMoveRotation.of(transition), transition.relatives(), this.onGround));
@@ -3302,18 +3306,21 @@ public abstract class Entity
    }
 
    public void placePortalTicket(final BlockPos ticketPosition) {
-      if (this.level() instanceof ServerLevel serverLevel) {
+      if (this.level() instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this.level();
          serverLevel.getChunkSource().addTicketWithRadius(TicketType.PORTAL, ChunkPos.containing(ticketPosition), 3);
       }
    }
 
    protected void removeAfterChangingDimensions() {
       this.setRemoved(Entity.RemovalReason.CHANGED_DIMENSION);
-      if (this instanceof Leashable leashable) {
+      if (this instanceof Leashable) {
+          Leashable leashable = (Leashable) this;
          leashable.removeLeash();
       }
 
-      if (this instanceof WaypointTransmitter waypoint && this.level instanceof ServerLevel serverLevel) {
+      if (this instanceof WaypointTransmitter && this.level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) this instanceof WaypointTransmitter && this.level;
          serverLevel.getWaypointManager().untrackWaypoint(waypoint);
       }
    }
@@ -3329,7 +3336,7 @@ public abstract class Entity
    public boolean canTeleport(final Level from, final Level to) {
       if (from.dimension() == Level.END && to.dimension() == Level.OVERWORLD) {
          for (Entity passenger : this.getPassengers()) {
-            if (passenger instanceof ServerPlayer player && !player.seenCredits) {
+            if (passenger instanceof ServerPlayer && !player.seenCredits) {
                return false;
             }
          }
@@ -3957,12 +3964,12 @@ public abstract class Entity
          }
 
          this.levelCallback.onMove();
-         if (!this.firstTick && this.level instanceof ServerLevel serverLevel && !this.isRemoved()) {
-            if (this instanceof WaypointTransmitter waypoint && waypoint.isTransmittingWaypoint()) {
+         if (!this.firstTick && this.level instanceof ServerLevel && !this.isRemoved()) {
+            if (this instanceof WaypointTransmitter && waypoint.isTransmittingWaypoint()) {
                serverLevel.getWaypointManager().updateWaypoint(waypoint);
             }
 
-            if (this instanceof ServerPlayer player && player.isReceivingWaypoints() && player.connection != null) {
+            if (this instanceof ServerPlayer && player.isReceivingWaypoints() && player.connection != null) {
                serverLevel.getWaypointManager().updatePlayer(player);
             }
          }
@@ -4161,11 +4168,11 @@ public abstract class Entity
    }
 
    public Vec3 getKnownMovement() {
-      return this.getControllingPassenger() instanceof Player controller && this.isAlive() ? controller.getKnownMovement() : this.getDeltaMovement();
+      return this.getControllingPassenger() instanceof Player && this.isAlive() ? controller.getKnownMovement() : this.getDeltaMovement();
    }
 
    public Vec3 getKnownSpeed() {
-      return this.getControllingPassenger() instanceof Player controller && this.isAlive() ? controller.getKnownSpeed() : this.lastKnownSpeed;
+      return this.getControllingPassenger() instanceof Player && this.isAlive() ? controller.getKnownSpeed() : this.lastKnownSpeed;
    }
 
    public @Nullable ItemStack getWeaponItem() {

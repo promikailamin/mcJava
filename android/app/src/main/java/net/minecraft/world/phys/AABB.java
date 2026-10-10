@@ -93,7 +93,8 @@ public class AABB {
          return true;
       }
 
-      if (o instanceof AABB aabb) {
+      if (o instanceof AABB) {
+          AABB aabb = (AABB) o;
          if (Double.compare(aabb.minX, this.minX) != 0) {
             return false;
          } else if (Double.compare(aabb.minY, this.minY) != 0) {

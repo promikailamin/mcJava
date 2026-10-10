@@ -168,7 +168,8 @@ public abstract class TamableAnimal extends Animal implements OwnableEntity {
    public void tame(final Player player) {
       this.setTame(true, true);
       this.setOwner(player);
-      if (player instanceof ServerPlayer serverPlayer) {
+      if (player instanceof ServerPlayer) {
+          ServerPlayer serverPlayer = (ServerPlayer) player;
          CriteriaTriggers.TAME_ANIMAL.trigger(serverPlayer, this);
       }
    }
@@ -219,16 +220,22 @@ public abstract class TamableAnimal extends Animal implements OwnableEntity {
       return super.considersEntityAsAlly(other);
    }
 
-   @Override
-   public void die(final DamageSource source) {
-      if (this.level() instanceof ServerLevel serverLevel
-         && serverLevel.getGameRules().get(GameRules.SHOW_DEATH_MESSAGES)
-         && this.getOwner() instanceof ServerPlayer serverPlayer) {
-         serverPlayer.sendSystemMessage(this.getCombatTracker().getDeathMessage());
-      }
+@Override
+    public void die(final DamageSource source) {
+       Level level = this.level();
+       if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
+          if (serverLevel.getGameRules().get(GameRules.SHOW_DEATH_MESSAGES)) {
+             Entity owner = this.getOwner();
+             if (owner instanceof ServerPlayer) {
+                ServerPlayer serverPlayer = (ServerPlayer) owner;
+                serverPlayer.sendSystemMessage(this.getCombatTracker().getDeathMessage());
+             }
+          }
+       }
 
-      super.die(source);
-   }
+       super.die(source);
+    }
 
    public boolean isOrderedToSit() {
       return this.orderedToSit;

@@ -62,7 +62,8 @@ public class Beardifier implements DensitySampler {
 
          for (StructurePiece piece : start.getPieces()) {
             if (piece.isCloseToChunk(chunkPos, 12)) {
-               if (piece instanceof PoolElementStructurePiece poolPiece) {
+               if (piece instanceof PoolElementStructurePiece) {
+                   PoolElementStructurePiece poolPiece = (PoolElementStructurePiece) piece;
                   StructureTemplatePool.Projection projection = poolPiece.getElement().getProjection();
                   if (projection == StructureTemplatePool.Projection.RIGID) {
                      rigids.add(new Beardifier.Rigid(poolPiece.getBoundingBox(), terrainAdjustment, poolPiece.getGroundLevelDelta()));

@@ -311,7 +311,7 @@ public sealed interface CubicSpline<I> permits CubicSpline.Multipoint, CubicSpli
 
       @Override
       public boolean equals(final Object obj) {
-         return !(obj instanceof CubicSpline.Multipoint<?> multipoint)
+         return !(obj instanceof CubicSpline.Multipoint<?>)
             ? false
             : Objects.equals(this.coordinate, multipoint.coordinate)
                && Arrays.equals(this.locations, multipoint.locations)

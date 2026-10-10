@@ -162,7 +162,8 @@ public record Equippable(
       if (target.isEquippableInSlot(itemStack, this.slot) && !target.hasItemInSlot(this.slot) && target.isAlive()) {
          if (!player.level().isClientSide()) {
             target.setItemSlot(this.slot, itemStack.split(1));
-            if (target instanceof Mob mob) {
+            if (target instanceof Mob) {
+                Mob mob = (Mob) target;
                mob.setGuaranteedDrop(this.slot);
             }
          }

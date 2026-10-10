@@ -9,7 +9,8 @@ public interface PlaceRecipeHelper {
    static <T> void placeRecipe(
       final int gridWidth, final int gridHeight, final Recipe<?> recipe, final Iterable<T> entries, final PlaceRecipeHelper.Output<T> output
    ) {
-      if (recipe instanceof ShapedRecipe shapedRecipe) {
+      if (recipe instanceof ShapedRecipe) {
+          ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
          placeRecipe(gridWidth, gridHeight, shapedRecipe.getWidth(), shapedRecipe.getHeight(), entries, output);
       } else {
          placeRecipe(gridWidth, gridHeight, gridWidth, gridHeight, entries, output);

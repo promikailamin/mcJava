@@ -806,7 +806,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
             }
          }
 
-         if (e instanceof EnderDragon enderDragon) {
+         if (e instanceof EnderDragon) {
+             EnderDragon enderDragon = (EnderDragon) e;
             for (EnderDragonPart subEntity : enderDragon.getSubEntities()) {
                T castSubPart = type.tryCast(subEntity);
                if (castSubPart != null && selector.test(castSubPart)) {
@@ -831,7 +832,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
             return Continuation.ABORT;
          }
 
-         if (e instanceof EnderDragon enderDragon) {
+         if (e instanceof EnderDragon) {
+             EnderDragon enderDragon = (EnderDragon) e;
             for (EnderDragonPart subEntity : enderDragon.getSubEntities()) {
                T castSubPart = type.tryCast(subEntity);
                if (castSubPart != null && selector.test(castSubPart)) {

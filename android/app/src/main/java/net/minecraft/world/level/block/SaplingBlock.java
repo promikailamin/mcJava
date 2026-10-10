@@ -50,7 +50,8 @@ public class SaplingBlock extends VegetationBlock implements BonemealableBlock {
 
    @Override
    public boolean isValidBonemealTarget(final LevelReader level, final BlockPos pos, final BlockState state, final BonemealSource source) {
-      if (level instanceof ServerLevel serverLevel) {
+      if (level instanceof ServerLevel) {
+          ServerLevel serverLevel = (ServerLevel) level;
          if (!this.treeGrower.canGrow(serverLevel, pos, state)) {
             return false;
          }

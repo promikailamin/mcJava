@@ -88,7 +88,8 @@ public class BrushableBlockEntity extends BlockEntity {
    private void unpackLootTable(final ServerLevel level, final LivingEntity user, final ItemInstance brush) {
       if (this.lootTable != null) {
          LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(this.lootTable);
-         if (user instanceof ServerPlayer serverPlayer) {
+         if (user instanceof ServerPlayer) {
+             ServerPlayer serverPlayer = (ServerPlayer) user;
             CriteriaTriggers.GENERATE_LOOT.trigger(serverPlayer, this.lootTable);
          }
 
@@ -118,7 +119,8 @@ public class BrushableBlockEntity extends BlockEntity {
       BlockState blockState = this.getBlockState();
       level.levelEvent(3008, this.getBlockPos(), Block.getId(blockState));
       Block turnsInto;
-      if (this.getBlockState().getBlock() instanceof BrushableBlock brushableBlock) {
+      if (this.getBlockState().getBlock() instanceof BrushableBlock) {
+          BrushableBlock brushableBlock = (BrushableBlock) this.getBlockState().getBlock();
          turnsInto = brushableBlock.getTurnsInto();
       } else {
          turnsInto = Blocks.AIR;
