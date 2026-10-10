@@ -871,10 +871,10 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
       }
    }
 
-   @Override
-   public boolean mayInteract(final Entity entity, final BlockPos pos) {
-      return !(entity instanceof Player && (this.server.isUnderSpawnProtection(this, pos, player) || !this.getWorldBorder().isWithinBounds(pos)));
-   }
+@Override
+    public boolean mayInteract(final Entity entity, final BlockPos pos) {
+       return !(entity instanceof Player player && (this.server.isUnderSpawnProtection(this, pos, player) || !this.getWorldBorder().isWithinBounds(pos)));
+    }
 
    public void save(final @Nullable ProgressListener progressListener, final boolean flush, final boolean noSave) {
       ServerChunkCache chunkSource = this.getChunkSource();
@@ -1050,17 +1050,17 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
       final float pitch,
       final long seed
    ) {
-      this.server
-         .getPlayerList()
-         .broadcast(
-            except instanceof Player ? player  : null,
-            x,
-            y,
-            z,
-            sound.value().getRange(volume),
-            this.dimension(),
-            new ClientboundSoundPacket(sound, source, x, y, z, volume, pitch, seed)
-         );
+this.server
+          .getPlayerList()
+          .broadcast(
+             except instanceof Player player ? player : null,
+             x,
+             y,
+             z,
+             sound.value().getRange(volume),
+             this.dimension(),
+             new ClientboundSoundPacket(sound, source, x, y, z, volume, pitch, seed)
+          );
    }
 
    @Override
@@ -1073,17 +1073,17 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
       final float pitch,
       final long seed
    ) {
-      this.server
-         .getPlayerList()
-         .broadcast(
-            except instanceof Player ? player  : null,
-            sourceEntity.getX(),
-            sourceEntity.getY(),
-            sourceEntity.getZ(),
-            sound.value().getRange(volume),
-            this.dimension(),
-            new ClientboundSoundEntityPacket(sound, source, sourceEntity, volume, pitch, seed)
-         );
+this.server
+          .getPlayerList()
+          .broadcast(
+             except instanceof Player player ? player : null,
+             sourceEntity.getX(),
+             sourceEntity.getY(),
+             sourceEntity.getZ(),
+             sound.value().getRange(volume),
+             this.dimension(),
+             new ClientboundSoundEntityPacket(sound, source, sourceEntity, volume, pitch, seed)
+          );
    }
 
    @Override

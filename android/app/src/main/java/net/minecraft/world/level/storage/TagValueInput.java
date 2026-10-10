@@ -44,36 +44,38 @@ public class TagValueInput implements ValueInput {
       return new TagValueInput.CompoundListWrapper(problemReporter, new ValueInputContextHelper(holders, NbtOps.INSTANCE), tags);
    }
 
-   @Override
-   public <T> Optional<T> read(final String name, final Codec<T> codec) {
-      Tag tag = this.input.get(name);
-      if (tag == null) {
-         return Optional.empty();
-      }
+@Override
+    public <T> Optional<T> read(final String name, final Codec<T> codec) {
+       Tag tag = this.input.get(name);
+       if (tag == null) {
+          return Optional.empty();
+       }
 
-      return switch (codec.parse(this.context.ops(), tag)) {
-         case Success<T> success -> Optional.of(success.value());
-         case Error<T> error -> {
-            this.problemReporter.report(new TagValueInput.DecodeFromFieldFailedProblem(name, tag, error));
-            yield error.partialValue();
-         }
-         default -> throw new IllegalStateException("Unexpected value");
-      };
-   }
+       DataResult<T> result = codec.parse(this.context.ops(), tag);
+       if (result instanceof DataResult.Success<T> success) {
+          return Optional.of(success.value());
+       } else if (result instanceof DataResult.Error<T> error) {
+          this.problemReporter.report(new TagValueInput.DecodeFromFieldFailedProblem(name, tag, error));
+          return error.partialValue();
+       } else {
+          throw new IllegalStateException("Unexpected value");
+       }
+    }
 
-   @Override
-   public <T> Optional<T> read(final MapCodec<T> codec) {
-      DynamicOps<Tag> ops = this.context.ops();
+    @Override
+    public <T> Optional<T> read(final MapCodec<T> codec) {
+       DynamicOps<Tag> ops = this.context.ops();
 
-      return switch (ops.getMap(this.input).flatMap(map -> codec.decode(ops, map))) {
-         case Success<T> success -> Optional.of(success.value());
-         case Error<T> error -> {
-            this.problemReporter.report(new TagValueInput.DecodeFromMapFailedProblem(error));
-            yield error.partialValue();
-         }
-         default -> throw new IllegalStateException("Unexpected value");
-      };
-   }
+       DataResult<T> result = ops.getMap(this.input).flatMap(map -> codec.decode(ops, map));
+       if (result instanceof DataResult.Success<T> success) {
+          return Optional.of(success.value());
+       } else if (result instanceof DataResult.Error<T> error) {
+          this.problemReporter.report(new TagValueInput.DecodeFromMapFailedProblem(error));
+          return error.partialValue();
+       } else {
+          throw new IllegalStateException("Unexpected value");
+       }
+    }
 
    private <T extends Tag> @Nullable T getOptionalTypedTag(final String name, final TagType<T> expectedType) {
       Tag tag = this.input.get(name);
@@ -386,47 +388,47 @@ private @Nullable NumericTag getNumericTag(final String name) {
          this.problemReporter.report(new TagValueInput.DecodeFromListFailedProblem(this.name, index, value, error));
       }
 
-      @Override
-      public Stream<T> stream() {
-         return Streams.mapWithIndex(this.list.stream(), (value, index) -> {
-            return switch (this.codec.parse(this.context.ops(), value)) {
-               case Success<T> success -> success.value();
-               case Error<T> error -> {
-                  this.reportIndexUnwrapProblem((int)index, value, error);
-                  yield error.partialValue().orElse(null);
-               }
-               default -> throw new IllegalStateException("Unexpected value");
-            };
-         }).filter(Objects::nonNull);
-      }
+@Override
+       public Stream<T> stream() {
+          return Streams.mapWithIndex(this.list.stream(), (value, index) -> {
+             DataResult<T> result = this.codec.parse(this.context.ops(), value);
+             if (result instanceof DataResult.Success<T> success) {
+                return success.value();
+             } else if (result instanceof DataResult.Error<T> error) {
+                this.reportIndexUnwrapProblem((int)index, value, error);
+                return error.partialValue().orElse(null);
+             } else {
+                throw new IllegalStateException("Unexpected value");
+             }
+          }).filter(Objects::nonNull);
+       }
 
-      @Override
-      public Iterator<T> iterator() {
-         final ListIterator<Tag> iterator = this.list.listIterator();
-         return new AbstractIterator<T>() {
-            protected @Nullable T computeNext() {
-               while (iterator.hasNext()) {
-                  int index = iterator.nextIndex();
-                  Tag value = iterator.next();
-                  switch (TypedListWrapper.this.codec.parse(TypedListWrapper.this.context.ops(), value)) {
-                     case Success<T> success:
-                        return (T)success.value();
-                     case Error<T> error:
-                        TypedListWrapper.this.reportIndexUnwrapProblem(index, value, error);
-                        if (!error.partialValue().isPresent()) {
-                           break;
-                        }
+@Override
+       public Iterator<T> iterator() {
+          final ListIterator<Tag> iterator = this.list.listIterator();
+          return new AbstractIterator<T>() {
+             protected @Nullable T computeNext() {
+                while (iterator.hasNext()) {
+                   int index = iterator.nextIndex();
+                   Tag value = iterator.next();
+                   DataResult<T> result = TypedListWrapper.this.codec.parse(TypedListWrapper.this.context.ops(), value);
+                   if (result instanceof DataResult.Success<T> success) {
+                      return (T)success.value();
+                   } else if (result instanceof DataResult.Error<T> error) {
+                      TypedListWrapper.this.reportIndexUnwrapProblem(index, value, error);
+                      if (!error.partialValue().isPresent()) {
+                         continue;
+                      }
+                      return (T)error.partialValue().get();
+                   } else {
+                      throw new IllegalStateException("Unexpected value");
+                   }
+                }
 
-                        return (T)error.partialValue().get();
-                     default:
-                        throw new IllegalStateException("Unexpected value");
-                  }
-               }
-
-               return (T)this.endOfData();
-            }
-         };
-      }
+                return (T)this.endOfData();
+             }
+          };
+       }
    }
 
    public record UnexpectedListElementTypeProblem(String name, int index, TagType<?> expected, TagType<?> actual) implements ProblemReporter.Problem {

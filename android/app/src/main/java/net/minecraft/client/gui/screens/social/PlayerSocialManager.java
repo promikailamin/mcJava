@@ -181,12 +181,10 @@ public class PlayerSocialManager {
    }
 
    private void showFailureToast(final ResultCode resultCode) {
-      Component title =       if (resultCode instanceof SUCCESS, UPGRADE_NEEDED, CONNECTION_ISSUE, TEMPORARY_UNAVAILABLE, GENERIC_ERROR) {
-          null;
-      }
-      else {
-          throw new IllegalStateException("Unexpected value")
-      }
+      Component title = switch (resultCode) {
+            case SUCCESS, UPGRADE_NEEDED, CONNECTION_ISSUE, TEMPORARY_UNAVAILABLE, GENERIC_ERROR -> null;
+            default -> throw new IllegalStateException("Unexpected value");
+        };
       if (title != null) {
          this.minecraft
             .execute(() -> SystemToast.addOrUpdate(this.minecraft.gui.toastManager(), SystemToast.SystemToastId.FRIEND_SYSTEM_NOTIFICATION, title, null));

@@ -109,9 +109,10 @@ public class CrafterBlock extends BaseEntityBlock {
    public BlockState getStateForPlacement(final BlockPlaceContext context) {
       Direction nearestLookingDirection = context.getNearestLookingDirection().getOpposite();
 
-      Direction verticalDirection =       if (nearestLookingDirection instanceof NORTH, SOUTH, WEST, EAST) {
-          Direction.UP;
-      }
+      Direction verticalDirection = switch (nearestLookingDirection) {
+            case NORTH, SOUTH, WEST, EAST -> Direction.DOWN;
+            default -> Direction.UP;
+        };
       return this.defaultBlockState()
          .setValue(ORIENTATION, FrontAndTop.fromFrontAndTop(nearestLookingDirection, verticalDirection))
          .setValue(TRIGGERED, context.getLevel().hasNeighborSignal(context.getClickedPos()));

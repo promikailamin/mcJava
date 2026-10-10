@@ -77,7 +77,7 @@ public class ArgumentUtils {
       }
       else {
           LOGGER.error("Could not serialize node {} ({})!", node, node.getClass());
-            result.addProperty("type", "unknown")
+            result.addProperty("type", "unknown");
       }
 
       Collection<CommandNode<S>> children = node.getChildren();

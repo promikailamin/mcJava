@@ -112,21 +112,18 @@ public class PostChain implements AutoCloseable {
          throw new ShaderManager.CompilationException("Failed to compile post processing pipeline " + pipeline.getLocation());
       }
 
-      List<PostPass.Input> inputs = new ArrayList<>();
+List<PostPass.Input> inputs = new ArrayList<>();
 
-      for (PostChainConfig.Input input : config.inputs()) {
-         switch (input) {
-            case PostChainConfig.TextureInput(String samplerName, Identifier location, int width, int height, boolean bilinear):
-               AbstractTexture var42 = textureManager.getTexture(location.withPath(path -> "textures/effect/" + path + ".png"));
-               inputs.add(new PostPass.TextureInput(samplerName, var42, width, height, bilinear));
-               break;
-            case PostChainConfig.TargetInput(String samplerName, Identifier targetId, boolean useDepthBuffer, boolean bilinear):
-               inputs.add(new PostPass.TargetInput(samplerName, targetId, useDepthBuffer, bilinear));
-               break;
-            default:
-               throw new IllegalStateException("Unexpected value");
-         }
-      }
+       for (PostChainConfig.Input input : config.inputs()) {
+          if (input instanceof PostChainConfig.TextureInput textureInput) {
+             AbstractTexture texture = textureManager.getTexture(textureInput.location().withPath(path -> "textures/effect/" + path + ".png"));
+             inputs.add(new PostPass.TextureInput(textureInput.samplerName(), texture, textureInput.width(), textureInput.height(), textureInput.bilinear()));
+          } else if (input instanceof PostChainConfig.TargetInput targetInput) {
+             inputs.add(new PostPass.TargetInput(targetInput.samplerName(), targetInput.targetId(), targetInput.useDepthBuffer(), targetInput.bilinear()));
+          } else {
+             throw new IllegalStateException("Unexpected value");
+          }
+       }
 
       return new PostPass(pipeline, config.outputTarget(), config.uniforms(), inputs);
    }

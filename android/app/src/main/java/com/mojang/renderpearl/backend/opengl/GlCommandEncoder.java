@@ -563,42 +563,38 @@ class GlCommandEncoder implements CommandEncoderBackend, UncheckedAutoCloseable 
             if (renderPass.dirtyUniforms.getBoolean(i)) {
                renderPass.dirtyUniforms.set(i, false);
                Uniform dirtyUniform = glProgram.getUniform(i);
-               if (dirtyUniform != null) {
-                  switch (dirtyUniform) {
-                     case Uniform.Ubo(int blockBinding):
-                        GpuBufferSlice var26 = (GpuBufferSlice)renderPass.uniforms.get(i);
-                        GL33C.glBindBufferRange(35345, blockBinding, ((GlBuffer)var26.buffer()).handle(), var26.offset(), var26.length());
-                        break;
-                     case Uniform.Utb(int samplerIndex, GpuFormat format, int texture):
-                        GlStateManager._activeTexture(33984 + samplerIndex);
-                        GL33C.glBindTexture(35882, texture);
-                        GpuBufferSlice var30 = (GpuBufferSlice)renderPass.uniforms.get(i);
-                        GL33C.glTexBuffer(35882, GlConst.toGlInternalId(format), ((GlBuffer)var30.buffer()).handle());
-                        break;
-                     case Uniform.Sampler(int samplerIndex):
-                        TextureViewAndSampler viewAndSampler = (TextureViewAndSampler)renderPass.uniforms.get(i);
-                        if (viewAndSampler != null) {
-                           GlTextureView textureView = (GlTextureView)viewAndSampler.view();
-                           GlStateManager._activeTexture(33984 + samplerIndex);
-                           GlTexture texture = textureView.texture();
-                           int target;
-                           if ((texture.usage() & 16) != 0) {
-                              target = 34067;
-                              GL33C.glBindTexture(34067, texture.id);
-                           } else {
-                              target = 3553;
-                              GlStateManager._bindTexture(texture.id);
-                           }
+if (dirtyUniform != null) {
+                   if (dirtyUniform instanceof Uniform.Ubo ubo) {
+                      GpuBufferSlice var26 = (GpuBufferSlice)renderPass.uniforms.get(i);
+                      GL33C.glBindBufferRange(35345, ubo.blockBinding(), ((GlBuffer)var26.buffer()).handle(), var26.offset(), var26.length());
+                   } else if (dirtyUniform instanceof Uniform.Utb utb) {
+                      GlStateManager._activeTexture(33984 + utb.samplerIndex());
+                      GL33C.glBindTexture(35882, utb.texture());
+                      GpuBufferSlice var30 = (GpuBufferSlice)renderPass.uniforms.get(i);
+                      GL33C.glTexBuffer(35882, GlConst.toGlInternalId(utb.format()), ((GlBuffer)var30.buffer()).handle());
+                   } else if (dirtyUniform instanceof Uniform.Sampler sampler) {
+                      TextureViewAndSampler viewAndSampler = (TextureViewAndSampler)renderPass.uniforms.get(i);
+                      if (viewAndSampler != null) {
+                         GlTextureView textureView = (GlTextureView)viewAndSampler.view();
+                         GlStateManager._activeTexture(33984 + sampler.samplerIndex());
+                         GlTexture texture = textureView.texture();
+                         int target;
+                         if ((texture.usage() & 16) != 0) {
+                            target = 34067;
+                            GL33C.glBindTexture(34067, texture.id);
+                         } else {
+                            target = 3553;
+                            GlStateManager._bindTexture(texture.id);
+                         }
 
-                           GL33C.glBindSampler(samplerIndex, ((GlSampler)viewAndSampler.sampler()).getId());
-                           GlStateManager._texParameter(target, 33084, textureView.baseMipLevel());
-                           GlStateManager._texParameter(target, 33085, textureView.baseMipLevel() + textureView.mipLevels() - 1);
-                        }
-                        break;
-                     default:
-                        throw new IllegalStateException("Unexpected value");
-                  }
-               }
+                         GL33C.glBindSampler(sampler.samplerIndex(), ((GlSampler)viewAndSampler.sampler()).getId());
+                         GlStateManager._texParameter(target, 33084, textureView.baseMipLevel());
+                         GlStateManager._texParameter(target, 33085, textureView.baseMipLevel() + textureView.mipLevels() - 1);
+                      }
+                   } else {
+                      throw new IllegalStateException("Unexpected value");
+                   }
+                }
             }
          }
       }

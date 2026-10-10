@@ -1,19 +1,20 @@
 A new GitHub issue has been opened.
 
-Issue number: 22
+Issue number: 24
 
 Issue URL:
-https://github.com/promikailamin/mcJava/issues/22
+https://github.com/promikailamin/mcJava/issues/24
 
 Title:
 Fix all and build
 
 Description:
-My found Remaining work:** The 87 syntax errors are from the post-conversion fix scripts (`fix_pattern_matching.py`, `fix_remaining_patterns.py`, etc.) that were run after the switch conversions. These scripts introduced syntax errors in some files. These can be fixed by:
-1. Reverting the changes from the fix scripts (`git checkout -- <file>` for affected files)
-2. Running a more targeted fix for `instanceof` pattern matching only where needed
+**Current State**: 112 compilation errors remain, mostly from the script incorrectly converting constant switches (enum/int switches with multiple constants) which it shouldn't touch.
 
-The core issue from the GitHub issue (MatchException build failure) has been resolved by eliminating all pattern matching switches on sealed types.
+**Root Cause**: The script cannot reliably distinguish between type pattern switches (which need conversion) and constant switches (which should be left alone).
+
+**Recommended Solution**: Use OpenRewrite or Error Prone for systematic migration as suggested in the issue, or upgrade the build environment to properly support Java 21 pattern matching.
+
 
 setup all tools needed java, android sdk, ndk etc ... and Fix all errors no matters how much changes and afforts it need just fix all and build it. and download mcsrc (a decompiler tool), Minecraft java latest version, fabric loader latest version and decompile them for assist in this project. perfectly build it. i think Minecraft latest version need java 25+. fix all errors and build in any cost.
 

@@ -471,7 +471,7 @@ public enum Direction implements Directional, StringRepresentable {
       }
 
       public Direction.Plane getPlane() {
-         if (this instanceof X, Z) {
+         if (this == X || this == Z) {
              return Direction.Plane.HORIZONTAL;
          }
       }

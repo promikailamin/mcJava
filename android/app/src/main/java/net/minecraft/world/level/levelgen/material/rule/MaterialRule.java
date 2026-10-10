@@ -13,22 +13,23 @@ import net.minecraft.world.level.levelgen.material.MaterialRuleContext;
 public interface MaterialRule {
    Codec<MaterialRule> DIRECT_CODEC = BuiltInRegistries.MATERIAL_RULE_TYPE.byNameCodec().dispatch(MaterialRule::codec, Function.identity());
    Codec<Holder<MaterialRule>> HOLDER_CODEC = RegistryCodecs.holder(Registries.MATERIAL_RULE, DIRECT_CODEC);
-   Codec<MaterialRule> CODEC = HOLDER_CODEC.xmap(holder -> {
-      if (holder instanceof Holder.Direct<MaterialRule> direct) {
-          return (MaterialRule)direct.value();
-      }
-      else if (holder instanceof Holder.Reference<MaterialRule> reference) {
-          return new MaterialRule.HolderHolder(reference);
-      }
-      else {
-          throw new IllegalArgumentException("Unexpected holder type: " + holder)
-      }
-   }, value -> {
-      return switch (value) {
-         case MaterialRule.HolderHolder(Holder<MaterialRule> holder) -> holder;
-         default -> Holder.direct(value);
-      };
-   });
+Codec<MaterialRule> CODEC = HOLDER_CODEC.xmap(holder -> {
+       if (holder instanceof Holder.Direct<MaterialRule> direct) {
+           return (MaterialRule)direct.value();
+       }
+       else if (holder instanceof Holder.Reference<MaterialRule> reference) {
+           return new MaterialRule.HolderHolder(reference);
+       }
+       else {
+           throw new IllegalArgumentException("Unexpected holder type: " + holder);
+       }
+    }, value -> {
+       if (value instanceof MaterialRule.HolderHolder holderHolder) {
+           return holderHolder.holder();
+       } else {
+           return Holder.direct(value);
+       }
+    });
 
    RuleEvaluator compile(MaterialRuleContext context);
 

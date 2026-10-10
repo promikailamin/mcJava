@@ -1301,24 +1301,20 @@ public class GuiGraphicsExtractor {
       }
    }
 
-   private void componentHoverEffect(final Font font, final Style hoveredStyle, final int xMouse, final int yMouse) {
-      if (hoveredStyle.getHoverEvent() != null) {
-         switch (hoveredStyle.getHoverEvent()) {
-            case HoverEvent.ShowItem(ItemStackTemplate item):
-               this.setTooltipForNextFrame(font, item.create(), xMouse, yMouse);
-               break;
-            case HoverEvent.ShowEntity(HoverEvent.EntityTooltipInfo entity):
-               if (this.minecraft.options.advancedItemTooltips) {
-                  this.setComponentTooltipForNextFrame(font, entity.getTooltipLines(), xMouse, yMouse);
-               }
-               break;
-            case HoverEvent.ShowText(Component text):
-               this.setTooltipForNextFrame(font, font.split(text, Math.max(this.guiWidth() / 2, 200)), xMouse, yMouse);
-               break;
-            default:
-         }
-      }
-   }
+private void componentHoverEffect(final Font font, final Style hoveredStyle, final int xMouse, final int yMouse) {
+       HoverEvent hoverEvent = hoveredStyle.getHoverEvent();
+       if (hoverEvent != null) {
+          if (hoverEvent instanceof HoverEvent.ShowItem showItem) {
+             this.setTooltipForNextFrame(font, showItem.item().create(), xMouse, yMouse);
+          } else if (hoverEvent instanceof HoverEvent.ShowEntity showEntity) {
+             if (this.minecraft.options.advancedItemTooltips) {
+                this.setComponentTooltipForNextFrame(font, showEntity.entity().getTooltipLines(), xMouse, yMouse);
+             }
+          } else if (hoverEvent instanceof HoverEvent.ShowText showText) {
+             this.setTooltipForNextFrame(font, font.split(showText.text(), Math.max(this.guiWidth() / 2, 200)), xMouse, yMouse);
+          }
+       }
+    }
 
    public TextureAtlasSprite getSprite(final SpriteId sprite) {
       return this.sprites.get(sprite);

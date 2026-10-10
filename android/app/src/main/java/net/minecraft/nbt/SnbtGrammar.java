@@ -800,7 +800,7 @@ public class SnbtGrammar {
          if (this.suffix.signed != null) {
             return this.suffix.signed;
          }
-         if (this.base instanceof BINARY, HEX) {
+         if (this.base == BINARY || this.base == HEX) {
              return SnbtGrammar.SignedPrefix.UNSIGNED;
          }
       }

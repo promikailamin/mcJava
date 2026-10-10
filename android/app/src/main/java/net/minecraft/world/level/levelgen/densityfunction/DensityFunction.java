@@ -19,22 +19,23 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 public interface DensityFunction {
    Codec<Holder<DensityFunction>> REFERENCE_CODEC = RegistryCodecs.holder(Registries.DENSITY_FUNCTION);
-   Codec<DensityFunction> CODEC = RegistryCodecs.holder(Registries.DENSITY_FUNCTION, DensityFunctions.DIRECT_CODEC).xmap(holder -> {
-      if (holder instanceof Holder.Direct<DensityFunction> direct) {
-          return (DensityFunction)direct.value();
-      }
-      else if (holder instanceof Holder.Reference<DensityFunction> reference) {
-          return new DensityFunctions.HolderHolder(reference);
-      }
-      else {
-          throw new IllegalArgumentException("Unexpected holder type: " + holder)
-      }
-   }, value -> {
-      return switch (value) {
-         case DensityFunctions.HolderHolder(Holder<DensityFunction> function) -> function;
-         default -> Holder.direct(value);
-      };
-   });
+Codec<DensityFunction> CODEC = RegistryCodecs.holder(Registries.DENSITY_FUNCTION, DensityFunctions.DIRECT_CODEC).xmap(holder -> {
+       if (holder instanceof Holder.Direct<DensityFunction> direct) {
+           return (DensityFunction)direct.value();
+       }
+       else if (holder instanceof Holder.Reference<DensityFunction> reference) {
+           return new DensityFunctions.HolderHolder(reference);
+       }
+       else {
+           throw new IllegalArgumentException("Unexpected holder type: " + holder);
+       }
+    }, value -> {
+       if (value instanceof DensityFunctions.HolderHolder holderHolder) {
+           return holderHolder.function();
+       } else {
+           return Holder.direct(value);
+       }
+    });
    int AXIS_X = 1;
    int AXIS_Y = 2;
    int AXIS_Z = 4;

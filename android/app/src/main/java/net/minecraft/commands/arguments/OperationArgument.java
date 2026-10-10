@@ -64,7 +64,7 @@ public class OperationArgument implements ArgumentType<OperationArgument.Operati
 
    private static OperationArgument.SimpleOperation getSimpleOperation(final String op) throws CommandSyntaxException {
       {
-          throw ERROR_INVALID_OPERATION.create()
+          throw ERROR_INVALID_OPERATION.create();
       }
    }
 

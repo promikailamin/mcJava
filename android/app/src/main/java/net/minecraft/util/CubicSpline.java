@@ -38,7 +38,7 @@ public sealed interface CubicSpline<I> permits CubicSpline.Multipoint, CubicSpli
           return constant.value();
       }
       else {
-          throw new IllegalStateException("Unexpected value")
+          throw new IllegalStateException("Unexpected value");
       }
    }
 
@@ -60,7 +60,7 @@ public sealed interface CubicSpline<I> permits CubicSpline.Multipoint, CubicSpli
           return BoundedFloatFunction.constant(constant.value());
       }
       else {
-          throw new IllegalStateException("Unexpected value")
+          throw new IllegalStateException("Unexpected value");
       }
    }
 

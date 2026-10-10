@@ -43,13 +43,16 @@ public class BundleItem extends Item {
       super(properties);
    }
 
-   private static Fraction getWeightSafe(final BundleContents contents) {
-      return switch (contents.weight()) {
-         case Success<Fraction> success -> (Fraction)success.value();
-         case Error<?> error -> Fraction.ONE;
-         default -> throw new IllegalStateException("Unexpected value");
-      };
-   }
+private static Fraction getWeightSafe(final BundleContents contents) {
+       DataResult<Fraction> weightResult = contents.weight();
+       if (weightResult instanceof DataResult.Success<Fraction> success) {
+           return (Fraction)success.value();
+       } else if (weightResult instanceof DataResult.Error<?> error) {
+           return Fraction.ONE;
+       } else {
+           throw new IllegalStateException("Unexpected value");
+       }
+    }
 
    public static float getFullnessDisplay(final ItemStack itemStack) {
       BundleContents contents = itemStack.getOrDefault(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY);

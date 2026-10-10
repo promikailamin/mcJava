@@ -231,15 +231,15 @@ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T>, 
       final Level level, final @Nullable LivingEntity user, final @Nullable Entity entity, final TypedEntityData<EntityType<?>> entityData
    ) {
       MinecraftServer server = level.getServer();
-      if (server != null && entity != null) {
-         if (entity.getType() == entityData.type()) {
-            if (level.isClientSide() || !entity.getType().onlyOpCanSetNbt() || user instanceof Player && server.getPlayerList().isOp(player.nameAndId())
-               )
-             {
-               entityData.loadInto(entity);
-            }
-         }
-      }
+if (server != null && entity != null) {
+          if (entity.getType() == entityData.type()) {
+             if (level.isClientSide() || !entity.getType().onlyOpCanSetNbt() || user instanceof Player player && server.getPlayerList().isOp(player.nameAndId())
+                )
+              {
+                entityData.loadInto(entity);
+             }
+          }
+       }
    }
 
    public boolean canSerialize() {

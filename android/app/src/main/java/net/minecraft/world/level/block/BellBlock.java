@@ -111,12 +111,11 @@ public class BellBlock extends BaseEntityBlock {
       if (clickedDirection.getAxis() != Direction.Axis.Y && !(clickY > 0.8124F)) {
          Direction facing = state.getValue(FACING);
          BellAttachType attachType = state.getValue(ATTACHMENT);
-         if (attachType instanceof SINGLE_WALL, DOUBLE_WALL) {
-             return facing.getAxis() != clickedDirection.getAxis();
-         }
-         else {
-             false
-         }
+         if (attachType == SINGLE_WALL || attachType == DOUBLE_WALL) {
+              return facing.getAxis() != clickedDirection.getAxis();
+          } else {
+              return false;
+          }
       } else {
          return false;
       }

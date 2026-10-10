@@ -33,12 +33,7 @@ public class FurnaceRecipeBookComponent extends RecipeBookComponent<AbstractFurn
 
    @Override
    protected boolean isCraftingSlot(final Slot slot) {
-      if (slot.index instanceof 0, 1, 2) {
-          return true;
-      }
-      else {
-          false
-      }
+      return slot.index == 0 || slot.index == 1 || slot.index == 2;
    }
 
    @Override

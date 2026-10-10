@@ -34,7 +34,7 @@ public interface SelectableSlotContainer {
       double relativeX = relativeHit.x();
       double relativeY = relativeHit.y();
       double relativeZ = relativeHit.z();
-      if (hitDirection instanceof DOWN, UP) {
+      if (hitDirection == DOWN || hitDirection == UP) {
           return Optional.empty();
       }
    }

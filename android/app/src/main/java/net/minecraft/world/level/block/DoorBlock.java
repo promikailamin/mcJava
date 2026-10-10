@@ -120,7 +120,7 @@ public class DoorBlock extends Block {
 
    @Override
    protected boolean isPathfindable(final BlockState state, final PathComputationType type) {
-      if (type instanceof LAND, AIR) {
+      if (type == LAND || type == AIR) {
           return state.getValue(OPEN);
       }
    }

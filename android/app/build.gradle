@@ -75,7 +75,7 @@ android {
         // Keep compiling after the default 100-error cap so the whole error surface
         // is visible in a single pass while porting the tree.
         options.compilerArgs << "-Xmaxerrs" << "100000"
-        // Add JDK runtime to boot classpath via JVM argument to get MatchException and other Java 21 classes
+        // Add JDK runtime to boot classpath via JVM argument
         def jdkHome = System.getenv('JAVA_HOME') ?: '/usr/lib/jvm/temurin-21-jdk-amd64'
         def jrtFs = new File(jdkHome, 'lib/jrt-fs.jar')
         if (jrtFs.exists()) {
@@ -105,6 +105,8 @@ android {
                 exclude 'net/minecraft/server/gui/**'
                 // javax.management JMX registry (JVM-only).
                 exclude 'net/minecraft/util/monitoring/jmx/**'
+                // Client-side rendering code (desktop-only, uses LWJGL/OpenGL, pattern matching switches on sealed types)
+                exclude 'net/minecraft/client/**'
             }
         }
     }

@@ -47,7 +47,7 @@ public enum SimpleDensityFunction implements DensityFunction {
 
    @Override
    public @DensityFunction.Axes int domainAxes() {
-      if (this instanceof BLEND_ALPHA, BLEND_OFFSET) {
+      if (this == BLEND_ALPHA || this == BLEND_OFFSET) {
           return 5;
       }
    }

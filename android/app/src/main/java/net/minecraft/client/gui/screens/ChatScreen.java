@@ -217,18 +217,8 @@ public class ChatScreen extends Screen {
             this.insertText(clicked.getInsertion(), false);
          }
       } else if (event != null) {
-         switch (event) {
-            case ClickEvent.Custom customEvent when customEvent.id().equals(ChatComponent.QUEUE_EXPAND_ID):
-               ChatListener chatListener = this.minecraft.gui.chatListener();
-               if (chatListener.queueSize() != 0L) {
-                  chatListener.acceptNextDelayedMessage();
-               }
-               break;
-            case ClickEvent.Custom customEvent when customEvent.id().equals(ChatComponent.GO_TO_RESTRICTIONS_SCREEN):
-               this.minecraft.gui.setScreen(new RestrictionsScreen(this, this.minecraft.player.chatAbilities()));
-               break;
-            default:
-               defaultHandleGameClickEvent(event, this.minecraft, this);
+                  {
+             defaultHandleGameClickEvent(event, this.minecraft, this);
          }
 
          return true;

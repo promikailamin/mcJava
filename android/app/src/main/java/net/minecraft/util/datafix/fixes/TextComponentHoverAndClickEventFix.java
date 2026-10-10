@@ -74,10 +74,10 @@ public class TextComponentHoverAndClickEventFix extends DataFix {
       );
    }
 
-   private static Dynamic<?> fixTextComponent(final Dynamic<?> dynamic) {
-      return dynamic.renameAndFixField("hoverEvent", "hover_event", TextComponentHoverAndClickEventFix::fixHoverEvent)
-         .renameAndFixField("clickEvent", "click_event", TextComponentHoverAndClickEventFix::fixClickEvent);
-   }
+private static Dynamic<?> fixTextComponent(final Dynamic<?> dynamic) {
+       return dynamic.renameAndFixField("hoverEvent", "hover_event", TextComponentHoverAndClickEventFix::fixHoverEvent)
+          .renameAndFixField("clickEvent", "click_event", TextComponentHoverAndClickEventFix::fixClickEvent);
+    }
 
    private static Dynamic<?> copyFields(Dynamic<?> target, final Dynamic<?> source, final String... fields) {
       for (String field : fields) {
@@ -87,30 +87,28 @@ public class TextComponentHoverAndClickEventFix extends DataFix {
       return target;
    }
 
-   private static Dynamic<?> fixHoverEvent(final Dynamic<?> dynamic) {
-      String action = dynamic.get("action").asString("");
+private static Dynamic<?> fixHoverEvent(final Dynamic<?> dynamic) {
+       String action = dynamic.get("action").asString("");
 
-      return switch (action) {
-         case "show_text" -> dynamic.renameField("contents", "value");
-         case "show_item" -> {
-            Dynamic<?> contents = dynamic.get("contents").orElseEmptyMap();
-            yield copyFields(dynamic.remove("contents"), contents, "id", "count", "components");
-         }
-         case "show_entity" -> {
-            Dynamic<?> contents = dynamic.get("contents").orElseEmptyMap();
-            yield copyFields(dynamic.remove("contents"), contents, "id", "type", "name").renameField("id", "uuid").renameField("type", "id");
-         }
-         default -> dynamic;
-      };
-   }
+       return switch (action) {
+          case "show_text" -> dynamic.renameField("contents", "value");
+          case "show_item" -> {
+             Dynamic<?> contents = dynamic.get("contents").orElseEmptyMap();
+             yield copyFields(dynamic.remove("contents"), contents, "id", "count", "components");
+          }
+          case "show_entity" -> {
+             Dynamic<?> contents = dynamic.get("contents").orElseEmptyMap();
+             yield copyFields(dynamic.remove("contents"), contents, "id", "type", "name").renameField("id", "uuid").renameField("type", "id");
+          }
+          default -> dynamic;
+       };
+    }
 
-   private static <T> @Nullable Dynamic<T> fixClickEvent(final Dynamic<T> dynamic) {
-      String action = dynamic.get("action").asString("");
-      String value = dynamic.get("value").asString("");
-      {
-          dynamic
-      }
-   }
+private static <T> @Nullable Dynamic<T> fixClickEvent(final Dynamic<T> dynamic) {
+       String action = dynamic.get("action").asString("");
+       String value = dynamic.get("value").asString("");
+       return dynamic;
+    }
 
    private static @Nullable Integer parseOldPage(final Dynamic<?> value) {
       Optional<Number> numberValue = value.asNumber().result();

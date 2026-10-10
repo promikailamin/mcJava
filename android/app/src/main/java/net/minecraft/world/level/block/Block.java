@@ -131,9 +131,9 @@ public class Block extends BlockBehaviour implements ItemLike {
       return state == null ? Blocks.AIR.defaultBlockState() : state;
    }
 
-   public static Block byItem(final @Nullable Item item) {
-      return item instanceof BlockItem ? getBlock() : Blocks.AIR;
-   }
+public static Block byItem(final @Nullable Item item) {
+       return item instanceof BlockItem blockItem ? blockItem.getBlock() : Blocks.AIR;
+    }
 
    public static BlockState pushEntitiesUp(final BlockState state, final BlockState newState, final LevelAccessor level, final BlockPos pos) {
       VoxelShape offsetShape = Shapes.joinUnoptimized(state.getCollisionShape(level, pos), newState.getCollisionShape(level, pos), BooleanOp.ONLY_SECOND)
@@ -433,13 +433,13 @@ public class Block extends BlockBehaviour implements ItemLike {
       popResource(level, () -> new ItemEntity(level, x, y, z, itemStack, deltaX, deltaY, deltaZ), itemStack);
    }
 
-   private static void popResource(final Level level, final Supplier<ItemEntity> entityFactory, final ItemStack itemStack) {
-      if (level instanceof ServerLevel && !itemStack.isEmpty() && serverLevel.getGameRules().get(GameRules.BLOCK_DROPS)) {
-         ItemEntity entity = entityFactory.get();
-         entity.setDefaultPickUpDelay();
-         level.addFreshEntity(entity);
-      }
-   }
+private static void popResource(final Level level, final Supplier<ItemEntity> entityFactory, final ItemStack itemStack) {
+       if (level instanceof ServerLevel serverLevel && !itemStack.isEmpty() && serverLevel.getGameRules().get(GameRules.BLOCK_DROPS)) {
+          ItemEntity entity = entityFactory.get();
+          entity.setDefaultPickUpDelay();
+          level.addFreshEntity(entity);
+       }
+    }
 
    protected void popExperience(final ServerLevel level, final BlockPos pos, final int amount) {
       if (level.getGameRules().get(GameRules.BLOCK_DROPS)) {
@@ -521,16 +521,15 @@ public class Block extends BlockBehaviour implements ItemLike {
       this.spawnDestroyByEntityParticles(level, null, pos, state);
    }
 
-   public BlockState playerWillDestroy(final Level level, final BlockPos pos, final BlockState state, final Player player) {
-      this.spawnDestroyByEntityParticles(level, player, pos, state);
-      if (state.is(BlockTags.GUARDED_BY_PIGLINS) && level instanceof ServerLevel) {
-          ServerLevel serverLevel = (ServerLevel) state.is(BlockTags.GUARDED_BY_PIGLINS) && level;
-         PiglinAi.angerNearbyPiglins(serverLevel, player, false);
-      }
+public BlockState playerWillDestroy(final Level level, final BlockPos pos, final BlockState state, final Player player) {
+       this.spawnDestroyByEntityParticles(level, player, pos, state);
+       if (state.is(BlockTags.GUARDED_BY_PIGLINS) && level instanceof ServerLevel serverLevel) {
+          PiglinAi.angerNearbyPiglins(serverLevel, player, false);
+       }
 
-      level.gameEvent(GameEvent.BLOCK_DESTROY, pos, GameEvent.Context.of(player, state));
-      return state;
-   }
+       level.gameEvent(GameEvent.BLOCK_DESTROY, pos, GameEvent.Context.of(player, state));
+       return state;
+    }
 
    public void handlePrecipitation(final BlockState state, final Level level, final BlockPos pos, final Biome.Precipitation precipitation) {
    }
@@ -627,17 +626,17 @@ private static <S extends StateHolder<?, S>, T extends Comparable<T>> S setValue
       }
    }
 
-   private record ShapePairKey(VoxelShape first, VoxelShape second) {
-      @Override
-      public boolean equals(final Object o) {
-         return o instanceof Block.ShapePairKey && this.first == that.first && this.second == that.second;
-      }
+private record ShapePairKey(VoxelShape first, VoxelShape second) {
+       @Override
+       public boolean equals(final Object o) {
+          return o instanceof Block.ShapePairKey that && this.first == that.first && this.second == that.second;
+       }
 
-      @Override
-      public int hashCode() {
-         return System.identityHashCode(this.first) * 31 + System.identityHashCode(this.second);
-      }
-   }
+       @Override
+       public int hashCode() {
+          return System.identityHashCode(this.first) * 31 + System.identityHashCode(this.second);
+       }
+    }
 
    @Retention(RetentionPolicy.CLASS)
    @Target(ElementType.TYPE_USE)

@@ -527,13 +527,11 @@ public class StructureTemplate {
    }
 
    public Vec3i getSize(final Rotation rotation) {
-      if (rotation instanceof COUNTERCLOCKWISE_90, CLOCKWISE_90) {
-          return new Vec3i(this.size.getZ(), this.size.getY(), this.size.getX());
-      }
-      else {
-          this.size
-      }
-   }
+        return switch (rotation) {
+            case COUNTERCLOCKWISE_90, CLOCKWISE_90 -> new Vec3i(this.size.getZ(), this.size.getY(), this.size.getX());
+            default -> this.size;
+        };
+    }
 
    public static BlockPos transform(final BlockPos pos, final Mirror mirror, final Rotation rotation, final BlockPos pivot) {
       int x = pos.getX();

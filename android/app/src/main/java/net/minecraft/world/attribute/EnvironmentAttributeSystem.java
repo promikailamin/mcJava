@@ -264,46 +264,34 @@ public class EnvironmentAttributeSystem implements EnvironmentAttributeReader {
          return !this.isAffectedByPosition ? this.getDimensionValue() : this.computeValuePositional(pos, biomeInterpolator);
       }
 
-      private Value computeValuePositional(final Vec3 pos, final @Nullable SpatialAttributeInterpolator biomeInterpolator) {
+private Value computeValuePositional(final Vec3 pos, final @Nullable SpatialAttributeInterpolator biomeInterpolator) {
          Value result = this.baseValue;
 
          for (EnvironmentAttributeLayer<Value> layer : this.layers) {
-            result = (Value)(            if (layer instanceof EnvironmentAttributeLayer.Constant<Value> constantLayer) {
-                constantLayer.applyConstant(result);
-            }
-            else if (layer instanceof EnvironmentAttributeLayer.TimeBased<Value> timeBasedLayer) {
-                timeBasedLayer.applyTimeBased(result, this.cacheTickId);
-            }
-            else if (layer instanceof EnvironmentAttributeLayer.Positional<Value> positionalLayer) {
-                positionalLayer.applyPositional(
-                  result, Objects.requireNonNull(pos), biomeInterpolator
-               );
-            }
-            else {
-                throw new IllegalArgumentException("Unexpected layer type: " + layer)
-            });
+            result = (Value) switch (layer) {
+                case EnvironmentAttributeLayer.Constant<Value> constantLayer -> constantLayer.applyConstant(result);
+                case EnvironmentAttributeLayer.TimeBased<Value> timeBasedLayer -> timeBasedLayer.applyTimeBased(result, this.cacheTickId);
+                case EnvironmentAttributeLayer.Positional<Value> positionalLayer -> positionalLayer.applyPositional(
+                    result, Objects.requireNonNull(pos), biomeInterpolator
+                );
+                default -> throw new IllegalArgumentException("Unexpected layer type: " + layer);
+            };
          }
 
          return this.attribute.sanitizeValue(result);
-      }
+       }
 
       private Value computeValueNotPositional() {
          Value result = this.baseValue;
 
          for (EnvironmentAttributeLayer<Value> layer : this.layers) {
-            result = (Value)(            if (layer instanceof EnvironmentAttributeLayer.Constant<Value> constantLayer) {
-                constantLayer.applyConstant(result);
-            }
-            else if (layer instanceof EnvironmentAttributeLayer.TimeBased<Value> timeBasedLayer) {
-                timeBasedLayer.applyTimeBased(result, this.cacheTickId);
-            }
-            else if (layer instanceof EnvironmentAttributeLayer.Positional<Value> ignored) {
-                result;
-            }
-            else {
-                throw new IllegalArgumentException("Unexpected layer type: " + layer)
-            });
-         }
+            result = (Value) switch (layer) {
+                case EnvironmentAttributeLayer.Constant<Value> constantLayer -> constantLayer.applyConstant(result);
+                case EnvironmentAttributeLayer.TimeBased<Value> timeBasedLayer -> timeBasedLayer.applyTimeBased(result, this.cacheTickId);
+                case EnvironmentAttributeLayer.Positional<Value> ignored -> result;
+                default -> throw new IllegalArgumentException("Unexpected layer type: " + layer);
+            };
+        }
 
          return this.attribute.sanitizeValue(result);
       }

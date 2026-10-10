@@ -1202,9 +1202,15 @@ public class BlockModelGenerators {
          .accept(
             MultiVariantGenerator.dispatch(block)
                .with(PropertyDispatch.initial(BlockStateProperties.POWERED, BlockStateProperties.RAIL_SHAPE_STRAIGHT).generate((powered, railShape) -> {
-                  {
-                      throw new UnsupportedOperationException("Fix you generator!")
-                  }
+                   return switch (railShape) {
+                       case NORTH_SOUTH -> powered ? flatOn : flat;
+                       case EAST_WEST -> powered ? flatOn : flat;
+                       case ASCENDING_EAST -> powered ? risingNEOn : risingNE;
+                       case ASCENDING_WEST -> powered ? risingSWOn : risingSW;
+                       case ASCENDING_NORTH -> powered ? risingNEOn : risingNE;
+                       case ASCENDING_SOUTH -> powered ? risingSWOn : risingSW;
+                       default -> throw new IllegalStateException("Unexpected rail shape: " + railShape);
+                   };
                }))
          );
    }
@@ -2701,10 +2707,10 @@ public class BlockModelGenerators {
          .accept(
             MultiVariantGenerator.dispatch(block)
                .with(PropertyDispatch.initial(BlockStateProperties.TRIAL_SPAWNER_STATE, BlockStateProperties.OMINOUS).generate((state, ominous) -> {
-                  if (state instanceof INACTIVE, COOLDOWN) {
+                  if (state == INACTIVE || state == COOLDOWN) {
                       return ominous ? ominousInactive : inactive;
                   }
-                  else if (state instanceof WAITING_FOR_PLAYERS, ACTIVE, WAITING_FOR_REWARD_EJECTION) {
+                  else if (state == WAITING_FOR_PLAYERS || state == ACTIVE || state == WAITING_FOR_REWARD_EJECTION) {
                       return ominous ? ominousActive : active;
                   }
                }))

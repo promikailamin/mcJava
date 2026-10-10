@@ -3161,19 +3161,19 @@ public Vec3 getHandHoldingItemAngle(final Item item) {
       this.portalProcess = oldEntity.portalProcess;
    }
 
-   public @Nullable Entity teleport(final TeleportTransition transition) {
-      if (this.level() instanceof ServerLevel && !this.isRemoved()) {
-         ServerLevel newLevel = transition.newLevel();
-         boolean otherDimension = newLevel.dimension() != serverLevel.dimension();
-         if (!transition.asPassenger()) {
-            this.stopRiding();
-         }
+public @Nullable Entity teleport(final TeleportTransition transition) {
+       if (this.level() instanceof ServerLevel serverLevel && !this.isRemoved()) {
+          ServerLevel newLevel = transition.newLevel();
+          boolean otherDimension = newLevel.dimension() != serverLevel.dimension();
+          if (!transition.asPassenger()) {
+             this.stopRiding();
+          }
 
-         return otherDimension ? this.teleportCrossDimension(serverLevel, newLevel, transition) : this.teleportSameDimension(serverLevel, transition);
-      } else {
-         return null;
-      }
-   }
+          return otherDimension ? this.teleportCrossDimension(serverLevel, newLevel, transition) : this.teleportSameDimension(serverLevel, transition);
+       } else {
+          return null;
+       }
+    }
 
    private Entity teleportSameDimension(final ServerLevel level, final TeleportTransition transition) {
       for (Entity passenger : this.getPassengers()) {
@@ -3310,18 +3310,16 @@ public Vec3 getHandHoldingItemAngle(final Item item) {
       }
    }
 
-   protected void removeAfterChangingDimensions() {
-      this.setRemoved(Entity.RemovalReason.CHANGED_DIMENSION);
-      if (this instanceof Leashable) {
-          Leashable leashable = (Leashable) this;
-         leashable.removeLeash();
-      }
+protected void removeAfterChangingDimensions() {
+       this.setRemoved(Entity.RemovalReason.CHANGED_DIMENSION);
+       if (this instanceof Leashable leashable) {
+          leashable.removeLeash();
+       }
 
-      if (this instanceof WaypointTransmitter && this.level instanceof ServerLevel) {
-          ServerLevel serverLevel = (ServerLevel) this instanceof WaypointTransmitter && this.level;
-         serverLevel.getWaypointManager().untrackWaypoint(waypoint);
-      }
-   }
+       if (this instanceof WaypointTransmitter waypointTransmitter && this.level instanceof ServerLevel serverLevel) {
+          serverLevel.getWaypointManager().untrackWaypoint(waypointTransmitter.getWaypoint());
+       }
+    }
 
    public Vec3 getRelativePortalPosition(final Direction.Axis axis, final BlockUtil.FoundRectangle portalArea) {
       return PortalShape.getRelativePosition(portalArea, axis, this.position(), this.getDimensions(this.getPose()));
@@ -3331,17 +3329,17 @@ public Vec3 getHandHoldingItemAngle(final Item item) {
       return (ignorePassenger || !this.isPassenger()) && this.isAlive();
    }
 
-   public boolean canTeleport(final Level from, final Level to) {
-      if (from.dimension() == Level.END && to.dimension() == Level.OVERWORLD) {
-         for (Entity passenger : this.getPassengers()) {
-            if (passenger instanceof ServerPlayer && !player.seenCredits) {
-               return false;
-            }
-         }
-      }
+public boolean canTeleport(final Level from, final Level to) {
+       if (from.dimension() == Level.END && to.dimension() == Level.OVERWORLD) {
+          for (Entity passenger : this.getPassengers()) {
+             if (passenger instanceof ServerPlayer player && !player.seenCredits) {
+                return false;
+             }
+          }
+       }
 
-      return true;
-   }
+       return true;
+    }
 
    public float getBlockExplosionResistance(
       final Explosion explosion, final BlockGetter level, final BlockPos pos, final BlockState block, final FluidState fluid, final float resistance
@@ -3961,18 +3959,18 @@ public Vec3 getHandHoldingItemAngle(final Item item) {
             }
          }
 
-         this.levelCallback.onMove();
-         if (!this.firstTick && this.level instanceof ServerLevel && !this.isRemoved()) {
-            if (this instanceof WaypointTransmitter && waypoint.isTransmittingWaypoint()) {
-               serverLevel.getWaypointManager().updateWaypoint(waypoint);
-            }
+this.levelCallback.onMove();
+          if (!this.firstTick && this.level instanceof ServerLevel serverLevel && !this.isRemoved()) {
+             if (this instanceof WaypointTransmitter waypointTransmitter && waypointTransmitter.isTransmittingWaypoint()) {
+                serverLevel.getWaypointManager().updateWaypoint(waypointTransmitter.getWaypoint());
+             }
 
-            if (this instanceof ServerPlayer && player.isReceivingWaypoints() && player.connection != null) {
-               serverLevel.getWaypointManager().updatePlayer(player);
-            }
-         }
-      }
-   }
+             if (this instanceof ServerPlayer player && player.isReceivingWaypoints() && player.connection != null) {
+                serverLevel.getWaypointManager().updatePlayer(player);
+             }
+          }
+       }
+    }
 
    public void checkDespawn() {
    }
@@ -4165,13 +4163,13 @@ public Vec3 getHandHoldingItemAngle(final Item item) {
       return this.random;
    }
 
-   public Vec3 getKnownMovement() {
-      return this.getControllingPassenger() instanceof Player && this.isAlive() ? controller.getKnownMovement() : this.getDeltaMovement();
-   }
+public Vec3 getKnownMovement() {
+       return this.getControllingPassenger() instanceof Player controller && this.isAlive() ? controller.getKnownMovement() : this.getDeltaMovement();
+    }
 
-   public Vec3 getKnownSpeed() {
-      return this.getControllingPassenger() instanceof Player && this.isAlive() ? controller.getKnownSpeed() : this.lastKnownSpeed;
-   }
+    public Vec3 getKnownSpeed() {
+       return this.getControllingPassenger() instanceof Player controller && this.isAlive() ? controller.getKnownSpeed() : this.lastKnownSpeed;
+    }
 
    public @Nullable ItemStack getWeaponItem() {
       return null;

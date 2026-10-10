@@ -225,7 +225,10 @@ def convert_pattern_switch_to_ifelse(content: str) -> str:
         full_switch = result[start_pos:pos]
         
         # Check if pattern matching switch (case TypeName varName or case TypeName(varName))
-        if not re.search(r'case\s+[A-Z][a-zA-Z_]*\s*[\(\s][a-z]', switch_body):
+        # TypeName can be qualified (e.g., PostChainConfig.TextureInput)
+        # Record pattern: case TypeName(Type varName)
+        # Type pattern: case TypeName varName
+        if not re.search(r'case\s+[A-Z][a-zA-Z_]*(\.[A-Z][a-zA-Z_]*)*\s*[\(\s][a-zA-Z]', switch_body):
             offset = offset + match.end()
             continue
         
@@ -234,7 +237,7 @@ def convert_pattern_switch_to_ifelse(content: str) -> str:
         # A switch expression has cases like "case Type var -> expr" at the top level
         # A switch statement has cases like "case Type var: { ... }" or "case Type var -> expr" but with statements
         # We'll check if the first case uses -> at the top level
-        first_case_match = re.search(r'case\s+[A-Z][a-zA-Z_]*\s*[\(\s][a-z]', switch_body)
+        first_case_match = re.search(r'case\s+[A-Z][a-zA-Z_]*(\.[A-Z][a-zA-Z_]*)*\s*[\(\s][a-zA-Z]', switch_body)
         is_expression = False
         if first_case_match:
             # Look at the first case to see if it uses -> or :

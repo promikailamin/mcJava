@@ -12,10 +12,10 @@ public enum ScreenDirection {
    private final IntComparator coordinateValueComparator = (k1, k2) -> k1 == k2 ? 0 : (this.isBefore(k1, k2) ? -1 : 1);
 
    public ScreenAxis getAxis() {
-      if (this instanceof UP, DOWN) {
+      if (this == UP || this == DOWN) {
           return ScreenAxis.VERTICAL;
       }
-      else if (this instanceof LEFT, RIGHT) {
+      else if (this == LEFT || this == RIGHT) {
           return ScreenAxis.HORIZONTAL;
       }
    }
@@ -30,10 +30,10 @@ public enum ScreenDirection {
    }
 
    public boolean isPositive() {
-      if (this instanceof UP, LEFT) {
+      if (this == UP || this == LEFT) {
           return false;
       }
-      else if (this instanceof DOWN, RIGHT) {
+      else if (this == DOWN || this == RIGHT) {
           return true;
       }
    }

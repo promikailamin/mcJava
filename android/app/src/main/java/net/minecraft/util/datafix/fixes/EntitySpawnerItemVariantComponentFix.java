@@ -30,9 +30,7 @@ public class EntitySpawnerItemVariantComponentFix extends DataFix {
          itemStackType,
          input -> {
             String id = input.getOptional(idFinder).<String>map(Pair::getSecond).orElse("");
-            {
-                input
-            }
+            return input;
          }
       );
    }

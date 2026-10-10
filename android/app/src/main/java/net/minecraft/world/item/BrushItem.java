@@ -133,7 +133,7 @@ public class BrushItem extends Item {
 
       public static BrushItem.DustParticlesDelta fromDirection(final Vec3 viewVector, final Direction hitDirection) {
          double yd = 0.0;
-         if (hitDirection instanceof DOWN, UP) {
+         if (hitDirection == DOWN || hitDirection == UP) {
              return new BrushItem.DustParticlesDelta(viewVector.z(), 0.0, -viewVector.x());
          }
       }

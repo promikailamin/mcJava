@@ -135,34 +135,32 @@ public abstract class StructurePiece {
    }
 
    protected int getWorldX(final int x, final int z) {
-      Direction orientation = this.getOrientation();
-      if (orientation == null) {
-         return x;
-      }
-      if (orientation instanceof NORTH, SOUTH) {
-          return this.boundingBox.minX() + x;
-      }
-      else {
-          x
-      }
-   }
+        Direction orientation = this.getOrientation();
+        if (orientation == null) {
+            return x;
+        }
+        return switch (orientation) {
+            case NORTH, SOUTH -> this.boundingBox.minX() + x;
+            case WEST, EAST -> x;
+            default -> x;
+        };
+    }
 
    protected int getWorldY(final int y) {
       return this.getOrientation() == null ? y : y + this.boundingBox.minY();
    }
 
    protected int getWorldZ(final int x, final int z) {
-      Direction orientation = this.getOrientation();
-      if (orientation == null) {
-         return z;
-      }
-      if (orientation instanceof WEST, EAST) {
-          return this.boundingBox.minZ() + x;
-      }
-      else {
-          z
-      }
-   }
+        Direction orientation = this.getOrientation();
+        if (orientation == null) {
+            return z;
+        }
+        return switch (orientation) {
+            case WEST, EAST -> this.boundingBox.minZ() + z;
+            case NORTH, SOUTH -> z;
+            default -> z;
+        };
+    }
 
    protected void placeBlock(final WorldGenLevel level, BlockState blockState, final int x, final int y, final int z, final BoundingBox chunkBB) {
       BlockPos pos = this.getWorldPos(x, y, z);
