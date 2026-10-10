@@ -23,7 +23,7 @@ public sealed interface ResolvableFloat permits ResolvableFloat.Constant, Resolv
       return switch (resolvableNumber) {
          case ResolvableFloat.Constant constant -> Either.left(constant);
          case ResolvableFloat.Reference reference -> Either.right(reference);
-         default -> throw new IllegalStateException("MatchException: " + null, null);
+         default -> throw new IllegalStateException("Unexpected value");
       };
    }
 

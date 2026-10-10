@@ -40,14 +40,14 @@ public class Vec3i implements Comparable<Vec3i> {
       this.z = z;
    }
 
-   @Override
-   public boolean equals(final Object o) {
-      if (this == o) {
-         return true;
-      } else {
-         return !(o instanceof Vec3i) ? false : this.getX() == vec3i.getX() && this.getY() == vec3i.getY() && this.getZ() == vec3i.getZ();
-      }
-   }
+@Override
+    public boolean equals(final Object o) {
+       if (this == o) {
+          return true;
+       } else {
+          return o instanceof Vec3i vec3i && this.getX() == vec3i.getX() && this.getY() == vec3i.getY() && this.getZ() == vec3i.getZ();
+       }
+    }
 
    @Override
    public int hashCode() {

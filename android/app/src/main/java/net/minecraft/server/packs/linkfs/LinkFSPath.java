@@ -205,19 +205,19 @@ class LinkFSPath implements Path {
       return current;
    }
 
-   LinkFSPath resolveName(final String name) {
-      if (isRelativeOrMissing(this.pathContents)) {
-         return new LinkFSPath(this.fileSystem, name, this, this.pathContents);
-      else if (this.pathContents instanceof PathContents.DirectoryContents) {
-          PathContents.DirectoryContents directory = (PathContents.DirectoryContents) this.pathContents;
-         LinkFSPath child = directory.children().get(name);
-         return child != null ? child : new LinkFSPath(this.fileSystem, name, this, PathContents.MISSING);
-      } else if (this.pathContents instanceof PathContents.FileContents) {
-         return new LinkFSPath(this.fileSystem, name, this, PathContents.MISSING);
-      } else {
-         throw new AssertionError("All content types should be already handled");
-      }
-   }
+LinkFSPath resolveName(final String name) {
+       if (isRelativeOrMissing(this.pathContents)) {
+          return new LinkFSPath(this.fileSystem, name, this, this.pathContents);
+       } else if (this.pathContents instanceof PathContents.DirectoryContents) {
+           PathContents.DirectoryContents directory = (PathContents.DirectoryContents) this.pathContents;
+          LinkFSPath child = directory.children().get(name);
+          return child != null ? child : new LinkFSPath(this.fileSystem, name, this, PathContents.MISSING);
+       } else if (this.pathContents instanceof PathContents.FileContents) {
+          return new LinkFSPath(this.fileSystem, name, this, PathContents.MISSING);
+       } else {
+          throw new AssertionError("All content types should be already handled");
+       }
+    }
 
    private static boolean isRelativeOrMissing(final PathContents contents) {
       return contents == PathContents.MISSING || contents == PathContents.RELATIVE;

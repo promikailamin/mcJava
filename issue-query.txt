@@ -1,9 +1,9 @@
 A new GitHub issue has been opened.
 
-Issue number: 19
+Issue number: 20
 
 Issue URL:
-https://github.com/promikailamin/mcJava/issues/19
+https://github.com/promikailamin/mcJava/issues/20
 
 Title:
 Fix all and build
@@ -11,33 +11,17 @@ Fix all and build
 Description:
 Fix all errors no matters how much changes and afforts it need just fix all and build it. and download mcsrc (a decompiler tool), Minecraft java latest version, fabric loader latest version and decompile them for assist in this project. perfectly build it. i think Minecraft latest version need java 25+. fix all errors and build in any cost.
 
-The build fails with `class file for java.lang.MatchException not found` because the Android Gradle Plugin's in-process Java compiler (JDK 21) generates bytecode for pattern matching (`instanceof Type var`) that references `java.lang.MatchException`, but:
+**Remaining issues (29 errors):**
+- `PlayerPredicate.java` - record brace balance
+- `Fox.java` - class brace balance  
+- `TestCommand.java`, `LinkFSPath.java`, `AbstractMinecartRenderer.java` - missing braces
+- `PiglinSpecificSensor.java`, `Projectile.java`, `SculkShriekerBlockEntity.java` - missing braces
+- `Grammar.java` - method reference/syntax issues
 
-1. **Android's desugar library (2.1.5)** doesn't include `MatchException` (added in Java 21)
-2. **AGP's in-process compiler API** doesn't honor `--patch-module` or `bootstrapClasspath` flags
-3. **Tried AGP 8.9.0, 8.13.2, 9.4.1** - all have the same issue
-4. **Pattern matching instances**: ~2,200 across the codebase (in non-excluded files)
+The pattern matching conversion is essentially complete for non-fabricmc code. The remaining work is fixing syntax errors introduced by the automated regex fixes. A proper AST-based tool (OpenRewrite) would be needed for a clean conversion without syntax errors.
 
-**Attempted solutions that didn't work:**
-- Regex-based source rewriting (introduced syntax errors in complex cases)
-- `--patch-module java.base=matchexception.jar` (ignored by in-process compiler)
-- `bootstrapClasspath` with MatchException JAR (ignored)
-- Upgrading AGP to 8.13.2 and 9.4.1 (same issue)
-- Upgrading Gradle to 9.6.0 (same issue)
 
-**The only viable fix** is rewriting all pattern matching to traditional syntax:
-```java
-// From: if (obj instanceof Type var) { ... }
-// To:   if (obj instanceof Type) { Type var = (Type) obj; ... }
-
-// From: return expr instanceof Type var ? var : falseExpr;
-// To:   return expr instanceof Type ? (Type) expr : falseExpr;
-```
-
-This requires a proper Java AST transformer (e.g., OpenRewrite) since regex-based approaches fail on nested expressions, lambdas, switch expressions, and complex conditions. The 2,200 instances span ~500 files and include ternary expressions, if/else/while conditions, variable assignments, lambda expressions, and pattern matching switch statements.
-
-A complete fix would take significant development time to implement a robust AST-based rewriter that handles all edge cases correctly.
-
+Fix all things in loop untill the build is succeed.
 
 Inspect the repository and implement the requested change.
 

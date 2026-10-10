@@ -58,7 +58,7 @@ public class NbtOps implements DynamicOps<Tag> {
          case CompoundTag compoundTag -> this.convertMap(outOps, compoundTag);
          case IntArrayTag intArrayTag -> outOps.createIntList(Arrays.stream(intArrayTag.getAsIntArray()));
          case LongArrayTag longArrayTag -> outOps.createLongList(Arrays.stream(longArrayTag.getAsLongArray()));
-         default -> throw new IllegalStateException("MatchException: " + null, null);
+         default -> throw new IllegalStateException("Unexpected value");
       });
    }
 
@@ -308,7 +308,7 @@ public DataResult<Consumer<Consumer<Tag>>> getList(final Tag input) {
             case ByteArrayTag array -> Optional.of(new NbtOps.ByteListCollector(array.getAsByteArray()));
             case IntArrayTag array -> Optional.of(new NbtOps.IntListCollector(array.getAsIntArray()));
             case LongArrayTag array -> Optional.of(new NbtOps.LongListCollector(array.getAsLongArray()));
-            default -> throw new IllegalStateException("MatchException: " + null, null);
+            default -> throw new IllegalStateException("Unexpected value");
          };
       } else {
          return Optional.empty();

@@ -106,16 +106,16 @@ public class FrameBufferCache {
          return this.hash;
       }
 
-      @Override
-      public boolean equals(final Object obj) {
-         if (this == obj) {
-            return true;
-         else if (obj instanceof FrameBufferCache.CacheKey) {
-             FrameBufferCache.CacheKey other = (FrameBufferCache.CacheKey) obj;
-            return this.hash != other.hash ? false : Arrays.equals(this.data, other.data);
-         } else {
-            return false;
-         }
-      }
+@Override
+       public boolean equals(final Object obj) {
+          if (this == obj) {
+             return true;
+          } else if (obj instanceof FrameBufferCache.CacheKey) {
+              FrameBufferCache.CacheKey other = (FrameBufferCache.CacheKey) obj;
+             return this.hash != other.hash ? false : Arrays.equals(this.data, other.data);
+          } else {
+             return false;
+          }
+       }
    }
 }

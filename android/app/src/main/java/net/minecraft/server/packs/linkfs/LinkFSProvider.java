@@ -183,14 +183,14 @@ class LinkFSProvider extends FileSystemProvider {
       throw new ReadOnlyFileSystemException();
    }
 
-   private static LinkFSPath toLinkPath(final @Nullable Path path) {
-      if (path == null) {
-         throw new NullPointerException();
-      else if (path instanceof LinkFSPath) {
-          LinkFSPath p = (LinkFSPath) path;
-         return p;
-      } else {
-         throw new ProviderMismatchException();
-      }
-   }
+private static LinkFSPath toLinkPath(final @Nullable Path path) {
+       if (path == null) {
+          throw new NullPointerException();
+       } else if (path instanceof LinkFSPath) {
+           LinkFSPath p = (LinkFSPath) path;
+          return p;
+       } else {
+          throw new ProviderMismatchException();
+       }
+    }
 }

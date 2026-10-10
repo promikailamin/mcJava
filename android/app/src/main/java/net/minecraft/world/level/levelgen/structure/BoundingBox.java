@@ -261,21 +261,20 @@ public class BoundingBox {
          .toString();
    }
 
-   @Override
-   public boolean equals(final Object o) {
-      if (this == o) {
-         return true;
-      } else {
-         return !(o instanceof BoundingBox)
-            ? false
-            : this.minX == that.minX
-               && this.minY == that.minY
-               && this.minZ == that.minZ
-               && this.maxX == that.maxX
-               && this.maxY == that.maxY
-               && this.maxZ == that.maxZ;
-      }
-   }
+@Override
+    public boolean equals(final Object o) {
+       if (this == o) {
+          return true;
+       } else {
+          return o instanceof BoundingBox that
+             && this.minX == that.minX
+                && this.minY == that.minY
+                && this.minZ == that.minZ
+                && this.maxX == that.maxX
+                && this.maxY == that.maxY
+                && this.maxZ == that.maxZ;
+       }
+    }
 
    @Override
    public int hashCode() {

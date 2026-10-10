@@ -119,7 +119,7 @@ public class TextureSlots {
                      unresolved.put(slot, reference);
                      break;
                   default:
-                     throw new IllegalStateException("MatchException: " + null, null);
+                     throw new IllegalStateException("Unexpected value");
                }
             });
          }

@@ -164,7 +164,7 @@ public class SkinManager {
             case SKIN -> "skins";
             case CAPE -> "capes";
             case ELYTRA -> "elytra";
-            default -> throw new IllegalStateException("MatchException: " + null, null);
+            default -> throw new IllegalStateException("Unexpected value");
          };
          return Identifier.withDefaultNamespace(root + "/" + textureHash);
       }

@@ -188,7 +188,7 @@ public class PlayerSocialManager {
          case SERVICE_NOT_AVAILABLE -> FRIEND_ACTION_UNAVAILABLE_MESSAGE;
          case ERROR -> FRIEND_ACTION_FAILED_MESSAGE;
          case SUCCESS, UPGRADE_NEEDED, CONNECTION_ISSUE, TEMPORARY_UNAVAILABLE, GENERIC_ERROR -> null;
-         default -> throw new IllegalStateException("MatchException: " + null, null);
+         default -> throw new IllegalStateException("Unexpected value");
       };
       if (title != null) {
          this.minecraft

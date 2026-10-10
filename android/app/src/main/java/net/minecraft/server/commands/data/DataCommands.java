@@ -380,7 +380,7 @@ public class DataCommands {
          case CompoundTag compoundTag -> compoundTag.size();
          case StringTag(String value) -> value.length();
          case EndTag ignored -> throw ERROR_GET_NON_EXISTENT.create(path.toString());
-         default -> throw new IllegalStateException("MatchException: " + null, null);
+         default -> throw new IllegalStateException("Unexpected value");
       };
       source.sendSuccess(() -> accessor.getPrintSuccess(tag), false);
       return result;

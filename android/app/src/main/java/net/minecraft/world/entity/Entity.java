@@ -577,14 +577,14 @@ public abstract class Entity
       }
 
       this.checkBelowWorld();
-      if (!this.level().isClientSide()) {
-         this.setSharedFlagOnFire(this.remainingFireTicks > 0);
-      }
+if (!this.level().isClientSide()) {
+          this.setSharedFlagOnFire(this.remainingFireTicks > 0);
+       }
 
-      this.firstTick = false;
-      if (this.level() instanceof ServerLevel && this instanceof Leashable) {
-         Leashable.tickLeash(serverLevel, (Entity & Leashable)this);
-      }
+       this.firstTick = false;
+       if (this.level() instanceof ServerLevel serverLevel && this instanceof Leashable) {
+          Leashable.tickLeash(serverLevel, (Entity & Leashable)this);
+       }
 
       profiler.pop();
    }
@@ -636,17 +636,17 @@ public abstract class Entity
       }
    }
 
-   public void lavaHurt() {
-      if (!this.fireImmune()) {
-         if (this.level() instanceof ServerLevel && this.hurtServer(serverLevel, this.damageSources().lava(), 4.0F)
-            && this.shouldPlayLavaHurtSound()
-            && !this.isSilent()) {
-            serverLevel.playSound(
-               null, this.getX(), this.getY(), this.getZ(), SoundEvents.GENERIC_BURN, this.getSoundSource(), 0.4F, 2.0F + this.random.nextFloat() * 0.4F
-            );
-         }
-      }
-   }
+public void lavaHurt() {
+       if (!this.fireImmune()) {
+          if (this.level() instanceof ServerLevel serverLevel && this.hurtServer(serverLevel, this.damageSources().lava(), 4.0F)
+             && this.shouldPlayLavaHurtSound()
+             && !this.isSilent()) {
+             serverLevel.playSound(
+                null, this.getX(), this.getY(), this.getZ(), SoundEvents.GENERIC_BURN, this.getSoundSource(), 0.4F, 2.0F + this.random.nextFloat() * 0.4F
+             );
+          }
+       }
+    }
 
    protected boolean shouldPlayLavaHurtSound() {
       return true;
@@ -1359,7 +1359,7 @@ public abstract class Entity
    ) {
       AABB deflatedBoundingBoxAtTarget = this.makeBoundingBox(to).deflate(1.0E-5F);
       boolean movedFar = from.distanceToSqr(to) > Mth.square(0.9999900000002526);
-      boolean debugEntityBlockIntersections = this.level instanceof ServerLevel && serverLevel.getServer().debugSubscribers().hasAnySubscriberFor(DebugSubscriptions.ENTITY_BLOCK_INTERSECTIONS);
+      boolean debugEntityBlockIntersections = this.level instanceof ServerLevel serverLevel && serverLevel.getServer().debugSubscribers().hasAnySubscriberFor(DebugSubscriptions.ENTITY_BLOCK_INTERSECTIONS);
       AtomicInteger iterations = new AtomicInteger();
       BlockGetter.forEachBlockIntersectedBetween(
          from,
@@ -1976,10 +1976,10 @@ public abstract class Entity
       }
    }
 
-   @Deprecated
-   public final boolean hurtOrSimulate(final DamageSource source, final float damage) {
-      return this.level instanceof ServerLevel ? this.hurtServer(serverLevel, source, damage)  : this.hurtClient(source);
-   }
+@Deprecated
+    public final boolean hurtOrSimulate(final DamageSource source, final float damage) {
+       return this.level instanceof ServerLevel serverLevel ? this.hurtServer(serverLevel, source, damage) : this.hurtClient(source);
+    }
 
    public abstract boolean hurtServer(ServerLevel level, DamageSource source, float damage);
 
@@ -2332,12 +2332,12 @@ public abstract class Entity
          );
    }
 
-   public InteractionResult interact(final Player player, final InteractionHand hand, final Vec3 location) {
-      if (!this.level().isClientSide()
-         && player.isSecondaryUseActive()
-         && this instanceof Leashable && leashable.canBeLeashed()
-         && this.isAlive()
-         && !(this instanceof LivingEntity && le.isBaby())) {
+public InteractionResult interact(final Player player, final InteractionHand hand, final Vec3 location) {
+       if (!this.level().isClientSide()
+          && player.isSecondaryUseActive()
+          && this instanceof Leashable leashable && leashable.canBeLeashed()
+          && this.isAlive()
+          && !(this instanceof LivingEntity le && le.isBaby())) {
          List<Leashable> mobsToLeash = Leashable.leashableInArea(this, l -> l.getLeashHolder() == player);
          if (!mobsToLeash.isEmpty()) {
             boolean anyLeashed = false;
@@ -2357,18 +2357,17 @@ public abstract class Entity
          }
       }
 
-      ItemStack heldItem = player.getItemInHand(hand);
-      if (heldItem.is(Items.SHEARS) && this.shearOffAllLeashConnections(player)) {
-         heldItem.hurtAndBreak(1, player, hand);
-         return InteractionResult.SUCCESS;
-      } else if (this instanceof Mob && heldItem.is(Items.SHEARS)
-         && target.canShearEquipment(player)
-         && !player.isSecondaryUseActive()
-         && target.attemptToShearEquipment(player, hand, heldItem)) {
-         return InteractionResult.SUCCESS;
-      } else {
-         if (this.isAlive() && this instanceof Leashable) {
-             Leashable leashable = (Leashable) this.isAlive() && this;
+ItemStack heldItem = player.getItemInHand(hand);
+       if (heldItem.is(Items.SHEARS) && this.shearOffAllLeashConnections(player)) {
+          heldItem.hurtAndBreak(1, player, hand);
+          return InteractionResult.SUCCESS;
+       } else if (this instanceof Mob target && heldItem.is(Items.SHEARS)
+          && target.canShearEquipment(player)
+          && !player.isSecondaryUseActive()
+          && target.attemptToShearEquipment(player, hand, heldItem)) {
+          return InteractionResult.SUCCESS;
+       } else {
+          if (this.isAlive() && this instanceof Leashable leashable) {
             if (leashable.getLeashHolder() == player) {
                if (!this.level().isClientSide()) {
                   if (player.hasInfiniteMaterials()) {
@@ -2407,20 +2406,19 @@ public abstract class Entity
       }
    }
 
-   public boolean shearOffAllLeashConnections(final @Nullable Player player) {
-      boolean dropped = this.dropAllLeashConnections(player);
-      if (dropped && this.level() instanceof ServerLevel) {
-          ServerLevel serverLevel = (ServerLevel) dropped && this.level();
-         serverLevel.playSound(null, this.blockPosition(), SoundEvents.SHEARS_SNIP, player != null ? player.getSoundSource() : this.getSoundSource());
-      }
+public boolean shearOffAllLeashConnections(final @Nullable Player player) {
+       boolean dropped = this.dropAllLeashConnections(player);
+       if (dropped && this.level() instanceof ServerLevel serverLevel) {
+          serverLevel.playSound(null, this.blockPosition(), SoundEvents.SHEARS_SNIP, player != null ? player.getSoundSource() : this.getSoundSource());
+       }
 
-      return dropped;
-   }
+       return dropped;
+    }
 
-   public boolean dropAllLeashConnections(final @Nullable Player player) {
-      List<Leashable> leashables = Leashable.leashableLeashedTo(this);
-      boolean dropped = !leashables.isEmpty();
-      if (this instanceof Leashable && leashableThis.isLeashed()) {
+    public boolean dropAllLeashConnections(final @Nullable Player player) {
+       List<Leashable> leashables = Leashable.leashableLeashedTo(this);
+       boolean dropped = !leashables.isEmpty();
+       if (this instanceof Leashable leashableThis && leashableThis.isLeashed()) {
          leashableThis.dropLeash();
          dropped = true;
       }
@@ -2673,15 +2671,15 @@ public abstract class Entity
       return calculateViewVector(this.getXRot(), this.getYHeadRot());
    }
 
-   public Vec3 getHandHoldingItemAngle(final Item item) {
-      if (!(this instanceof Player)) {
-         return Vec3.ZERO;
-      } else {
-         boolean itemOnlyInOffhand = player.getOffhandItem().is(item) && !player.getMainHandItem().is(item);
-         HumanoidArm itemArm = itemOnlyInOffhand ? player.getMainArm().getOpposite() : player.getMainArm();
-         return calculateViewVector(0.0F, this.getYRot() + (itemArm == HumanoidArm.RIGHT ? 80 : -80)).scale(0.5);
-      }
-   }
+public Vec3 getHandHoldingItemAngle(final Item item) {
+       if (!(this instanceof Player player)) {
+          return Vec3.ZERO;
+       } else {
+          boolean itemOnlyInOffhand = player.getOffhandItem().is(item) && !player.getMainHandItem().is(item);
+          HumanoidArm itemArm = itemOnlyInOffhand ? player.getMainArm().getOpposite() : player.getMainArm();
+          return calculateViewVector(0.0F, this.getYRot() + (itemArm == HumanoidArm.RIGHT ? 80 : -80)).scale(0.5);
+       }
+    }
 
    public Vec2 getRotationVector() {
       return new Vec2(this.getXRot(), this.getYRot());

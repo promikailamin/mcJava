@@ -21,7 +21,7 @@ public sealed interface FloatRangePredicate extends Validatable permits FloatRan
       return switch (range) {
          case FloatRangePredicate.Point point -> Either.left(point);
          case FloatRangePredicate.Line line -> Either.right(line);
-         default -> throw new IllegalStateException("MatchException: " + null, null);
+         default -> throw new IllegalStateException("Unexpected value");
       };
    });
 

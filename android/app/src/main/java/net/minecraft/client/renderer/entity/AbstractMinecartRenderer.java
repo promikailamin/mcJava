@@ -97,19 +97,19 @@ public abstract class AbstractMinecartRenderer<T extends AbstractMinecart, S ext
       poseStack.rotateDegrees(Axis.ZP, -xRot);
    }
 
-   public void extractRenderState(final T entity, final S state, final float partialTicks) {
-      super.extractRenderState(entity, state, partialTicks);
-      if (entity.getBehavior() instanceof NewMinecartBehavior) {
-          NewMinecartBehavior behavior = (NewMinecartBehavior) entity.getBehavior();
-         newExtractState(entity, behavior, state, partialTicks);
-         state.isNewRender = true;
-      else if (entity.getBehavior() instanceof OldMinecartBehavior) {
-          OldMinecartBehavior behavior = (OldMinecartBehavior) entity.getBehavior();
-         oldExtractState(entity, behavior, state, partialTicks);
-         state.isNewRender = false;
-      }
+public void extractRenderState(final T entity, final S state, final float partialTicks) {
+       super.extractRenderState(entity, state, partialTicks);
+       if (entity.getBehavior() instanceof NewMinecartBehavior) {
+           NewMinecartBehavior behavior = (NewMinecartBehavior) entity.getBehavior();
+          newExtractState(entity, behavior, state, partialTicks);
+          state.isNewRender = true;
+       } else if (entity.getBehavior() instanceof OldMinecartBehavior) {
+           OldMinecartBehavior behavior = (OldMinecartBehavior) entity.getBehavior();
+          oldExtractState(entity, behavior, state, partialTicks);
+          state.isNewRender = false;
+       }
 
-      long seed = entity.getId() * 493286711L;
+       long seed = entity.getId() * 493286711L;
       state.offsetSeed = seed * seed * 4392167121L + seed * 98761L;
       state.hurtTime = entity.getHurtTime() - partialTicks;
       state.hurtDir = entity.getHurtDir();

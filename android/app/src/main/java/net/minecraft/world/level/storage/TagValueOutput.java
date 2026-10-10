@@ -43,7 +43,7 @@ public class TagValueOutput implements ValueOutput {
             error.partialValue().ifPresent(partial -> this.output.put(name, partial));
             break;
          default:
-            throw new IllegalStateException("MatchException: " + null, null);
+            throw new IllegalStateException("Unexpected value");
       }
    }
 
@@ -65,7 +65,7 @@ public class TagValueOutput implements ValueOutput {
             error.partialValue().ifPresent(partial -> this.output.merge((CompoundTag)partial));
             break;
          default:
-            throw new IllegalStateException("MatchException: " + null, null);
+            throw new IllegalStateException("Unexpected value");
       }
    }
 
@@ -232,7 +232,7 @@ public class TagValueOutput implements ValueOutput {
                error.partialValue().ifPresent(this.output::add);
                break;
             default:
-               throw new IllegalStateException("MatchException: " + null, null);
+               throw new IllegalStateException("Unexpected value");
          }
       }
 

@@ -30,10 +30,10 @@ public class CompilableString<T> {
       return this.compiled;
    }
 
-   @Override
-   public boolean equals(final Object o) {
-      return o instanceof CompilableString<?> && Objects.equals(this.source, that.source);
-   }
+@Override
+    public boolean equals(final Object o) {
+       return o instanceof CompilableString<?> that && Objects.equals(this.source, that.source);
+    }
 
    @Override
    public int hashCode() {

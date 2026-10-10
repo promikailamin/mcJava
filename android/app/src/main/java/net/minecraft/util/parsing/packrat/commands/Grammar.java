@@ -25,40 +25,40 @@ public record Grammar<T>(Dictionary<StringReader> rules, NamedRule<StringReader,
       return state.parseTopRule(this.top);
    }
 
-   @Override
-   public T parseForCommands(final StringReader reader) throws CommandSyntaxException {
-      ErrorCollector.LongestOnly<StringReader> errorCollector = new ErrorCollector.LongestOnly<>();
-      StringReaderParserState state = new StringReaderParserState(errorCollector, reader);
-      Optional<T> result = this.parse(state);
-      if (result.isPresent()) {
-         return result.get();
-      }
+@Override
+    public T parseForCommands(final StringReader reader) throws CommandSyntaxException {
+       ErrorCollector.LongestOnly<StringReader> errorCollector = new ErrorCollector.LongestOnly<>();
+       StringReaderParserState state = new StringReaderParserState(errorCollector, reader);
+       Optional<T> result = this.parse(state);
+       if (result.isPresent()) {
+          return result.get();
+       }
 
-      List<ErrorEntry<StringReader>> errorEntries = errorCollector.entries();
-      List<Exception> exceptions = errorEntries.stream().<Exception>mapMulti((entry, output) -> {
-         if (entry.reason() instanceof DelayedException<?>) {
-             DelayedException<?> delayedException = (DelayedException<?>) entry.reason();
-            output.accept(delayedException.create(reader.getString(), entry.cursor()));
-         else if (entry.reason() instanceof Exception) {
-             Exception exceptionx = (Exception) entry.reason();
-            output.accept(exceptionx);
-         }
-      }).toList();
+       List<ErrorEntry<StringReader>> errorEntries = errorCollector.entries();
+       List<Exception> exceptions = errorEntries.stream().<Exception>mapMulti((entry, output) -> {
+           if (entry.reason() instanceof DelayedException<?>) {
+               DelayedException<?> delayedException = (DelayedException<?>) entry.reason();
+              output.accept(delayedException.create(reader.getString(), entry.cursor()));
+           } else if (entry.reason() instanceof Exception) {
+               Exception exceptionx = (Exception) entry.reason();
+              output.accept(exceptionx);
+           }
+        }).toList();
 
-      for (Exception exception : exceptions) {
-         if (exception instanceof CommandSyntaxException) {
-             CommandSyntaxException cse = (CommandSyntaxException) exception;
-            throw cse;
-         }
-      }
+       for (Exception exception : exceptions) {
+          if (exception instanceof CommandSyntaxException) {
+              CommandSyntaxException cse = (CommandSyntaxException) exception;
+             throw cse;
+          }
+       }
 
-      if (exceptions.size() == 1 && exceptions.get(0) instanceof RuntimeException) {
-          RuntimeException re = (RuntimeException) exceptions.size() == 1 && exceptions.get(0);
-         throw re;
-      } else {
-         throw new IllegalStateException("Failed to parse: " + errorEntries.stream().map(ErrorEntry::toString).collect(Collectors.joining(", ")));
-      }
-   }
+       if (exceptions.size() == 1 && exceptions.get(0) instanceof RuntimeException) {
+           RuntimeException re = (RuntimeException) exceptions.get(0);
+          throw re;
+       } else {
+          throw new IllegalStateException("Failed to parse: " + errorEntries.stream().map(ErrorEntry::toString).collect(Collectors.joining(", ")));
+       }
+    }
 
    @Override
    public CompletableFuture<Suggestions> parseForSuggestions(final SuggestionsBuilder suggestionsBuilder) {

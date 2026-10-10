@@ -182,35 +182,35 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
          return new ListTag();
       }
 
-      @Override
-      public int setTag(final Tag parent, final Supplier<Tag> toAdd) {
-         if (!(parent instanceof CollectionTag)) {
-            return 0;
-         } else {
-            int size = list.size();
-            if (size == 0) {
-               list.addTag(0, toAdd.get());
-               return 1;
-            }
+@Override
+       public int setTag(final Tag parent, final Supplier<Tag> toAdd) {
+          if (!(parent instanceof CollectionTag list)) {
+             return 0;
+          } else {
+             int size = list.size();
+             if (size == 0) {
+                list.addTag(0, toAdd.get());
+                return 1;
+             }
 
-            Tag newValue = toAdd.get();
-            int changedCount = size - (int)list.stream().filter(newValue::equals).count();
-            if (changedCount == 0) {
-               return 0;
-            }
+             Tag newValue = toAdd.get();
+             int changedCount = size - (int)list.stream().filter(newValue::equals).count();
+             if (changedCount == 0) {
+                return 0;
+             }
 
-            list.clear();
-            if (!list.addTag(0, newValue)) {
-               return 0;
-            }
+             list.clear();
+             if (!list.addTag(0, newValue)) {
+                return 0;
+             }
 
-            for (int i = 1; i < size; i++) {
-               list.addTag(i, toAdd.get());
-            }
+             for (int i = 1; i < size; i++) {
+                list.addTag(i, toAdd.get());
+             }
 
-            return changedCount;
-         }
-      }
+             return changedCount;
+          }
+       }
 
       @Override
       public int removeTag(final Tag parent) {
@@ -280,15 +280,15 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
          return 0;
       }
 
-      @Override
-      public int removeTag(final Tag parent) {
-         if (parent instanceof CompoundTag && compound.contains(this.name)) {
-            compound.remove(this.name);
-            return 1;
-         } else {
-            return 0;
-         }
-      }
+@Override
+       public int removeTag(final Tag parent) {
+          if (parent instanceof CompoundTag compound && compound.contains(this.name)) {
+             compound.remove(this.name);
+             return 1;
+          } else {
+             return 0;
+          }
+       }
    }
 
    private static class IndexedElementNode implements NbtPathArgument.Node {
@@ -683,13 +683,13 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
          int modifiedCount = 0;
          boolean usedFirst = false;
 
-         for (Tag targetTag : targets) {
-            if (!(targetTag instanceof CollectionTag)) {
-               throw NbtPathArgument.ERROR_EXPECTED_LIST.create(targetTag);
-            }
+for (Tag targetTag : targets) {
+             if (!(targetTag instanceof CollectionTag targetList)) {
+                throw NbtPathArgument.ERROR_EXPECTED_LIST.create(targetTag);
+             }
 
-            boolean modified = false;
-            int actualIndex = index < 0 ? targetList.size() + index + 1 : index;
+             boolean modified = false;
+             int actualIndex = index < 0 ? targetList.size() + index + 1 : index;
 
             for (Tag sourceTag : toInsertCopy) {
                try {

@@ -126,14 +126,14 @@ public final class Identifier implements Comparable<Identifier> {
       return this.namespace + ":" + this.path;
    }
 
-   @Override
-   public boolean equals(final @Nullable Object o) {
-      if (this == o) {
-         return true;
-      } else {
-         return !(o instanceof Identifier) ? false : this.namespace.equals(that.namespace) && this.path.equals(that.path);
-      }
-   }
+@Override
+    public boolean equals(final @Nullable Object o) {
+       if (this == o) {
+          return true;
+       } else {
+          return o instanceof Identifier that && this.namespace.equals(that.namespace) && this.path.equals(that.path);
+       }
+    }
 
    @Override
    public int hashCode() {

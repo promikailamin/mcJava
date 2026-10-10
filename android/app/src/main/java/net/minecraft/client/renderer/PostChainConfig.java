@@ -31,7 +31,7 @@ public record PostChainConfig(Map<Identifier, PostChainConfig.InternalTarget> in
             return switch (input) {
                case PostChainConfig.TextureInput texture -> Either.left(texture);
                case PostChainConfig.TargetInput target -> Either.right(target);
-               default -> throw new IllegalStateException("MatchException: " + null, null);
+               default -> throw new IllegalStateException("Unexpected value");
             };
          });
 

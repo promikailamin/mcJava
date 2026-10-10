@@ -76,7 +76,7 @@ class FriendEntry extends AbstractFriendsEntryContainerWidget {
          case PLAYING_OFFLINE -> 3;
          case ONLINE -> 4;
          case OFFLINE -> 5;
-         default -> throw new IllegalStateException("MatchException: " + null, null);
+         default -> throw new IllegalStateException("Unexpected value");
       };
    }
 

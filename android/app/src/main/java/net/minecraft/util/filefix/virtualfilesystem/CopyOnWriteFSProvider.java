@@ -118,7 +118,7 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
       } else if (node instanceof DirectoryNode) {
          throw new CowFSFileSystemException(cowPath + ": not a regular file");
       } else {
-         throw new IllegalStateException("MatchException: " + null, null);
+         throw new IllegalStateException("Unexpected value");
       }
    }
 
@@ -276,7 +276,7 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
       } else if (node instanceof FileNode file) {
          checkPath = file.storagePath();
       } else {
-         throw new IllegalStateException("MatchException: " + null, null);
+         throw new IllegalStateException("Unexpected value");
       }
       checkPath.getFileSystem().provider().checkAccess(checkPath, modes);
    }
@@ -311,7 +311,7 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
       } else if (node instanceof FileNode file) {
          return (V) Files.getFileAttributeView(file.storagePath(), type, options);
       } else {
-         throw new IllegalStateException("MatchException: " + null, null);
+         throw new IllegalStateException("Unexpected value");
       }
    }
 
@@ -325,7 +325,7 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
       } else if (node instanceof FileNode file) {
          return (A) Files.readAttributes(file.storagePath(), type, options);
       } else {
-         throw new IllegalStateException("MatchException: " + null, null);
+         throw new IllegalStateException("Unexpected value");
       }
    }
 

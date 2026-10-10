@@ -75,7 +75,7 @@ public interface AbuseReportSender {
             case SERVICE_UNAVAILABLE -> SERVICE_UNAVAILABLE_TEXT;
             case HTTP_ERROR -> HTTP_ERROR_TEXT;
             case JSON_ERROR -> JSON_ERROR_TEXT;
-            default -> throw new IllegalStateException("MatchException: " + null, null);
+            default -> throw new IllegalStateException("Unexpected value");
          };
       }
 

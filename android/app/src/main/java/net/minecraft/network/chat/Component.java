@@ -53,9 +53,9 @@ public interface Component extends Message, FormattedText {
 
    List<Component> getSiblings();
 
-   default @Nullable String tryCollapseToString() {
-      return this.getContents() instanceof PlainTextContents && this.getSiblings().isEmpty() && this.getStyle().isEmpty() ? text.text() : null;
-   }
+default @Nullable String tryCollapseToString() {
+       return this.getContents() instanceof PlainTextContents text && this.getSiblings().isEmpty() && this.getStyle().isEmpty() ? text.text() : null;
+    }
 
    default MutableComponent plainCopy() {
       return MutableComponent.create(this.getContents());
@@ -205,9 +205,9 @@ public interface Component extends Message, FormattedText {
       return literal(date.toString());
    }
 
-   static Component translationArg(final Message message) {
-      return message instanceof Component ? component  : literal(message.getString());
-   }
+static Component translationArg(final Message message) {
+       return message instanceof Component component ? component : literal(message.getString());
+    }
 
    static Component translationArg(final UUID uuid) {
       return literal(uuid.toString());

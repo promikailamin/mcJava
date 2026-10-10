@@ -57,7 +57,7 @@ public class TagValueInput implements ValueInput {
             this.problemReporter.report(new TagValueInput.DecodeFromFieldFailedProblem(name, tag, error));
             yield error.partialValue();
          }
-         default -> throw new IllegalStateException("MatchException: " + null, null);
+         default -> throw new IllegalStateException("Unexpected value");
       };
    }
 
@@ -71,7 +71,7 @@ public class TagValueInput implements ValueInput {
             this.problemReporter.report(new TagValueInput.DecodeFromMapFailedProblem(error));
             yield error.partialValue();
          }
-         default -> throw new IllegalStateException("MatchException: " + null, null);
+         default -> throw new IllegalStateException("Unexpected value");
       };
    }
 
@@ -395,7 +395,7 @@ private @Nullable NumericTag getNumericTag(final String name) {
                   this.reportIndexUnwrapProblem((int)index, value, error);
                   yield error.partialValue().orElse(null);
                }
-               default -> throw new IllegalStateException("MatchException: " + null, null);
+               default -> throw new IllegalStateException("Unexpected value");
             };
          }).filter(Objects::nonNull);
       }
@@ -419,7 +419,7 @@ private @Nullable NumericTag getNumericTag(final String name) {
 
                         return (T)error.partialValue().get();
                      default:
-                        throw new IllegalStateException("MatchException: " + null, null);
+                        throw new IllegalStateException("Unexpected value");
                   }
                }
 

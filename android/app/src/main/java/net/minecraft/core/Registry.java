@@ -47,10 +47,10 @@ public interface Registry<T> extends IdMap<T>, Keyable, HolderLookup.RegistryLoo
       );
    }
 
-   private DataResult<Holder.Reference<T>> safeCastToReference(final Holder<T> holder) {
-      return holder instanceof Holder.Reference<T> ? DataResult.success(reference)
-          : DataResult.error(() -> "Unregistered holder in " + this.key() + ": " + holder);
-   }
+private DataResult<Holder.Reference<T>> safeCastToReference(final Holder<T> holder) {
+       return holder instanceof Holder.Reference<T> reference ? DataResult.success(reference)
+           : DataResult.error(() -> "Unregistered holder in " + this.key() + ": " + holder);
+    }
 
    default <U> Stream<U> keys(final DynamicOps<U> ops) {
       return this.keySet().stream().map(k -> (U)ops.createString(k.toString()));

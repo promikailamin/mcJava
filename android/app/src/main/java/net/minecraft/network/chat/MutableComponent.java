@@ -100,12 +100,12 @@ public final class MutableComponent implements Component {
       return this.visualOrderText;
    }
 
-   @Override
-   public boolean equals(final Object o) {
-      return this == o
-         ? true
-         : o instanceof MutableComponent && this.contents.equals(that.contents) && this.style.equals(that.style) && this.siblings.equals(that.siblings);
-   }
+@Override
+    public boolean equals(final Object o) {
+       return this == o
+          ? true
+          : o instanceof MutableComponent that && this.contents.equals(that.contents) && this.style.equals(that.style) && this.siblings.equals(that.siblings);
+    }
 
    @Override
    public int hashCode() {

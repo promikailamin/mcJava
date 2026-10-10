@@ -822,23 +822,23 @@ public class Fox extends Animal {
       }
    }
 
-   public class FoxAlertableEntitiesSelector implements TargetingConditions.Selector {
-      @Override
-      public boolean test(final LivingEntity target, final ServerLevel level) {
-         if (target instanceof Fox) {
-            return false;
-         } else if (target instanceof Chicken || target instanceof Rabbit || target instanceof Monster) {
-            return true;
-         else if (target instanceof TamableAnimal) {
-             TamableAnimal tamableAnimal = (TamableAnimal) target;
-            return !tamableAnimal.isTame();
-         } else if (target instanceof Player && (player.isSpectator() || player.isCreative())) {
-            return false;
-         } else {
-            return Fox.this.trusts(target) ? false : !target.isSleeping() && !target.isDiscrete();
-         }
-      }
-   }
+public class FoxAlertableEntitiesSelector implements TargetingConditions.Selector {
+       @Override
+       public boolean test(final LivingEntity target, final ServerLevel level) {
+          if (target instanceof Fox) {
+             return false;
+          } else if (target instanceof Chicken || target instanceof Rabbit || target instanceof Monster) {
+             return true;
+          } else if (target instanceof TamableAnimal) {
+              TamableAnimal tamableAnimal = (TamableAnimal) target;
+             return !tamableAnimal.isTame();
+          } else if (target instanceof Player && (player.isSpectator() || player.isCreative())) {
+             return false;
+          } else {
+             return Fox.this.trusts(target) ? false : !target.isSleeping() && !target.isDiscrete();
+          }
+       }
+    }
 
    private abstract class FoxBehaviorGoal extends Goal {
       private final TargetingConditions alertableTargeting = TargetingConditions.forCombat()

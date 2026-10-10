@@ -94,14 +94,14 @@ public static @Nullable ServerPlayer tryGetPlayer(final @Nullable Entity sourceE
           if (controllingPassenger instanceof ServerPlayer) {
               ServerPlayer player = (ServerPlayer) controllingPassenger;
              return player;
-          else if (sourceEntity instanceof Projectile) {
+          } else if (sourceEntity instanceof Projectile) {
               Projectile projectile = (Projectile) sourceEntity;
              Entity owner = projectile.getOwner();
              if (owner instanceof ServerPlayer) {
                  ServerPlayer player = (ServerPlayer) owner;
                 return player;
              }
-          else if (sourceEntity instanceof ItemEntity) {
+          } else if (sourceEntity instanceof ItemEntity) {
               ItemEntity item = (ItemEntity) sourceEntity;
              Entity owner = item.getOwner();
              if (owner instanceof ServerPlayer) {
@@ -147,13 +147,12 @@ public static @Nullable ServerPlayer tryGetPlayer(final @Nullable Entity sourceE
          && level.getGameRules().get(GameRules.SPAWN_WARDENS);
    }
 
-   @Override
-   public void preRemoveSideEffects(final BlockPos pos, final BlockState state) {
-      if (state.getValue(SculkShriekerBlock.SHRIEKING) && this.level instanceof ServerLevel) {
-          ServerLevel serverLevel = (ServerLevel) state.getValue(SculkShriekerBlock.SHRIEKING) && this.level;
-         this.tryRespond(serverLevel);
-      }
-   }
+@Override
+    public void preRemoveSideEffects(final BlockPos pos, final BlockState state) {
+       if (state.getValue(SculkShriekerBlock.SHRIEKING) && this.level instanceof ServerLevel serverLevel) {
+          this.tryRespond(serverLevel);
+       }
+    }
 
    public void tryRespond(final ServerLevel level) {
       if (this.canRespond(level) && this.warningLevel > 0) {

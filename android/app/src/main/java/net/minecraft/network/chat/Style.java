@@ -572,26 +572,25 @@ public final class Style {
       return result.toString();
    }
 
-   @Override
-   public boolean equals(final Object o) {
-      if (this == o) {
-         return true;
-      } else {
-         return !(o instanceof Style)
-            ? false
-            : this.bold == style.bold
-               && Objects.equals(this.getColor(), style.getColor())
-               && Objects.equals(this.getShadowColor(), style.getShadowColor())
-               && this.italic == style.italic
-               && this.obfuscated == style.obfuscated
-               && this.strikethrough == style.strikethrough
-               && this.underlined == style.underlined
-               && Objects.equals(this.clickEvent, style.clickEvent)
-               && Objects.equals(this.hoverEvent, style.hoverEvent)
-               && Objects.equals(this.insertion, style.insertion)
-               && Objects.equals(this.font, style.font);
-      }
-   }
+@Override
+    public boolean equals(final Object o) {
+       if (this == o) {
+          return true;
+       } else {
+          return o instanceof Style style
+             && this.bold == style.bold
+                && Objects.equals(this.getColor(), style.getColor())
+                && Objects.equals(this.getShadowColor(), style.getShadowColor())
+                && this.italic == style.italic
+                && this.obfuscated == style.obfuscated
+                && this.strikethrough == style.strikethrough
+                && this.underlined == style.underlined
+                && Objects.equals(this.clickEvent, style.clickEvent)
+                && Objects.equals(this.hoverEvent, style.hoverEvent)
+                && Objects.equals(this.insertion, style.insertion)
+                && Objects.equals(this.font, style.font);
+       }
+    }
 
    @Override
    public int hashCode() {

@@ -619,9 +619,9 @@ public class TestCommand {
          testBlockPos = StructureUtils.findTestContainingPos(targetPosAbsolute, 250, level);
       }
 
-      if (testBlockPos.isEmpty()) {
-         throw NO_TEST_CONTAINING.create(targetPosAbsolute.getX(), targetPosAbsolute.getY(), targetPosAbsolute.getZ());
-      else if (level.getBlockEntity(testBlockPos.get()) instanceof TestInstanceBlockEntity) {
+if (testBlockPos.isEmpty()) {
+          throw NO_TEST_CONTAINING.create(targetPosAbsolute.getX(), targetPosAbsolute.getY(), targetPosAbsolute.getZ());
+       } else if (level.getBlockEntity(testBlockPos.get()) instanceof TestInstanceBlockEntity) {
           TestInstanceBlockEntity testBlockEntity = (TestInstanceBlockEntity) level.getBlockEntity(testBlockPos.get());
          BlockPos var13 = testBlockEntity.getStructurePos();
          BlockPos targetPosRelative = targetPosAbsolute.subtract(var13);

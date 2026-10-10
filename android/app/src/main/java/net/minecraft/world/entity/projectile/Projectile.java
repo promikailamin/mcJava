@@ -282,19 +282,19 @@ public abstract class Projectile extends Entity implements TraceableEntity {
       }
    }
 
-   protected ProjectileDeflection hitTargetOrDeflectSelf(final HitResult hitResult) {
-      if (hitResult instanceof EntityHitResult) {
-          EntityHitResult entityHitResult = (EntityHitResult) hitResult;
-         Entity entity = entityHitResult.getEntity();
-         ProjectileDeflection deflection = entity.deflection(this);
-         if (deflection != ProjectileDeflection.NONE) {
-            if (entity != this.lastDeflectedBy && this.deflect(deflection, entity, this.owner, false, 1.0)) {
-               this.lastDeflectedBy = entity;
-            }
+protected ProjectileDeflection hitTargetOrDeflectSelf(final HitResult hitResult) {
+       if (hitResult instanceof EntityHitResult) {
+           EntityHitResult entityHitResult = (EntityHitResult) hitResult;
+          Entity entity = entityHitResult.getEntity();
+          ProjectileDeflection deflection = entity.deflection(this);
+          if (deflection != ProjectileDeflection.NONE) {
+             if (entity != this.lastDeflectedBy && this.deflect(deflection, entity, this.owner, false, 1.0)) {
+                this.lastDeflectedBy = entity;
+             }
 
-            return deflection;
-         }
-      else if (hitResult instanceof BlockHitResult) {
+             return deflection;
+          }
+       } else if (hitResult instanceof BlockHitResult) {
           BlockHitResult blockHitResult = (BlockHitResult) hitResult;
          if (!blockHitResult.isWorldBorderHit()) {
             BlockState collidedWith = this.level().getBlockState(blockHitResult.getBlockPos());
@@ -354,9 +354,8 @@ public abstract class Projectile extends Entity implements TraceableEntity {
       if (type == HitResult.Type.ENTITY) {
          EntityHitResult entityHitResult = (EntityHitResult)hitResult;
          Entity entityHit = entityHitResult.getEntity();
-         if (entityHit.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entityHit instanceof Projectile) {
-             Projectile projectile = (Projectile) entityHit.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entityHit;
-            this.onRedirectProjectile(projectile);
+if (entityHit.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entityHit instanceof Projectile projectile) {
+             this.onRedirectProjectile(projectile);
          }
 
          this.onHitEntity(entityHitResult);
