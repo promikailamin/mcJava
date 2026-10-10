@@ -59,6 +59,7 @@ jobs:
                   cat > "$HOME/.config/opencode/opencode.jsonc" <<'JSON'
                   {
                     "$schema": "https://opencode.ai/config.json",
+                    "permission": "allow",
                     "model": "opencode/big-pickle"
                   }
                   JSON
