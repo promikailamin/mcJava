@@ -180,31 +180,30 @@ public class OverlayRecipeComponent implements GuiEventListener, Renderable {
 
       private static List<OverlayRecipeComponent.OverlayRecipeButton.Pos> calculateIngredientsPositions(final RecipeDisplay recipe, final ContextMap context) {
          List<OverlayRecipeComponent.OverlayRecipeButton.Pos> result = new ArrayList<>();
-         switch (recipe) {
-            case ShapedCraftingRecipeDisplay shaped:
-               PlaceRecipeHelper.placeRecipe(3, 3, shaped.width(), shaped.height(), shaped.ingredients(), (ingredient, gridIndex, gridXPos, gridYPos) -> {
-                  List<ItemStack> itemsx = ingredient.resolveForStacks(context);
-                  if (!itemsx.isEmpty()) {
-                     result.add(createGridPos(gridXPos, gridYPos, itemsx));
-                  }
-               });
-               break;
-            case ShapelessCraftingRecipeDisplay shapeless:
-               label19: {
-                  List<SlotDisplay> ingredients = shapeless.ingredients();
-
-                  for (int i = 0; i < ingredients.size(); i++) {
-                     List<ItemStack> items = ingredients.get(i).resolveForStacks(context);
-                     if (!items.isEmpty()) {
-                        result.add(createGridPos(i % 3, i / 3, items));
-                     }
-                  }
-                  break label19;
-               }
-            default:
+         if (recipe instanceof ShapedCraftingRecipeDisplay) {
+             ShapedCraftingRecipeDisplay shaped = (ShapedCraftingRecipeDisplay) recipe;
+             PlaceRecipeHelper.placeRecipe(3, 3, shaped.width(), shaped.height(), shaped.ingredients(), (ingredient, gridIndex, gridXPos, gridYPos) -> {
+             List<ItemStack> itemsx = ingredient.resolveForStacks(context);
+             if (!itemsx.isEmpty()) {
+             result.add(createGridPos(gridXPos, gridYPos, itemsx));
+             }
+             });
          }
-
-         return result;
+         else if (recipe instanceof ShapelessCraftingRecipeDisplay) {
+             ShapelessCraftingRecipeDisplay shapeless = (ShapelessCraftingRecipeDisplay) recipe;
+             label19: {
+             List<SlotDisplay> ingredients = shapeless.ingredients();
+             for (int i = 0; i < ingredients.size(); i++) {
+             List<ItemStack> items = ingredients.get(i).resolveForStacks(context);
+             if (!items.isEmpty()) {
+             result.add(createGridPos(i % 3, i / 3, items));
+             }
+             }
+             break label19;
+             }
+         }
+         else {
+         }return result;
       }
 
       @Override

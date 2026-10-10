@@ -31,11 +31,17 @@ public interface Condition {
                return DataResult.success(new CombinedCondition(entry.getKey(), entry.getValue()));
             }, condition -> Map.of(condition.operation(), condition.terms()));
          return Codec.either(combinerCodec, KeyValueCondition.CODEC).flatComapMap(either -> (Condition)either.map(l -> l, r -> r), condition -> {
-            return switch (condition) {
-               case CombinedCondition combiner -> DataResult.success(Either.left(combiner));
-               case KeyValueCondition keyValue -> DataResult.success(Either.right(keyValue));
-               default -> DataResult.error(() -> "Unrecognized condition");
-            };
+            if (condition instanceof CombinedCondition) {
+                CombinedCondition combiner = (CombinedCondition) condition;
+                return DataResult.success(Either.left(combiner));
+            }
+            else if (condition instanceof KeyValueCondition) {
+                KeyValueCondition keyValue = (KeyValueCondition) condition;
+                return DataResult.success(Either.right(keyValue));
+            }
+            else {
+                return DataResult.error(() -> "Unrecognized condition");
+            }
          });
       }
    );

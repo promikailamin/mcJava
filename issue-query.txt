@@ -1,27 +1,35 @@
 A new GitHub issue has been opened.
 
-Issue number: 20
+Issue number: 21
 
 Issue URL:
-https://github.com/promikailamin/mcJava/issues/20
+https://github.com/promikailamin/mcJava/issues/21
 
 Title:
-Fix all and build
+Fix all things and build
 
 Description:
-Fix all errors no matters how much changes and afforts it need just fix all and build it. and download mcsrc (a decompiler tool), Minecraft java latest version, fabric loader latest version and decompile them for assist in this project. perfectly build it. i think Minecraft latest version need java 25+. fix all errors and build in any cost.
+## Remaining Blocker
 
-**Remaining issues (29 errors):**
-- `PlayerPredicate.java` - record brace balance
-- `Fox.java` - class brace balance  
-- `TestCommand.java`, `LinkFSPath.java`, `AbstractMinecartRenderer.java` - missing braces
-- `PiglinSpecificSensor.java`, `Projectile.java`, `SculkShriekerBlockEntity.java` - missing braces
-- `Grammar.java` - method reference/syntax issues
+The build fails with: `class file for java.lang.MatchException not found`
 
-The pattern matching conversion is essentially complete for non-fabricmc code. The remaining work is fixing syntax errors introduced by the automated regex fixes. A proper AST-based tool (OpenRewrite) would be needed for a clean conversion without syntax errors.
+**Root cause:** The codebase uses Java 21 pattern matching switch on sealed types (200+ occurrences). The compiler requires `java.lang.MatchException` at compile time for exhaustiveness checking, but Android SDK's `android.jar` doesn't include this class (added in Java 16).
 
+**Attempted solutions that didn't work:**
+- Adding MatchException to android.jar (module system prevents java.lang classes in unnamed modules)
+- Boot classpath configuration via AGP (not supported)
+- Desugaring library (only works at runtime, not compile time)
+- `--patch-module` flag (AGP uses Compiler API, not command-line javac)
 
-Fix all things in loop untill the build is succeed.
+## Required to Complete Build
+
+One of these approaches is needed:
+1. **Rewrite all pattern matching switches** (200+ files) to if-else chains
+2. **Use a custom JDK** with MatchException added to java.base module
+3. **Patch AGP** to support custom boot classpath for Java compilation
+4. **Wait for AGP** to add official support for Java 21 pattern matching on Android
+
+setup all tools needed java, android sdk, ndk etc ... and Fix all errors no matters how much changes and afforts it need just fix all and build it. and download mcsrc (a decompiler tool), Minecraft java latest version, fabric loader latest version and decompile them for assist in this project. perfectly build it. i think Minecraft latest version need java 25+. fix all errors and build in any cost.
 
 Inspect the repository and implement the requested change.
 

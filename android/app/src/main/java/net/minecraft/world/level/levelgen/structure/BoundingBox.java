@@ -266,7 +266,7 @@ public class BoundingBox {
        if (this == o) {
           return true;
        } else {
-          return o instanceof BoundingBox that
+          return o instanceof BoundingBox;
              && this.minX == that.minX
                 && this.minY == that.minY
                 && this.minZ == that.minZ

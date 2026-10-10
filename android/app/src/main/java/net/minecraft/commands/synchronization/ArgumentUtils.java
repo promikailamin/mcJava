@@ -65,22 +65,22 @@ public class ArgumentUtils {
 
    public static <S> JsonObject serializeNodeToJson(final CommandDispatcher<S> dispatcher, final CommandNode<S> node) {
       JsonObject result = new JsonObject();
-      switch (node) {
-         case RootCommandNode<S> rootNode:
-            result.addProperty("type", "root");
-            break;
-         case LiteralCommandNode<S> literalNode:
-            result.addProperty("type", "literal");
-            break;
-         case ArgumentCommandNode<S, ?> argumentNode:
-            serializeArgumentToJson(result, argumentNode.getType());
-            break;
-         default:
-            LOGGER.error("Could not serialize node {} ({})!", node, node.getClass());
-            result.addProperty("type", "unknown");
+      if (node instanceof RootCommandNode<S>) {
+          RootCommandNode<S> rootNode = (RootCommandNode<S>) node;
+          result.addProperty("type", "root");
       }
-
-      Collection<CommandNode<S>> children = node.getChildren();
+      else if (node instanceof LiteralCommandNode<S>) {
+          LiteralCommandNode<S> literalNode = (LiteralCommandNode<S>) node;
+          result.addProperty("type", "literal");
+      }
+      else if (node instanceof ArgumentCommandNode<S, ?>) {
+          ArgumentCommandNode<S, ?> argumentNode = (ArgumentCommandNode<S, ?>) node;
+          serializeArgumentToJson(result, argumentNode.getType());
+      }
+      else {
+          LOGGER.error("Could not serialize node {} ({})!", node, node.getClass());
+          result.addProperty("type", "unknown");
+      }Collection<CommandNode<S>> children = node.getChildren();
       if (!children.isEmpty()) {
          JsonObject childrenObject = new JsonObject();
 

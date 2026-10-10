@@ -20,11 +20,17 @@ public sealed interface ResolvableInt permits ResolvableInt.Constant, Resolvable
       .map(Either::unwrap, ResolvableInt::wrap);
 
    private static Either<ResolvableInt.Constant, ResolvableInt.Reference> wrap(final ResolvableInt resolvableNumber) {
-      return switch (resolvableNumber) {
-         case ResolvableInt.Constant constant -> Either.left(constant);
-         case ResolvableInt.Reference reference -> Either.right(reference);
-         default -> throw new IllegalStateException("Unexpected value");
-      };
+      if (resolvableNumber instanceof ResolvableInt.Constant) {
+          ResolvableInt.Constant constant = (ResolvableInt.Constant) resolvableNumber;
+          return Either.left(constant);
+      }
+      else if (resolvableNumber instanceof ResolvableInt.Reference) {
+          ResolvableInt.Reference reference = (ResolvableInt.Reference) resolvableNumber;
+          return Either.right(reference);
+      }
+      else {
+          throw new IllegalStateException("Unexpected value");
+      }
    }
 
    int get(LootContext context, int defaultValue);

@@ -21,21 +21,21 @@ public class TextFeatureRenderer extends RenderTypeFeatureRenderer<TextFeatureRe
          glyphRenderer.pose.set(submit.pose());
          glyphRenderer.lightCoords = submit.lightCoords();
          glyphRenderer.displayMode = submit.displayMode();
-         switch (submit.content()) {
-            case TextFeatureRenderer.Content.Text text:
-               renderText(font, glyphRenderer, text);
-               break;
-            case TextFeatureRenderer.Content.StandaloneBackground standaloneBackground:
-               glyphRenderer.acceptRenderable(
-                  font.prepareBackground(
-                     standaloneBackground.x0(), standaloneBackground.y0(), standaloneBackground.x1(), standaloneBackground.y1(), standaloneBackground.color()
-                  )
-               );
-               break;
-            default:
-               throw new IllegalStateException("Unexpected value");
+         if (submit.content() instanceof TextFeatureRenderer.Content.Text) {
+             TextFeatureRenderer.Content.Text text = (TextFeatureRenderer.Content.Text) submit.content();
+             renderText(font, glyphRenderer, text);
          }
-      }
+         else if (submit.content() instanceof TextFeatureRenderer.Content.StandaloneBackground) {
+             TextFeatureRenderer.Content.StandaloneBackground standaloneBackground = (TextFeatureRenderer.Content.StandaloneBackground) submit.content();
+             glyphRenderer.acceptRenderable(
+             font.prepareBackground(
+             standaloneBackground.x0(), standaloneBackground.y0(), standaloneBackground.x1(), standaloneBackground.y1(), standaloneBackground.color()
+             )
+             );
+         }
+         else {
+             throw new IllegalStateException("Unexpected value");;
+         }}
    }
 
    private static void renderText(final Font font, final TextFeatureRenderer.GlyphRenderer glyphRenderer, final TextFeatureRenderer.Content.Text content) {

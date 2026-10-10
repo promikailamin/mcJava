@@ -88,11 +88,17 @@ public class EntityRenderDispatcher implements ResourceManagerReloadListener {
    }
 
    public <T extends Entity> EntityRenderer<? super T, ?> getRenderer(final T entity) {
-      return switch (entity) {
-         case AbstractClientPlayer player -> this.getAvatarRenderer((Map<PlayerModelType, AvatarRenderer<T>>)this.playerRenderers, (T)player);
-         case ClientMannequin mannequin -> this.getAvatarRenderer((Map<PlayerModelType, AvatarRenderer<T>>)this.mannequinRenderers, (T)mannequin);
-         default -> (EntityRenderer)this.renderers.get(entity.getType());
-      };
+      if (entity instanceof AbstractClientPlayer) {
+          AbstractClientPlayer player = (AbstractClientPlayer) entity;
+          return this.getAvatarRenderer((Map<PlayerModelType, AvatarRenderer<T>>)this.playerRenderers, (T)player);
+      }
+      else if (entity instanceof ClientMannequin) {
+          ClientMannequin mannequin = (ClientMannequin) entity;
+          return this.getAvatarRenderer((Map<PlayerModelType, AvatarRenderer<T>>)this.mannequinRenderers, (T)mannequin);
+      }
+      else {
+          return (EntityRenderer)this.renderers.get(entity.getType());
+      }
    }
 
    private <T extends Avatar & ClientAvatarEntity> AvatarRenderer<T> getAvatarRenderer(final Map<PlayerModelType, AvatarRenderer<T>> renderers, final T entity) {

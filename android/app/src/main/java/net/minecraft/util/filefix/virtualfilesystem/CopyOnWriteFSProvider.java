@@ -109,7 +109,8 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
          FileNode child = new FileNode(cowPath, tempFile, true);
          directoryNode.addChild(child);
          return result;
-      } else if (node instanceof FileNode fileNode) {
+      else if (node instanceof FileNode) {
+          FileNode fileNode = (FileNode) node;
          if (wantsWrite(options)) {
             fileNode.ensureCopy();
          }
@@ -273,7 +274,8 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
       Path checkPath;
       if (node instanceof DirectoryNode) {
          checkPath = this.fs.tmpDirectory();
-      } else if (node instanceof FileNode file) {
+      else if (node instanceof FileNode) {
+          FileNode file = (FileNode) node;
          checkPath = file.storagePath();
       } else {
          throw new IllegalStateException("Unexpected value");
@@ -308,7 +310,8 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
          return null;
       } else if (node instanceof DirectoryNode) {
          return type == BasicFileAttributeView.class ? (V) DUMMY_DIRECTORY_VIEW : null;
-      } else if (node instanceof FileNode file) {
+      else if (node instanceof FileNode) {
+          FileNode file = (FileNode) node;
          return (V) Files.getFileAttributeView(file.storagePath(), type, options);
       } else {
          throw new IllegalStateException("Unexpected value");
@@ -322,7 +325,8 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
 
       if (node instanceof DirectoryNode) {
          return (A) DummyFileAttributes.DIRECTORY;
-      } else if (node instanceof FileNode file) {
+      else if (node instanceof FileNode) {
+          FileNode file = (FileNode) node;
          return (A) Files.readAttributes(file.storagePath(), type, options);
       } else {
          throw new IllegalStateException("Unexpected value");

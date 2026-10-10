@@ -224,21 +224,23 @@ public class GameRenderer implements AutoCloseable, TrackedWaypoint.Projector, R
    }
 
    public void checkEntityPostEffect(final @Nullable Entity cameraEntity) {
-      switch (cameraEntity) {
-         case Creeper ignored:
-            this.setSpectatedEntityPostEffect(Identifier.withDefaultNamespace("creeper"));
-            break;
-         case Spider ignored:
-            this.setSpectatedEntityPostEffect(Identifier.withDefaultNamespace("spider"));
-            break;
-         case Enderman ignored:
-            this.setSpectatedEntityPostEffect(Identifier.withDefaultNamespace("invert"));
-            break;
-         case null:
-         default:
-            this.clearSpectatedEntityPostEffect();
+      if (cameraEntity instanceof Creeper) {
+          Creeper ignored = (Creeper) cameraEntity;
+          this.setSpectatedEntityPostEffect(Identifier.withDefaultNamespace("creeper"));
       }
-   }
+      else if (cameraEntity instanceof Spider) {
+          Spider ignored = (Spider) cameraEntity;
+          this.setSpectatedEntityPostEffect(Identifier.withDefaultNamespace("spider"));
+      }
+      else if (cameraEntity instanceof Enderman) {
+          Enderman ignored = (Enderman) cameraEntity;
+          this.setSpectatedEntityPostEffect(Identifier.withDefaultNamespace("invert"));
+      }
+      else if (cameraEntity == null) {
+      }
+      else {
+          this.clearSpectatedEntityPostEffect();
+      }}
 
    private void setSpectatedEntityPostEffect(final Identifier id) {
       this.spectatedEntityPostEffect = id;

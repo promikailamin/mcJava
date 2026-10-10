@@ -52,12 +52,21 @@ public class WorldPresets {
 
    public static Optional<ResourceKey<WorldPreset>> fromSettings(final WorldDimensions dimensions) {
       return dimensions.get(LevelStem.OVERWORLD).flatMap(levelStem -> {
-         return switch (levelStem.generator()) {
-            case FlatLevelSource ignored -> Optional.of(FLAT);
-            case DebugLevelSource ignored -> Optional.of(DEBUG);
-            case NoiseBasedChunkGenerator ignored -> Optional.of(NORMAL);
-            default -> Optional.empty();
-         };
+         if (levelStem.generator() instanceof FlatLevelSource) {
+             FlatLevelSource ignored = (FlatLevelSource) levelStem.generator();
+             return Optional.of(FLAT);
+         }
+         else if (levelStem.generator() instanceof DebugLevelSource) {
+             DebugLevelSource ignored = (DebugLevelSource) levelStem.generator();
+             return Optional.of(DEBUG);
+         }
+         else if (levelStem.generator() instanceof NoiseBasedChunkGenerator) {
+             NoiseBasedChunkGenerator ignored = (NoiseBasedChunkGenerator) levelStem.generator();
+             return Optional.of(NORMAL);
+         }
+         else {
+             return Optional.empty();
+         }
       });
    }
 

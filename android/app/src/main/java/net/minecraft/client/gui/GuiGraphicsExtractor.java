@@ -414,19 +414,20 @@ public class GuiGraphicsExtractor {
    ) {
       TextureAtlasSprite sprite = this.guiSprites.getSprite(location);
       GuiSpriteScaling scaling = getSpriteScaling(sprite);
-      switch (scaling) {
-         case GuiSpriteScaling.Stretch stretch:
-            this.blitSprite(renderPipeline, sprite, x, y, width, height, color);
-            break;
-         case GuiSpriteScaling.Tile tile:
-            this.blitTiledSprite(renderPipeline, sprite, x, y, width, height, 0, 0, tile.width(), tile.height(), tile.width(), tile.height(), color);
-            break;
-         case GuiSpriteScaling.NineSlice nineSlice:
-            this.blitNineSlicedSprite(renderPipeline, sprite, nineSlice, x, y, width, height, color);
-            break;
-         default:
+      if (scaling instanceof GuiSpriteScaling.Stretch) {
+          GuiSpriteScaling.Stretch stretch = (GuiSpriteScaling.Stretch) scaling;
+          this.blitSprite(renderPipeline, sprite, x, y, width, height, color);
       }
-   }
+      else if (scaling instanceof GuiSpriteScaling.Tile) {
+          GuiSpriteScaling.Tile tile = (GuiSpriteScaling.Tile) scaling;
+          this.blitTiledSprite(renderPipeline, sprite, x, y, width, height, 0, 0, tile.width(), tile.height(), tile.width(), tile.height(), color);
+      }
+      else if (scaling instanceof GuiSpriteScaling.NineSlice) {
+          GuiSpriteScaling.NineSlice nineSlice = (GuiSpriteScaling.NineSlice) scaling;
+          this.blitNineSlicedSprite(renderPipeline, sprite, nineSlice, x, y, width, height, color);
+      }
+      else {
+      }}
 
    public void blitSprite(
       final RenderPipeline renderPipeline,

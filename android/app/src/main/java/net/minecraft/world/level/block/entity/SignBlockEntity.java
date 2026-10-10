@@ -185,32 +185,32 @@ public class SignBlockEntity extends BlockEntity {
       for (Component message : this.getText(slot).getMessages(player.isTextFilteringEnabled())) {
          Style style = message.getStyle();
          ClickEvent event = style.getClickEvent();
-         switch (event) {
-            case ClickEvent.RunCommand command:
-               if (this.allowOpFeatures) {
-                  level.getServer().getCommands().performPrefixedCommand(createCommandSourceStack(player, level, pos), command.command());
-               }
-
-               hasAnyClickCommand = true;
-               break;
-            case ClickEvent.ShowDialog dialog:
-               if (this.allowOpFeatures) {
-                  player.openDialog(dialog.dialog());
-               }
-
-               hasAnyClickCommand = true;
-               break;
-            case ClickEvent.Custom custom:
-               if (this.allowOpFeatures) {
-                  level.getServer().handleCustomClickAction(custom.id(), custom.payload());
-               }
-
-               hasAnyClickCommand = true;
-               continue;
-            case null:
-            default:
+         if (event instanceof ClickEvent.RunCommand) {
+             ClickEvent.RunCommand command = (ClickEvent.RunCommand) event;
+             if (this.allowOpFeatures) {
+             level.getServer().getCommands().performPrefixedCommand(createCommandSourceStack(player, level, pos), command.command());
+             }
+             hasAnyClickCommand = true;
          }
-      }
+         else if (event instanceof ClickEvent.ShowDialog) {
+             ClickEvent.ShowDialog dialog = (ClickEvent.ShowDialog) event;
+             if (this.allowOpFeatures) {
+             player.openDialog(dialog.dialog());
+             }
+             hasAnyClickCommand = true;
+         }
+         else if (event instanceof ClickEvent.Custom) {
+             ClickEvent.Custom custom = (ClickEvent.Custom) event;
+             if (this.allowOpFeatures) {
+             level.getServer().handleCustomClickAction(custom.id(), custom.payload());
+             }
+             hasAnyClickCommand = true;
+             continue;
+         }
+         else if (event == null) {
+         }
+         else {
+         }}
 
       if (!this.allowOpFeatures && hasAnyClickCommand) {
          player.sendOverlayMessage(CLICK_ACTIONS_DISABLED);

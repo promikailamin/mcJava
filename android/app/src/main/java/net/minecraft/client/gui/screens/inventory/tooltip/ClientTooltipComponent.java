@@ -12,11 +12,17 @@ public interface ClientTooltipComponent {
    }
 
    static ClientTooltipComponent create(final TooltipComponent component) {
-      return switch (component) {
-         case BundleTooltip bundleTooltip -> new ClientBundleTooltip(bundleTooltip.contents());
-         case ClientActivePlayersTooltip.ActivePlayersTooltip activePlayersTooltip -> new ClientActivePlayersTooltip(activePlayersTooltip);
-         default -> throw new IllegalArgumentException("Unknown TooltipComponent");
-      };
+      if (component instanceof BundleTooltip) {
+          BundleTooltip bundleTooltip = (BundleTooltip) component;
+          return new ClientBundleTooltip(bundleTooltip.contents());
+      }
+      else if (component instanceof ClientActivePlayersTooltip.ActivePlayersTooltip) {
+          ClientActivePlayersTooltip.ActivePlayersTooltip activePlayersTooltip = (ClientActivePlayersTooltip.ActivePlayersTooltip) component;
+          return new ClientActivePlayersTooltip(activePlayersTooltip);
+      }
+      else {
+          throw new IllegalArgumentException("Unknown TooltipComponent");
+      }
    }
 
    int getHeight(final Font font);

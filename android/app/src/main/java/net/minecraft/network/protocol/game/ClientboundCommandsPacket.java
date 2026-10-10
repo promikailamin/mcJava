@@ -163,28 +163,28 @@ public class ClientboundCommandsPacket implements Packet<ClientGamePacketListene
       }
 
       ClientboundCommandsPacket.NodeStub nodeStub;
-      switch (node) {
-         case RootCommandNode<S> ignored:
-            flags |= 0;
-            nodeStub = null;
-            break;
-         case ArgumentCommandNode<S, ?> arg:
-            Identifier suggestionId = inspector.suggestionId(arg);
-            nodeStub = new ClientboundCommandsPacket.ArgumentNodeStub(arg.getName(), ArgumentTypeInfos.unpack(arg.getType()), suggestionId);
-            flags |= 2;
-            if (suggestionId != null) {
-               flags |= 16;
-            }
-            break;
-         case LiteralCommandNode<S> literal:
-            nodeStub = new ClientboundCommandsPacket.LiteralNodeStub(literal.getLiteral());
-            flags |= 1;
-            break;
-         default:
-            throw new UnsupportedOperationException("Unknown node type " + node);
+      if (node instanceof RootCommandNode<S>) {
+          RootCommandNode<S> ignored = (RootCommandNode<S>) node;
+          flags |= 0;
+          nodeStub = null;
       }
-
-      int[] childrenIds = node.getChildren().stream().mapToInt(ids::getInt).toArray();
+      else if (node instanceof ArgumentCommandNode<S, ?>) {
+          ArgumentCommandNode<S, ?> arg = (ArgumentCommandNode<S, ?>) node;
+          Identifier suggestionId = inspector.suggestionId(arg);
+          nodeStub = new ClientboundCommandsPacket.ArgumentNodeStub(arg.getName(), ArgumentTypeInfos.unpack(arg.getType()), suggestionId);
+          flags |= 2;
+          if (suggestionId != null) {
+          flags |= 16;
+          }
+      }
+      else if (node instanceof LiteralCommandNode<S>) {
+          LiteralCommandNode<S> literal = (LiteralCommandNode<S>) node;
+          nodeStub = new ClientboundCommandsPacket.LiteralNodeStub(literal.getLiteral());
+          flags |= 1;
+      }
+      else {
+          throw new UnsupportedOperationException("Unknown node type " + node);;
+      }int[] childrenIds = node.getChildren().stream().mapToInt(ids::getInt).toArray();
       return new ClientboundCommandsPacket.Entry(nodeStub, flags, redirect, childrenIds);
    }
 

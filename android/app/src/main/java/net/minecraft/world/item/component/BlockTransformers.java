@@ -127,17 +127,17 @@ public class BlockTransformers {
       for (Entry<Block, Block> entry : blocks) {
          BlockPredicate predicate = BlockPredicate.matchesBlocks(entry.getKey());
          CopyPropertiesProvider provider = new CopyPropertiesProvider(entry.getValue());
-         switch ((Block)entry.getKey()) {
-            case CopperChestBlock var12:
-               chestRules.ifTrueThenProvide(predicate, provider);
-               break;
-            case DoorBlock var13:
-               doorRules.ifTrueThenProvide(predicate, provider);
-               break;
-            default:
-               rules.ifTrueThenProvide(predicate, provider);
+         if ((Block)entry.getKey() instanceof CopperChestBlock) {
+             CopperChestBlock var12 = (CopperChestBlock) (Block)entry.getKey();
+             chestRules.ifTrueThenProvide(predicate, provider);
          }
-      }
+         else if ((Block)entry.getKey() instanceof DoorBlock) {
+             DoorBlock var13 = (DoorBlock) (Block)entry.getKey();
+             doorRules.ifTrueThenProvide(predicate, provider);
+         }
+         else {
+             rules.ifTrueThenProvide(predicate, provider);
+         }}
 
       return List.of(
          BlockTransformer.BlockTransformData.builder(rules.build()).sound(sound).particle(particle).build(),

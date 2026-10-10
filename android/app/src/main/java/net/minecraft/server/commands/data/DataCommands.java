@@ -173,11 +173,17 @@ public class DataCommands {
    }
 
    private static String getAsText(final Tag tag) throws CommandSyntaxException {
-      return switch (tag) {
-         case StringTag(String value) -> value;
-         case PrimitiveTag primitiveTag -> primitiveTag.toString();
-         default -> throw ERROR_EXPECTED_VALUE.create(tag);
-      };
+      if (tag instanceof StringTag) {
+          String value = ((StringTag) tag).value();
+          return value;
+      }
+      else if (tag instanceof PrimitiveTag) {
+          PrimitiveTag primitiveTag = (PrimitiveTag) tag;
+          return primitiveTag.toString();
+      }
+      else {
+          throw ERROR_EXPECTED_VALUE.create(tag);
+      }
    }
 
    private static List<Tag> stringifyTagList(final List<Tag> source, final DataCommands.StringProcessor stringProcessor) throws CommandSyntaxException {
@@ -374,14 +380,29 @@ public class DataCommands {
    private static int getData(final CommandSourceStack source, final DataAccessor accessor, final NbtPathArgument.NbtPath path) throws CommandSyntaxException {
       Tag tag = getSingleTag(path, accessor);
 
-      int result = switch (tag) {
-         case NumericTag numericTag -> Mth.floor(numericTag.doubleValue());
-         case CollectionTag collectionTag -> collectionTag.size();
-         case CompoundTag compoundTag -> compoundTag.size();
-         case StringTag(String value) -> value.length();
-         case EndTag ignored -> throw ERROR_GET_NON_EXISTENT.create(path.toString());
-         default -> throw new IllegalStateException("Unexpected value");
-      };
+      if (tag instanceof NumericTag) {
+          NumericTag numericTag = (NumericTag) tag;
+          result = Mth.floor(numericTag.doubleValue());
+      }
+      else if (tag instanceof CollectionTag) {
+          CollectionTag collectionTag = (CollectionTag) tag;
+          result = collectionTag.size();
+      }
+      else if (tag instanceof CompoundTag) {
+          CompoundTag compoundTag = (CompoundTag) tag;
+          result = compoundTag.size();
+      }
+      else if (tag instanceof StringTag) {
+          String value = ((StringTag) tag).value();
+          result = value.length();
+      }
+      else if (tag instanceof EndTag) {
+          EndTag ignored = (EndTag) tag;
+          throw ERROR_GET_NON_EXISTENT.create(path.toString());
+      }
+      else {
+          throw new IllegalStateException("Unexpected value");
+      }
       source.sendSuccess(() -> accessor.getPrintSuccess(tag), false);
       return result;
    }

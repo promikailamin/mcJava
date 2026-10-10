@@ -187,24 +187,51 @@ public record DebugBrainDump(
    }
 
    private static String getShortDescription(final ServerLevel level, final @Nullable Object obj) {
-      return switch (obj) {
-         case null -> "-";
-         case UUID uuid -> getShortDescription(level, level.getEntity(uuid));
-         case Entity entity -> DebugEntityNameGenerator.getEntityName(entity);
-         case WalkTarget walkTarget -> getShortDescription(level, walkTarget.getTarget());
-         case EntityTracker entityTracker -> getShortDescription(level, entityTracker.getEntity());
-         case GlobalPos globalPos -> getShortDescription(level, globalPos.pos());
-         case BlockPosTracker tracker -> getShortDescription(level, tracker.currentBlockPosition());
-         case DamageSource damageSource -> {
-            Entity entity = damageSource.getEntity();
-            yield entity == null ? obj.toString() : getShortDescription(level, entity);
-         }
-         case NearestVisibleLivingEntities visibleEntities -> getShortDescription(level, visibleEntities.nearbyEntities());
-         case Collection<?> collection -> "["
+      if (obj == null) {
+          return "-";
+      }
+      else if (obj instanceof UUID) {
+          UUID uuid = (UUID) obj;
+          return getShortDescription(level, level.getEntity(uuid));
+      }
+      else if (obj instanceof Entity) {
+          Entity entity = (Entity) obj;
+          return DebugEntityNameGenerator.getEntityName(entity);
+      }
+      else if (obj instanceof WalkTarget) {
+          WalkTarget walkTarget = (WalkTarget) obj;
+          return getShortDescription(level, walkTarget.getTarget());
+      }
+      else if (obj instanceof EntityTracker) {
+          EntityTracker entityTracker = (EntityTracker) obj;
+          return getShortDescription(level, entityTracker.getEntity());
+      }
+      else if (obj instanceof GlobalPos) {
+          GlobalPos globalPos = (GlobalPos) obj;
+          return getShortDescription(level, globalPos.pos());
+      }
+      else if (obj instanceof BlockPosTracker) {
+          BlockPosTracker tracker = (BlockPosTracker) obj;
+          return getShortDescription(level, tracker.currentBlockPosition());
+      }
+      else if (obj instanceof DamageSource) {
+          DamageSource damageSource = (DamageSource) obj;
+          Entity entity = damageSource.getEntity();
+          return entity == null ? obj.toString() : getShortDescription(level, entity);
+      }
+      else if (obj instanceof NearestVisibleLivingEntities) {
+          NearestVisibleLivingEntities visibleEntities = (NearestVisibleLivingEntities) obj;
+          return getShortDescription(level, visibleEntities.nearbyEntities());
+      }
+      else if (obj instanceof Collection<?>) {
+          Collection<?> collection = (Collection<?>) obj;
+          return "["
             + (String)collection.stream().map(element -> getShortDescription(level, element)).collect(Collectors.joining(", "))
             + "]";
-         default -> obj.toString();
-      };
+      }
+      else {
+          return obj.toString();
+      }
    }
 
    public boolean hasPoi(final BlockPos poiPos) {

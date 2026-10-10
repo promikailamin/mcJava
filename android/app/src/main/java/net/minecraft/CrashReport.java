@@ -116,12 +116,21 @@ public class CrashReport {
    }
 
    private static Throwable replaceMessage(final Throwable original, final String title) {
-      return switch (original) {
-         case NullPointerException var4 -> copyProperties(original, new NullPointerException(title));
-         case StackOverflowError var5 -> copyProperties(original, new StackOverflowError(title));
-         case OutOfMemoryError var6 -> copyProperties(original, new OutOfMemoryError(title));
-         default -> original;
-      };
+      if (original instanceof NullPointerException) {
+          NullPointerException var4 = (NullPointerException) original;
+          return copyProperties(original, new NullPointerException(title));
+      }
+      else if (original instanceof StackOverflowError) {
+          StackOverflowError var5 = (StackOverflowError) original;
+          return copyProperties(original, new StackOverflowError(title));
+      }
+      else if (original instanceof OutOfMemoryError) {
+          OutOfMemoryError var6 = (OutOfMemoryError) original;
+          return copyProperties(original, new OutOfMemoryError(title));
+      }
+      else {
+          return original;
+      }
    }
 
    public String getFriendlyReport(final ReportType reportType, final List<String> extraComments) {

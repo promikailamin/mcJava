@@ -34,18 +34,18 @@ public class TagValueOutput implements ValueOutput {
 
    @Override
    public <T> void store(final String name, final Codec<T> codec, final T value) {
-      switch (codec.encodeStart(this.ops, value)) {
-         case Success<Tag> success:
-            this.output.put(name, (Tag)success.value());
-            break;
-         case Error<Tag> error:
-            this.problemReporter.report(new TagValueOutput.EncodeToFieldFailedProblem(name, value, error));
-            error.partialValue().ifPresent(partial -> this.output.put(name, partial));
-            break;
-         default:
-            throw new IllegalStateException("Unexpected value");
+      if (codec.encodeStart(this.ops, value) instanceof Success<Tag>) {
+          Success<Tag> success = (Success<Tag>) codec.encodeStart(this.ops, value);
+          this.output.put(name, (Tag)success.value());
       }
-   }
+      else if (codec.encodeStart(this.ops, value) instanceof Error<Tag>) {
+          Error<Tag> error = (Error<Tag>) codec.encodeStart(this.ops, value);
+          this.problemReporter.report(new TagValueOutput.EncodeToFieldFailedProblem(name, value, error));
+          error.partialValue().ifPresent(partial -> this.output.put(name, partial));
+      }
+      else {
+          throw new IllegalStateException("Unexpected value");;
+      }}
 
    @Override
    public <T> void storeNullable(final String name, final Codec<T> codec, final @Nullable T value) {
@@ -56,18 +56,18 @@ public class TagValueOutput implements ValueOutput {
 
    @Override
    public <T> void store(final MapCodec<T> codec, final T value) {
-      switch (codec.encoder().encodeStart(this.ops, value)) {
-         case Success<Tag> success:
-            this.output.merge((CompoundTag)success.value());
-            break;
-         case Error<Tag> error:
-            this.problemReporter.report(new TagValueOutput.EncodeToMapFailedProblem(value, error));
-            error.partialValue().ifPresent(partial -> this.output.merge((CompoundTag)partial));
-            break;
-         default:
-            throw new IllegalStateException("Unexpected value");
+      if (codec.encoder().encodeStart(this.ops, value) instanceof Success<Tag>) {
+          Success<Tag> success = (Success<Tag>) codec.encoder().encodeStart(this.ops, value);
+          this.output.merge((CompoundTag)success.value());
       }
-   }
+      else if (codec.encoder().encodeStart(this.ops, value) instanceof Error<Tag>) {
+          Error<Tag> error = (Error<Tag>) codec.encoder().encodeStart(this.ops, value);
+          this.problemReporter.report(new TagValueOutput.EncodeToMapFailedProblem(value, error));
+          error.partialValue().ifPresent(partial -> this.output.merge((CompoundTag)partial));
+      }
+      else {
+          throw new IllegalStateException("Unexpected value");;
+      }}
 
    @Override
    public void putBoolean(final String name, final boolean value) {
@@ -223,18 +223,18 @@ public class TagValueOutput implements ValueOutput {
 
       @Override
       public void add(final T value) {
-         switch (this.codec.encodeStart(this.ops, value)) {
-            case Success<Tag> success:
-               this.output.add((Tag)success.value());
-               break;
-            case Error<Tag> error:
-               this.problemReporter.report(new TagValueOutput.EncodeToListFailedProblem(this.name, value, error));
-               error.partialValue().ifPresent(this.output::add);
-               break;
-            default:
-               throw new IllegalStateException("Unexpected value");
+         if (this.codec.encodeStart(this.ops, value) instanceof Success<Tag>) {
+             Success<Tag> success = (Success<Tag>) this.codec.encodeStart(this.ops, value);
+             this.output.add((Tag)success.value());
          }
-      }
+         else if (this.codec.encodeStart(this.ops, value) instanceof Error<Tag>) {
+             Error<Tag> error = (Error<Tag>) this.codec.encodeStart(this.ops, value);
+             this.problemReporter.report(new TagValueOutput.EncodeToListFailedProblem(this.name, value, error));
+             error.partialValue().ifPresent(this.output::add);
+         }
+         else {
+             throw new IllegalStateException("Unexpected value");;
+         }}
 
       @Override
       public boolean isEmpty() {

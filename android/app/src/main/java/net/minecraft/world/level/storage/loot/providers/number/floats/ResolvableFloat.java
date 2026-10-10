@@ -20,11 +20,17 @@ public sealed interface ResolvableFloat permits ResolvableFloat.Constant, Resolv
       .map(Either::unwrap, ResolvableFloat::wrap);
 
    private static Either<ResolvableFloat.Constant, ResolvableFloat.Reference> wrap(final ResolvableFloat resolvableNumber) {
-      return switch (resolvableNumber) {
-         case ResolvableFloat.Constant constant -> Either.left(constant);
-         case ResolvableFloat.Reference reference -> Either.right(reference);
-         default -> throw new IllegalStateException("Unexpected value");
-      };
+      if (resolvableNumber instanceof ResolvableFloat.Constant) {
+          ResolvableFloat.Constant constant = (ResolvableFloat.Constant) resolvableNumber;
+          return Either.left(constant);
+      }
+      else if (resolvableNumber instanceof ResolvableFloat.Reference) {
+          ResolvableFloat.Reference reference = (ResolvableFloat.Reference) resolvableNumber;
+          return Either.right(reference);
+      }
+      else {
+          throw new IllegalStateException("Unexpected value");
+      }
    }
 
    float get(LootContext context, float defaultValue);

@@ -44,29 +44,30 @@ public class QuickPlay {
          LOGGER.error("Quick play disabled");
          minecraft.gui.setScreen(new TitleScreen());
       } else {
-         switch (quickPlayVariant) {
-            case GameConfig.QuickPlayMultiplayerData multiplayerData:
-               joinMultiplayerWorld(minecraft, multiplayerData.serverAddress());
-               break;
-            case GameConfig.QuickPlayRealmsData realmsData:
-               joinRealmsWorld(minecraft, realmsClient, realmsData.realmId());
-               break;
-            case GameConfig.QuickPlaySinglePlayerData singlePlayerData:
-               String worldId = singlePlayerData.worldId();
-               if (StringUtil.isBlank(worldId)) {
-                  worldId = getLatestSingleplayerWorld(minecraft.getLevelSource());
-               }
-
-               joinSingleplayerWorld(minecraft, worldId);
-               break;
-            case GameConfig.QuickPlayDisabled disabled:
-               LOGGER.error("Quick play disabled");
-               minecraft.gui.setScreen(new TitleScreen());
-               break;
-            default:
-               throw new IllegalStateException("Unexpected value");
+         if (quickPlayVariant instanceof GameConfig.QuickPlayMultiplayerData) {
+             GameConfig.QuickPlayMultiplayerData multiplayerData = (GameConfig.QuickPlayMultiplayerData) quickPlayVariant;
+             joinMultiplayerWorld(minecraft, multiplayerData.serverAddress());
          }
-      }
+         else if (quickPlayVariant instanceof GameConfig.QuickPlayRealmsData) {
+             GameConfig.QuickPlayRealmsData realmsData = (GameConfig.QuickPlayRealmsData) quickPlayVariant;
+             joinRealmsWorld(minecraft, realmsClient, realmsData.realmId());
+         }
+         else if (quickPlayVariant instanceof GameConfig.QuickPlaySinglePlayerData) {
+             GameConfig.QuickPlaySinglePlayerData singlePlayerData = (GameConfig.QuickPlaySinglePlayerData) quickPlayVariant;
+             String worldId = singlePlayerData.worldId();
+             if (StringUtil.isBlank(worldId)) {
+             worldId = getLatestSingleplayerWorld(minecraft.getLevelSource());
+             }
+             joinSingleplayerWorld(minecraft, worldId);
+         }
+         else if (quickPlayVariant instanceof GameConfig.QuickPlayDisabled) {
+             GameConfig.QuickPlayDisabled disabled = (GameConfig.QuickPlayDisabled) quickPlayVariant;
+             LOGGER.error("Quick play disabled");
+             minecraft.gui.setScreen(new TitleScreen());
+         }
+         else {
+             throw new IllegalStateException("Unexpected value");;
+         }}
    }
 
    private static @Nullable String getLatestSingleplayerWorld(final LevelStorageSource levelSource) {

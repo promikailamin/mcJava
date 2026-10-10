@@ -13,11 +13,17 @@ public interface MaterialRule {
    Codec<MaterialRule> DIRECT_CODEC = BuiltInRegistries.MATERIAL_RULE_TYPE.byNameCodec().dispatch(MaterialRule::codec, Function.identity());
    Codec<Holder<MaterialRule>> HOLDER_CODEC = RegistryCodecs.holder(Registries.MATERIAL_RULE, DIRECT_CODEC);
    Codec<MaterialRule> CODEC = HOLDER_CODEC.xmap(holder -> {
-      return switch (holder) {
-         case Holder.Direct<MaterialRule> direct -> (MaterialRule)direct.value();
-         case Holder.Reference<MaterialRule> reference -> new MaterialRule.HolderHolder(reference);
-         default -> throw new IllegalArgumentException("Unexpected holder type: " + holder);
-      };
+      if (holder instanceof Holder.Direct<MaterialRule>) {
+          Holder.Direct<MaterialRule> direct = (Holder.Direct<MaterialRule>) holder;
+          return (MaterialRule)direct.value();
+      }
+      else if (holder instanceof Holder.Reference<MaterialRule>) {
+          Holder.Reference<MaterialRule> reference = (Holder.Reference<MaterialRule>) holder;
+          return new MaterialRule.HolderHolder(reference);
+      }
+      else {
+          throw new IllegalArgumentException("Unexpected holder type: " + holder);
+      }
    }, value -> {
       return switch (value) {
          case MaterialRule.HolderHolder(Holder<MaterialRule> holder) -> holder;

@@ -635,11 +635,17 @@ public abstract class AbstractArrow extends Projectile {
    public void setOwner(final @Nullable Entity owner) {
       super.setOwner(owner);
 
-      this.pickup = switch (owner) {
-         case Player ignored when this.pickup == AbstractArrow.Pickup.DISALLOWED -> AbstractArrow.Pickup.ALLOWED;
-         case OminousItemSpawner ignored -> AbstractArrow.Pickup.DISALLOWED;
-         case null, default -> this.pickup;
-      };
+      if (owner instanceof Player && this.pickup == AbstractArrow.Pickup.DISALLOWED) {
+          Player ignored = (Player) owner;
+          this.pickup = AbstractArrow.Pickup.ALLOWED;
+      }
+      else if (owner instanceof OminousItemSpawner) {
+          OminousItemSpawner ignored = (OminousItemSpawner) owner;
+          this.pickup = AbstractArrow.Pickup.DISALLOWED;
+      }
+      else {
+          this.pickup = this.pickup;
+      }
    }
 
    @Override

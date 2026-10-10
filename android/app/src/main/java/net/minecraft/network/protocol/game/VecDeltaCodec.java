@@ -41,14 +41,15 @@ public class VecDeltaCodec {
    }
 
    public @Nullable VecDelta tryEncode(final PositionPath position) {
-      return switch (position) {
-         case PositionPath.Linear(Vec3 pos) -> this.tryEncode(pos);
-         case PositionPath.Stepped stepped -> {
-            stepped.endPosition();
-            yield VecDelta.Stepped.tryEncode(this, stepped.steps());
-         }
-         default -> throw new IllegalArgumentException("Unknown position path: " + position);
-      };
+      if (position instanceof PositionPath.Linear(Vec3 pos)) {
+         return this.tryEncode(pos);
+      else if (position instanceof PositionPath.Stepped) {
+          PositionPath.Stepped stepped = (PositionPath.Stepped) position;
+         stepped.endPosition();
+         return VecDelta.Stepped.tryEncode(this, stepped.steps());
+      } else {
+         throw new IllegalArgumentException("Unknown position path: " + position);
+      }
    }
 
    public @Nullable VecDelta tryEncode(final Vec3 pos) {
