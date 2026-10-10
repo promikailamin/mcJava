@@ -187,47 +187,30 @@ public record DebugBrainDump(
    }
 
    private static String getShortDescription(final ServerLevel level, final @Nullable Object obj) {
-      if (obj == null) {
-          return "-";
-      }
-      else if (obj instanceof UUID) {
-          UUID uuid = (UUID) obj;
+      if (obj instanceof UUID uuid) {
           return getShortDescription(level, level.getEntity(uuid));
       }
-      else if (obj instanceof Entity) {
-          Entity entity = (Entity) obj;
+      else if (obj instanceof Entity entity) {
           return DebugEntityNameGenerator.getEntityName(entity);
       }
-      else if (obj instanceof WalkTarget) {
-          WalkTarget walkTarget = (WalkTarget) obj;
+      else if (obj instanceof WalkTarget walkTarget) {
           return getShortDescription(level, walkTarget.getTarget());
       }
-      else if (obj instanceof EntityTracker) {
-          EntityTracker entityTracker = (EntityTracker) obj;
+      else if (obj instanceof EntityTracker entityTracker) {
           return getShortDescription(level, entityTracker.getEntity());
       }
-      else if (obj instanceof GlobalPos) {
-          GlobalPos globalPos = (GlobalPos) obj;
+      else if (obj instanceof GlobalPos globalPos) {
           return getShortDescription(level, globalPos.pos());
       }
-      else if (obj instanceof BlockPosTracker) {
-          BlockPosTracker tracker = (BlockPosTracker) obj;
+      else if (obj instanceof BlockPosTracker tracker) {
           return getShortDescription(level, tracker.currentBlockPosition());
       }
-      else if (obj instanceof DamageSource) {
-          DamageSource damageSource = (DamageSource) obj;
+      else if (obj instanceof DamageSource damageSource) {
           Entity entity = damageSource.getEntity();
           return entity == null ? obj.toString() : getShortDescription(level, entity);
       }
-      else if (obj instanceof NearestVisibleLivingEntities) {
-          NearestVisibleLivingEntities visibleEntities = (NearestVisibleLivingEntities) obj;
+      else if (obj instanceof NearestVisibleLivingEntities visibleEntities) {
           return getShortDescription(level, visibleEntities.nearbyEntities());
-      }
-      else if (obj instanceof Collection<?>) {
-          Collection<?> collection = (Collection<?>) obj;
-          return "["
-            + (String)collection.stream().map(element -> getShortDescription(level, element)).collect(Collectors.joining(", "))
-            + "]";
       }
       else {
           return obj.toString();

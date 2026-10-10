@@ -207,23 +207,22 @@ public class CopyOnWriteFileSystem extends FileSystem {
    private void collectMoveOperations(final Path outPath, final DirectoryNode folder, final CopyOnWriteFileSystem.Moves result) {
       for (Node childNode : folder.children()) {
          Path target = outPath.resolve(Objects.requireNonNull(childNode.name()));
-         if (childNode instanceof FileNode) {
-             FileNode fileNode = (FileNode) childNode;
-             FileMove move = new FileMove(fileNode.storagePath(), target);
-             if (fileNode.isCopy) {
-             result.copiedFiles.add(move);
-             } else {
-             result.preexistingFiles.add(move);
-             }
+         if (childNode instanceof FileNode fileNode) {
+            FileMove move = new FileMove(fileNode.storagePath(), target);
+            if (fileNode.isCopy) {
+               result.copiedFiles.add(move);
+            } else {
+               result.preexistingFiles.add(move);
+            }
          }
-         else if (childNode instanceof DirectoryNode) {
-             DirectoryNode directoryNode = (DirectoryNode) childNode;
-             result.directories.add(target);
-             this.collectMoveOperations(target, directoryNode, result);
+         else if (childNode instanceof DirectoryNode directoryNode) {
+            result.directories.add(target);
+            this.collectMoveOperations(target, directoryNode, result);
          }
          else {
-             throw new IllegalStateException("Unexpected value");;
-         }}
+            throw new IllegalStateException("Unexpected value");
+         }
+      }
    }
 
    public static void createDirectories(final List<Path> directories) throws IOException {

@@ -168,20 +168,22 @@ public abstract class DialogScreen<T extends Dialog> extends Screen {
       }
    }
 
-private void handleDialogClickEvent(final ClickEvent event, final @Nullable Screen activeScreen) {
-       if (event instanceof ClickEvent.RunCommand(String command)) {
-          this.connectionAccess.runCommand(Commands.trimOptionalPrefix(command), activeScreen);
-       else if (event instanceof ClickEvent.ShowDialog) {
-           ClickEvent.ShowDialog dialog = (ClickEvent.ShowDialog) event;
-          this.connectionAccess.openDialog(dialog.dialog(), activeScreen);
-       else if (event instanceof ClickEvent.Custom) {
-           ClickEvent.Custom custom = (ClickEvent.Custom) event;
-          this.connectionAccess.sendCustomAction(custom.id(), custom.payload());
-          this.minecraft.gui.setScreen(activeScreen);
-       } else {
-          defaultHandleClickEvent(event, this.minecraft, activeScreen);
-       }
-    }
+   private void handleDialogClickEvent(final ClickEvent event, final @Nullable Screen activeScreen) {
+      switch (event) {
+         case ClickEvent.RunCommand(String command):
+            this.connectionAccess.runCommand(Commands.trimOptionalPrefix(command), activeScreen);
+            break;
+         case ClickEvent.ShowDialog dialog:
+            this.connectionAccess.openDialog(dialog.dialog(), activeScreen);
+            break;
+         case ClickEvent.Custom custom:
+            this.connectionAccess.sendCustomAction(custom.id(), custom.payload());
+            this.minecraft.gui.setScreen(activeScreen);
+            break;
+         default:
+            defaultHandleClickEvent(event, this.minecraft, activeScreen);
+      }
+   }
 
    public @Nullable Screen previousScreen() {
       return this.previousScreen;

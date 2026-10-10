@@ -51,36 +51,28 @@ public class TagValueInput implements ValueInput {
          return Optional.empty();
       }
 
-      if (codec.parse(this.context.ops(), tag) instanceof Success<T>) {
-          Success<T> success = (Success<T>) codec.parse(this.context.ops(), tag);
-          return Optional.of(success.value());
-      }
-      else if (codec.parse(this.context.ops(), tag) instanceof Error<T>) {
-          Error<T> error = (Error<T>) codec.parse(this.context.ops(), tag);
-          this.problemReporter.report(new TagValueInput.DecodeFromFieldFailedProblem(name, tag, error));
-          return error.partialValue();
-      }
-      else {
-          throw new IllegalStateException("Unexpected value");
-      }
+      return switch (codec.parse(this.context.ops(), tag)) {
+         case Success<T> success -> Optional.of(success.value());
+         case Error<T> error -> {
+            this.problemReporter.report(new TagValueInput.DecodeFromFieldFailedProblem(name, tag, error));
+            yield error.partialValue();
+         }
+         default -> throw new IllegalStateException("Unexpected value");
+      };
    }
 
    @Override
    public <T> Optional<T> read(final MapCodec<T> codec) {
       DynamicOps<Tag> ops = this.context.ops();
 
-      if (ops.getMap(this.input).flatMap(map -> codec.decode(ops, map)) instanceof Success<T>) {
-          Success<T> success = (Success<T>) ops.getMap(this.input).flatMap(map -> codec.decode(ops, map));
-          return Optional.of(success.value());
-      }
-      else if (ops.getMap(this.input).flatMap(map -> codec.decode(ops, map)) instanceof Error<T>) {
-          Error<T> error = (Error<T>) ops.getMap(this.input).flatMap(map -> codec.decode(ops, map));
-          this.problemReporter.report(new TagValueInput.DecodeFromMapFailedProblem(error));
-          return error.partialValue();
-      }
-      else {
-          throw new IllegalStateException("Unexpected value");
-      }
+      return switch (ops.getMap(this.input).flatMap(map -> codec.decode(ops, map))) {
+         case Success<T> success -> Optional.of(success.value());
+         case Error<T> error -> {
+            this.problemReporter.report(new TagValueInput.DecodeFromMapFailedProblem(error));
+            yield error.partialValue();
+         }
+         default -> throw new IllegalStateException("Unexpected value");
+      };
    }
 
    private <T extends Tag> @Nullable T getOptionalTypedTag(final String name, final TagType<T> expectedType) {
@@ -397,18 +389,14 @@ private @Nullable NumericTag getNumericTag(final String name) {
       @Override
       public Stream<T> stream() {
          return Streams.mapWithIndex(this.list.stream(), (value, index) -> {
-            if (this.codec.parse(this.context.ops(), value) instanceof Success<T>) {
-                Success<T> success = (Success<T>) this.codec.parse(this.context.ops(), value);
-                return success.value();
-            }
-            else if (this.codec.parse(this.context.ops(), value) instanceof Error<T>) {
-                Error<T> error = (Error<T>) this.codec.parse(this.context.ops(), value);
-                this.reportIndexUnwrapProblem((int)index, value, error);
-                return error.partialValue().orElse(null);
-            }
-            else {
-                throw new IllegalStateException("Unexpected value");
-            }
+            return switch (this.codec.parse(this.context.ops(), value)) {
+               case Success<T> success -> success.value();
+               case Error<T> error -> {
+                  this.reportIndexUnwrapProblem((int)index, value, error);
+                  yield error.partialValue().orElse(null);
+               }
+               default -> throw new IllegalStateException("Unexpected value");
+            };
          }).filter(Objects::nonNull);
       }
 
@@ -420,20 +408,20 @@ private @Nullable NumericTag getNumericTag(final String name) {
                while (iterator.hasNext()) {
                   int index = iterator.nextIndex();
                   Tag value = iterator.next();
-                  if (TypedListWrapper.this.codec.parse(TypedListWrapper.this.context.ops(), value) instanceof Success<T>) {
-                      Success<T> success = (Success<T>) TypedListWrapper.this.codec.parse(TypedListWrapper.this.context.ops(), value);
-                      return (T)success.value();
+                  switch (TypedListWrapper.this.codec.parse(TypedListWrapper.this.context.ops(), value)) {
+                     case Success<T> success:
+                        return (T)success.value();
+                     case Error<T> error:
+                        TypedListWrapper.this.reportIndexUnwrapProblem(index, value, error);
+                        if (!error.partialValue().isPresent()) {
+                           break;
+                        }
+
+                        return (T)error.partialValue().get();
+                     default:
+                        throw new IllegalStateException("Unexpected value");
                   }
-                  else if (TypedListWrapper.this.codec.parse(TypedListWrapper.this.context.ops(), value) instanceof Error<T>) {
-                      Error<T> error = (Error<T>) TypedListWrapper.this.codec.parse(TypedListWrapper.this.context.ops(), value);
-                      TypedListWrapper.this.reportIndexUnwrapProblem(index, value, error);
-                      if (!error.partialValue().isPresent()) {
-                      }
-                      return (T)error.partialValue().get();
-                  }
-                  else {
-                      throw new IllegalStateException("Unexpected value");;
-                  }}
+               }
 
                return (T)this.endOfData();
             }

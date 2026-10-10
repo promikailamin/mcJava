@@ -1326,29 +1326,23 @@ public class ClientLevel extends Level implements BlockAndTintGetter, CacheSlot.
       }
 
       public void onTrackingStart(final Entity entity) {
-         if (entity instanceof AbstractClientPlayer) {
-             AbstractClientPlayer player = (AbstractClientPlayer) entity;
+                  if (entity instanceof AbstractClientPlayer player) {
              ClientLevel.this.players.add(player);
          }
-         else if (entity instanceof EnderDragon) {
-             EnderDragon dragon = (EnderDragon) entity;
+         else if (entity instanceof EnderDragon dragon) {
              ClientLevel.this.dragonParts.addAll(Arrays.asList(dragon.getSubEntities()));
          }
-         else {
-         }}
+      }
 
       public void onTrackingEnd(final Entity entity) {
          entity.unRide();
-         if (entity instanceof AbstractClientPlayer) {
-             AbstractClientPlayer player = (AbstractClientPlayer) entity;
+                  if (entity instanceof AbstractClientPlayer player) {
              ClientLevel.this.players.remove(player);
          }
-         else if (entity instanceof EnderDragon) {
-             EnderDragon dragon = (EnderDragon) entity;
+         else if (entity instanceof EnderDragon dragon) {
              ClientLevel.this.dragonParts.removeAll(Arrays.asList(dragon.getSubEntities()));
          }
-         else {
-         }}
+      }
 
       public void onSectionChange(final Entity entity) {
       }

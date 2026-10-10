@@ -45,56 +45,50 @@ public class NbtOps implements DynamicOps<Tag> {
 
    public <U> U convertTo(final DynamicOps<U> outOps, final Tag input) {
       if (input instanceof EndTag) {
-          EndTag ignored = (EndTag) input;
-          return (U)outOps.empty();
+          return outOps.empty();
       }
       else if (input instanceof ByteTag) {
           byte value = ((ByteTag) input).value();
-          return (U)outOps.createByte(value);
+          return outOps.createByte(value);
       }
       else if (input instanceof ShortTag) {
           short value = ((ShortTag) input).value();
-          return (U)outOps.createShort(value);
+          return outOps.createShort(value);
       }
       else if (input instanceof IntTag) {
           int value = ((IntTag) input).value();
-          return (U)outOps.createInt(value);
+          return outOps.createInt(value);
       }
       else if (input instanceof LongTag) {
           long value = ((LongTag) input).value();
-          return (U)outOps.createLong(value);
+          return outOps.createLong(value);
       }
       else if (input instanceof FloatTag) {
           float value = ((FloatTag) input).value();
-          return (U)outOps.createFloat(value);
+          return outOps.createFloat(value);
       }
       else if (input instanceof DoubleTag) {
           double value = ((DoubleTag) input).value();
-          return (U)outOps.createDouble(value);
+          return outOps.createDouble(value);
       }
-      else if (input instanceof ByteArrayTag) {
-          ByteArrayTag byteArrayTag = (ByteArrayTag) input;
-          return (U)outOps.createByteList(ByteBuffer.wrap(byteArrayTag.getAsByteArray()));
+      else if (input instanceof ByteArrayTag byteArrayTag) {
+          return outOps.createByteList(ByteBuffer.wrap(byteArrayTag.getAsByteArray()));
       }
       else if (input instanceof StringTag) {
           String value = ((StringTag) input).value();
-          return (U)outOps.createString(value);
+          return outOps.createString(value);
       }
-      else if (input instanceof ListTag) {
-          ListTag listTag = (ListTag) input;
-          return (U)this.convertList(outOps, listTag);
+      else if (input instanceof ListTag listTag) {
+          return this.convertList(outOps, listTag);
       }
-      else if (input instanceof CompoundTag) {
-          CompoundTag compoundTag = (CompoundTag) input;
-          return (U)this.convertMap(outOps, compoundTag);
+      else if (input instanceof CompoundTag compoundTag) {
+          return this.convertMap(outOps, compoundTag);
       }
-      else if (input instanceof IntArrayTag) {
-          IntArrayTag intArrayTag = (IntArrayTag) input;
-          return (U)outOps.createIntList(Arrays.stream(intArrayTag.getAsIntArray()));
+      else if (input instanceof IntArrayTag intArrayTag) {
+          return outOps.createIntList(Arrays.stream(intArrayTag.getAsIntArray()));
       }
-      else if (input instanceof LongArrayTag) {
-          LongArrayTag longArrayTag = (LongArrayTag) input;
-          return (U)outOps.createLongList(Arrays.stream(longArrayTag.getAsLongArray()));
+      else if (input instanceof LongArrayTag longArrayTag) {
+          return outOps.createLongList(Arrays.stream(longArrayTag.getAsLongArray()));
       }
       else {
           throw new IllegalStateException("Unexpected value");
@@ -341,26 +335,21 @@ public DataResult<Consumer<Consumer<Tag>>> getList(final Tag input) {
          if (collection.isEmpty()) {
             return Optional.of(new NbtOps.GenericListCollector());
          }
-
-         if (collection instanceof ListTag) {
-             ListTag list = (ListTag) collection;
+         if (collection instanceof ListTag list) {
              return Optional.of(new NbtOps.GenericListCollector(list));
          }
-         else if (collection instanceof ByteArrayTag) {
-             ByteArrayTag array = (ByteArrayTag) collection;
+         else if (collection instanceof ByteArrayTag array) {
              return Optional.of(new NbtOps.ByteListCollector(array.getAsByteArray()));
          }
-         else if (collection instanceof IntArrayTag) {
-             IntArrayTag array = (IntArrayTag) collection;
+         else if (collection instanceof IntArrayTag array) {
              return Optional.of(new NbtOps.IntListCollector(array.getAsIntArray()));
          }
-         else if (collection instanceof LongArrayTag) {
-             LongArrayTag array = (LongArrayTag) collection;
+         else if (collection instanceof LongArrayTag array) {
              return Optional.of(new NbtOps.LongListCollector(array.getAsLongArray()));
          }
          else {
              throw new IllegalStateException("Unexpected value");
-         }
+         };
       } else {
          return Optional.empty();
       }

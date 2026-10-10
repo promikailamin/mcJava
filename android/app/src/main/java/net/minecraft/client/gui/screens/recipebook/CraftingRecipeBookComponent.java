@@ -43,13 +43,10 @@ public class CraftingRecipeBookComponent extends RecipeBookComponent<AbstractCra
    private boolean canDisplay(final RecipeDisplay display) {
       int gridWidth = this.menu.getGridWidth();
       int gridHeight = this.menu.getGridHeight();
-
-      if (display instanceof ShapedCraftingRecipeDisplay) {
-          ShapedCraftingRecipeDisplay shaped = (ShapedCraftingRecipeDisplay) display;
+      if (display instanceof ShapedCraftingRecipeDisplay shaped) {
           return gridWidth >= shaped.width() && gridHeight >= shaped.height();
       }
-      else if (display instanceof ShapelessCraftingRecipeDisplay) {
-          ShapelessCraftingRecipeDisplay shapeless = (ShapelessCraftingRecipeDisplay) display;
+      else if (display instanceof ShapelessCraftingRecipeDisplay shapeless) {
           return gridWidth * gridHeight >= shapeless.ingredients().size();
       }
       else {
@@ -60,35 +57,29 @@ public class CraftingRecipeBookComponent extends RecipeBookComponent<AbstractCra
    @Override
    protected void fillGhostRecipe(final GhostSlots ghostSlots, final RecipeDisplay recipe, final ContextMap context) {
       ghostSlots.setResult(this.menu.getResultSlot(), context, recipe.result());
-      if (recipe instanceof ShapedCraftingRecipeDisplay) {
-          ShapedCraftingRecipeDisplay shaped = (ShapedCraftingRecipeDisplay) recipe;
-          List<Slot> inputSlots = this.menu.getInputGridSlots();
-          PlaceRecipeHelper.placeRecipe(
-          this.menu.getGridWidth(),
-          this.menu.getGridHeight(),
-          shaped.width(),
-          shaped.height(),
-          shaped.ingredients(),
-          (ingredient, gridIndex, gridXPos, gridYPos) -> {
-          Slot slot = inputSlots.get(gridIndex);
-          ghostSlots.setInput(slot, context, ingredient);
-          }
-          );
-          break;
-      }
-      else if (recipe instanceof ShapelessCraftingRecipeDisplay) {
-          ShapelessCraftingRecipeDisplay shapeless = (ShapelessCraftingRecipeDisplay) recipe;
-          label15: {
-          List<Slot> inputSlots = this.menu.getInputGridSlots();
-          int slotCount = Math.min(shapeless.ingredients().size(), inputSlots.size());
-          for (int i = 0; i < slotCount; i++) {
-          ghostSlots.setInput(inputSlots.get(i), context, shapeless.ingredients().get(i));
-          }
-          break label15;
-          }
-      }
-      else {
-      }}
+            if (recipe instanceof ShapedCraftingRecipeDisplay shaped) {
+            List<Slot> inputSlots = this.menu.getInputGridSlots();
+            PlaceRecipeHelper.placeRecipe(
+               this.menu.getGridWidth(),
+               this.menu.getGridHeight(),
+               shaped.width(),
+               shaped.height(),
+               shaped.ingredients(),
+               (ingredient, gridIndex, gridXPos, gridYPos) -> {
+                  Slot slot = inputSlots.get(gridIndex);
+                  ghostSlots.setInput(slot, context, ingredient);
+               }
+            );
+         }
+         else if (recipe instanceof ShapelessCraftingRecipeDisplay shapeless) {
+            List<Slot> inputSlots = this.menu.getInputGridSlots();
+            int slotCount = Math.min(shapeless.ingredients().size(), inputSlots.size());
+
+            for (int i = 0; i < slotCount; i++) {
+               ghostSlots.setInput(inputSlots.get(i), context, shapeless.ingredients().get(i));
+            }
+         }
+   }
 
    @Override
    protected WidgetSprites getFilterButtonTextures() {

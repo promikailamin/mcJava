@@ -184,7 +184,7 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
 @Override
        public int setTag(final Tag parent, final Supplier<Tag> toAdd) {
-          if (!(parent instanceof CollectionTag)) {
+          if (!(parent instanceof CollectionTag list)) {
              return 0;
           } else {
              int size = list.size();
@@ -282,7 +282,7 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
 @Override
        public int removeTag(final Tag parent) {
-          if (parent instanceof CompoundTag && compound.contains(this.name)) {
+          if (parent instanceof CompoundTag compound && compound.contains(this.name)) {
              compound.remove(this.name);
              return 1;
           } else {
@@ -684,7 +684,7 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
          boolean usedFirst = false;
 
 for (Tag targetTag : targets) {
-             if (!(targetTag instanceof CollectionTag)) {
+             if (!(targetTag instanceof CollectionTag targetList)) {
                 throw NbtPathArgument.ERROR_EXPECTED_LIST.create(targetTag);
              }
 

@@ -87,33 +87,27 @@ public class HashOps implements DynamicOps<HashCode> {
    }
 
    public HashCode createNumeric(final Number value) {
-      if (value instanceof Byte) {
-          Byte v = (Byte) value;
+      if (value instanceof Byte v) {
           return this.createByte(v);
       }
-      else if (value instanceof Short) {
-          Short v = (Short) value;
+      else if (value instanceof Short v) {
           return this.createShort(v);
       }
-      else if (value instanceof Integer) {
-          Integer v = (Integer) value;
+      else if (value instanceof Integer v) {
           return this.createInt(v);
       }
-      else if (value instanceof Long) {
-          Long v = (Long) value;
+      else if (value instanceof Long v) {
           return this.createLong(v);
       }
-      else if (value instanceof Double) {
-          Double v = (Double) value;
+      else if (value instanceof Double v) {
           return this.createDouble(v);
       }
-      else if (value instanceof Float) {
-          Float v = (Float) value;
+      else if (value instanceof Float v) {
           return this.createFloat(v);
       }
       else {
           return this.createDouble(value.doubleValue());
-      }
+      };
    }
 
    public HashCode createByte(final byte value) {

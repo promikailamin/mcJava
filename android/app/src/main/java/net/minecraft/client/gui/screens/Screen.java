@@ -255,50 +255,50 @@ public abstract class Screen extends AbstractContainerEventHandler implements Re
 
    protected static void defaultHandleGameClickEvent(final ClickEvent event, final Minecraft minecraft, final @Nullable Screen activeScreen) {
       LocalPlayer player = Objects.requireNonNull(minecraft.player, "Player not available");
-      if (event == ClickEvent.RunCommand(String command)) {
-          clickCommandAction(player, command, activeScreen);
+      switch (event) {
+         case ClickEvent.RunCommand(String command):
+            clickCommandAction(player, command, activeScreen);
+            break;
+         case ClickEvent.ShowDialog dialog:
+            player.connection.showDialog(dialog.dialog(), activeScreen);
+            break;
+         case ClickEvent.Custom custom:
+            player.connection.send(new ServerboundCustomClickActionPacket(custom.id(), custom.payload()));
+            if (minecraft.gui.screen() != activeScreen) {
+               minecraft.gui.setScreen(activeScreen);
+            }
+            break;
+         default:
+            defaultHandleClickEvent(event, minecraft, activeScreen);
       }
-      else if (event instanceof ClickEvent.ShowDialog) {
-          ClickEvent.ShowDialog dialog = (ClickEvent.ShowDialog) event;
-          player.connection.showDialog(dialog.dialog(), activeScreen);
-      }
-      else if (event instanceof ClickEvent.Custom) {
-          ClickEvent.Custom custom = (ClickEvent.Custom) event;
-          player.connection.send(new ServerboundCustomClickActionPacket(custom.id(), custom.payload()));
-          if (minecraft.gui.screen() != activeScreen) {
-          minecraft.gui.setScreen(activeScreen);
-          }
-      }
-      else {
-      }
-      else {
-          HandleClickEvent(event, minecraft, activeScreen);
-      }}
+   }
 
    protected static void defaultHandleClickEvent(final ClickEvent event, final Minecraft minecraft, final @Nullable Screen activeScreen) {
-      if (event == ClickEvent.OpenUrl(URI uri)) {
-          clickUrlAction(minecraft, activeScreen, uri);
-          return false;
-      }
-      else if (event instanceof ClickEvent.OpenFile) {
-          ClickEvent.OpenFile openFile = (ClickEvent.OpenFile) event;
-          Blaze3D.openPath(openFile.file().toPath());
-          return true;
-      }
-      else if (event == ClickEvent.SuggestCommand(String command)) {
-          if (activeScreen != null) {
-          activeScreen.insertText(command, true);
-          }
-          return true;
-      }
-      else if (event == ClickEvent.CopyToClipboard(String value)) {
-          minecraft.keyboardHandler.setClipboard(value);
-          return true;
-      }
-      else {
-          LOGGER.error("Don't know how to handle {}", event);
-          return true;
-      }
+      boolean shouldActivateScreen = switch (event) {
+         case ClickEvent.OpenUrl(URI uri) -> {
+            clickUrlAction(minecraft, activeScreen, uri);
+            yield false;
+         }
+         case ClickEvent.OpenFile openFile -> {
+            Blaze3D.openPath(openFile.file().toPath());
+            yield true;
+         }
+         case ClickEvent.SuggestCommand(String command) -> {
+            if (activeScreen != null) {
+               activeScreen.insertText(command, true);
+            }
+
+            yield true;
+         }
+         case ClickEvent.CopyToClipboard(String value) -> {
+            minecraft.keyboardHandler.setClipboard(value);
+            yield true;
+         }
+         default -> {
+            LOGGER.error("Don't know how to handle {}", event);
+            yield true;
+         }
+      };
       if (shouldActivateScreen && minecraft.gui.screen() != activeScreen) {
          minecraft.gui.setScreen(activeScreen);
       }

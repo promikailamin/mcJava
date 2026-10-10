@@ -12,13 +12,8 @@ public interface ClientTooltipComponent {
    }
 
    static ClientTooltipComponent create(final TooltipComponent component) {
-      if (component instanceof BundleTooltip) {
-          BundleTooltip bundleTooltip = (BundleTooltip) component;
+      if (component instanceof BundleTooltip bundleTooltip) {
           return new ClientBundleTooltip(bundleTooltip.contents());
-      }
-      else if (component instanceof ClientActivePlayersTooltip.ActivePlayersTooltip) {
-          ClientActivePlayersTooltip.ActivePlayersTooltip activePlayersTooltip = (ClientActivePlayersTooltip.ActivePlayersTooltip) component;
-          return new ClientActivePlayersTooltip(activePlayersTooltip);
       }
       else {
           throw new IllegalArgumentException("Unknown TooltipComponent");

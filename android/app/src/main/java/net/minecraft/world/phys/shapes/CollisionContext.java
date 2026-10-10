@@ -22,15 +22,14 @@ public interface CollisionContext {
    }
 
    static CollisionContext of(final Entity entity) {
-      if (entity instanceof AbstractMinecart) {
-          AbstractMinecart minecart = (AbstractMinecart) entity;
+      if (entity instanceof AbstractMinecart minecart) {
           return AbstractMinecart.useExperimentalMovement(minecart.level())
             ? new MinecartCollisionContext(minecart, false)
             : new EntityCollisionContext(entity, false, false);
       }
       else {
           return new EntityCollisionContext(entity, false, false);
-      }
+      };
    }
 
    static CollisionContext of(final Entity entity, final boolean alwaysCollideWithFluid) {

@@ -32,7 +32,7 @@ public class CompilableString<T> {
 
 @Override
     public boolean equals(final Object o) {
-       return o instanceof CompilableString<?> && Objects.equals(this.source, that.source);
+       return o instanceof CompilableString<?> that && Objects.equals(this.source, that.source);
     }
 
    @Override

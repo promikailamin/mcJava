@@ -52,16 +52,14 @@ public class WorldPresets {
 
    public static Optional<ResourceKey<WorldPreset>> fromSettings(final WorldDimensions dimensions) {
       return dimensions.get(LevelStem.OVERWORLD).flatMap(levelStem -> {
-         if (levelStem.generator() instanceof FlatLevelSource) {
-             FlatLevelSource ignored = (FlatLevelSource) levelStem.generator();
+         var generator = levelStem.generator();
+         if (generator instanceof FlatLevelSource) {
              return Optional.of(FLAT);
          }
-         else if (levelStem.generator() instanceof DebugLevelSource) {
-             DebugLevelSource ignored = (DebugLevelSource) levelStem.generator();
+         else if (generator instanceof DebugLevelSource) {
              return Optional.of(DEBUG);
          }
-         else if (levelStem.generator() instanceof NoiseBasedChunkGenerator) {
-             NoiseBasedChunkGenerator ignored = (NoiseBasedChunkGenerator) levelStem.generator();
+         else if (generator instanceof NoiseBasedChunkGenerator) {
              return Optional.of(NORMAL);
          }
          else {

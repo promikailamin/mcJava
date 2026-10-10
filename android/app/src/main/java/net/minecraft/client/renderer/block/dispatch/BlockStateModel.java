@@ -78,17 +78,11 @@ public interface BlockStateModel {
          });
       Codec<BlockStateModel.Unbaked> CODEC = Codec.either(HARDCODED_WEIGHTED_CODEC, SingleVariant.Unbaked.CODEC)
          .flatComapMap(v -> (BlockStateModel.Unbaked)v.map(l -> l, r -> r), o -> {
-            if (o instanceof SingleVariant.Unbaked) {
-                SingleVariant.Unbaked single = (SingleVariant.Unbaked) o;
-                return DataResult.success(Either.right(single));
-            }
-            else if (o instanceof WeightedVariants.Unbaked) {
-                WeightedVariants.Unbaked multiple = (WeightedVariants.Unbaked) o;
-                return DataResult.success(Either.left(multiple));
-            }
-            else {
-                return DataResult.error(() -> "Only a single variant or a list of variants are supported");
-            }
+            return switch (o) {
+               case SingleVariant.Unbaked single -> DataResult.success(Either.right(single));
+               case WeightedVariants.Unbaked multiple -> DataResult.success(Either.left(multiple));
+               default -> DataResult.error(() -> "Only a single variant or a list of variants are supported");
+            };
          });
 
       BlockStateModel bake(ModelBaker modelBakery);

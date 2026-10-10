@@ -28,17 +28,11 @@ public record PostChainConfig(Map<Identifier, PostChainConfig.InternalTarget> in
    public sealed interface Input permits PostChainConfig.TargetInput, PostChainConfig.TextureInput {
       Codec<PostChainConfig.Input> CODEC = Codec.xor(PostChainConfig.TextureInput.CODEC, PostChainConfig.TargetInput.CODEC)
          .xmap(either -> (PostChainConfig.Input)either.map(Function.identity(), Function.identity()), input -> {
-            if (input instanceof PostChainConfig.TextureInput) {
-                PostChainConfig.TextureInput texture = (PostChainConfig.TextureInput) input;
-                return Either.left(texture);
-            }
-            else if (input instanceof PostChainConfig.TargetInput) {
-                PostChainConfig.TargetInput target = (PostChainConfig.TargetInput) input;
-                return Either.right(target);
-            }
-            else {
-                throw new IllegalStateException("Unexpected value");
-            }
+            return switch (input) {
+               case PostChainConfig.TextureInput texture -> Either.left(texture);
+               case PostChainConfig.TargetInput target -> Either.right(target);
+               default -> throw new IllegalStateException("Unexpected value");
+            };
          });
 
       String samplerName();

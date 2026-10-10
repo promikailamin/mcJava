@@ -109,19 +109,19 @@ public class TextureSlots {
 
          for (TextureSlots.Data data : Lists.reverse(this.entries)) {
             data.values.forEach((slot, contents) -> {
-               if (contents instanceof TextureSlots.Value) {
-                   TextureSlots.Value value = (TextureSlots.Value) contents;
-                   unresolved.remove(slot);
-                   resolved.put(slot, value.material());
+               switch (contents) {
+                  case TextureSlots.Value value:
+                     unresolved.remove(slot);
+                     resolved.put(slot, value.material());
+                     break;
+                  case TextureSlots.Reference reference:
+                     resolved.remove(slot);
+                     unresolved.put(slot, reference);
+                     break;
+                  default:
+                     throw new IllegalStateException("Unexpected value");
                }
-               else if (contents instanceof TextureSlots.Reference) {
-                   TextureSlots.Reference reference = (TextureSlots.Reference) contents;
-                   resolved.remove(slot);
-                   unresolved.put(slot, reference);
-               }
-               else {
-                   throw new IllegalStateException("Unexpected value");;
-               }});
+            });
          }
 
          if (unresolved.isEmpty()) {

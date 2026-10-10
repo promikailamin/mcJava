@@ -649,7 +649,7 @@ public class Wolf extends TamableAnimal implements NeutralMob {
          Player playerOwner = (Player) owner;
          return !playerOwner.canHarmPlayer(playerTarget);
       } else {
-         return !(target instanceof AbstractHorse && horse.isTamed()) && !(target instanceof TamableAnimal && animal.isTame());
+         return !(target instanceof AbstractHorse horse && horse.isTamed()) && !(target instanceof TamableAnimal animal && animal.isTame());
       }
    }
 

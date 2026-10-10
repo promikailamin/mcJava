@@ -103,11 +103,9 @@ public class TestBlock extends BaseEntityBlock implements GameMasterBlock {
    }
 
    private static @Nullable TestBlockEntity getServerTestBlockEntity(final Level level, final BlockPos pos) {
-      if (level instanceof ServerLevel) {
-          ServerLevel serverLevel = (ServerLevel) level;
+      if (level instanceof ServerLevel serverLevel) {
          BlockEntity blockEntity = serverLevel.getBlockEntity(pos);
-         if (blockEntity instanceof TestBlockEntity) {
-             TestBlockEntity testBlockEntity = (TestBlockEntity) blockEntity;
+         if (blockEntity instanceof TestBlockEntity testBlockEntity) {
             return testBlockEntity;
          }
       }

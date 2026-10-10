@@ -11,26 +11,17 @@ import net.minecraft.world.level.levelgen.material.MaterialRuleContext;
 
 public interface MaterialCondition {
    Codec<MaterialCondition> DIRECT_CODEC = BuiltInRegistries.MATERIAL_CONDITION_TYPE.byNameCodec().dispatch(MaterialCondition::codec, Function.identity());
-Codec<MaterialCondition> CODEC = RegistryCodecs.holder(Registries.MATERIAL_CONDITION, DIRECT_CODEC).xmap(holder -> {
-      if (holder instanceof Holder.Direct<MaterialCondition>) {
-         Holder.Direct<MaterialCondition> direct = (Holder.Direct<MaterialCondition>) holder;
-         return (MaterialCondition)direct.value();
-      }
-      else if (holder instanceof Holder.Reference<MaterialCondition>) {
-         Holder.Reference<MaterialCondition> reference = (Holder.Reference<MaterialCondition>) holder;
-         return new MaterialCondition.HolderHolder(reference);
-      }
-      else {
-         throw new IllegalArgumentException("Unexpected holder type: " + holder);
-      }
+   Codec<MaterialCondition> CODEC = RegistryCodecs.holder(Registries.MATERIAL_CONDITION, DIRECT_CODEC).xmap(holder -> {
+      return switch (holder) {
+         case Holder.Direct<MaterialCondition> direct -> (MaterialCondition)direct.value();
+         case Holder.Reference<MaterialCondition> reference -> new MaterialCondition.HolderHolder(reference);
+         default -> throw new IllegalArgumentException("Unexpected holder type: " + holder);
+      };
    }, value -> {
-      if (value instanceof MaterialCondition.HolderHolder) {
-         MaterialCondition.HolderHolder holderHolder = (MaterialCondition.HolderHolder) value;
-         return holderHolder.holder();
-      }
-      else {
-         return Holder.direct(value);
-      }
+      return switch (value) {
+         case MaterialCondition.HolderHolder(Holder<MaterialCondition> holder) -> holder;
+         default -> Holder.direct(value);
+      };
    });
 
    ConditionEvaluator compile(MaterialRuleContext context);

@@ -117,37 +117,46 @@ public class SteppedInterpolationHandler extends AbstractInterpolationHandler {
          this.remainingTicks += interpolationSteps;
       }
 
-private void addSteps(final PositionPath position, final float yRot, final float xRot, final int interpolationSteps) {
-          if (position instanceof PositionPath.Linear(Vec3 pos)) {
-             this.addStep(pos, yRot, xRot, interpolationSteps);
-          } else if (position instanceof PositionPath.Stepped) {
-             PositionPath.Stepped stepped = (PositionPath.Stepped) position;
+      private void addSteps(final PositionPath position, final float yRot, final float xRot, final int interpolationSteps) {
+         switch (position) {
+            case PositionPath.Linear(Vec3 pos):
+               this.addStep(pos, yRot, xRot, interpolationSteps);
+               break;
+            case PositionPath.Stepped var9: {
+               PositionPath.Stepped var10000 = var9;
 
-             try {
-                stepped.endPosition();
-             } catch (Throwable var17) {
-                throw new IllegalStateException("Unexpected value: " + var17.toString(), var17);
-             }
+               try {
+                  var10000.endPosition();
+               } catch (Throwable var17) {
+                  throw new IllegalStateException("Unexpected value: " + var17.toString(), var17);
+               }
 
-             List<PositionStep> steps = stepped.steps();
-             if (yRot == this.yRot() && xRot == this.xRot()) {
-                for (PositionStep step : steps) {
-                   this.addStep(step.position(), yRot, xRot, step.tickOffset());
-                }
+               var10000 = var9;
 
-                return;
-             }
+               try {
+                  var24 = var10000.steps();
+               } catch (Throwable var16) {
+                  throw new IllegalStateException("Unexpected value: " + var16.toString(), var16);
+               }
 
-             int totalInterpolationTicks = getInterpolationTicks(steps);
-             int offset = 0;
+               List totalInterpolationTicks = var24;
+               List<PositionStep> steps = totalInterpolationTicks;
+               if (yRot == this.yRot() && xRot == this.xRot()) {
+                  for (PositionStep step : steps) {
+                     this.addStep(step.position(), yRot, xRot, step.tickOffset());
+                  }
 
-             for (PositionStep step : steps) {
-                offset += step.tickOffset();
-                float a = (float)offset / totalInterpolationTicks;
-                this.addStep(step.position(), Mth.rotLerp(a, this.yRot(), yRot), Mth.lerp(a, this.xRot(), xRot), step.tickOffset());
-             }
-          }
-       }
+                  return;
+               }
+
+               int totalInterpolationTicks = getInterpolationTicks(steps);
+               int offset = 0;
+
+               for (PositionStep step : steps) {
+                  offset += step.tickOffset();
+                  float a = (float)offset / totalInterpolationTicks;
+                  this.addStep(step.position(), Mth.rotLerp(a, this.yRot(), yRot), Mth.lerp(a, this.xRot(), xRot), step.tickOffset());
+               }
                break;
             }
             default:

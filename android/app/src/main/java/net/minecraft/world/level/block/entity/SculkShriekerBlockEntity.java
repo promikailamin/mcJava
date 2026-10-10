@@ -149,8 +149,7 @@ public static @Nullable ServerPlayer tryGetPlayer(final @Nullable Entity sourceE
 
 @Override
     public void preRemoveSideEffects(final BlockPos pos, final BlockState state) {
-       if (state.getValue(SculkShriekerBlock.SHRIEKING) && this.level instanceof ServerLevel) {
-           ServerLevel serverLevel = (ServerLevel) state.getValue(SculkShriekerBlock.SHRIEKING) && this.level;
+       if (state.getValue(SculkShriekerBlock.SHRIEKING) && this.level instanceof ServerLevel serverLevel) {
           this.tryRespond(serverLevel);
        }
     }

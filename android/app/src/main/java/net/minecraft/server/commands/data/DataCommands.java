@@ -177,8 +177,7 @@ public class DataCommands {
           String value = ((StringTag) tag).value();
           return value;
       }
-      else if (tag instanceof PrimitiveTag) {
-          PrimitiveTag primitiveTag = (PrimitiveTag) tag;
+      else if (tag instanceof PrimitiveTag primitiveTag) {
           return primitiveTag.toString();
       }
       else {
@@ -380,16 +379,14 @@ public class DataCommands {
    private static int getData(final CommandSourceStack source, final DataAccessor accessor, final NbtPathArgument.NbtPath path) throws CommandSyntaxException {
       Tag tag = getSingleTag(path, accessor);
 
-      if (tag instanceof NumericTag) {
-          NumericTag numericTag = (NumericTag) tag;
+      int result;
+      if (tag instanceof NumericTag numericTag) {
           result = Mth.floor(numericTag.doubleValue());
       }
-      else if (tag instanceof CollectionTag) {
-          CollectionTag collectionTag = (CollectionTag) tag;
+      else if (tag instanceof CollectionTag collectionTag) {
           result = collectionTag.size();
       }
-      else if (tag instanceof CompoundTag) {
-          CompoundTag compoundTag = (CompoundTag) tag;
+      else if (tag instanceof CompoundTag compoundTag) {
           result = compoundTag.size();
       }
       else if (tag instanceof StringTag) {
@@ -397,7 +394,6 @@ public class DataCommands {
           result = value.length();
       }
       else if (tag instanceof EndTag) {
-          EndTag ignored = (EndTag) tag;
           throw ERROR_GET_NON_EXISTENT.create(path.toString());
       }
       else {
