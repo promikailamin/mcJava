@@ -51,16 +51,16 @@ public interface CollisionContext {
       );
    }
 
-   static CollisionContext withPosition(final @Nullable Entity entity, final double position) {
-      return new EntityCollisionContext(
-         entity != null ? entity.isDescending() : false,
-         true,
-         entity != null ? position : -Double.MAX_VALUE,
-         entity instanceof LivingEntity ? getMainHandItem() : ItemStack.EMPTY,
-         false,
-         entity
-      );
-   }
+static CollisionContext withPosition(final @Nullable Entity entity, final double position) {
+       return new EntityCollisionContext(
+          entity != null ? entity.isDescending() : false,
+          true,
+          entity != null ? position : -Double.MAX_VALUE,
+          entity instanceof LivingEntity living ? living.getMainHandItem() : ItemStack.EMPTY,
+          false,
+          entity
+       );
+    }
 
    boolean isDescending();
 

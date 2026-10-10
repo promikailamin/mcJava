@@ -68,22 +68,22 @@ public class DamageSource {
       return this.directEntity != null ? this.directEntity.getWeaponItem() : null;
    }
 
-   public Component getLocalizedDeathMessage(final LivingEntity victim) {
-      String deathMsg = "death.attack." + this.type().msgId();
-      if (this.causingEntity == null && this.directEntity == null) {
-         LivingEntity source = victim.getKillCredit();
-         String playerMsg = deathMsg + ".player";
-         return source != null
-            ? Component.translatable(playerMsg, victim.getDisplayName(), source.getDisplayName())
-            : Component.translatable(deathMsg, victim.getDisplayName());
-      } else {
-         Component name = this.causingEntity == null ? this.directEntity.getDisplayName() : this.causingEntity.getDisplayName();
-         ItemStack held = this.causingEntity instanceof LivingEntity ? getMainHandItem() : ItemStack.EMPTY;
-         return !held.isEmpty() && held.has(DataComponents.CUSTOM_NAME)
-            ? Component.translatable(deathMsg + ".item", victim.getDisplayName(), name, held.getDisplayName())
-            : Component.translatable(deathMsg, victim.getDisplayName(), name);
-      }
-   }
+public Component getLocalizedDeathMessage(final LivingEntity victim) {
+       String deathMsg = "death.attack." + this.type().msgId();
+       if (this.causingEntity == null && this.directEntity == null) {
+          LivingEntity source = victim.getKillCredit();
+          String playerMsg = deathMsg + ".player";
+          return source != null
+             ? Component.translatable(playerMsg, victim.getDisplayName(), source.getDisplayName())
+             : Component.translatable(deathMsg, victim.getDisplayName());
+       } else {
+          Component name = this.causingEntity == null ? this.directEntity.getDisplayName() : this.causingEntity.getDisplayName();
+          ItemStack held = this.causingEntity instanceof LivingEntity living ? living.getMainHandItem() : ItemStack.EMPTY;
+          return !held.isEmpty() && held.has(DataComponents.CUSTOM_NAME)
+             ? Component.translatable(deathMsg + ".item", victim.getDisplayName(), name, held.getDisplayName())
+             : Component.translatable(deathMsg, victim.getDisplayName(), name);
+       }
+    }
 
    public String getMsgId() {
       return this.type().msgId();
@@ -97,9 +97,10 @@ public class DamageSource {
       };
    }
 
-   public boolean isCreativePlayer() {
-      return this.getEntity() instanceof Player && player.getAbilities().instabuild;
-   }
+public boolean isCreativePlayer() {
+       Entity entity = this.getEntity();
+       return entity instanceof Player player && player.getAbilities().instabuild;
+    }
 
    public @Nullable Vec3 getSourcePosition() {
       if (this.damageSourcePosition != null) {

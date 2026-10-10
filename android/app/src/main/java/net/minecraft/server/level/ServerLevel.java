@@ -1110,20 +1110,21 @@ this.server
       }
    }
 
-   @Override
-   public void levelEvent(final @Nullable Entity source, final @LevelEvent.Value int type, final BlockPos pos, final int data) {
-      this.server
-         .getPlayerList()
-         .broadcast(
-            source instanceof Player ? player  : null,
-            pos.getX(),
-            pos.getY(),
-            pos.getZ(),
-            64.0,
-            this.dimension(),
-            new ClientboundLevelEventPacket(type, pos, data, false)
-         );
-   }
+@Override
+    public void levelEvent(final @Nullable Entity source, final @LevelEvent.Value int type, final BlockPos pos, final int data) {
+       Player player = source instanceof Player ? (Player) source : null;
+       this.server
+          .getPlayerList()
+          .broadcast(
+             player,
+             pos.getX(),
+             pos.getY(),
+             pos.getZ(),
+             64.0,
+             this.dimension(),
+             new ClientboundLevelEventPacket(type, pos, data, false)
+          );
+    }
 
    public int getLogicalHeight() {
       return this.dimensionType().logicalHeight();
@@ -2011,18 +2012,17 @@ this.server
       return this.getGameRules().get(GameRules.SPAWNER_BLOCKS_WORK);
    }
 
-   private final class EntityCallbacks implements LevelCallback<Entity> {
-      public void onCreated(final Entity entity) {
-         if (entity instanceof WaypointTransmitter && waypoint.isTransmittingWaypoint()) {
-            ServerLevel.this.getWaypointManager().trackWaypoint(waypoint);
-         }
-      }
+private final class EntityCallbacks implements LevelCallback<Entity> {
+       public void onCreated(final Entity entity) {
+          if (entity instanceof WaypointTransmitter waypoint && waypoint.isTransmittingWaypoint()) {
+             ServerLevel.this.getWaypointManager().trackWaypoint(waypoint);
+          }
+       }
 
-      public void onDestroyed(final Entity entity) {
-         if (entity instanceof WaypointTransmitter) {
-             WaypointTransmitter waypoint = (WaypointTransmitter) entity;
-            ServerLevel.this.getWaypointManager().untrackWaypoint(waypoint);
-         }
+       public void onDestroyed(final Entity entity) {
+          if (entity instanceof WaypointTransmitter waypoint) {
+             ServerLevel.this.getWaypointManager().untrackWaypoint(waypoint);
+          }
 
          ServerLevel.this.getScoreboard().entityRemoved(entity);
       }
@@ -2047,9 +2047,9 @@ this.server
             ServerLevel.this.updateSleepingPlayerList();
          }
 
-         if (entity instanceof WaypointTransmitter && waypoint.isTransmittingWaypoint()) {
-            ServerLevel.this.getWaypointManager().trackWaypoint(waypoint);
-         }
+if (entity instanceof WaypointTransmitter waypoint && waypoint.isTransmittingWaypoint()) {
+             ServerLevel.this.getWaypointManager().trackWaypoint(waypoint);
+          }
 
          if (entity instanceof Mob) {
              Mob mob = (Mob) entity;

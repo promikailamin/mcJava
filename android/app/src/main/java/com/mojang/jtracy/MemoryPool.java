@@ -6,7 +6,7 @@ public final class MemoryPool {
     }
 
     public long allocate(long size) {
-        return org.lwjgl.system.MemoryUtil.nalloc(size);
+        return 0L;
     }
 
     public long malloc(long address, long size) {
@@ -22,9 +22,6 @@ public final class MemoryPool {
     }
 
     public void free(long address) {
-        if (address != 0L) {
-            org.lwjgl.system.MemoryUtil.nfree(address);
-        }
     }
 
     public void setName(String name) {

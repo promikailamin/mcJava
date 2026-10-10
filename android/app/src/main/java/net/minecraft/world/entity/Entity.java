@@ -3311,15 +3311,15 @@ public @Nullable Entity teleport(final TeleportTransition transition) {
    }
 
 protected void removeAfterChangingDimensions() {
-       this.setRemoved(Entity.RemovalReason.CHANGED_DIMENSION);
-       if (this instanceof Leashable leashable) {
-          leashable.removeLeash();
-       }
+        this.setRemoved(Entity.RemovalReason.CHANGED_DIMENSION);
+        if (this instanceof Leashable leashable) {
+           leashable.removeLeash();
+        }
 
-       if (this instanceof WaypointTransmitter waypointTransmitter && this.level instanceof ServerLevel serverLevel) {
-          serverLevel.getWaypointManager().untrackWaypoint(waypointTransmitter.getWaypoint());
-       }
-    }
+        if (this instanceof WaypointTransmitter waypointTransmitter && this.level instanceof ServerLevel serverLevel) {
+           serverLevel.getWaypointManager().untrackWaypoint(waypointTransmitter);
+        }
+     }
 
    public Vec3 getRelativePortalPosition(final Direction.Axis axis, final BlockUtil.FoundRectangle portalArea) {
       return PortalShape.getRelativePosition(portalArea, axis, this.position(), this.getDimensions(this.getPose()));
@@ -3962,7 +3962,7 @@ public boolean canTeleport(final Level from, final Level to) {
 this.levelCallback.onMove();
           if (!this.firstTick && this.level instanceof ServerLevel serverLevel && !this.isRemoved()) {
              if (this instanceof WaypointTransmitter waypointTransmitter && waypointTransmitter.isTransmittingWaypoint()) {
-                serverLevel.getWaypointManager().updateWaypoint(waypointTransmitter.getWaypoint());
+                serverLevel.getWaypointManager().updateWaypoint(waypointTransmitter);
              }
 
              if (this instanceof ServerPlayer player && player.isReceivingWaypoints() && player.connection != null) {

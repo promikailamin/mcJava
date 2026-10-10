@@ -13,14 +13,14 @@ public final class SectionCategory {
     }
 
     public Zone enterSection(String name) {
-        return new Zone();
+        return Zone.NULL_ZONE;
     }
 
     public Zone push(String name) {
-        return new Zone();
+        return Zone.NULL_ZONE;
     }
 
     public Zone push() {
-        return new Zone();
+        return Zone.NULL_ZONE;
     }
 }

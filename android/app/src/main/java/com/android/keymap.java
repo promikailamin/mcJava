@@ -85,7 +85,7 @@ public final class keymap {
         put(KeyEvent.KEYCODE_HOME, 74, "Home");
         put(KeyEvent.KEYCODE_PAGE_UP, 75, "Page Up");
         put(KeyEvent.KEYCODE_DEL, 76, "Delete");
-        put(KeyEvent.KEYCODE_END, 77, "End");
+        put(KeyEvent.KEYCODE_MOVE_END, 77, "End");
         put(KeyEvent.KEYCODE_PAGE_DOWN, 78, "Page Down");
         put(KeyEvent.KEYCODE_DPAD_RIGHT, 79, "Right");
         put(KeyEvent.KEYCODE_DPAD_LEFT, 80, "Left");

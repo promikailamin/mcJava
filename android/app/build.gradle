@@ -75,13 +75,8 @@ android {
         // Keep compiling after the default 100-error cap so the whole error surface
         // is visible in a single pass while porting the tree.
         options.compilerArgs << "-Xmaxerrs" << "100000"
-        // Add JDK runtime to boot classpath via JVM argument
-        def jdkHome = System.getenv('JAVA_HOME') ?: '/usr/lib/jvm/temurin-21-jdk-amd64'
-        def jrtFs = new File(jdkHome, 'lib/jrt-fs.jar')
-        if (jrtFs.exists()) {
-            options.fork = true
-            options.forkOptions.jvmArgs << "-Xbootclasspath/a:" + jrtFs.absolutePath
-        }
+        options.fork = true
+        // Don't use jrt-fs.jar as it interferes with module system
     }
 
     sourceSets {
@@ -107,6 +102,25 @@ android {
                 exclude 'net/minecraft/util/monitoring/jmx/**'
                 // Client-side rendering code (desktop-only, uses LWJGL/OpenGL, pattern matching switches on sealed types)
                 exclude 'net/minecraft/client/**'
+                // blaze3d depends on client code (LWJGL, OpenGL, etc.) - desktop only
+                exclude 'com/mojang/blaze3d/**'
+                // renderpearl depends on client code - desktop only
+                exclude 'com/mojang/renderpearl/**'
+                // realmsclient is desktop-only
+                exclude 'com/mojang/realmsclient/**'
+                // text2speech is desktop-only
+                exclude 'com/mojang/text2speech/**'
+                // jtracy is desktop-only profiling - but we provide stub implementations
+                // org.lwjgl is desktop-only (replaced by Android shim)
+                exclude 'org/lwjgl/**'
+                // Realms is desktop-only
+                exclude 'net/minecraft/realms/**'
+                // Stubs are for reference only
+                exclude 'stubs/**'
+                // Pro launcher is desktop-only
+                exclude 'pro/minecraft/launch/**'
+                exclude 'pro/minecraft/main_activity.java'
+                exclude 'pro/minecraft/host/**'
             }
         }
     }

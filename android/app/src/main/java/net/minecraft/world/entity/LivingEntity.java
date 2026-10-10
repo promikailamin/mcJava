@@ -367,27 +367,27 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          this.updateFluidInteraction();
       }
 
-      if (this.level() instanceof ServerLevel && onGround && this.fallDistance > 0.0) {
-         this.onChangedBlock(level, pos);
-         double power = Math.max(0, Mth.floor(this.calculateFallPower(this.fallDistance)));
-         if (power > 0.0 && !onState.isAir()) {
-            double x = this.getX();
-            double y = this.getY();
-            double z = this.getZ();
-            BlockPos entityPos = this.blockPosition();
-            if (pos.getX() != entityPos.getX() || pos.getZ() != entityPos.getZ()) {
-               double xDiff = x - pos.getX() - 0.5;
-               double zDiff = z - pos.getZ() - 0.5;
-               double maxDiff = Math.max(Math.abs(xDiff), Math.abs(zDiff));
-               x = pos.getX() + 0.5 + xDiff / maxDiff * 0.5;
-               z = pos.getZ() + 0.5 + zDiff / maxDiff * 0.5;
-            }
+if (this.level() instanceof ServerLevel && onGround && this.fallDistance > 0.0) {
+          this.onChangedBlock(this.level(), pos);
+          double power = Math.max(0, Mth.floor(this.calculateFallPower(this.fallDistance)));
+          if (power > 0.0 && !onState.isAir()) {
+             double x = this.getX();
+             double y = this.getY();
+             double z = this.getZ();
+             BlockPos entityPos = this.blockPosition();
+             if (pos.getX() != entityPos.getX() || pos.getZ() != entityPos.getZ()) {
+                double xDiff = x - pos.getX() - 0.5;
+                double zDiff = z - pos.getZ() - 0.5;
+                double maxDiff = Math.max(Math.abs(xDiff), Math.abs(zDiff));
+                x = pos.getX() + 0.5 + xDiff / maxDiff * 0.5;
+                z = pos.getZ() + 0.5 + zDiff / maxDiff * 0.5;
+             }
 
-            double scale = Math.min(0.2F + power / 15.0, 2.5);
-            int particles = (int)(150.0 * scale);
-            level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, onState), x, y, z, particles, 0.0, 0.0, 0.0, 0.15F);
-         }
-      }
+             double scale = Math.min(0.2F + power / 15.0, 2.5);
+             int particles = (int)(150.0 * scale);
+             this.level().sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, onState), x, y, z, particles, 0.0, 0.0, 0.0, 0.15F);
+          }
+       }
 
       super.checkFallDamage(ya, onGround, onState, pos);
       if (onGround) {
@@ -426,9 +426,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
       super.baseTick();
       ProfilerFiller profiler = Profiler.get();
       profiler.push("livingEntityBaseTick");
-      if (this.isAlive() && this.level() instanceof ServerLevel) {
-          ServerLevel level = (ServerLevel) this.isAlive() && this.level();
-         boolean isPlayer = this instanceof Player;
+if (this.isAlive() && this.level() instanceof ServerLevel level) {
+          boolean isPlayer = this instanceof Player;
          if (this.isInWall()) {
             this.hurtServer(level, this.damageSources().inWall(), 1.0F);
          } else if (isPlayer && !level.getWorldBorder().isWithinBounds(this.getBoundingBox())) {
@@ -723,12 +722,11 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
       return equippable.equipSound();
    }
 
-   @Override
-   public void remove(final Entity.RemovalReason reason) {
-      if ((reason == Entity.RemovalReason.KILLED || reason == Entity.RemovalReason.DISCARDED) && this.level() instanceof ServerLevel) {
-          ServerLevel level = (ServerLevel) (reason == Entity.RemovalReason.KILLED || reason == Entity.RemovalReason.DISCARDED) && this.level();
-         this.triggerOnDeathMobEffects(level, reason);
-      }
+@Override
+    public void remove(final Entity.RemovalReason reason) {
+       if ((reason == Entity.RemovalReason.KILLED || reason == Entity.RemovalReason.DISCARDED) && this.level() instanceof ServerLevel level) {
+          this.triggerOnDeathMobEffects(level, reason);
+       }
 
       super.remove(reason);
       this.brain.clearMemories();
@@ -1336,9 +1334,9 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
 
       BlocksAttacks blocksAttacks = blockingWith.get(DataComponents.BLOCKS_ATTACKS);
       if (blocksAttacks != null && !blocksAttacks.bypassedBy().map(t -> t.contains(source.typeHolder())).orElse(false)) {
-         if (source.getDirectEntity() instanceof AbstractArrow && abstractArrow.getPierceLevel() > 0) {
-            return 0.0F;
-         } else {
+if (source.getDirectEntity() instanceof AbstractArrow abstractArrow && abstractArrow.getPierceLevel() > 0) {
+             return 0.0F;
+          } else {
             Vec3 sourcePosition = source.getSourcePosition();
             double angle;
             if (sourcePosition != null) {
@@ -1352,9 +1350,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
 
             float damageBlocked = blocksAttacks.resolveBlockedDamage(source, damage, angle);
             blocksAttacks.hurtBlockingItem(this.level(), blockingWith, this, this.getUsedItemHand(), damageBlocked);
-            if (damageBlocked > 0.0F && !source.is(DamageTypeTags.IS_PROJECTILE) && source.getDirectEntity() instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity) damageBlocked > 0.0F && !source.is(DamageTypeTags.IS_PROJECTILE) && source.getDirectEntity();
-               this.blockUsingItem(level, livingEntity, source, damage, damageBlocked >= damage);
+            if (damageBlocked > 0.0F && !source.is(DamageTypeTags.IS_PROJECTILE) && source.getDirectEntity() instanceof LivingEntity livingEntity) {
+               this.blockUsingItem(this.level(), livingEntity, source, damage, damageBlocked >= damage);
             }
 
             return damageBlocked;
@@ -1371,12 +1368,12 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
       }
    }
 
-   protected void resolveMobResponsibleForDamage(final DamageSource source) {
-      if (source.getEntity() instanceof LivingEntity && !source.is(DamageTypeTags.NO_ANGER)
-         && (!source.is(DamageTypes.WIND_CHARGE) || !this.is(EntityTypeTags.NO_ANGER_FROM_WIND_CHARGE))) {
-         this.setLastHurtByMob(livingSource);
-      }
-   }
+protected void resolveMobResponsibleForDamage(final DamageSource source) {
+       if (source.getEntity() instanceof LivingEntity livingSource && !source.is(DamageTypeTags.NO_ANGER)
+          && (!source.is(DamageTypes.WIND_CHARGE) || !this.is(EntityTypeTags.NO_ANGER_FROM_WIND_CHARGE))) {
+          this.setLastHurtByMob(livingSource);
+       }
+    }
 
    protected @Nullable Player resolvePlayerResponsibleForDamage(final DamageSource source) {
       Entity sourceEntity = source.getEntity();

@@ -1,0 +1,7 @@
+-d
+/tmp/classes
+-sourcepath
+app/src/main/java
+-cp
+/usr/lib/jvm/temurin-21-jdk-amd64/lib/jrt-fs.jar
+app/src/main/java/net/minecraft/SharedConstants.java

@@ -1,22 +1,61 @@
 A new GitHub issue has been opened.
 
-Issue number: 24
+Issue number: 25
 
 Issue URL:
-https://github.com/promikailamin/mcJava/issues/24
+https://github.com/promikailamin/mcJava/issues/25
 
 Title:
-Fix all and build
+Fix and build
 
 Description:
-**Current State**: 112 compilation errors remain, mostly from the script incorrectly converting constant switches (enum/int switches with multiple constants) which it shouldn't touch.
+## Summary of Fixes Applied
 
-**Root Cause**: The script cannot reliably distinguish between type pattern switches (which need conversion) and constant switches (which should be left alone).
+I've fixed numerous compilation errors in the mcJava project:
 
-**Recommended Solution**: Use OpenRewrite or Error Prone for systematic migration as suggested in the issue, or upgrade the build environment to properly support Java 21 pattern matching.
+### 1. **Invalid `instanceof CONSTANT, CONSTANT` Patterns** (14 files)
+Fixed incorrectly converted switch expressions that produced invalid syntax like `if (var instanceof A, B)`:
+- `SnbtGrammar.java`, `BlockModelGenerators.java`, `PlayerSocialManager.java`
+- `ScreenDirection.java`, `Direction.java`, `BrushItem.java`
+- `StructureTemplate.java`, `StructurePiece.java`, `SimpleDensityFunction.java`
+- `BellBlock.java`, `SelectableSlotContainer.java`, `DoorBlock.java`
+- `CrafterBlock.java`, `FurnaceRecipeBookComponent.java`
 
+### 2. **Pattern Matching Switches on Sealed Types** (8 files)
+Converted to if-else chains to avoid MatchException requirement:
+- `DensityFunction.java`, `MaterialRule.java`, `MaterialCondition.java`
+- `BundleItem.java`, `TagValueOutput.java`, `TagValueInput.java`
+- `GuiGraphicsExtractor.java`, `PostChain.java`, `GlCommandEncoder.java`
 
-setup all tools needed java, android sdk, ndk etc ... and Fix all errors no matters how much changes and afforts it need just fix all and build it. and download mcsrc (a decompiler tool), Minecraft java latest version, fabric loader latest version and decompile them for assist in this project. perfectly build it. i think Minecraft latest version need java 25+. fix all errors and build in any cost.
+### 3. **Missing Variable Bindings in `instanceof`** (6 files)
+Restored pattern variable bindings that were lost during conversion:
+- `Entity.java` (5 locations), `EntityType.java`, `Block.java` (3 locations)
+- `ServerLevel.java` (3 locations)
+
+### 4. **Syntax Errors** (13+ files)
+- Missing semicolons after throw statements
+- Corrupted lambda expressions in datafixer files
+- Incomplete if-else branches
+
+### 5. **Excluded Problematic Code**
+- Excluded `net/minecraft/client/**` (desktop rendering code)
+- Excluded Vulkan backend, JFR profiling, Swing GUI, JMX monitoring
+
+## Remaining Issue: MatchException
+
+The Java compiler requires `java.lang.MatchException` for pattern matching switches on sealed types. This class doesn't exist in Android's java.base module. All approaches to provide it (boot classpath, patch-module, custom JAR) have failed because java.lang is a sealed module.
+
+## Recommended Next Steps
+
+1. **Complete conversion**: Run a more robust pattern-matching-switch-to-if-else converter on all remaining sealed type switches
+2. **Use OpenRewrite/Error Prone**: As suggested in the GitHub issue, use automated migration tools
+3. **Provide MatchException via custom JDK**: Build a custom JDK with MatchException added to java.lang
+4. **Target newer Android API**: Android 14+ (UpsideDownCake) has better Java 21 support
+
+The project now has significantly fewer compilation errors, but the fundamental MatchException issue requires either complete elimination of pattern matching on sealed types or a custom runtime environment.
+
+setup all tools needed java, android sdk, ndk etc ... and Fix all errors no matters how much changes and afforts it need just fix all and build it. and download mcsrc (a decompiler tool), Minecraft java latest version, fabric loader latest version and decompile them for assist in this project. perfectly build it. fix all errors and build in any cost.
+
 
 Inspect the repository and implement the requested change.
 
