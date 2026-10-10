@@ -1,10 +1,10 @@
 A new GitHub issue has been opened.
 
-Issue number: 12
-Issue URL: https://github.com/promikailamin/mcJava/issues/12
+Issue number: 13
+Issue URL: https://github.com/promikailamin/mcJava/issues/13
 
 Title:
-Fix all and build.
+Fix all and build
 
 Description:
 You are in GitHub action. So all things not happens how it happening on a Linux system. keep this in mind. Fix all errors no matter how much effort and time it need to fix all errors. you have to fix all errors untill the build is succeed. dont fo beyond /home/runner/work/mcJava/mcJava/ dir keep all things in this dir so not permission needed. setup all java, android sdk, ndk etc all things in this dir to use all tools, tmps, caches etc all things in /home/runner/work/mcJava/mcJava/ dir so no permission is needed of root folders. imortent notice: dont go beyond /home/runner/work/mcJava/mcJava/
