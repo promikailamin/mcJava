@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.client.gui.navigation;
 
 import it.unimi.dsi.fastutil.ints.IntComparator;
@@ -11,10 +12,12 @@ public enum ScreenDirection {
    private final IntComparator coordinateValueComparator = (k1, k2) -> k1 == k2 ? 0 : (this.isBefore(k1, k2) ? -1 : 1);
 
    public ScreenAxis getAxis() {
-      return switch (this) {
-         case UP, DOWN -> ScreenAxis.VERTICAL;
-         case LEFT, RIGHT -> ScreenAxis.HORIZONTAL;
-      };
+      if (this instanceof UP, DOWN) {
+          return ScreenAxis.VERTICAL;
+      }
+      else if (this instanceof LEFT, RIGHT) {
+          return ScreenAxis.HORIZONTAL;
+      }
    }
 
    public ScreenDirection getOpposite() {
@@ -27,10 +30,12 @@ public enum ScreenDirection {
    }
 
    public boolean isPositive() {
-      return switch (this) {
-         case UP, LEFT -> false;
-         case DOWN, RIGHT -> true;
-      };
+      if (this instanceof UP, LEFT) {
+          return false;
+      }
+      else if (this instanceof DOWN, RIGHT) {
+          return true;
+      }
    }
 
    public boolean isAfter(final int a, final int b) {

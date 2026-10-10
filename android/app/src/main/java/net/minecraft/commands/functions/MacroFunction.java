@@ -82,15 +82,21 @@ public class MacroFunction<T extends ExecutionCommandSource<T>> implements Comma
    }
 
    private static String stringify(final Tag tag) {
-      return switch (tag) {
-         case FloatTag(float value) -> DECIMAL_FORMAT.format(value);
-         case DoubleTag(double value) -> DECIMAL_FORMAT.format(value);
-         case ByteTag(byte value) -> String.valueOf(value);
-         case ShortTag(short value) -> String.valueOf(value);
-         case LongTag(long value) -> String.valueOf(value);
-         case StringTag(String value) -> value;
-         default -> tag.toString();
-      };
+      if (tag instanceof FloatTag floatTag) {
+         return DECIMAL_FORMAT.format(floatTag.value());
+      } else if (tag instanceof DoubleTag doubleTag) {
+         return DECIMAL_FORMAT.format(doubleTag.value());
+      } else if (tag instanceof ByteTag byteTag) {
+         return String.valueOf(byteTag.value());
+      } else if (tag instanceof ShortTag shortTag) {
+         return String.valueOf(shortTag.value());
+      } else if (tag instanceof LongTag longTag) {
+         return String.valueOf(longTag.value());
+      } else if (tag instanceof StringTag stringTag) {
+         return stringTag.value();
+      } else {
+         return tag.toString();
+      }
    }
 
    private static void lookupValues(final List<String> values, final IntList indicesToSelect, final List<String> selectedValuesOutput) {

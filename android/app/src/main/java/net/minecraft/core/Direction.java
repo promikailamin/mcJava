@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.core;
 
 import com.google.common.collect.ImmutableList;
@@ -470,10 +471,9 @@ public enum Direction implements Directional, StringRepresentable {
       }
 
       public Direction.Plane getPlane() {
-         return switch (this) {
-            case X, Z -> Direction.Plane.HORIZONTAL;
-            case Y -> Direction.Plane.VERTICAL;
-         };
+         if (this instanceof X, Z) {
+             return Direction.Plane.HORIZONTAL;
+         }
       }
 
       @Override

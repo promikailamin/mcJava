@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.world.level.levelgen.densityfunction.generator;
 
 import com.mojang.serialization.MapCodec;
@@ -46,10 +47,9 @@ public enum SimpleDensityFunction implements DensityFunction {
 
    @Override
    public @DensityFunction.Axes int domainAxes() {
-      return switch (this) {
-         case BLEND_ALPHA, BLEND_OFFSET -> 5;
-         case BEARDIFIER -> 7;
-      };
+      if (this instanceof BLEND_ALPHA, BLEND_OFFSET) {
+          return 5;
+      }
    }
 
    public String id() {

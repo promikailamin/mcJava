@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.world.level.levelgen.structure;
 
 import com.google.common.collect.ImmutableSet;
@@ -138,13 +139,12 @@ public abstract class StructurePiece {
       if (orientation == null) {
          return x;
       }
-
-      return switch (orientation) {
-         case NORTH, SOUTH -> this.boundingBox.minX() + x;
-         case WEST -> this.boundingBox.maxX() - z;
-         case EAST -> this.boundingBox.minX() + z;
-         default -> x;
-      };
+      if (orientation instanceof NORTH, SOUTH) {
+          return this.boundingBox.minX() + x;
+      }
+      else {
+          x
+      }
    }
 
    protected int getWorldY(final int y) {
@@ -156,13 +156,12 @@ public abstract class StructurePiece {
       if (orientation == null) {
          return z;
       }
-
-      return switch (orientation) {
-         case NORTH -> this.boundingBox.maxZ() - z;
-         case SOUTH -> this.boundingBox.minZ() + z;
-         case WEST, EAST -> this.boundingBox.minZ() + x;
-         default -> z;
-      };
+      if (orientation instanceof WEST, EAST) {
+          return this.boundingBox.minZ() + x;
+      }
+      else {
+          z
+      }
    }
 
    protected void placeBlock(final WorldGenLevel level, BlockState blockState, final int x, final int y, final int z, final BoundingBox chunkBB) {

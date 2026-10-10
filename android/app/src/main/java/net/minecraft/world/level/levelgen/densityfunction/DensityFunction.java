@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.world.level.levelgen.densityfunction;
 
 import com.mojang.serialization.Codec;
@@ -19,11 +20,15 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 public interface DensityFunction {
    Codec<Holder<DensityFunction>> REFERENCE_CODEC = RegistryCodecs.holder(Registries.DENSITY_FUNCTION);
    Codec<DensityFunction> CODEC = RegistryCodecs.holder(Registries.DENSITY_FUNCTION, DensityFunctions.DIRECT_CODEC).xmap(holder -> {
-      return switch (holder) {
-         case Holder.Direct<DensityFunction> direct -> (DensityFunction)direct.value();
-         case Holder.Reference<DensityFunction> reference -> new DensityFunctions.HolderHolder(reference);
-         default -> throw new IllegalArgumentException("Unexpected holder type: " + holder);
-      };
+      if (holder instanceof Holder.Direct<DensityFunction> direct) {
+          return (DensityFunction)direct.value();
+      }
+      else if (holder instanceof Holder.Reference<DensityFunction> reference) {
+          return new DensityFunctions.HolderHolder(reference);
+      }
+      else {
+          throw new IllegalArgumentException("Unexpected holder type: " + holder)
+      }
    }, value -> {
       return switch (value) {
          case DensityFunctions.HolderHolder(Holder<DensityFunction> function) -> function;

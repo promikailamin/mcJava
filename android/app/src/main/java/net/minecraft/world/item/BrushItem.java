@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.world.item;
 
 import net.minecraft.core.BlockPos;
@@ -132,14 +133,9 @@ public class BrushItem extends Item {
 
       public static BrushItem.DustParticlesDelta fromDirection(final Vec3 viewVector, final Direction hitDirection) {
          double yd = 0.0;
-
-         return switch (hitDirection) {
-            case DOWN, UP -> new BrushItem.DustParticlesDelta(viewVector.z(), 0.0, -viewVector.x());
-            case NORTH -> new BrushItem.DustParticlesDelta(1.0, 0.0, -0.1);
-            case SOUTH -> new BrushItem.DustParticlesDelta(-1.0, 0.0, 0.1);
-            case WEST -> new BrushItem.DustParticlesDelta(-0.1, 0.0, -1.0);
-            case EAST -> new BrushItem.DustParticlesDelta(0.1, 0.0, 1.0);
-         };
+         if (hitDirection instanceof DOWN, UP) {
+             return new BrushItem.DustParticlesDelta(viewVector.z(), 0.0, -viewVector.x());
+         }
       }
    }
 }

@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.nbt;
 
 import com.google.common.collect.ImmutableMap;
@@ -799,11 +800,9 @@ public class SnbtGrammar {
          if (this.suffix.signed != null) {
             return this.suffix.signed;
          }
-
-         return switch (this.base) {
-            case BINARY, HEX -> SnbtGrammar.SignedPrefix.UNSIGNED;
-            case DECIMAL -> SnbtGrammar.SignedPrefix.SIGNED;
-         };
+         if (this.base instanceof BINARY, HEX) {
+             return SnbtGrammar.SignedPrefix.UNSIGNED;
+         }
       }
 
       private String cleanupDigits(final SnbtGrammar.Sign sign) {

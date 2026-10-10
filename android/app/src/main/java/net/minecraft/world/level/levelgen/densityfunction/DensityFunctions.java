@@ -45,10 +45,11 @@ public final class DensityFunctions {
       .dispatch(DensityFunction::codec, Function.identity());
    public static final Codec<DensityFunction> DIRECT_CODEC = Codec.either(NOISE_VALUE_CODEC, FULL_DIRECT_CODEC)
       .xmap(either -> (DensityFunction)either.map(DensityFunctions::constant, Function.identity()), function -> {
-         return switch (function) {
-            case ConstantFunction(float value) -> Either.left(value);
-            default -> Either.right(function);
-         };
+         if (function instanceof ConstantFunction constantFunction) {
+            return Either.left(constantFunction.value());
+         } else {
+            return Either.right(function);
+         }
       });
    private static final ConstantFunction ZERO = new ConstantFunction(0.0F);
 

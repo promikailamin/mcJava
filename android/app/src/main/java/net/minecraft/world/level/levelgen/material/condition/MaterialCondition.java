@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.world.level.levelgen.material.condition;
 
 import com.mojang.serialization.Codec;
@@ -12,11 +13,15 @@ import net.minecraft.world.level.levelgen.material.MaterialRuleContext;
 public interface MaterialCondition {
    Codec<MaterialCondition> DIRECT_CODEC = BuiltInRegistries.MATERIAL_CONDITION_TYPE.byNameCodec().dispatch(MaterialCondition::codec, Function.identity());
    Codec<MaterialCondition> CODEC = RegistryCodecs.holder(Registries.MATERIAL_CONDITION, DIRECT_CODEC).xmap(holder -> {
-      return switch (holder) {
-         case Holder.Direct<MaterialCondition> direct -> (MaterialCondition)direct.value();
-         case Holder.Reference<MaterialCondition> reference -> new MaterialCondition.HolderHolder(reference);
-         default -> throw new IllegalArgumentException("Unexpected holder type: " + holder);
-      };
+      if (holder instanceof Holder.Direct<MaterialCondition> direct) {
+          return (MaterialCondition)direct.value();
+      }
+      else if (holder instanceof Holder.Reference<MaterialCondition> reference) {
+          return new MaterialCondition.HolderHolder(reference);
+      }
+      else {
+          throw new IllegalArgumentException("Unexpected holder type: " + holder)
+      }
    }, value -> {
       return switch (value) {
          case MaterialCondition.HolderHolder(Holder<MaterialCondition> holder) -> holder;

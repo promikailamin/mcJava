@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.world.level.block;
 
 import java.util.Map;
@@ -119,10 +120,9 @@ public class DoorBlock extends Block {
 
    @Override
    protected boolean isPathfindable(final BlockState state, final PathComputationType type) {
-      return switch (type) {
-         case LAND, AIR -> state.getValue(OPEN);
-         case WATER -> false;
-      };
+      if (type instanceof LAND, AIR) {
+          return state.getValue(OPEN);
+      }
    }
 
    @Override

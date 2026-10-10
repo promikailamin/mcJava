@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.client.data.models;
 
 import com.google.common.collect.ImmutableMap;
@@ -1201,15 +1202,9 @@ public class BlockModelGenerators {
          .accept(
             MultiVariantGenerator.dispatch(block)
                .with(PropertyDispatch.initial(BlockStateProperties.POWERED, BlockStateProperties.RAIL_SHAPE_STRAIGHT).generate((powered, railShape) -> {
-                  return switch (railShape) {
-                     case NORTH_SOUTH -> powered ? flatOn : flat;
-                     case EAST_WEST -> (powered ? flatOn : flat).with(Y_ROT_90);
-                     case ASCENDING_EAST -> (powered ? risingNEOn : risingNE).with(Y_ROT_90);
-                     case ASCENDING_WEST -> (powered ? risingSWOn : risingSW).with(Y_ROT_90);
-                     case ASCENDING_NORTH -> powered ? risingNEOn : risingNE;
-                     case ASCENDING_SOUTH -> powered ? risingSWOn : risingSW;
-                     default -> throw new UnsupportedOperationException("Fix you generator!");
-                  };
+                  {
+                      throw new UnsupportedOperationException("Fix you generator!")
+                  }
                }))
          );
    }
@@ -2706,11 +2701,12 @@ public class BlockModelGenerators {
          .accept(
             MultiVariantGenerator.dispatch(block)
                .with(PropertyDispatch.initial(BlockStateProperties.TRIAL_SPAWNER_STATE, BlockStateProperties.OMINOUS).generate((state, ominous) -> {
-                  return switch (state) {
-                     case INACTIVE, COOLDOWN -> ominous ? ominousInactive : inactive;
-                     case WAITING_FOR_PLAYERS, ACTIVE, WAITING_FOR_REWARD_EJECTION -> ominous ? ominousActive : active;
-                     case EJECTING_REWARD -> ominous ? ominousEjectingReward : ejectingReward;
-                  };
+                  if (state instanceof INACTIVE, COOLDOWN) {
+                      return ominous ? ominousInactive : inactive;
+                  }
+                  else if (state instanceof WAITING_FOR_PLAYERS, ACTIVE, WAITING_FOR_REWARD_EJECTION) {
+                      return ominous ? ominousActive : active;
+                  }
                }))
          );
    }

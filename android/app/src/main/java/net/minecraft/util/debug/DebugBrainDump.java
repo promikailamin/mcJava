@@ -212,6 +212,11 @@ public record DebugBrainDump(
       else if (obj instanceof NearestVisibleLivingEntities visibleEntities) {
           return getShortDescription(level, visibleEntities.nearbyEntities());
       }
+      else if (obj instanceof Collection<?> collection) {
+          return "["
+            + collection.stream().map(element -> getShortDescription(level, element)).collect(Collectors.joining(", "))
+            + "]";
+      }
       else {
           return obj.toString();
       }

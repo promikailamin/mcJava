@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.world.attribute;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -267,13 +268,19 @@ public class EnvironmentAttributeSystem implements EnvironmentAttributeReader {
          Value result = this.baseValue;
 
          for (EnvironmentAttributeLayer<Value> layer : this.layers) {
-            result = (Value)(switch (layer) {
-               case EnvironmentAttributeLayer.Constant<Value> constantLayer -> constantLayer.applyConstant(result);
-               case EnvironmentAttributeLayer.TimeBased<Value> timeBasedLayer -> timeBasedLayer.applyTimeBased(result, this.cacheTickId);
-               case EnvironmentAttributeLayer.Positional<Value> positionalLayer -> positionalLayer.applyPositional(
+            result = (Value)(            if (layer instanceof EnvironmentAttributeLayer.Constant<Value> constantLayer) {
+                constantLayer.applyConstant(result);
+            }
+            else if (layer instanceof EnvironmentAttributeLayer.TimeBased<Value> timeBasedLayer) {
+                timeBasedLayer.applyTimeBased(result, this.cacheTickId);
+            }
+            else if (layer instanceof EnvironmentAttributeLayer.Positional<Value> positionalLayer) {
+                positionalLayer.applyPositional(
                   result, Objects.requireNonNull(pos), biomeInterpolator
                );
-               default -> throw new IllegalArgumentException("Unexpected layer type: " + layer);
+            }
+            else {
+                throw new IllegalArgumentException("Unexpected layer type: " + layer)
             });
          }
 
@@ -284,11 +291,17 @@ public class EnvironmentAttributeSystem implements EnvironmentAttributeReader {
          Value result = this.baseValue;
 
          for (EnvironmentAttributeLayer<Value> layer : this.layers) {
-            result = (Value)(switch (layer) {
-               case EnvironmentAttributeLayer.Constant<Value> constantLayer -> constantLayer.applyConstant(result);
-               case EnvironmentAttributeLayer.TimeBased<Value> timeBasedLayer -> timeBasedLayer.applyTimeBased(result, this.cacheTickId);
-               case EnvironmentAttributeLayer.Positional<Value> ignored -> result;
-               default -> throw new IllegalArgumentException("Unexpected layer type: " + layer);
+            result = (Value)(            if (layer instanceof EnvironmentAttributeLayer.Constant<Value> constantLayer) {
+                constantLayer.applyConstant(result);
+            }
+            else if (layer instanceof EnvironmentAttributeLayer.TimeBased<Value> timeBasedLayer) {
+                timeBasedLayer.applyTimeBased(result, this.cacheTickId);
+            }
+            else if (layer instanceof EnvironmentAttributeLayer.Positional<Value> ignored) {
+                result;
+            }
+            else {
+                throw new IllegalArgumentException("Unexpected layer type: " + layer)
             });
          }
 

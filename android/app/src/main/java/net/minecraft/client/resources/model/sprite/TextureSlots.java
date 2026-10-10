@@ -109,17 +109,16 @@ public class TextureSlots {
 
          for (TextureSlots.Data data : Lists.reverse(this.entries)) {
             data.values.forEach((slot, contents) -> {
-               switch (contents) {
-                  case TextureSlots.Value value:
-                     unresolved.remove(slot);
+                              if (contents instanceof TextureSlots.Value value) {
+                   unresolved.remove(slot);
                      resolved.put(slot, value.material());
-                     break;
-                  case TextureSlots.Reference reference:
-                     resolved.remove(slot);
+               }
+               else if (contents instanceof TextureSlots.Reference reference) {
+                   resolved.remove(slot);
                      unresolved.put(slot, reference);
-                     break;
-                  default:
-                     throw new IllegalStateException("Unexpected value");
+               }
+               else {
+                   throw new IllegalStateException("Unexpected value");
                }
             });
          }

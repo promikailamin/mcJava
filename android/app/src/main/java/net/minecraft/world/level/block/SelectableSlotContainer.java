@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.world.level.block;
 
 import java.util.Optional;
@@ -33,14 +34,9 @@ public interface SelectableSlotContainer {
       double relativeX = relativeHit.x();
       double relativeY = relativeHit.y();
       double relativeZ = relativeHit.z();
-
-      return switch (hitDirection) {
-         case NORTH -> Optional.of(new Vec2((float)(1.0 - relativeX), (float)relativeY));
-         case SOUTH -> Optional.of(new Vec2((float)relativeX, (float)relativeY));
-         case WEST -> Optional.of(new Vec2((float)relativeZ, (float)relativeY));
-         case EAST -> Optional.of(new Vec2((float)(1.0 - relativeZ), (float)relativeY));
-         case DOWN, UP -> Optional.empty();
-      };
+      if (hitDirection instanceof DOWN, UP) {
+          return Optional.empty();
+      }
    }
 
    private static int getSection(final float relativeCoordinate, final int maxSections) {

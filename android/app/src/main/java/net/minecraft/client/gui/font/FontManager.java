@@ -335,12 +335,15 @@ public class FontManager implements AutoCloseable, PreparableReloadListener {
       }
 
       private GlyphSource getGlyphSource(final FontDescription description) {
-         return switch (description) {
-            case FontDescription.Resource resource -> FontManager.this.getFontSetRaw(resource.id()).source(this.nonFishyOnly);
-            case FontDescription.AtlasSprite sprite -> FontManager.this.getSpriteFont(sprite);
-            case FontDescription.PlayerSprite player -> FontManager.this.playerProvider.sourceForPlayer(player);
-            default -> FontManager.this.missingFontSet.source(this.nonFishyOnly);
-         };
+         if (description instanceof FontDescription.Resource resource) {
+            return FontManager.this.getFontSetRaw(resource.id()).source(this.nonFishyOnly);
+         } else if (description instanceof FontDescription.AtlasSprite sprite) {
+            return FontManager.this.getSpriteFont(sprite);
+         } else if (description instanceof FontDescription.PlayerSprite player) {
+            return FontManager.this.playerProvider.sourceForPlayer(player);
+         } else {
+            return FontManager.this.missingFontSet.source(this.nonFishyOnly);
+         }
       }
 
       @Override

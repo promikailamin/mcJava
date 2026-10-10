@@ -50,22 +50,8 @@ public sealed interface VecDelta permits VecDelta.Linear, VecDelta.Stepped {
       VecDelta var2 = delta;
 
       while (true) {
-         switch (var2) {
-            case VecDelta.Linear(short xa, short ya, short za):
-               output.writeShort(xa);
-               output.writeShort(ya);
-               output.writeShort(za);
-               break;
-            case VecDelta.Stepped(List<VecDelta.Stepped.DeltaStep> var20):
-               for (VecDelta.Stepped.DeltaStep step : var20) {
-                  output.writeVarInt(step.ticks);
-                  output.writeShort(step.xa);
-                  output.writeShort(step.ya);
-                  output.writeShort(step.za);
-               }
-               break;
-            default:
-               throw new IllegalArgumentException("Unknown VecDelta type: " + var2);
+                  {
+             throw new IllegalArgumentException("Unknown VecDelta type: " + var2);
          }
 
          return;

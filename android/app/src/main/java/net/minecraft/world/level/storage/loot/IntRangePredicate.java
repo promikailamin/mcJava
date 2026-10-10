@@ -18,11 +18,15 @@ public sealed interface IntRangePredicate extends Validatable permits IntRangePr
          .apply(i, IntRangePredicate.Line::new)
    );
    Codec<IntRangePredicate> CODEC = Codec.either(POINT_CODEC, LINE_CODEC).xmap(Either::unwrap, range -> {
-      return switch (range) {
-         case IntRangePredicate.Point point -> Either.left(point);
-         case IntRangePredicate.Line line -> Either.right(line);
-         default -> throw new IllegalStateException("Unexpected value");
-      };
+      if (range instanceof IntRangePredicate.Point point) {
+          return Either.left(point);
+      }
+      else if (range instanceof IntRangePredicate.Line line) {
+          return Either.right(line);
+      }
+      else {
+          throw new IllegalStateException("Unexpected value");
+      }
    });
 
    static IntRangePredicate exact(final int value) {

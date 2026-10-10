@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.util.datafix.fixes;
 
 import com.mojang.datafixers.DSL;
@@ -29,17 +30,9 @@ public class EntitySpawnerItemVariantComponentFix extends DataFix {
          itemStackType,
          input -> {
             String id = input.getOptional(idFinder).<String>map(Pair::getSecond).orElse("");
-
-            return switch (id) {
-               case "minecraft:salmon_bucket" -> input.updateTyped(componentsFinder, EntitySpawnerItemVariantComponentFix::fixSalmonBucket);
-               case "minecraft:axolotl_bucket" -> input.updateTyped(componentsFinder, EntitySpawnerItemVariantComponentFix::fixAxolotlBucket);
-               case "minecraft:tropical_fish_bucket" -> input.updateTyped(componentsFinder, EntitySpawnerItemVariantComponentFix::fixTropicalFishBucket);
-               case "minecraft:painting" -> input.updateTyped(
-                  componentsFinder,
-                  components -> Util.writeAndReadTypedOrThrow(components, components.getType(), EntitySpawnerItemVariantComponentFix::fixPainting)
-               );
-               default -> input;
-            };
+            {
+                input
+            }
          }
       );
    }

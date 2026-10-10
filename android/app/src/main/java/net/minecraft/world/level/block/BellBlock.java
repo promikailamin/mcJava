@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.world.level.block;
 
 import java.util.Map;
@@ -110,13 +111,12 @@ public class BellBlock extends BaseEntityBlock {
       if (clickedDirection.getAxis() != Direction.Axis.Y && !(clickY > 0.8124F)) {
          Direction facing = state.getValue(FACING);
          BellAttachType attachType = state.getValue(ATTACHMENT);
-
-         return switch (attachType) {
-            case FLOOR -> facing.getAxis() == clickedDirection.getAxis();
-            case SINGLE_WALL, DOUBLE_WALL -> facing.getAxis() != clickedDirection.getAxis();
-            case CEILING -> true;
-            default -> false;
-         };
+         if (attachType instanceof SINGLE_WALL, DOUBLE_WALL) {
+             return facing.getAxis() != clickedDirection.getAxis();
+         }
+         else {
+             false
+         }
       } else {
          return false;
       }

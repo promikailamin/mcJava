@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.commands.arguments;
 
 import com.mojang.brigadier.StringReader;
@@ -62,29 +63,9 @@ public class OperationArgument implements ArgumentType<OperationArgument.Operati
    }
 
    private static OperationArgument.SimpleOperation getSimpleOperation(final String op) throws CommandSyntaxException {
-      return switch (op) {
-         case "=" -> (a, b) -> b;
-         case "+=" -> Integer::sum;
-         case "-=" -> (a, b) -> a - b;
-         case "*=" -> (a, b) -> a * b;
-         case "/=" -> (a, b) -> {
-            if (b == 0) {
-               throw ERROR_DIVIDE_BY_ZERO.create();
-            } else {
-               return Mth.floorDiv(a, b);
-            }
-         };
-         case "%=" -> (a, b) -> {
-            if (b == 0) {
-               throw ERROR_DIVIDE_BY_ZERO.create();
-            } else {
-               return Mth.positiveModulo(a, b);
-            }
-         };
-         case "<" -> Math::min;
-         case ">" -> Math::max;
-         default -> throw ERROR_INVALID_OPERATION.create();
-      };
+      {
+          throw ERROR_INVALID_OPERATION.create()
+      }
    }
 
    @FunctionalInterface

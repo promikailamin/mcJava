@@ -66,20 +66,23 @@ public class PrepareSpawnTask implements ConfigurationTask {
 
    @Override
    public boolean tick() {
-      return switch (this.state) {
-         case null -> false;
-         case PrepareSpawnTask.Preparing preparing -> {
-            PrepareSpawnTask.Ready ready = preparing.tick();
-            if (ready != null) {
-               this.state = ready;
-               yield true;
-            } else {
-               yield false;
-            }
-         }
-         case PrepareSpawnTask.Ready ignored -> true;
-         default -> throw new IllegalStateException("Unexpected value");
-      };
+      if (this.state instanceof PrepareSpawnTask.Preparing preparing) {
+
+          PrepareSpawnTask.Ready ready = preparing.tick();
+          if (ready != null) {
+             this.state = ready;
+             return true;
+          } else {
+             return false;
+          }
+
+      }
+      else if (this.state instanceof PrepareSpawnTask.Ready ignored) {
+          return true;
+      }
+      else {
+          throw new IllegalStateException("Unexpected value");
+      }
    }
 
    public ServerPlayer spawnPlayer(final Connection connection, final CommonListenerCookie cookie) {

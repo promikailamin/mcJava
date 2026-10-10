@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.world.level.levelgen.structure.templatesystem;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -526,10 +527,12 @@ public class StructureTemplate {
    }
 
    public Vec3i getSize(final Rotation rotation) {
-      return switch (rotation) {
-         case COUNTERCLOCKWISE_90, CLOCKWISE_90 -> new Vec3i(this.size.getZ(), this.size.getY(), this.size.getX());
-         default -> this.size;
-      };
+      if (rotation instanceof COUNTERCLOCKWISE_90, CLOCKWISE_90) {
+          return new Vec3i(this.size.getZ(), this.size.getY(), this.size.getX());
+      }
+      else {
+          this.size
+      }
    }
 
    public static BlockPos transform(final BlockPos pos, final Mirror mirror, final Rotation rotation, final BlockPos pivot) {

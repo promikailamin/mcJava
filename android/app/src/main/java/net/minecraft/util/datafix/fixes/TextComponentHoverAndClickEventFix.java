@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.util.datafix.fixes;
 
 import com.mojang.datafixers.DSL;
@@ -106,22 +107,9 @@ public class TextComponentHoverAndClickEventFix extends DataFix {
    private static <T> @Nullable Dynamic<T> fixClickEvent(final Dynamic<T> dynamic) {
       String action = dynamic.get("action").asString("");
       String value = dynamic.get("value").asString("");
-
-      return switch (action) {
-         case "open_url" -> !validateUri(value) ? null : dynamic.renameField("value", "url");
-         case "open_file" -> dynamic.renameField("value", "path");
-         case "run_command", "suggest_command" -> !validateChat(value) ? null : dynamic.renameField("value", "command");
-         case "change_page" -> {
-            Integer oldPage = dynamic.get("value").result().map(TextComponentHoverAndClickEventFix::parseOldPage).orElse(null);
-            if (oldPage == null) {
-               yield null;
-            } else {
-               int page = Math.max(oldPage, 1);
-               yield dynamic.remove("value").set("page", dynamic.createInt(page));
-            }
-         }
-         default -> dynamic;
-      };
+      {
+          dynamic
+      }
    }
 
    private static @Nullable Integer parseOldPage(final Dynamic<?> value) {

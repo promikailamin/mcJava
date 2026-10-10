@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.util;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -30,16 +31,20 @@ public sealed interface CubicSpline<I> permits CubicSpline.Multipoint, CubicSpli
    String parityString();
 
    static <C, I extends BoundedFloatFunction<C>> float sample(final CubicSpline<I> spline, final C coordinate) {
-      return switch (spline) {
-         case CubicSpline.Multipoint<I> multipoint -> CubicSpline.Multipoint.sample(multipoint, coordinate);
-         case CubicSpline.Constant<I> constant -> constant.value();
-         default -> throw new IllegalStateException("Unexpected value");
-      };
+      if (spline instanceof CubicSpline.Multipoint<I> multipoint) {
+          return CubicSpline.Multipoint.sample(multipoint, coordinate);
+      }
+      else if (spline instanceof CubicSpline.Constant<I> constant) {
+          return constant.value();
+      }
+      else {
+          throw new IllegalStateException("Unexpected value")
+      }
    }
 
    static <C, I extends BoundedFloatFunction<C>> BoundedFloatFunction<C> asSampler(final CubicSpline<I> spline) {
-      return switch (spline) {
-         case CubicSpline.Multipoint<I> multipoint -> new BoundedFloatFunction<C>() {
+      if (spline instanceof CubicSpline.Multipoint<I> multipoint) {
+          return new BoundedFloatFunction<C>() {
             @Override
             public float apply(final C c) {
                return CubicSpline.Multipoint.sample(multipoint, c);
@@ -50,9 +55,13 @@ public sealed interface CubicSpline<I> permits CubicSpline.Multipoint, CubicSpli
                return multipoint.range();
             }
          };
-         case CubicSpline.Constant<I> constant -> BoundedFloatFunction.constant(constant.value());
-         default -> throw new IllegalStateException("Unexpected value");
-      };
+      }
+      else if (spline instanceof CubicSpline.Constant<I> constant) {
+          return BoundedFloatFunction.constant(constant.value());
+      }
+      else {
+          throw new IllegalStateException("Unexpected value")
+      }
    }
 
    static <I extends BoundedFloatFunction<?>> Codec<CubicSpline<I>> codec(final Codec<I> coordinateCodec) {
@@ -60,11 +69,15 @@ public sealed interface CubicSpline<I> permits CubicSpline.Multipoint, CubicSpli
          "CubicSpline",
          subSplineCodec -> Codec.either(Codec.FLOAT, CubicSpline.Multipoint.codec(coordinateCodec, subSplineCodec))
             .xmap(e -> (CubicSpline)e.map(CubicSpline.Constant::new, m -> m), spline -> {
-               return switch (spline) {
-                  case CubicSpline.Constant(float value) -> Either.left(value);
-                  case CubicSpline.Multipoint<I> multipoint -> Either.right(multipoint);
-                  default -> throw new IllegalStateException("Unexpected value");
-               };
+               if (spline instanceof CubicSpline.Constant(float value)) {
+                   return Either.left(value);
+               }
+               else if (spline instanceof CubicSpline.Multipoint<I> multipoint) {
+                   return Either.right(multipoint);
+               }
+               else {
+                   throw new IllegalStateException("Unexpected value");
+               }
             })
       );
    }

@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.world.level.block;
 
 import java.util.Optional;
@@ -108,11 +109,9 @@ public class CrafterBlock extends BaseEntityBlock {
    public BlockState getStateForPlacement(final BlockPlaceContext context) {
       Direction nearestLookingDirection = context.getNearestLookingDirection().getOpposite();
 
-      Direction verticalDirection = switch (nearestLookingDirection) {
-         case DOWN -> context.getHorizontalDirection().getOpposite();
-         case UP -> context.getHorizontalDirection();
-         case NORTH, SOUTH, WEST, EAST -> Direction.UP;
-      };
+      Direction verticalDirection =       if (nearestLookingDirection instanceof NORTH, SOUTH, WEST, EAST) {
+          Direction.UP;
+      }
       return this.defaultBlockState()
          .setValue(ORIENTATION, FrontAndTop.fromFrontAndTop(nearestLookingDirection, verticalDirection))
          .setValue(TRIGGERED, context.getLevel().hasNeighborSignal(context.getClickedPos()));

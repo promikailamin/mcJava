@@ -156,11 +156,16 @@ public abstract class DialogScreen<T extends Dialog> extends Screen {
    }
 
    public void runAction(final Optional<ClickEvent> closeAction, final DialogAction afterAction) {
-      Screen screenToActivate = switch (afterAction) {
-         case NONE -> this;
-         case CLOSE -> this.previousScreen;
-         case WAIT_FOR_RESPONSE -> new WaitingForResponseScreen(this.previousScreen);
-      };
+      Screen screenToActivate;
+      if (afterAction == DialogAction.NONE) {
+         screenToActivate = this;
+      } else if (afterAction == DialogAction.CLOSE) {
+         screenToActivate = this.previousScreen;
+      } else if (afterAction == DialogAction.WAIT_FOR_RESPONSE) {
+         screenToActivate = new WaitingForResponseScreen(this.previousScreen);
+      } else {
+         screenToActivate = this;
+      }
       if (closeAction.isPresent()) {
          this.handleDialogClickEvent(closeAction.get(), screenToActivate);
       } else {
@@ -169,19 +174,15 @@ public abstract class DialogScreen<T extends Dialog> extends Screen {
    }
 
    private void handleDialogClickEvent(final ClickEvent event, final @Nullable Screen activeScreen) {
-      switch (event) {
-         case ClickEvent.RunCommand(String command):
-            this.connectionAccess.runCommand(Commands.trimOptionalPrefix(command), activeScreen);
-            break;
-         case ClickEvent.ShowDialog dialog:
-            this.connectionAccess.openDialog(dialog.dialog(), activeScreen);
-            break;
-         case ClickEvent.Custom custom:
-            this.connectionAccess.sendCustomAction(custom.id(), custom.payload());
-            this.minecraft.gui.setScreen(activeScreen);
-            break;
-         default:
-            defaultHandleClickEvent(event, this.minecraft, activeScreen);
+      if (event instanceof ClickEvent.RunCommand(String command)) {
+         this.connectionAccess.runCommand(Commands.trimOptionalPrefix(command), activeScreen);
+      } else if (event instanceof ClickEvent.ShowDialog dialog) {
+         this.connectionAccess.openDialog(dialog.dialog(), activeScreen);
+      } else if (event instanceof ClickEvent.Custom custom) {
+         this.connectionAccess.sendCustomAction(custom.id(), custom.payload());
+         this.minecraft.gui.setScreen(activeScreen);
+      } else {
+         defaultHandleClickEvent(event, this.minecraft, activeScreen);
       }
    }
 

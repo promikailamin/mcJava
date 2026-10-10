@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.client.gui.screens.inventory;
 
 import java.util.Collections;
@@ -152,17 +153,16 @@ public class BookViewScreen extends Screen {
          return true;
       }
 
-      return switch (event.shortcutKey()) {
-         case 1073741899 -> {
-            this.backButton.onPress(event);
-            yield true;
-         }
-         case 1073741902 -> {
-            this.forwardButton.onPress(event);
-            yield true;
-         }
-         default -> false;
-      };
+      int key = event.shortcutKey();
+      if (key == 1073741899) {
+         this.backButton.onPress(event);
+         return true;
+      } else if (key == 1073741902) {
+         this.forwardButton.onPress(event);
+         return true;
+      } else {
+         return false;
+      }
    }
 
    @Override
@@ -231,16 +231,13 @@ public class BookViewScreen extends Screen {
       }
 
       LocalPlayer player = Objects.requireNonNull(this.minecraft.player, "Player not available");
-      switch (event) {
-         case ClickEvent.ChangePage(int page):
-            this.forcePage(page - 1);
-            break;
-         case ClickEvent.RunCommand(String command):
-            this.closeContainerOnServer();
-            clickCommandAction(player, command, null);
-            break;
-         default:
-            defaultHandleGameClickEvent(event, this.minecraft, this);
+      if (event instanceof ClickEvent.ChangePage(int page)) {
+         this.forcePage(page - 1);
+      } else if (event instanceof ClickEvent.RunCommand(String command)) {
+         this.closeContainerOnServer();
+         clickCommandAction(player, command, null);
+      } else {
+         defaultHandleGameClickEvent(event, this.minecraft, this);
       }
 
       return true;

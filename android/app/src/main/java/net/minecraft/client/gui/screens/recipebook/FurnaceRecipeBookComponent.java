@@ -1,3 +1,4 @@
+// PATTERN_SWITCHES_CONVERTED
 package net.minecraft.client.gui.screens.recipebook;
 
 import java.util.List;
@@ -32,10 +33,12 @@ public class FurnaceRecipeBookComponent extends RecipeBookComponent<AbstractFurn
 
    @Override
    protected boolean isCraftingSlot(final Slot slot) {
-      return switch (slot.index) {
-         case 0, 1, 2 -> true;
-         default -> false;
-      };
+      if (slot.index instanceof 0, 1, 2) {
+          return true;
+      }
+      else {
+          false
+      }
    }
 
    @Override
