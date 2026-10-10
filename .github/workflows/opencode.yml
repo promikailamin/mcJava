@@ -26,6 +26,9 @@ jobs:
             )
 
         runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: /home/runner/work/mcJava/mcJava
 
         steps:
             - name: Checkout repository
