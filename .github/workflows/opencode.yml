@@ -94,7 +94,7 @@ jobs:
 
                   Keep temporary files and project work inside the repository
                   workspace whenever possible. Do not modify files outside the
-                  workspace unnecessarily.
+                  workspace unnecessarily. Don't ask any questions to the user, do on your recommendation.
                   """
 
                   with open("issue-query.txt", "w", encoding="utf-8") as file:
