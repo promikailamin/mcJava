@@ -1110,7 +1110,7 @@ private static Optional<ServerPlayer.RespawnPosAngle> findRespawnAndUseSpawnBloc
            }
 
            return standUpPosition.map(p -> ServerPlayer.RespawnPosAngle.of(p, pos, 0.0F));
-        } else if (block instanceof AbstractBedBlock abstractBedBlock && abstractBedBlock.getBedRule(level, pos).canSetSpawn(level)) {
+        } else if (block instanceof AbstractBedBlock abstractBedBlock && abstractBedBlock.getBedRule(level, pos)) {
           return AbstractBedBlock.findStandUpPosition(EntityTypes.PLAYER, level, pos, blockState.getValue(AbstractBedBlock.FACING), yaw)
              .map(p -> ServerPlayer.RespawnPosAngle.of(p, pos, 0.0F));
        } else {

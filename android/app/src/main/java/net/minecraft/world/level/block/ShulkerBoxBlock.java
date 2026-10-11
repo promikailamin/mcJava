@@ -64,7 +64,7 @@ public class ShulkerBoxBlock extends BaseEntityBlock {
    protected InteractionResult useWithoutItem(
       final BlockState state, final Level level, final BlockPos pos, final Player player, final BlockHitResult hitResult
    ) {
-      if (level instanceof ServerLevel && level.getBlockEntity(pos) instanceof ShulkerBoxBlockEntity && canOpen(state, level, pos, shulkerBoxBlockEntity)) {
+      if (level instanceof ServerLevel level && getBlockEntity(pos) instanceof ShulkerBoxBlockEntity && canOpen(state, level, pos, shulkerBoxBlockEntity)) {
          player.openMenu(shulkerBoxBlockEntity);
          player.awardStat(Stats.OPEN_SHULKER_BOX);
          PiglinAi.angerNearbyPiglins(serverLevel, player, true);

@@ -322,7 +322,7 @@ public class PiglinAi {
       }
 
       Entity vehicle = body.getVehicle();
-      return vehicle instanceof Piglin && riddenPiglin.isBaby() || vehicle instanceof Hoglin && riddenHoglin.isBaby();
+      return vehicle instanceof Piglin riddenPiglin && riddenPiglin.isBaby() || vehicle instanceof Hoglin riddenHoglin && isBaby();
    }
 
    protected static void pickUpItem(final ServerLevel level, final Piglin body, final ItemEntity itemEntity) {
@@ -482,7 +482,7 @@ public class PiglinAi {
             || !mobBeingRidden.isAlive()
             || wasHurtRecently(body)
             || wasHurtRecently(mobBeingRidden)
-            || mobBeingRidden instanceof Piglin && mobBeingRidden.getVehicle() == null;
+            || mobBeingRidden instanceof Piglin mobBeingRidden && getVehicle() == null;
    }
 
    private static boolean isNearestValidAttackTarget(final ServerLevel level, final Piglin body, final LivingEntity target) {
@@ -665,7 +665,7 @@ public class PiglinAi {
 
    protected static void broadcastAngerTarget(final ServerLevel level, final AbstractPiglin body, final LivingEntity target) {
       getAdultPiglins(body).forEach(piglin -> {
-         if (!(target instanceof Hoglin && (!piglin.canHunt() || !hoglin.canBeHunted()))) {
+         if (!(target instanceof Hoglin hoglin && canHunt() || !hoglin.canBeHunted())) {
             setAngerTargetIfCloserThanCurrent(level, piglin, target);
          }
       });

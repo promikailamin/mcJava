@@ -94,7 +94,7 @@ public abstract class ChunkGenerator {
    private final Function<Holder<Biome>, BiomeGenerationSettings> generationSettingsGetter;
 
    public ChunkGenerator(final BiomeSource biomeSource) {
-      this(biomeSource, biome -> biome.value().getGenerationSettings());
+      this(biomeSource, biome -> biome.value().generationSettings());
    }
 
    public ChunkGenerator(final BiomeSource biomeSource, final Function<Holder<Biome>, BiomeGenerationSettings> generationSettingsGetter) {

@@ -761,7 +761,7 @@ public abstract class AbstractContainerMenu {
    }
 
    public static int getRedstoneSignalFromBlockEntity(final @Nullable BlockEntity blockEntity) {
-      return blockEntity instanceof Container ? getRedstoneSignalFromContainer(container)  : 0;
+      return blockEntity instanceof Container ? getRedstoneSignalFromContainer((Container) blockEntity)      : 0;
    }
 
    public static int getRedstoneSignalFromContainer(final @Nullable Container container) {
@@ -814,8 +814,8 @@ public abstract class AbstractContainerMenu {
             RemoteSlot sourceRemoteSlot = otherContainer.remoteSlots.get(otherSlotIndex);
             RemoteSlot targetRemoteSlot = this.remoteSlots.get(slotIndex);
             if (sourceRemoteSlot instanceof RemoteSlot.Synchronized && targetRemoteSlot instanceof RemoteSlot.Synchronized) {
-                RemoteSlot.Synchronized synchronizedTarget = (RemoteSlot.Synchronized) sourceRemoteSlot instanceof RemoteSlot.Synchronized && targetRemoteSlot;
-               synchronizedTarget.copyFrom(synchronizedSource);
+                RemoteSlot.Synchronized synchronizedTarget = targetRemoteSlot instanceof RemoteSlot.Synchronized ? (RemoteSlot.Synchronized) (RemoteSlot.Synchronized) targetRemoteSlot    : null;
+               if (synchronizedTarget != null) { synchronizedTarget.copyFrom(sourceRemoteSlot instanceof RemoteSlot.Synchronized ? (RemoteSlot.Synchronized) sourceRemoteSlot    : null); }
             }
          }
       }

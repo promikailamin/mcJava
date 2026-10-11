@@ -326,7 +326,7 @@ public final class Shapes {
       }
 
       DiscreteVoxelShape newDiscreteShape = shape.shape.rotate(rotation);
-      if (shape instanceof CubeVoxelShape && BLOCK_CENTER.equals(rotationPoint)) {
+      if (shape instanceof CubeVoxelShape BLOCK_CENTER && BLOCK_CENTER.equals(rotationPoint)) {
          return new CubeVoxelShape(newDiscreteShape);
       }
 

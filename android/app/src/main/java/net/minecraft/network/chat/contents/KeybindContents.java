@@ -40,10 +40,10 @@ public class KeybindContents implements ComponentContents {
       return this.getNestedComponent().visit(output, currentStyle);
    }
 
-   @Override
-   public boolean equals(final Object o) {
-      return this == o ? true : o instanceof KeybindContents && this.name.equals(that.name);
-   }
+@Override
+    public boolean equals(final Object o) {
+       return this == o ? true : o instanceof KeybindContents that && name.equals(that.name);
+    }
 
    @Override
    public int hashCode() {

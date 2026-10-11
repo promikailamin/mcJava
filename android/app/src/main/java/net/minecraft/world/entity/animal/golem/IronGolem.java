@@ -103,11 +103,11 @@ public class IronGolem extends AbstractGolem implements NeutralMob {
       return currentSupply;
    }
 
-   @Override
-   protected void doPush(final Entity entity) {
-      if (entity instanceof Enemy && !(entity instanceof Creeper) && this.getRandom().nextInt(20) == 0) {
-         this.setTarget((LivingEntity)entity);
-      }
+@Override
+    protected void doPush(final Entity entity) {
+       if (entity instanceof Enemy enemy && getRandom().nextInt(20) == 0) {
+          this.setTarget((LivingEntity)entity);
+       }
 
       super.doPush(entity);
    }

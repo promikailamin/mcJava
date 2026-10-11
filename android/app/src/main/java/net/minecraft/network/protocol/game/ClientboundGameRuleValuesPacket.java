@@ -12,10 +12,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.gamerules.GameRule;
 
 public record ClientboundGameRuleValuesPacket(Map<ResourceKey<GameRule<?>>, String> values) implements Packet<ClientGamePacketListener> {
-   public static final StreamCodec<FriendlyByteBuf, ClientboundGameRuleValuesPacket> STREAM_CODEC = ByteBufCodecs.map(
-         HashMap::new, ResourceKey.streamCodec(Registries.GAME_RULE), ByteBufCodecs.STRING_UTF8
-      )
-      .map(ClientboundGameRuleValuesPacket::new, packet -> new HashMap<>(packet.values()));
+public static final StreamCodec<FriendlyByteBuf, ClientboundGameRuleValuesPacket> STREAM_CODEC = ByteBufCodecs.map(
+          HashMap::new, ResourceKey.streamCodec(Registries.GAME_RULE), ByteBufCodecs.STRING_UTF8
+       )
+       .<FriendlyByteBuf>cast()
+       .map(ClientboundGameRuleValuesPacket::new, packet -> new HashMap<>(packet.values()));
 
   @Override
   public PacketType<ClientboundGameRuleValuesPacket> type() {

@@ -497,7 +497,7 @@ if (isInstantlyUsed && result instanceof InteractionResult.Success success) {
       if (owner.level() instanceof ServerLevel) {
           ServerLevel serverLevel = (ServerLevel) owner.level();
          this.hurtAndBreak(
-            amount, serverLevel, owner instanceof ServerPlayer player ? (ServerPlayer) owner   : null, brokenItem -> owner.onEquippedItemBroken(brokenItem, slot)
+            amount, serverLevel, owner instanceof ServerPlayer ? (ServerPlayer) owner        : null, brokenItem -> owner.onEquippedItemBroken(brokenItem, slot)
          );
       }
    }

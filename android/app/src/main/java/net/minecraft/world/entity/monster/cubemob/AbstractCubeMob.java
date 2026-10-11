@@ -219,7 +219,7 @@ public abstract class AbstractCubeMob extends AgeableMob {
    @Override
    public void push(final Entity entity) {
       super.push(entity);
-      if (entity instanceof IronGolem && this.canDealDamage()) {
+      if (entity instanceof IronGolem that && canDealDamage()) {
          this.dealDamage((LivingEntity)entity);
       }
    }

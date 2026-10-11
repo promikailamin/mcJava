@@ -21,13 +21,13 @@ public interface DataComponentPredicate {
    );
    StreamCodec<RegistryFriendlyByteBuf, DataComponentPredicate.Single<?>> SINGLE_STREAM_CODEC = DataComponentPredicate.Type.STREAM_CODEC
       .dispatch(DataComponentPredicate.Single::type, DataComponentPredicate.Type::singleStreamCodec);
-   StreamCodec<RegistryFriendlyByteBuf, Map<DataComponentPredicate.Type<?>, DataComponentPredicate>> STREAM_CODEC = SINGLE_STREAM_CODEC.apply(
-         ByteBufCodecs.list(64)
-      )
-      .map(
-         singles -> singles.stream().collect(Collectors.toMap(DataComponentPredicate.Single::type, DataComponentPredicate.Single::predicate)),
-         map -> map.entrySet().stream().map(DataComponentPredicate.Single::fromEntry).toList()
-      );
+StreamCodec<RegistryFriendlyByteBuf, Map<DataComponentPredicate.Type<?>, DataComponentPredicate>> STREAM_CODEC = SINGLE_STREAM_CODEC.apply(
+          ByteBufCodecs.list(64)
+       )
+       .map(
+          (java.util.List<DataComponentPredicate.Single<?>> singles) -> singles.stream().collect(Collectors.toMap(DataComponentPredicate.Single::type, DataComponentPredicate.Single::predicate)),
+          (java.util.Map<DataComponentPredicate.Type<?>, DataComponentPredicate> map) -> map.entrySet().stream().map(e -> DataComponentPredicate.Single.fromEntry(e)).collect(Collectors.toList())
+       );
 
    static MapCodec<DataComponentPredicate.Single<?>> singleCodec(final String name) {
       return DataComponentPredicate.Type.CODEC.dispatchMap(name, DataComponentPredicate.Single::type, DataComponentPredicate.Type::wrappedCodec);
@@ -110,7 +110,7 @@ public interface DataComponentPredicate {
       public TypeBase(final Codec<T> codec) {
          this.codec = codec;
          this.wrappedCodec = DataComponentPredicate.Single.wrapCodec(this, codec);
-         this.singleStreamCodec = ByteBufCodecs.<DataComponentPredicate>fromCodecWithRegistries(codec)
+         this.singleStreamCodec = ByteBufCodecs.fromCodecWithRegistries((Codec<DataComponentPredicate>)(Object)codec)
             .map(v -> new DataComponentPredicate.Single<>(this, (T)v), DataComponentPredicate.Single::predicate);
       }
 

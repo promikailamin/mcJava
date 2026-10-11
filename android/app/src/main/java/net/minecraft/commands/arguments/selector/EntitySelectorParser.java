@@ -179,7 +179,7 @@ public class EntitySelectorParser {
       }
 
       if (this.level != null) {
-         this.predicates.add(e -> e instanceof ServerPlayer && this.level.matches(serverPlayer.experienceLevel));
+         this.predicates.add(e -> e instanceof ServerPlayer that && level.matches(serverPlayer.experienceLevel));
       }
    }
 

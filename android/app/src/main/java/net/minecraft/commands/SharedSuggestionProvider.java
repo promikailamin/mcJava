@@ -94,7 +94,7 @@ static <S, E> CompletableFuture<Suggestions> listSuggestions(
        final SharedSuggestionProvider.ElementSuggestionType type,
        final Predicate<E> filter
     ) {
-       return context.getSource() instanceof SharedSuggestionProvider provider ? provider.suggestRegistryElements(registryKey, type, builder, context, filter) : builder.buildFuture();
+       return context.getSource() instanceof SharedSuggestionProvider ? ((SharedSuggestionProvider) context.getSource()).suggestRegistryElements(registryKey, type, builder, context, filter)    : builder.buildFuture();
     }
 
    <E> CompletableFuture<Suggestions> suggestRegistryElements(

@@ -1978,7 +1978,7 @@ public void lavaHurt() {
 
 @Deprecated
     public final boolean hurtOrSimulate(final DamageSource source, final float damage) {
-       return this.level instanceof ServerLevel serverLevel ? this.hurtServer((ServerLevel) this.level, source, damage)    : this.hurtClient(source);
+       return this.level instanceof ServerLevel ? this.hurtServer((ServerLevel) this.level, source, damage)         : this.hurtClient(source);
     }
 
    public abstract boolean hurtServer(ServerLevel level, DamageSource source, float damage);
@@ -2576,7 +2576,7 @@ public boolean shearOffAllLeashConnections(final @Nullable Player player) {
          this.passengers = ImmutableList.of(passenger);
       } else {
          List<Entity> newPassengers = Lists.newArrayList(this.passengers);
-         if (!this.level().isClientSide() && passenger instanceof Player && !(this.getFirstPassenger() instanceof Player)) {
+         if (!this.level().isClientSide() && passenger instanceof Player player && getFirstPassenger() instanceof Player) {
             newPassengers.add(0, passenger);
          } else {
             newPassengers.add(passenger);

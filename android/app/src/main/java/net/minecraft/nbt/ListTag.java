@@ -253,7 +253,7 @@ private static Tag wrapIfNeeded(final byte elementType, final Tag tag) {
    }
 
 public Optional<CompoundTag> getCompound(final int index) {
-       return this.getNullable(index) instanceof CompoundTag compoundTag ? Optional.of(compoundTag)  : Optional.empty();
+       return this.getNullable(index) instanceof CompoundTag ? Optional.of((CompoundTag) this.getNullable(index))     : Optional.empty();
     }
 
    public CompoundTag getCompoundOrEmpty(final int index) {
@@ -261,7 +261,7 @@ public Optional<CompoundTag> getCompound(final int index) {
    }
 
 public Optional<ListTag> getList(final int index) {
-       return this.getNullable(index) instanceof ListTag listTag ? Optional.of(listTag)  : Optional.empty();
+       return this.getNullable(index) instanceof ListTag ? Optional.of((ListTag) this.getNullable(index))     : Optional.empty();
     }
 
    public ListTag getListOrEmpty(final int index) {
@@ -273,7 +273,7 @@ public Optional<ListTag> getList(final int index) {
    }
 
 public short getShortOr(final int index, final short defaultValue) {
-       return this.getNullable(index) instanceof NumericTag numericTag ? numericTag.shortValue() : defaultValue;
+       return this.getNullable(index) instanceof NumericTag ? ((NumericTag) this.getNullable(index)).shortValue()    : defaultValue;
     }
 
    public Optional<Integer> getInt(final int index) {
@@ -281,7 +281,7 @@ public short getShortOr(final int index, final short defaultValue) {
    }
 
 public int getIntOr(final int index, final int defaultValue) {
-       return this.getNullable(index) instanceof NumericTag numericTag ? numericTag.intValue() : defaultValue;
+       return this.getNullable(index) instanceof NumericTag ? ((NumericTag) this.getNullable(index)).intValue()    : defaultValue;
     }
 
    public Optional<int[]> getIntArray(final int index) {
@@ -297,7 +297,7 @@ public int getIntOr(final int index, final int defaultValue) {
    }
 
 public double getDoubleOr(final int index, final double defaultValue) {
-       return this.getNullable(index) instanceof NumericTag numericTag ? numericTag.doubleValue() : defaultValue;
+       return this.getNullable(index) instanceof NumericTag ? ((NumericTag) this.getNullable(index)).doubleValue()    : defaultValue;
     }
 
    public Optional<Float> getFloat(final int index) {
@@ -305,7 +305,7 @@ public double getDoubleOr(final int index, final double defaultValue) {
    }
 
 public float getFloatOr(final int index, final float defaultValue) {
-       return this.getNullable(index) instanceof NumericTag numericTag ? numericTag.floatValue() : defaultValue;
+       return this.getNullable(index) instanceof NumericTag ? ((NumericTag) this.getNullable(index)).floatValue()    : defaultValue;
     }
 
    public Optional<String> getString(final int index) {

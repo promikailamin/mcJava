@@ -185,8 +185,7 @@ public abstract class SpeleothemBlock extends Block implements SimpleWaterlogged
          BlockPos blockPos = blockHit.getBlockPos();
          if (level instanceof ServerLevel projectile && projectile.mayInteract(serverLevel, blockPos)
             && projectile.mayBreak(serverLevel, blockPos)
-            && projectile instanceof ThrownTrident
-            && projectile.getDeltaMovement().length() > 0.6) {
+            && projectile instanceof ThrownTrident projectile && getDeltaMovement().length() > 0.6) {
             level.destroyBlock(blockPos, true);
          }
       }

@@ -52,7 +52,7 @@ public class FenceBlock extends CrossCollisionBlock {
    public boolean connectsTo(final BlockState state, final boolean faceSolid, final Direction direction) {
       Block block = state.getBlock();
       boolean sameFence = this.isSameFence(state);
-      boolean gate = block instanceof FenceGateBlock && FenceGateBlock.connectsToDirection(state, direction);
+      boolean gate = block instanceof FenceGateBlock FenceGateBlock && FenceGateBlock.connectsToDirection(state, direction);
       return !isExceptionForConnection(state) && faceSolid || sameFence || gate;
    }
 

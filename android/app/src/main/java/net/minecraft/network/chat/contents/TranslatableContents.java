@@ -211,7 +211,7 @@ public class TranslatableContents implements ComponentContents {
    public boolean equals(final Object o) {
       return this == o
          ? true
-         : o instanceof TranslatableContents && Objects.equals(this.key, that.key)
+         : o instanceof TranslatableContents Objects && Objects.equals(this.key, that.key)
             && Objects.equals(this.fallback, that.fallback)
             && Arrays.equals(this.args, that.args);
    }

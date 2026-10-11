@@ -478,7 +478,7 @@ if (this.getWeaponItem() != null && this.level() instanceof ServerLevel serverLe
             }
 
             this.doPostHurtEffects(mob);
-            if (mob instanceof ServerPlayer player && currentOwner instanceof ServerPlayer && !this.isSilent() && mob != player) {
+            if (mob instanceof ServerPlayer player && currentOwner instanceof ServerPlayer serverPlayer && isSilent() && mob != player) {
                player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.PLAY_ARROW_HIT_SOUND, 0.0F));
             }
 
@@ -513,8 +513,8 @@ if (this.level() instanceof ServerLevel serverLevel && this.getDeltaMovement().l
    }
 
 protected void doKnockback(final LivingEntity mob, final DamageSource damageSource) {
-       double knockback = this.firedFromWeapon != null && this.level() instanceof ServerLevel serverLevel ? EnchantmentHelper.modifyKnockback(serverLevel, this.firedFromWeapon, mob, damageSource, 0.0F)
-           : 0.0F;
+       double knockback = this.firedFromWeapon != null && this.level() instanceof ServerLevel ? EnchantmentHelper.modifyKnockback((ServerLevel) this.level(), this.firedFromWeapon, mob, damageSource, 0.0F)
+              : 0.0F;
       if (knockback > 0.0) {
          double knockbackResistance = Math.max(0.0, 1.0 - mob.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
          Vec3 movement = this.getDeltaMovement().multiply(1.0, 0.0, 1.0).normalize().scale(knockback * 0.6 * knockbackResistance);
@@ -552,14 +552,14 @@ protected void hitBlockEnchantmentEffects(final ServerLevel serverLevel, final B
        EnchantmentHelper.onHitBlock(
           serverLevel,
           weapon,
-          this.getOwner() instanceof LivingEntity livingOwner ? livingOwner : null,
+          this.getOwner() instanceof LivingEntity ? (LivingEntity) this.getOwner() : null,
           this,
           null,
           compensatedHitPosition,
           serverLevel.getBlockState(hitResult.getBlockPos()),
           item -> this.firedFromWeapon = null
        );
-    }
+   }
 
    @Override
    public @Nullable ItemStack getWeaponItem() {

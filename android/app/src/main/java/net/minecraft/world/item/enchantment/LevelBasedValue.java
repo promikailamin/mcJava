@@ -33,7 +33,7 @@ public interface LevelBasedValue {
    Codec<LevelBasedValue> CODEC = Codec.either(LevelBasedValue.Constant.CODEC, DISPATCH_CODEC)
       .xmap(
          either -> (LevelBasedValue)either.map(l -> l, r -> r),
-         levelBasedValue -> levelBasedValue instanceof LevelBasedValue.Constant ? Either.left(constant)  : Either.right(levelBasedValue)
+         levelBasedValue -> levelBasedValue instanceof LevelBasedValue.Constant constant ? Either.left((LevelBasedValue.Constant) levelBasedValue)   : Either.right(levelBasedValue)
       );
 
    static MapCodec<? extends LevelBasedValue> bootstrap(final Registry<MapCodec<? extends LevelBasedValue>> registry) {
@@ -65,16 +65,16 @@ public interface LevelBasedValue {
 
    MapCodec<? extends LevelBasedValue> codec();
 
-   record Clamped(LevelBasedValue value, float min, float max) implements LevelBasedValue {
-      public static final MapCodec<LevelBasedValue.Clamped> CODEC = RecordCodecBuilder.mapCodec(
-            i -> i.group(
-                  LevelBasedValue.CODEC.fieldOf("value").forGetter(LevelBasedValue.Clamped::value),
-                  Codec.FLOAT.fieldOf("min").forGetter(LevelBasedValue.Clamped::min),
-                  Codec.FLOAT.fieldOf("max").forGetter(LevelBasedValue.Clamped::max)
-               )
-               .apply(i, LevelBasedValue.Clamped::new)
-         )
-         .validate(LevelBasedValue.Clamped::validateRange);
+record Clamped(LevelBasedValue value, float min, float max) implements LevelBasedValue {
+       public static final MapCodec<LevelBasedValue.Clamped> CODEC = RecordCodecBuilder.mapCodec(
+             i -> i.group(
+                   Codec.lazyInitialized(() -> LevelBasedValue.CODEC).fieldOf("value").forGetter(LevelBasedValue.Clamped::value),
+                   Codec.FLOAT.fieldOf("min").forGetter(LevelBasedValue.Clamped::min),
+                   Codec.FLOAT.fieldOf("max").forGetter(LevelBasedValue.Clamped::max)
+                )
+                .apply(i, LevelBasedValue.Clamped::new)
+          )
+          .validate(clamped -> LevelBasedValue.Clamped.validateRange(clamped));
 
       private static DataResult<LevelBasedValue.Clamped> validateRange(final LevelBasedValue.Clamped u) {
          return u.max <= u.min ? DataResult.error(() -> "Max must be larger than min, min: " + u.min + ", max: " + u.max) : DataResult.success(u);

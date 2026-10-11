@@ -307,7 +307,7 @@ public interface SlotDisplay {
 
 @Override
        public <T> Stream<T> resolve(final ContextMap context, final DisplayContentsFactory<T> builder) {
-          return builder instanceof DisplayContentsFactory.ForStacks<T> ? this.source.resolve(context, SlotDisplay.ItemStackContentsFactory.INSTANCE).filter(s -> s.has(this.component)).map(stacks::forStack)
+          return builder instanceof DisplayContentsFactory.ForStacks<T> stacks ? this.source.resolve(context, SlotDisplay.ItemStackContentsFactory.INSTANCE).filter(s -> s.has(this.component)).map(stacks::forStack)
              : Stream.empty();
        }
 
@@ -367,7 +367,7 @@ public interface SlotDisplay {
 
 @Override
        public <T> Stream<T> resolve(final ContextMap context, final DisplayContentsFactory<T> factory) {
-          return factory instanceof DisplayContentsFactory.ForStacks<T> ? this.tag.stream().map(stacks::forStack) : Stream.empty();
+          return factory instanceof DisplayContentsFactory.ForStacks<T> stacks ? this.tag.stream().map(stacks::forStack) : Stream.empty();
        }
    }
 

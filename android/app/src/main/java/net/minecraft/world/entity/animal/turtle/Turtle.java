@@ -554,7 +554,7 @@ public class Turtle extends Animal {
 
       @Override
       public boolean isStableDestination(final BlockPos pos) {
-         return this.mob instanceof Turtle && turtle.travelPos != null
+         return this.mob instanceof Turtle turtle && turtle.travelPos != null
             ? this.level.getBlockState(pos).is(Blocks.WATER)
             : !this.level.getBlockState(pos.below()).isAir();
       }

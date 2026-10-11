@@ -117,7 +117,7 @@ class LinkFSProvider extends FileSystemProvider {
 
    @Override
    public boolean isSameFile(final Path path, final Path path2) {
-      return path instanceof LinkFSPath path && path2 instanceof LinkFSPath && path.equals(path2);
+      return path instanceof LinkFSPath path && path2 instanceof LinkFSPath path && path.equals(path2);
    }
 
    @Override

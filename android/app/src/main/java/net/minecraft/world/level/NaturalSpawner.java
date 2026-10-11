@@ -73,7 +73,7 @@ public final class NaturalSpawner {
       Object2IntOpenHashMap<MobCategory> mobCounts = new Object2IntOpenHashMap();
 
       for (Entity entity : entities) {
-         if (!(entity instanceof Mob && (mob.isPersistenceRequired() || mob.requiresCustomPersistence()))) {
+         if (!(entity instanceof Mob mob && (isPersistenceRequired() || mob.requiresCustomPersistence()))) {
             MobCategory category = entity.getType().getCategory();
             if (category != MobCategory.MISC) {
                BlockPos pos = entity.blockPosition();
@@ -401,7 +401,7 @@ public final class NaturalSpawner {
                            }
 
                            entity.snapTo(fx, pos.getY(), fz, random.nextFloat() * 360.0F, 0.0F);
-                           if (entity instanceof Mob && mob.checkSpawnRules(level, EntitySpawnReason.CHUNK_GENERATION) && mob.checkSpawnObstruction(level)) {
+                           if (entity instanceof Mob mob && mob.checkSpawnRules(level, EntitySpawnReason.CHUNK_GENERATION) && mob.checkSpawnObstruction(level)) {
                               groupSpawnData = mob.finalizeSpawn(
                                  level, level.getCurrentDifficultyAt(mob.blockPosition()), EntitySpawnReason.CHUNK_GENERATION, groupSpawnData
                               );

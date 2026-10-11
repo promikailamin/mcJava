@@ -25,7 +25,7 @@ public abstract class AbstractIllager extends Raider {
 
    @Override
    public boolean canAttack(final LivingEntity target) {
-      return target instanceof AbstractVillager && target.isBaby() ? false : super.canAttack(target);
+      return target instanceof AbstractVillager target && target.isBaby() ? false : super.canAttack(target);
    }
 
    @Override

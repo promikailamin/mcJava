@@ -295,7 +295,7 @@ public class PolarBear extends Animal implements NeutralMob {
 
       @Override
       protected void alertOther(final Mob other, final LivingEntity hurtByMob) {
-         if (other instanceof PolarBear && !other.isBaby()) {
+         if (other instanceof PolarBear other && isBaby()) {
             super.alertOther(other, hurtByMob);
          }
       }

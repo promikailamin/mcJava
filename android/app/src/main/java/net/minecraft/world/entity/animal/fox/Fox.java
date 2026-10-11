@@ -832,7 +832,7 @@ public class FoxAlertableEntitiesSelector implements TargetingConditions.Selecto
           } else if (target instanceof TamableAnimal) {
               TamableAnimal tamableAnimal = (TamableAnimal) target;
              return !tamableAnimal.isTame();
-          } else if (target instanceof Player && (player.isSpectator() || player.isCreative())) {
+          } else if (target instanceof Player player && (player.isSpectator() || player.isCreative())) {
              return false;
           } else {
              return Fox.this.trusts(target) ? false : !target.isSleeping() && !target.isDiscrete();

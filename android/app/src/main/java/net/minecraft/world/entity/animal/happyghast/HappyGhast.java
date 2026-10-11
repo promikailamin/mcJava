@@ -576,7 +576,7 @@ public class HappyGhast extends Animal {
    @Override
    public boolean canBeCollidedWith(final @Nullable Entity other) {
       if (!this.isBaby() && this.isAlive()) {
-         if (this.level().isClientSide() && other instanceof Player && other.position().y >= this.getBoundingBox().maxY) {
+         if (this.level().isClientSide() && other instanceof Player other && position().y >= this.getBoundingBox().maxY) {
             return true;
          } else {
             return this.isVehicle() && other instanceof HappyGhast ? true : this.isOnStillTimeout();

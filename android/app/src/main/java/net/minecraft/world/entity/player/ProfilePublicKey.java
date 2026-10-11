@@ -80,7 +80,7 @@ public record ProfilePublicKey(ProfilePublicKey.Data data) {
       public boolean equals(final Object o) {
          return !(o instanceof ProfilePublicKey.Data)
             ? false
-            : this.expiresAt.equals(data.expiresAt) && this.key.equals(data.key) && Arrays.equals(this.keySignature, data.keySignature);
+            : this.expiresAt.equals(other.expiresAt) && this.key.equals(other.key) && Arrays.equals(this.keySignature, other.keySignature);
       }
    }
 

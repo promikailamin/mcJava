@@ -31,7 +31,7 @@ public class Pufferfish extends AbstractFish {
    private static final EntityDataAccessor<Integer> PUFF_STATE = SynchedEntityData.defineId(Pufferfish.class, EntityDataSerializers.INT);
    private int inflateCounter;
    private int deflateTimer;
-   private static final TargetingConditions.Selector SCARY_MOB = (target, level) -> target instanceof Player && player.isCreative()
+   private static final TargetingConditions.Selector SCARY_MOB = (target, level) -> target instanceof Player player && isCreative()
       ? false
       : !target.is(EntityTypeTags.NOT_SCARY_FOR_PUFFERFISH);
    private static final TargetingConditions TARGETING_CONDITIONS = TargetingConditions.forNonCombat()

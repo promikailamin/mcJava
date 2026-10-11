@@ -142,7 +142,7 @@ public abstract class Animal extends AgeableMob {
       ItemStack itemStack = player.getItemInHand(hand);
       if (this.isFood(itemStack)) {
          int age = this.getAge();
-         if (player instanceof ServerPlayer && age == 0 && this.canFallInLove()) {
+         if (player instanceof ServerPlayer that && canFallInLove()) {
             this.usePlayerItem(player, hand, itemStack);
             this.setInLove(serverPlayer);
             this.playEatingSound();

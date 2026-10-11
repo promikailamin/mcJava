@@ -402,7 +402,7 @@ public class EnderDragon extends Mob implements Enemy {
 
    private void hurt(final ServerLevel level, final List<Entity> entities) {
       for (Entity target : entities) {
-         if (target instanceof LivingEntity && this.doTeamsAllowDamage(target)) {
+         if (target instanceof LivingEntity that && doTeamsAllowDamage(target)) {
             DamageSource damageSource = this.damageSources().mobAttack(this);
             target.hurtServer(level, damageSource, 10.0F);
             EnchantmentHelper.doPostAttackEffects(level, target, damageSource);

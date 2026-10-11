@@ -221,7 +221,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
    @Override
    public @Nullable LivingEntity getControllingPassenger() {
       Entity firstPassenger = this.getFirstPassenger();
-      return !this.isNoAi() && firstPassenger instanceof Mob && firstPassenger.canControlVehicle() ? passenger : null;
+      return !this.isNoAi() && firstPassenger instanceof Mob firstPassenger && canControlVehicle() ? passenger : null;
    }
 
    public Sensing getSensing() {
@@ -237,13 +237,13 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
       return this.target;
    }
 
-   protected @Nullable LivingEntity asValidTarget(final @Nullable LivingEntity target) {
-      if (target instanceof Player && (player.isCreative() || player.isSpectator())) {
-         return null;
-      } else {
-         return target != null && !this.canAttack(target) ? null : target;
-      }
-   }
+protected @Nullable LivingEntity asValidTarget(final @Nullable LivingEntity target) {
+       if (target instanceof Player player && (player.isCreative() || player.isSpectator())) {
+          return null;
+       } else {
+          return target != null && !this.canAttack(target) ? null : target;
+       }
+    }
 
    protected final @Nullable LivingEntity getTargetFromBrain() {
       return this.asValidTarget(this.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).orElse(null));

@@ -59,7 +59,7 @@ public class ChestBlockEntity extends RandomizableContainerBlockEntity implement
 
          Container container = ((ChestMenu)player.containerMenu).getContainer();
          return container == ChestBlockEntity.this
-            || container instanceof CompoundContainer && compoundContainer.contains(ChestBlockEntity.this);
+            || container instanceof CompoundContainer compoundContainer && compoundContainer.contains(ChestBlockEntity.this);
       }
    };
    private final ChestLidController chestLidController = new ChestLidController();

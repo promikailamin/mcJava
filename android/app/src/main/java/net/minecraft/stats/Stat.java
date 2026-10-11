@@ -44,10 +44,10 @@ public class Stat<T> extends ObjectiveCriteria {
       return this.formatter.format(value);
    }
 
-   @Override
-   public boolean equals(final Object o) {
-      return this == o || o instanceof Stat && Objects.equals(this.getName(), ((Stat)o).getName());
-   }
+@Override
+    public boolean equals(final Object o) {
+       return this == o || o instanceof Stat other && this.getName().equals(other.getName());
+    }
 
    @Override
    public int hashCode() {

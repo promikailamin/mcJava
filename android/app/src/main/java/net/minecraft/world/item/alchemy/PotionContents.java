@@ -163,7 +163,7 @@ public record PotionContents(Optional<Holder<Potion>> potion, Optional<Integer> 
    public void applyToLivingEntity(final LivingEntity entity, final float durationScale) {
       if (entity.level() instanceof ServerLevel) {
           ServerLevel serverLevel = (ServerLevel) entity.level();
-         Player player = entity instanceof Player ? playerEntity  : null;
+         Player player = entity instanceof Player ? (Player) entity      : null;
          this.forEachEffect(effect -> {
             if (effect.getEffect().value().isInstantaneous()) {
                effect.getEffect().value().applyInstantaneousEffect(serverLevel, player, player, entity, effect.getAmplifier(), 1.0);

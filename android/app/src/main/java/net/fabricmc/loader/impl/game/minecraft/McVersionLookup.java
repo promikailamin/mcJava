@@ -1120,7 +1120,7 @@ public final class McVersionLookup {
                @Override
                public void visitLdcInsn(Object value) {
                   String str;
-                  if (value instanceof String && McVersionLookup.isProbableVersion(str = (String)value)) {
+                  if (value instanceof String McVersionLookup && McVersionLookup.isProbableVersion(str = (String)value)) {
                      this.lastLdc = str;
                   } else {
                      this.lastLdc = null;
@@ -1260,7 +1260,7 @@ public final class McVersionLookup {
                @Override
                public void visitLdcInsn(Object value) {
                   String str;
-                  if (value instanceof String && McVersionLookup.isProbableVersion(str = (String)value)) {
+                  if (value instanceof String McVersionLookup && McVersionLookup.isProbableVersion(str = (String)value)) {
                      this.lastLdc = str;
                   } else {
                      this.lastLdc = null;

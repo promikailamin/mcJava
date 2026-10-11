@@ -97,7 +97,7 @@ public class WallBlock extends Block implements SimpleWaterloggedBlock {
 
    private boolean connectsTo(final BlockState state, final boolean faceSolid, final Direction direction) {
       Block block = state.getBlock();
-      boolean connectedFenceGate = block instanceof FenceGateBlock && FenceGateBlock.connectsToDirection(state, direction);
+      boolean connectedFenceGate = block instanceof FenceGateBlock FenceGateBlock && FenceGateBlock.connectsToDirection(state, direction);
       return state.is(BlockTags.WALLS) || !isExceptionForConnection(state) && faceSolid || block instanceof IronBarsBlock || connectedFenceGate;
    }
 

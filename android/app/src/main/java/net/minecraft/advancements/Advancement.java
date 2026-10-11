@@ -13,6 +13,7 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
@@ -35,20 +36,19 @@ public record Advancement(
 ) {
    private static final Codec<Map<String, Criterion<?>>> CRITERIA_CODEC = Codec.unboundedMap(Codec.STRING, Criterion.CODEC)
       .validate(criteria -> criteria.isEmpty() ? DataResult.error(() -> "Advancement criteria cannot be empty") : DataResult.success(criteria));
-   public static final Codec<Advancement> CODEC = RecordCodecBuilder.create(
-         i -> i.group(
-               Identifier.CODEC.optionalFieldOf("parent").forGetter((Advancement a) -> a.parent()),
-               DisplayInfo.CODEC.optionalFieldOf("display").forGetter((Advancement a) -> a.display()),
-               AdvancementRewards.CODEC.optionalFieldOf("rewards", AdvancementRewards.EMPTY).forGetter((Advancement a) -> a.rewards()),
-               CRITERIA_CODEC.fieldOf("criteria").forGetter((Advancement a) -> a.criteria()),
-               Codec.BOOL.optionalFieldOf("sends_telemetry_event", false).forGetter((Advancement a) -> a.sendsTelemetryEvent())
-            )
-            .apply(i, (parent, display, rewards, criteria, sendsTelemetryEvent) -> {
-               AdvancementRequirements requirements = AdvancementRequirements.allOf(criteria.keySet());
-               return new Advancement(parent, display, rewards, criteria, requirements, sendsTelemetryEvent, display.map(Advancement::decorateName));
-            })
-      )
-      .validate(advancement -> Advancement.validate(advancement));
+public static final Codec<Advancement> CODEC = RecordCodecBuilder.create(
+          i -> i.group(
+                Identifier.CODEC.optionalFieldOf("parent").forGetter(Advancement::parent),
+                DisplayInfo.CODEC.optionalFieldOf("display").forGetter(Advancement::display),
+                AdvancementRewards.CODEC.optionalFieldOf("rewards", AdvancementRewards.EMPTY).forGetter(Advancement::rewards),
+                CRITERIA_CODEC.fieldOf("criteria").forGetter(Advancement::criteria),
+                AdvancementRequirements.CODEC.fieldOf("requirements").forGetter(Advancement::requirements),
+                Codec.BOOL.optionalFieldOf("sends_telemetry_event", false).forGetter(Advancement::sendsTelemetryEvent),
+                ComponentSerialization.CODEC.optionalFieldOf("name").forGetter(Advancement::name)
+             )
+             .apply(i, Advancement::new)
+       )
+       .validate(adv -> Advancement.validate(adv));
    public static final StreamCodec<RegistryFriendlyByteBuf, Advancement> STREAM_CODEC = StreamCodec.composite(
       Identifier.STREAM_CODEC.apply(ByteBufCodecs::optional),
       Advancement::parent,

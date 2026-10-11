@@ -200,7 +200,7 @@ public class LevelChunk extends ChunkAccess implements DebugValueSource {
 @Override
     public GameEventListenerRegistry getListenerRegistry(final int section) {
        return this.level instanceof ServerLevel serverLevel ? (GameEventListenerRegistry)this.gameEventListenerRegistrySections
-             .computeIfAbsent(section, key -> new EuclideanGameEventListenerRegistry((ServerLevel) this.level, section, this : :removeGameEventListenerRegistry))
+             .computeIfAbsent(section, key -> new EuclideanGameEventListenerRegistry((ServerLevel) this.level, section, this::removeGameEventListenerRegistry))
           : super.getListenerRegistry(section);
     }
 

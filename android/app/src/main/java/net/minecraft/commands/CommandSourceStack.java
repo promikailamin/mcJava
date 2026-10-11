@@ -417,7 +417,7 @@ public class CommandSourceStack implements SharedSuggestionProvider, ExecutionCo
    }
 
 public @Nullable ServerPlayer getPlayer() {
-       return this.entity instanceof ServerPlayer player ? (ServerPlayer) this.entity  : null;
+       return this.entity instanceof ServerPlayer ? (ServerPlayer) this.entity       : null;
     }
 
    public boolean isPlayer() {

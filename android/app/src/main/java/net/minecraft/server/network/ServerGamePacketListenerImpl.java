@@ -487,7 +487,7 @@ public class ServerGamePacketListenerImpl
             yDist = targetY - this.vehicleLastGoodY;
             zDist = targetZ - this.vehicleLastGoodZ;
             boolean vehicleRestsOnSomething = vehicle.verticalCollisionBelow;
-            if (vehicle instanceof LivingEntity && livingVehicle.onClimbable()) {
+            if (vehicle instanceof LivingEntity livingVehicle && livingVehicle.onClimbable()) {
                livingVehicle.resetFallDistance();
             }
 
@@ -1412,7 +1412,7 @@ public class ServerGamePacketListenerImpl
       }
 
       Item item = itemStack.getItem();
-      return (item instanceof BlockItem || item instanceof BucketItem && bucket.getContent() != Fluids.EMPTY)
+      return (item instanceof BlockItem || item instanceof BucketItem bucket && bucket.getContent() != Fluids.EMPTY)
          && !player.getCooldowns().isOnCooldown(itemStack);
    }
 

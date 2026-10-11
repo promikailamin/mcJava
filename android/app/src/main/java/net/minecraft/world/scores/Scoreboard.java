@@ -62,7 +62,7 @@ public class Scoreboard {
 
    public final void forAllObjectives(final ObjectiveCriteria criteria, final ScoreHolder name, final Consumer<ScoreAccess> operation) {
       ((List)this.objectivesByCriteria.getOrDefault(criteria, Collections.emptyList()))
-         .forEach(o -> operation.accept(this.getOrCreatePlayerScore(name, o, true)));
+         .forEach(o -> operation.accept(this.getOrCreatePlayerScore(name, (Objective)o, true)));
    }
 
    private PlayerScores getOrCreatePlayerInfo(final String name) {

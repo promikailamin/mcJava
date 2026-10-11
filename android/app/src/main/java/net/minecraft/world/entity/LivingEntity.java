@@ -949,7 +949,7 @@ if (this.isAlive() && this.level() instanceof ServerLevel level) {
    }
 
    public boolean canAttack(final LivingEntity target) {
-      return target instanceof Player && this.level().getDifficulty() == Difficulty.PEACEFUL ? false : target.canBeSeenAsEnemy();
+      return target instanceof Player that && level().getDifficulty() == Difficulty.PEACEFUL ? false : target.canBeSeenAsEnemy();
    }
 
    public boolean canBeSeenAsEnemy() {
@@ -1563,8 +1563,8 @@ protected void resolveMobResponsibleForDamage(final DamageSource source) {
 
 protected float getKnockback(final Entity target, final DamageSource damageSource) {
        float knockback = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
-       return this.level() instanceof ServerLevel serverLevel ? EnchantmentHelper.modifyKnockback(serverLevel, this.getWeaponItem(), target, damageSource, knockback) / 2.0F
-           : knockback / 2.0F;
+       return this.level() instanceof ServerLevel ? EnchantmentHelper.modifyKnockback((ServerLevel) this.level(), this.getWeaponItem(), target, damageSource, knockback) / 2.0F
+              : knockback / 2.0F;
     }
 
    protected void dropFromLootTable(final ServerLevel level, final DamageSource source, final boolean playerKilled) {

@@ -100,15 +100,15 @@ public class FarmlandBlock extends Block {
       }
    }
 
-   @Override
-   public void fallOn(final Level level, final BlockState state, final BlockPos pos, final Entity entity, final double fallDistance) {
-      if (level instanceof ServerLevel && level.getRandom().nextFloat() < fallDistance - 0.5 && entity instanceof LivingEntity) {
-         boolean canTrample = entity instanceof Player ? !level.getServer().isUnderSpawnProtection(serverLevel, pos, player)
-             : serverLevel.getGameRules().get(GameRules.MOB_GRIEFING);
-         if (canTrample && entity.getBbWidth() * entity.getBbWidth() * entity.getBbHeight() > 0.512F) {
-            this.turnToBaseBlock(entity, state, level, pos);
-         }
-      }
+@Override
+    public void fallOn(final Level level, final BlockState state, final BlockPos pos, final Entity entity, final double fallDistance) {
+       if (level instanceof ServerLevel serverLevel && serverLevel.getRandom().nextFloat() < fallDistance - 0.5 && entity instanceof LivingEntity) {
+          boolean canTrample = entity instanceof Player ? !level.getServer().isUnderSpawnProtection(serverLevel, pos, (Player)entity)
+              : serverLevel.getGameRules().get(GameRules.MOB_GRIEFING);
+          if (canTrample && entity.getBbWidth() * entity.getBbWidth() * entity.getBbHeight() > 0.512F) {
+             this.turnToBaseBlock(entity, state, level, pos);
+          }
+       }
 
       super.fallOn(level, state, pos, entity, fallDistance);
    }

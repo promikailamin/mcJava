@@ -311,10 +311,10 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
       return 30;
    }
 
-   @Override
-   public boolean canMate(final Animal partner) {
-      return partner != this && partner instanceof Llama && this.canParent() && llama.canParent();
-   }
+@Override
+    public boolean canMate(final Animal partner) {
+       return partner != this && partner instanceof Llama llama && llama.canParent() && this.canParent();
+    }
 
    public @Nullable Llama getBreedOffspring(final ServerLevel level, final AgeableMob partner) {
       Llama baby = this.makeNewLlama();
@@ -482,15 +482,15 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
          super(llama);
       }
 
-      @Override
-      public boolean canContinueToUse() {
-         if (this.mob instanceof Llama && llama.didSpit) {
-            llama.setDidSpit(false);
-            return false;
-         } else {
-            return super.canContinueToUse();
-         }
-      }
+@Override
+       public boolean canContinueToUse() {
+          if (this.mob instanceof Llama llama && llama.didSpit) {
+             llama.setDidSpit(false);
+             return false;
+          } else {
+             return super.canContinueToUse();
+          }
+       }
    }
 
    public enum Variant implements StringRepresentable {

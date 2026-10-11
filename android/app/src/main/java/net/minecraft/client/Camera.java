@@ -236,7 +236,7 @@ public class Camera implements TrackedWaypoint.Camera {
    }
 
    private float modifyFovBasedOnDeathOrFluid(final float partialTicks, float fov) {
-      if (this.entity instanceof LivingEntity && cameraEntity.isDeadOrDying()) {
+      if (      if (this.entity instanceof LivingEntity cameraEntity && cameraEntity.isDeadOrDying()) {) {
          float duration = Math.min(cameraEntity.deathTime + partialTicks, 20.0F);
          fov /= (1.0F - 500.0F / (duration + 500.0F)) * 2.0F + 1.0F;
       }
@@ -291,7 +291,7 @@ public class Camera implements TrackedWaypoint.Camera {
          }
 
          this.move(-this.getMaxZoom(Math.max(cameraScale * cameraDistance, mountScale * mountDistance)), 0.0F, 0.0F);
-      } else if (this.entity instanceof LivingEntity && ((LivingEntity)this.entity).isSleeping()) {
+      } else if (this.entity instanceof LivingEntity livingEntity && entity).isSleeping()) {
          Direction bedOrientation = ((LivingEntity)this.entity).getBedOrientation();
          this.setRotation(bedOrientation != null ? bedOrientation.toYRot() - 180.0F : 0.0F, 0.0F);
          this.move(0.0F, 0.15F, 0.0F);

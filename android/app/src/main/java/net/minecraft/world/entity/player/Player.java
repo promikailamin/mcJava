@@ -1025,8 +1025,7 @@ if (!this.isSpectator() && this.level() instanceof ServerLevel level) {
          && !this.isInWater()
          && !this.isMobilityRestricted()
          && !this.isPassenger()
-         && entity instanceof LivingEntity
-         && !this.isSprinting();
+         && entity instanceof LivingEntity livingEntity && isSprinting();
    }
 
    private boolean isSweepAttack(final boolean fullStrengthAttack, final boolean criticalAttack, final boolean knockbackAttack) {

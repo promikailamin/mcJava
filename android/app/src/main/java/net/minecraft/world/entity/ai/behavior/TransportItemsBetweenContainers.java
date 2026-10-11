@@ -331,7 +331,7 @@ public class TransportItemsBetweenContainers extends Behavior<PathfinderMob> {
    }
 
    private boolean isContainerLocked(final TransportItemsBetweenContainers.TransportItemTarget transportItemTarget) {
-      return transportItemTarget.blockEntity instanceof BaseContainerBlockEntity && blockEntity.isLocked();
+      return transportItemTarget.blockEntity instanceof BaseContainerBlockEntity blockEntity && isLocked();
    }
 
    private boolean hasValidTarget(final Level level, final PathfinderMob body) {

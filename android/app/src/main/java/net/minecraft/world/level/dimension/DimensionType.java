@@ -17,7 +17,10 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public final class DimensionType {
-    public static final Codec<DimensionType> CODEC = Codec.unit(new DimensionType(0, HolderSet.direct(), EnvironmentAttributeMap.EMPTY, 0.0f, 0.0f, 0.0f, false, false, false, 0.0f, 1.0f, 0.0f, 0.0f, DimensionType.MonsterSpawnType.NONE));
+    public static final Codec<DimensionType> CODEC = Codec.INT.xmap(
+         i -> new DimensionType(0, HolderSet.direct(), EnvironmentAttributeMap.EMPTY, 0.0f, 0.0f, 0.0f, false, false, false, 0.0f, 1.0f, 0.0f, 0.0f, DimensionType.MonsterSpawnType.NONE),
+         t -> 0
+      );
     public static final StreamCodec<RegistryFriendlyByteBuf, Holder<DimensionType>> STREAM_CODEC = ByteBufCodecs.holderRegistry(Registries.DIMENSION_TYPE);
     
     private final int minY;

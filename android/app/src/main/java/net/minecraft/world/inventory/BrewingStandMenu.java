@@ -182,16 +182,15 @@ public class BrewingStandMenu extends AbstractContainerMenu {
          return 1;
       }
 
-      @Override
-      public void onTake(final Player player, final ItemStack carried) {
-         PotionContents potionContents = carried.get(DataComponents.POTION_CONTENTS);
-         if (potionContents != null && player instanceof ServerPlayer) {
-             ServerPlayer serverPlayer = (ServerPlayer) potionContents != null && player;
-            CriteriaTriggers.BREWED_POTION.trigger(serverPlayer, potionContents);
-         }
+@Override
+       public void onTake(final Player player, final ItemStack carried) {
+          PotionContents potionContents = carried.get(DataComponents.POTION_CONTENTS);
+          if (potionContents != null && player instanceof ServerPlayer serverPlayer) {
+             CriteriaTriggers.BREWED_POTION.trigger(serverPlayer, potionContents);
+          }
 
-         super.onTake(player, carried);
-      }
+          super.onTake(player, carried);
+       }
 
       @Override
       public Identifier getNoItemIcon() {

@@ -46,7 +46,7 @@ public record EnchantmentAttributeEffect(Identifier id, Holder<Attribute> attrib
       final boolean becameActive
    ) {
       if (becameActive && entity instanceof LivingEntity) {
-          LivingEntity living = (LivingEntity) becameActive && entity;
+          LivingEntity living = (becameActive && entity instanceof LivingEntity le) ? le : null;
          living.getAttributes().addTransientAttributeModifiers(this.makeAttributeMap(enchantmentLevel, item.inSlot()));
       }
    }

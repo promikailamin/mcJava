@@ -122,19 +122,18 @@ public class CraftingInput implements RecipeInput {
       return this.height;
    }
 
-   @Override
-   public boolean equals(final Object obj) {
-      if (obj == this) {
-         return true;
-      } else {
-         return !(obj instanceof CraftingInput)
-            ? false
-            : this.width == input.width
-               && this.height == input.height
-               && this.ingredientCount == input.ingredientCount
-               && ItemStack.listMatches(this.items, input.items);
-      }
-   }
+@Override
+    public boolean equals(final Object obj) {
+       if (obj == this) {
+          return true;
+       } else {
+          return obj instanceof CraftingInput input
+             && this.width == input.width
+             && this.height == input.height
+             && this.ingredientCount == input.ingredientCount
+             && ItemStack.listMatches(this.items, input.items);
+       }
+    }
 
    @Override
    public int hashCode() {

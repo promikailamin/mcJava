@@ -287,7 +287,7 @@ public final class ClassInstance implements TrClass {
 
    @Override
    public boolean isAssignableFrom(TrClass cls) {
-      return cls instanceof ClassInstance && this.isAssignableFrom((ClassInstance)cls);
+      return cls instanceof ClassInstance that && isAssignableFrom((ClassInstance)cls);
    }
 
    public boolean isAssignableFrom(ClassInstance cls) {

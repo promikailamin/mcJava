@@ -141,8 +141,8 @@ task printSourceFiles {
                 exclude '**/net/minecraft/util/profiling/jfr/JfrProfiler.java'
                 exclude '**/net/minecraft/util/profiling/jfr/SummaryReporter.java'
                 exclude '**/net/minecraft/server/gui/**'
-                exclude '**/net/minecraft/util/monitoring/jmx/**'
-                exclude '**/com/mojang/renderpearl/backend/vulkan/**'
+exclude '**/net/minecraft/util/monitoring/jmx/**'
+        exclude '**/com/mojang/renderpearl/backend/vulkan/**'
             }
         }
     }

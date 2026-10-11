@@ -317,12 +317,12 @@ public class MobEffectInstance implements Comparable<MobEffectInstance> {
       } else {
          return !(o instanceof MobEffectInstance)
             ? false
-            : this.duration == that.duration
-               && this.amplifier == that.amplifier
-               && this.ambient == that.ambient
-               && this.visible == that.visible
-               && this.showIcon == that.showIcon
-               && this.effect.equals(that.effect);
+            : this.duration == other.duration
+               && this.amplifier == other.amplifier
+               && this.ambient == other.ambient
+               && this.visible == other.visible
+               && this.showIcon == other.showIcon
+               && this.effect.equals(other.effect);
       }
    }
 

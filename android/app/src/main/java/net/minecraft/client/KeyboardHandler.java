@@ -467,7 +467,7 @@ public class KeyboardHandler {
          }
 
          if (action != 1
-            || screen instanceof KeyBindsScreen && keyBindsScreen.lastKeySelection > Util.getMillis() - 20L
+            || screen instanceof KeyBindsScreen keyBindsScreen && lastKeySelection > Util.getMillis() - 20L
             || !this.minecraft.handleGlobalKeyPress(InputConstants.getKey(event), event.hasControlDownWithQuirk())) {
             if (action != 0) {
                boolean hasNoEditboxFocused = screen == null || !(screen.getFocused() instanceof EditBox) || !((EditBox)screen.getFocused()).canConsumeInput();

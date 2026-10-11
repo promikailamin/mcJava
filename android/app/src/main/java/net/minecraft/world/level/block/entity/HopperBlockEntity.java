@@ -301,7 +301,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
    private static boolean canPlaceItemInContainer(final Container container, final ItemStack itemStack, final int slot, final @Nullable Direction direction) {
       return !container.canPlaceItem(slot, itemStack)
          ? false
-         : !(container instanceof WorldlyContainer && !worldly.canPlaceItemThroughFace(slot, itemStack, direction));
+         : !(container instanceof WorldlyContainer worldly && canPlaceItemThroughFace(slot, itemStack, direction));
    }
 
    private static boolean canTakeItemFromContainer(
@@ -309,7 +309,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
    ) {
       return !from.canTakeItem(into, slot, itemStack)
          ? false
-         : !(from instanceof WorldlyContainer && !worldly.canTakeItemThroughFace(slot, itemStack, direction));
+         : !(from instanceof WorldlyContainer worldly && canTakeItemThroughFace(slot, itemStack, direction));
    }
 
    private static ItemStack tryMoveInItem(
@@ -332,7 +332,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          }
 
          if (success) {
-            if (wasEmpty && container instanceof HopperBlockEntity && !hopperBlockEntity.isOnCustomCooldown()) {
+            if (wasEmpty && container instanceof HopperBlockEntity hopperBlockEntity && isOnCustomCooldown()) {
                int skipTickCount = 0;
                if (from instanceof HopperBlockEntity blockPos && hopperBlockEntity.tickedGameTime >= fromHopper.tickedGameTime) {
                   skipTickCount = 1;
