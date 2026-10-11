@@ -38,7 +38,7 @@ private MemoryMap(final Map<MemoryModuleType<?>, ExpirableValue<?>> memories) {
 
    @Override
    public boolean equals(final Object obj) {
-      return obj instanceof MemoryMap && this.memories.equals(map.memories);
+      return obj instanceof MemoryMap memories && this.memories.equals(map.memories);
    }
 
    @Override

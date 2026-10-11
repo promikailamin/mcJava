@@ -211,10 +211,10 @@ public final class DataComponentPatch {
       return new DataComponentPatch.SplitResult(added.build(), removed);
    }
 
-   @Override
-   public boolean equals(final Object obj) {
-      return this == obj ? true : obj instanceof DataComponentPatch && this.map.equals(patch.map);
-   }
+@Override
+    public boolean equals(final Object obj) {
+       return this == obj ? true : obj instanceof DataComponentPatch patch && this.map.equals(patch.map);
+    }
 
    @Override
    public int hashCode() {

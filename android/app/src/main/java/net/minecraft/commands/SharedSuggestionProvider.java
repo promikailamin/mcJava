@@ -87,15 +87,15 @@ public interface SharedSuggestionProvider extends PermissionSetSupplier {
       return listSuggestions(context, builder, registryKey, type, var0 -> true);
    }
 
-   static <S, E> CompletableFuture<Suggestions> listSuggestions(
-      final CommandContext<S> context,
-      final SuggestionsBuilder builder,
-      final ResourceKey<? extends Registry<E>> registryKey,
-      final SharedSuggestionProvider.ElementSuggestionType type,
-      final Predicate<E> filter
-   ) {
-      return context.getSource() instanceof SharedSuggestionProvider ? suggestRegistryElements(registryKey, type, builder, context, filter) : builder.buildFuture();
-   }
+static <S, E> CompletableFuture<Suggestions> listSuggestions(
+       final CommandContext<S> context,
+       final SuggestionsBuilder builder,
+       final ResourceKey<? extends Registry<E>> registryKey,
+       final SharedSuggestionProvider.ElementSuggestionType type,
+       final Predicate<E> filter
+    ) {
+       return context.getSource() instanceof SharedSuggestionProvider provider ? provider.suggestRegistryElements(registryKey, type, builder, context, filter) : builder.buildFuture();
+    }
 
    <E> CompletableFuture<Suggestions> suggestRegistryElements(
       final ResourceKey<? extends Registry<E>> key,

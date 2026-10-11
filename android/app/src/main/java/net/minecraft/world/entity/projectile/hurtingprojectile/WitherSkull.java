@@ -77,8 +77,7 @@ public class WitherSkull extends AbstractHurtingProjectile {
             wasHurt = var8.hurtServer(serverLevel, this.damageSources().magic(), 5.0F);
          }
 
-         if (wasHurt && var8 instanceof LivingEntity) {
-             LivingEntity livingEntity = (LivingEntity) wasHurt && var8;
+if (wasHurt && var8 instanceof LivingEntity livingEntity) {
             int witherSeconds = 0;
             if (this.level().getDifficulty() == Difficulty.NORMAL) {
                witherSeconds = 10;

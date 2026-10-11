@@ -91,7 +91,7 @@ public final class NbtUtils {
          }
 
          return true;
-      } else if (expected instanceof ListTag && partialListMatches) {
+      } else if (expected instanceof ListTag actualList && partialListMatches) {
          ListTag actualList = (ListTag)actual;
          if (expectedList.isEmpty()) {
             return actualList.isEmpty();

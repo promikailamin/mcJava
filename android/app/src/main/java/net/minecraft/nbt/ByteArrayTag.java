@@ -84,10 +84,10 @@ public final class ByteArrayTag implements CollectionTag {
       return new ByteArrayTag(cp);
    }
 
-   @Override
-   public boolean equals(final Object obj) {
-      return this == obj ? true : obj instanceof ByteArrayTag && Arrays.equals(this.data, byteArrayTag.data);
-   }
+@Override
+    public boolean equals(final Object obj) {
+       return this == obj ? true : obj instanceof ByteArrayTag byteArrayTag && Arrays.equals(this.data, byteArrayTag.data);
+    }
 
    @Override
    public int hashCode() {

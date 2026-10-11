@@ -30,14 +30,14 @@ public final class IntegerProperty extends Property<Integer> {
       return this.values;
    }
 
-   @Override
-   public boolean equals(final Object o) {
-      if (this == o) {
-         return true;
-      } else {
-         return o instanceof IntegerProperty && super.equals(o) ? this.values.equals(that.values) : false;
-      }
-   }
+@Override
+    public boolean equals(final Object o) {
+       if (this == o) {
+          return true;
+       } else {
+          return o instanceof IntegerProperty that && super.equals(o) ? this.values.equals(that.values) : false;
+       }
+    }
 
    @Override
    public int generateHashCode() {

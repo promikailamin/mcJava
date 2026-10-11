@@ -56,7 +56,7 @@ static CollisionContext withPosition(final @Nullable Entity entity, final double
           entity != null ? entity.isDescending() : false,
           true,
           entity != null ? position : -Double.MAX_VALUE,
-          entity instanceof LivingEntity living ? living.getMainHandItem() : ItemStack.EMPTY,
+          entity instanceof LivingEntity living ? ((LivingEntity) entity).getMainHandItem()  : ItemStack.EMPTY,
           false,
           entity
        );

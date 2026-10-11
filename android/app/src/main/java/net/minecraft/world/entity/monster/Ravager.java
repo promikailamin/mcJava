@@ -144,7 +144,7 @@ public class Ravager extends Raider {
             this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(Mth.lerp(0.1, baseValue, maxSpeed));
          }
 
-         if (this.level() instanceof ServerLevel && this.horizontalCollision && serverLevel.getGameRules().get(GameRules.MOB_GRIEFING)) {
+         if (this.level() instanceof ServerLevel serverLevel && this.horizontalCollision && serverLevel.getGameRules().get(GameRules.MOB_GRIEFING)) {
             boolean destroyedBlock = false;
             AABB bb = this.getBoundingBox().inflate(0.2);
 

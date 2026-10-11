@@ -199,7 +199,7 @@ public class LevelChunk extends ChunkAccess implements DebugValueSource {
 
 @Override
     public GameEventListenerRegistry getListenerRegistry(final int section) {
-       return this.level instanceof ServerLevel ? (GameEventListenerRegistry)this.gameEventListenerRegistrySections
+       return this.level instanceof ServerLevel serverLevel ? (GameEventListenerRegistry)this.gameEventListenerRegistrySections
              .computeIfAbsent(section, key -> new EuclideanGameEventListenerRegistry(serverLevel, section, this::removeGameEventListenerRegistry))
           : super.getListenerRegistry(section);
     }
@@ -315,9 +315,9 @@ public class LevelChunk extends ChunkAccess implements DebugValueSource {
          this.removeBlockEntity(pos);
       }
 
-      if ((blockChanged || newBlock instanceof BaseRailBlock) && this.level instanceof ServerLevel && ((flags & 1) != 0 || movedByPiston)) {
-         oldState.affectNeighborsAfterRemoval(serverLevel, pos, movedByPiston);
-      }
+if ((blockChanged || newBlock instanceof BaseRailBlock) && this.level instanceof ServerLevel serverLevel && ((flags & 1) != 0 || movedByPiston)) {
+          oldState.affectNeighborsAfterRemoval(serverLevel, pos, movedByPiston);
+       }
 
       if (!section.getBlockState(localX, localY, localZ).is(newBlock)) {
          return null;
@@ -409,15 +409,15 @@ public class LevelChunk extends ChunkAccess implements DebugValueSource {
       return this.loaded || this.level.isClientSide();
    }
 
-   private boolean isTicking(final BlockPos pos) {
-      if (!this.level.getWorldBorder().isWithinBounds(pos)) {
-         return false;
-      } else {
-         return !(this.level instanceof ServerLevel)
-            ? true
-            : this.getFullStatus().isOrAfter(FullChunkStatus.BLOCK_TICKING) && serverLevel.areEntitiesLoaded(ChunkPos.pack(pos));
-      }
-   }
+private boolean isTicking(final BlockPos pos) {
+       if (!this.level.getWorldBorder().isWithinBounds(pos)) {
+          return false;
+       } else {
+          return !(this.level instanceof ServerLevel)
+             ? true
+             : this.getFullStatus().isOrAfter(FullChunkStatus.BLOCK_TICKING) && ((ServerLevel) this.level).areEntitiesLoaded(ChunkPos.pack(pos));
+       }
+    }
 
    @Override
    public void setBlockEntity(final BlockEntity blockEntity) {

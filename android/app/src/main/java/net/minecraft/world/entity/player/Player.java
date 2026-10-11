@@ -247,7 +247,7 @@ public abstract class Player extends Avatar implements ContainerUser {
          }
 
          if (!this.level().isClientSide()
-            && this.getInBlockState().getBlock() instanceof AbstractBedBlock && !abstractBedBlock.getBedRule(this.level(), this.blockPosition()).canSleep(this.level())) {
+            && this.getInBlockState().getBlock() instanceof AbstractBedBlock abstractBedBlock && !abstractBedBlock.getBedRule(this.level(), this.blockPosition()).canSleep(this.level())) {
             this.stopSleepInBed(false, true);
          }
       } else if (this.sleepCounter > 0) {
@@ -526,10 +526,9 @@ public abstract class Player extends Avatar implements ContainerUser {
    public void die(final DamageSource source) {
       super.die(source);
       this.reapplyPosition();
-      if (!this.isSpectator() && this.level() instanceof ServerLevel) {
-          ServerLevel level = (ServerLevel) !this.isSpectator() && this.level();
-         this.dropAllDeathLoot(level, source);
-      }
+if (!this.isSpectator() && this.level() instanceof ServerLevel level) {
+          this.dropAllDeathLoot(level, source);
+       }
 
       if (source != null) {
          this.setDeltaMovement(
@@ -829,8 +828,7 @@ public abstract class Player extends Avatar implements ContainerUser {
 
             return interact;
          } else {
-            if (!itemStack.isEmpty() && entity instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity) !itemStack.isEmpty() && entity;
+            if (!itemStack.isEmpty() && entity instanceof LivingEntity livingEntity) {
                if (this.hasInfiniteMaterials()) {
                   itemStack = itemStackClone;
                }
@@ -1012,7 +1010,7 @@ public abstract class Player extends Avatar implements ContainerUser {
 
    private boolean deflectProjectile(final Entity entity) {
       if (entity.is(EntityTypeTags.REDIRECTABLE_PROJECTILE)
-         && entity instanceof Projectile && projectile.deflect(ProjectileDeflection.AIM_DEFLECT, this, EntityReference.of(this), true, 1.0)) {
+         && entity instanceof Projectile projectile && projectile.deflect(ProjectileDeflection.AIM_DEFLECT, this, EntityReference.of(this), true, 1.0)) {
          this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.PLAYER_ATTACK_NODAMAGE, this.getSoundSource());
          return true;
       } else {
@@ -1145,11 +1143,11 @@ public abstract class Player extends Avatar implements ContainerUser {
          this.setSprinting(false);
       }
 
-      if (entity instanceof ServerPlayer && entity.syncVelocity) {
-         serverPlayer.connection.send(new ClientboundSetEntityMotionPacket(entity));
-         entity.syncVelocity = false;
-         entity.setDeltaMovement(oldMovement);
-      }
+if (entity instanceof ServerPlayer serverPlayer && entity.syncVelocity) {
+          serverPlayer.connection.send(new ClientboundSetEntityMotionPacket(entity));
+          entity.syncVelocity = false;
+          entity.setDeltaMovement(oldMovement);
+       }
    }
 
    @Override
@@ -1167,7 +1165,7 @@ public abstract class Player extends Avatar implements ContainerUser {
             if (nearby != this
                && nearby != entity
                && !this.isAlliedTo(nearby)
-               && !(nearby instanceof ArmorStand && armorStand.isMarker())
+               && !(nearby instanceof ArmorStand armorStand && armorStand.isMarker())
                && this.distanceToSqr(nearby) < 9.0) {
                float enchantedDamage = this.getEnchantedDamage(nearby, var12, damageSource) * attackStrengthScale;
                if (nearby.hurtServer(serverLevel, damageSource, enchantedDamage)) {

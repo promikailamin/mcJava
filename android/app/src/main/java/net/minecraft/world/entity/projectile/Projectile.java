@@ -204,13 +204,13 @@ public abstract class Projectile extends Entity implements TraceableEntity {
       this.resetFallDistance();
    }
 
-   public boolean canBreakBlockInAdventureMode(final ServerLevel level, final BlockInWorld blockInWorld) {
-      Entity owner = this.getOwner();
-      GameType worldGameMode = level.getServer().getDefaultGameType();
-      return (owner != null || worldGameMode == GameType.ADVENTURE) && !(owner instanceof Player && player.gameMode() != GameType.ADVENTURE)
-         ? this.canBreak != null && this.canBreak.test(blockInWorld)
-         : true;
-   }
+public boolean canBreakBlockInAdventureMode(final ServerLevel level, final BlockInWorld blockInWorld) {
+       Entity owner = this.getOwner();
+       GameType worldGameMode = level.getServer().getDefaultGameType();
+       return (owner != null || worldGameMode == GameType.ADVENTURE) && !(owner instanceof Player player && player.gameMode() != GameType.ADVENTURE)
+          ? this.canBreak != null && this.canBreak.test(blockInWorld)
+          : true;
+    }
 
    public static <T extends Projectile> T spawnProjectileFromRotation(
       final Projectile.ProjectileFactory<T> creator,
@@ -354,10 +354,9 @@ protected ProjectileDeflection hitTargetOrDeflectSelf(final HitResult hitResult)
       if (type == HitResult.Type.ENTITY) {
          EntityHitResult entityHitResult = (EntityHitResult)hitResult;
          Entity entityHit = entityHitResult.getEntity();
-if (entityHit.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entityHit instanceof Projectile) {
-    Projectile projectile = (Projectile) entityHit.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entityHit;
-             this.onRedirectProjectile(projectile);
-         }
+if (entityHit.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entityHit instanceof Projectile projectile) {
+          this.onRedirectProjectile(projectile);
+       }
 
          this.onHitEntity(entityHitResult);
          this.level().gameEvent(GameEvent.PROJECTILE_LAND, hitResult.getLocation(), GameEvent.Context.of(this, null));

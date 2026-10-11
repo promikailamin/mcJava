@@ -55,7 +55,7 @@ public class EndPortalBlock extends BaseEntityBlock implements Portal {
       final BlockState state, final Level level, final BlockPos pos, final Entity entity, final InsideBlockEffectApplier effectApplier, final boolean isPrecise
    ) {
       if (entity.canUsePortal(false)) {
-         if (!level.isClientSide() && level.dimension() == Level.END && entity instanceof ServerPlayer && !player.seenCredits) {
+         if (!level.isClientSide() && level.dimension() == Level.END && entity instanceof ServerPlayer player && !player.seenCredits) {
             player.showEndCredits();
          } else {
             entity.setAsInsidePortal(this, pos);

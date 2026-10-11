@@ -185,10 +185,9 @@ public class FireworkRocketEntity extends Projectile implements ItemSupplier {
             );
       }
 
-      if (this.life > this.lifetime && this.level() instanceof ServerLevel) {
-          ServerLevel level = (ServerLevel) this.life > this.lifetime && this.level();
-         this.explode(level);
-      }
+if (this.life > this.lifetime && this.level() instanceof ServerLevel level) {
+          this.explode(level);
+       }
    }
 
    private void explode(final ServerLevel level) {
@@ -207,16 +206,16 @@ public class FireworkRocketEntity extends Projectile implements ItemSupplier {
       }
    }
 
-   @Override
-   protected void onHitBlock(final BlockHitResult hitResult) {
-      BlockPos pos = hitResult.getBlockPos().immutable();
-      this.level().getBlockState(pos).entityInside(this.level(), pos, this, InsideBlockEffectApplier.NOOP, true);
-      if (this.level() instanceof ServerLevel && this.hasExplosion()) {
-         this.explode(level);
-      }
+@Override
+    protected void onHitBlock(final BlockHitResult hitResult) {
+       BlockPos pos = hitResult.getBlockPos().immutable();
+       this.level().getBlockState(pos).entityInside(this.level(), pos, this, InsideBlockEffectApplier.NOOP, true);
+       if (this.level() instanceof ServerLevel level && this.hasExplosion()) {
+          this.explode(level);
+       }
 
-      super.onHitBlock(hitResult);
-   }
+       super.onHitBlock(hitResult);
+    }
 
    private boolean hasExplosion() {
       return !this.getExplosions().isEmpty();

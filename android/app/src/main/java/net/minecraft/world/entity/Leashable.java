@@ -86,28 +86,27 @@ public interface Leashable {
       output.storeNullable("leash", Leashable.LeashData.CODEC, leashData);
    }
 
-   private static <E extends Entity & Leashable> void restoreLeashFromSave(final E entity, final Leashable.LeashData leashData) {
-      if (leashData.delayedLeashInfo != null && entity.level() instanceof ServerLevel) {
-          ServerLevel serverLevel = (ServerLevel) leashData.delayedLeashInfo != null && entity.level();
-         Optional<UUID> leashUuid = leashData.delayedLeashInfo.left();
-         Optional<BlockPos> pos = leashData.delayedLeashInfo.right();
-         if (leashUuid.isPresent()) {
-            Entity leasher = serverLevel.getEntity(leashUuid.get());
-            if (leasher != null) {
-               setLeashedTo(entity, leasher, true);
-               return;
-            }
-         } else if (pos.isPresent()) {
-            setLeashedTo(entity, LeashFenceKnotEntity.getOrCreateKnot(serverLevel, pos.get()), true);
-            return;
-         }
+private static <E extends Entity & Leashable> void restoreLeashFromSave(final E entity, final Leashable.LeashData leashData) {
+       if (leashData.delayedLeashInfo != null && entity.level() instanceof ServerLevel serverLevel) {
+          Optional<UUID> leashUuid = leashData.delayedLeashInfo.left();
+          Optional<BlockPos> pos = leashData.delayedLeashInfo.right();
+          if (leashUuid.isPresent()) {
+             Entity leasher = serverLevel.getEntity(leashUuid.get());
+             if (leasher != null) {
+                setLeashedTo(entity, leasher, true);
+                return;
+             }
+          } else if (pos.isPresent()) {
+             setLeashedTo(entity, LeashFenceKnotEntity.getOrCreateKnot(serverLevel, pos.get()), true);
+             return;
+          }
 
-         if (entity.tickCount > 100) {
-            entity.spawnAtLocation(serverLevel, Items.LEAD);
-            entity.setLeashData(null);
-         }
-      }
-   }
+          if (entity.tickCount > 100) {
+             entity.spawnAtLocation(serverLevel, Items.LEAD);
+             entity.setLeashData(null);
+          }
+       }
+    }
 
    default void dropLeash() {
       dropLeash((Entity & Leashable)this, true, true);
@@ -226,9 +225,9 @@ public interface Leashable {
       return true;
    }
 
-   private static Vec3 getHolderMovement(final Entity leashHolder) {
-      return leashHolder instanceof Mob && mob.isNoAi() ? Vec3.ZERO : leashHolder.getKnownMovement();
-   }
+private static Vec3 getHolderMovement(final Entity leashHolder) {
+       return leashHolder instanceof Mob mob && mob.isNoAi() ? Vec3.ZERO : leashHolder.getKnownMovement();
+    }
 
    private static <E extends Entity & Leashable> List<Leashable.Wrench> computeElasticInteraction(
       final E entity, final Entity leashHolder, final List<Vec3> entityAttachmentPoints, final List<Vec3> leasherAttachmentPoints
@@ -320,10 +319,9 @@ public interface Leashable {
          }
       }
 
-      if (synch && entity.level() instanceof ServerLevel) {
-          ServerLevel level = (ServerLevel) synch && entity.level();
-         level.getChunkSource().sendToTrackingPlayers(entity, new ClientboundSetEntityLinkPacket(entity, holder));
-      }
+if (synch && entity.level() instanceof ServerLevel level) {
+          level.getChunkSource().sendToTrackingPlayers(entity, new ClientboundSetEntityLinkPacket(entity, holder));
+       }
 
       if (entity.isPassenger()) {
          entity.stopRiding();
@@ -356,14 +354,14 @@ public interface Leashable {
       return leashableInArea(entity.level(), entity.getBoundingBox().getCenter(), test);
    }
 
-   static List<Leashable> leashableInArea(final Level level, final Vec3 pos, final Predicate<Leashable> test) {
-      double size = 32.0;
-      AABB scanArea = AABB.ofSize(pos, 32.0, 32.0, 32.0);
-      return level.getEntitiesOfClass(Entity.class, scanArea, e -> e instanceof Leashable && test.test(leashable))
-         .stream()
-         .map(Leashable.class::cast)
-         .toList();
-   }
+static List<Leashable> leashableInArea(final Level level, final Vec3 pos, final Predicate<Leashable> test) {
+       double size = 32.0;
+       AABB scanArea = AABB.ofSize(pos, 32.0, 32.0, 32.0);
+       return level.getEntitiesOfClass(Entity.class, scanArea, e -> e instanceof Leashable leashable && test.test(leashable))
+          .stream()
+          .map(Leashable.class::cast)
+          .toList();
+    }
 
    final class LeashData {
       public static final Codec<Leashable.LeashData> CODEC = Codec.xor(UUIDUtil.CODEC.fieldOf("UUID").codec(), BlockPos.CODEC)

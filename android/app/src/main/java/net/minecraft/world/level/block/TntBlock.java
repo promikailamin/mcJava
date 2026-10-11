@@ -81,7 +81,7 @@ public class TntBlock extends Block {
    }
 
    public static boolean prime(final Level level, final BlockPos pos, final @Nullable LivingEntity source, final ItemStack itemStack) {
-      if (!(level instanceof ServerLevel && serverLevel.getGameRules().get(GameRules.TNT_EXPLODES))) {
+      if (!(level instanceof ServerLevel serverLevel && serverLevel.getGameRules().get(GameRules.TNT_EXPLODES))) {
          return false;
       } else if (source instanceof Player && player.gameMode() == GameType.ADVENTURE
          && !itemStack.canBreakBlockInAdventureMode(new BlockInWorld(level, pos, false))) {
@@ -119,7 +119,7 @@ public class TntBlock extends Block {
          }
 
          player.awardStat(Stats.ITEM_USED.get(item));
-      } else if (level instanceof ServerLevel && !serverLevel.getGameRules().get(GameRules.TNT_EXPLODES)) {
+      } else if (level instanceof ServerLevel serverLevel && !serverLevel.getGameRules().get(GameRules.TNT_EXPLODES)) {
          player.sendOverlayMessage(Component.translatable("block.minecraft.tnt.disabled"));
          return InteractionResult.PASS;
       }

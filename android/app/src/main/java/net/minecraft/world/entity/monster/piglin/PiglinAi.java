@@ -853,7 +853,7 @@ public class PiglinAi {
       List<AbstractPiglin> adultPiglins = new ArrayList<>();
 
       for (LivingEntity entity : livingEntities) {
-         if (entity instanceof AbstractPiglin && piglin.isAdult()) {
+         if (entity instanceof AbstractPiglin adultPiglins && piglin.isAdult()) {
             adultPiglins.add(piglin);
          }
       }

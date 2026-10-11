@@ -230,11 +230,11 @@ public abstract class BlockEntity implements DebugValueSource, TypedInstance<Blo
       this.remove = false;
    }
 
-   public void preRemoveSideEffects(final BlockPos pos, final BlockState state) {
-      if (this instanceof Container && this.level != null) {
-         Containers.dropContents(this.level, pos, container);
-      }
-   }
+public void preRemoveSideEffects(final BlockPos pos, final BlockState state) {
+       if (this instanceof Container container && this.level != null) {
+          Containers.dropContents(this.level, pos, container);
+       }
+    }
 
    public boolean triggerEvent(final int b0, final int b1) {
       return false;

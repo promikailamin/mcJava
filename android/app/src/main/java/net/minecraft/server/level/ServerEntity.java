@@ -103,7 +103,7 @@ public class ServerEntity {
          this.lastPassengers = passengers;
       }
 
-      if (this.entity instanceof ItemFrame && this.tickCount % 10 == 0) {
+      if (this.entity instanceof ItemFrame frame && this.tickCount % 10 == 0) {
          ItemStack itemStack = frame.getItem();
          if (itemStack.getItem() instanceof MapItem) {
             MapId id = itemStack.get(DataComponents.MAP_ID);
@@ -163,7 +163,7 @@ public class ServerEntity {
                packet = this.createMovePacket(position, yRotn, xRotn, shouldSendPosition, shouldSendRotation);
             }
 
-            if (this.entity.needsSync || this.trackDelta || this.entity instanceof LivingEntity && livingEntity.isFallFlying()) {
+            if (this.entity.needsSync || this.trackDelta || this.entity instanceof LivingEntity livingEntity && livingEntity.isFallFlying()) {
                Vec3 movement = this.entity.getDeltaMovement();
                double diff = movement.distanceToSqr(this.lastSentMovement);
                if (diff > 1.0E-7 || diff > 0.0 && movement.lengthSqr() == 0.0) {
@@ -349,9 +349,9 @@ public class ServerEntity {
          broadcast.accept(new ClientboundSetPassengersPacket(this.entity.getVehicle()));
       }
 
-      if (this.entity instanceof Leashable && leashable.isLeashed()) {
-         broadcast.accept(new ClientboundSetEntityLinkPacket(this.entity, leashable.getLeashHolder()));
-      }
+if (this.entity instanceof Leashable leashable && leashable.isLeashed()) {
+          broadcast.accept(new ClientboundSetEntityLinkPacket(this.entity, leashable.getLeashHolder()));
+       }
    }
 
    public Vec3 getPositionBase() {

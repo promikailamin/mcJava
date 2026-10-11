@@ -523,7 +523,7 @@ public class Panda extends Animal {
          }
       }
 
-      if (this.level() instanceof ServerLevel && serverLevel.getGameRules().get(GameRules.MOB_DROPS)) {
+      if (this.level() instanceof ServerLevel serverLevel && serverLevel.getGameRules().get(GameRules.MOB_DROPS)) {
          this.dropFromGiftLootTable(serverLevel, BuiltInLootTables.PANDA_SNEEZE, this::spawnAtLocation);
       }
    }
@@ -867,7 +867,7 @@ public class Panda extends Animal {
 
       @Override
       protected void alertOther(final Mob other, final LivingEntity hurtByMob) {
-         if (other instanceof Panda && other.isAggressive()) {
+         if (other instanceof Panda mob && other.isAggressive()) {
             other.setTarget(hurtByMob);
          }
       }

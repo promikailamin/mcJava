@@ -86,7 +86,7 @@ public class CampfireBlock extends BaseEntityBlock implements SimpleWaterloggedB
           CampfireBlockEntity campfire = (CampfireBlockEntity) level.getBlockEntity(pos);
          ItemStack itemInHand = player.getItemInHand(hand);
          if (level.recipeAccess().propertySet(RecipePropertySet.CAMPFIRE_INPUT).test(itemInHand)) {
-            if (level instanceof ServerLevel && campfire.placeFood(serverLevel, player, itemInHand)) {
+            if (level instanceof ServerLevel itemStack && campfire.placeFood(serverLevel, player, itemInHand)) {
                player.awardStat(Stats.INTERACT_WITH_CAMPFIRE);
                return InteractionResult.SUCCESS_SERVER;
             }

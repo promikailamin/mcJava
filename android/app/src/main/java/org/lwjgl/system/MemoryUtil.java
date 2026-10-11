@@ -430,7 +430,7 @@ public final class MemoryUtil {
     }
 
     public static void checkBufferOverflow(Object buffer, long count) {
-        if (buffer instanceof ByteBuffer && count > bb.capacity()) {
+        if (buffer instanceof ByteBuffer bb && count > bb.capacity()) {
             throw new IllegalArgumentException("buffer size mismatch");
         }
     }

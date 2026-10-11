@@ -110,10 +110,10 @@ public interface HolderSet<T> extends Iterable<Holder<T>> {
          return "DirectSet[" + this.contents + "]";
       }
 
-      @Override
-      public boolean equals(final Object obj) {
-         return this == obj ? true : obj instanceof HolderSet.Direct<?> && this.contents.equals(direct.contents);
-      }
+@Override
+       public boolean equals(final Object obj) {
+          return this == obj ? true : obj instanceof HolderSet.Direct<?> direct && this.contents.equals(direct.contents);
+       }
 
       @Override
       public int hashCode() {

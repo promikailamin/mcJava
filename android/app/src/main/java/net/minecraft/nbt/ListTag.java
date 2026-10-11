@@ -165,13 +165,13 @@ public final class ListTag extends AbstractList<Tag> implements CollectionTag {
       return tag.size() == 1 && tag.contains("");
    }
 
-   private static Tag wrapIfNeeded(final byte elementType, final Tag tag) {
-      if (elementType != 10) {
-         return tag;
-      } else {
-         return tag instanceof CompoundTag && !isWrapper(compoundTag) ? compoundTag : wrapElement(tag);
-      }
-   }
+private static Tag wrapIfNeeded(final byte elementType, final Tag tag) {
+       if (elementType != 10) {
+          return tag;
+       } else {
+          return tag instanceof CompoundTag compoundTag && !isWrapper(compoundTag) ? compoundTag : wrapElement(tag);
+       }
+    }
 
    private static CompoundTag wrapElement(final Tag tag) {
       return new CompoundTag(Map.of("", tag));
@@ -252,17 +252,17 @@ public final class ListTag extends AbstractList<Tag> implements CollectionTag {
       return this.list.isEmpty();
    }
 
-   public Optional<CompoundTag> getCompound(final int index) {
-      return this.getNullable(index) instanceof CompoundTag ? Optional.of(tag)  : Optional.empty();
-   }
+public Optional<CompoundTag> getCompound(final int index) {
+       return this.getNullable(index) instanceof CompoundTag compoundTag ? Optional.of(compoundTag)  : Optional.empty();
+    }
 
    public CompoundTag getCompoundOrEmpty(final int index) {
       return this.getCompound(index).orElseGet(CompoundTag::new);
    }
 
-   public Optional<ListTag> getList(final int index) {
-      return this.getNullable(index) instanceof ListTag ? Optional.of(tag)  : Optional.empty();
-   }
+public Optional<ListTag> getList(final int index) {
+       return this.getNullable(index) instanceof ListTag listTag ? Optional.of(listTag)  : Optional.empty();
+    }
 
    public ListTag getListOrEmpty(final int index) {
       return this.getList(index).orElseGet(ListTag::new);
@@ -272,17 +272,17 @@ public final class ListTag extends AbstractList<Tag> implements CollectionTag {
       return this.getOptional(index).flatMap(Tag::asShort);
    }
 
-   public short getShortOr(final int index, final short defaultValue) {
-      return this.getNullable(index) instanceof NumericTag ? shortValue() : defaultValue;
-   }
+public short getShortOr(final int index, final short defaultValue) {
+       return this.getNullable(index) instanceof NumericTag numericTag ? numericTag.shortValue() : defaultValue;
+    }
 
    public Optional<Integer> getInt(final int index) {
       return this.getOptional(index).flatMap(Tag::asInt);
    }
 
-   public int getIntOr(final int index, final int defaultValue) {
-      return this.getNullable(index) instanceof NumericTag ? intValue() : defaultValue;
-   }
+public int getIntOr(final int index, final int defaultValue) {
+       return this.getNullable(index) instanceof NumericTag numericTag ? numericTag.intValue() : defaultValue;
+    }
 
    public Optional<int[]> getIntArray(final int index) {
       return this.getNullable(index) instanceof IntArrayTag ? Optional.of(((IntArrayTag) this.getNullable(index)).getAsIntArray())  : Optional.empty();
@@ -296,17 +296,17 @@ public final class ListTag extends AbstractList<Tag> implements CollectionTag {
       return this.getOptional(index).flatMap(Tag::asDouble);
    }
 
-   public double getDoubleOr(final int index, final double defaultValue) {
-      return this.getNullable(index) instanceof NumericTag ? doubleValue() : defaultValue;
-   }
+public double getDoubleOr(final int index, final double defaultValue) {
+       return this.getNullable(index) instanceof NumericTag numericTag ? numericTag.doubleValue() : defaultValue;
+    }
 
    public Optional<Float> getFloat(final int index) {
       return this.getOptional(index).flatMap(Tag::asFloat);
    }
 
-   public float getFloatOr(final int index, final float defaultValue) {
-      return this.getNullable(index) instanceof NumericTag ? floatValue() : defaultValue;
-   }
+public float getFloatOr(final int index, final float defaultValue) {
+       return this.getNullable(index) instanceof NumericTag numericTag ? numericTag.floatValue() : defaultValue;
+    }
 
    public Optional<String> getString(final int index) {
       return this.getOptional(index).flatMap(Tag::asString);
@@ -369,10 +369,10 @@ public final class ListTag extends AbstractList<Tag> implements CollectionTag {
       return Optional.of(this);
    }
 
-   @Override
-   public boolean equals(final Object obj) {
-      return this == obj ? true : obj instanceof ListTag && Objects.equals(this.list, listTag.list);
-   }
+@Override
+    public boolean equals(final Object obj) {
+       return this == obj ? true : obj instanceof ListTag listTag && Objects.equals(this.list, listTag.list);
+    }
 
    @Override
    public int hashCode() {

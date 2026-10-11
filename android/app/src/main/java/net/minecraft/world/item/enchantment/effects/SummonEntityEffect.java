@@ -36,7 +36,7 @@ public record SummonEntityEffect(HolderSet<EntityType<?>> entityTypes, boolean j
          if (!entityType.isEmpty()) {
             Entity spawned = entityType.get().value().spawn(serverLevel, blockPos, EntitySpawnReason.TRIGGERED);
             if (spawned != null) {
-               if (spawned instanceof LightningBolt && item.owner() instanceof ServerPlayer) {
+               if (spawned instanceof LightningBolt item && item.owner() instanceof ServerPlayer) {
                    ServerPlayer player = (ServerPlayer) spawned instanceof LightningBolt && item.owner();
                   lightningBolt.setCause(player);
                }

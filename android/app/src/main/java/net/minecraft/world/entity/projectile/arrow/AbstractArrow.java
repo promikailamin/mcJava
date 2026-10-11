@@ -100,18 +100,17 @@ public abstract class AbstractArrow extends Projectile {
       }
 
       this.setPos(x, y, z);
-      if (firedFromWeapon != null && level instanceof ServerLevel) {
-          ServerLevel serverLevel = (ServerLevel) firedFromWeapon != null && level;
-         if (firedFromWeapon.isEmpty()) {
-            throw new IllegalArgumentException("Invalid weapon firing an arrow");
-         }
+if (firedFromWeapon != null && level instanceof ServerLevel serverLevel) {
+          if (firedFromWeapon.isEmpty()) {
+             throw new IllegalArgumentException("Invalid weapon firing an arrow");
+          }
 
-         this.firedFromWeapon = firedFromWeapon.copy();
-         int pierceLevel = EnchantmentHelper.getPiercingCount(serverLevel, firedFromWeapon, this.pickupItemStack);
-         if (pierceLevel > 0) {
-            this.setPierceLevel((byte)pierceLevel);
-         }
-      }
+          this.firedFromWeapon = firedFromWeapon.copy();
+          int pierceLevel = EnchantmentHelper.getPiercingCount(serverLevel, firedFromWeapon, this.pickupItemStack);
+          if (pierceLevel > 0) {
+             this.setPierceLevel((byte)pierceLevel);
+          }
+       }
    }
 
    protected AbstractArrow(
@@ -428,10 +427,9 @@ public abstract class AbstractArrow extends Projectile {
       double arrowDamage = this.baseDamage;
       Entity currentOwner = this.getOwner();
       DamageSource damageSource = this.damageSources().arrow(this, currentOwner != null ? currentOwner : this);
-      if (this.getWeaponItem() != null && this.level() instanceof ServerLevel) {
-          ServerLevel serverLevel = (ServerLevel) this.getWeaponItem() != null && this.level();
-         arrowDamage = EnchantmentHelper.modifyDamage(serverLevel, this.getWeaponItem(), entity, damageSource, (float)arrowDamage);
-      }
+if (this.getWeaponItem() != null && this.level() instanceof ServerLevel serverLevel) {
+          arrowDamage = EnchantmentHelper.modifyDamage(serverLevel, this.getWeaponItem(), entity, damageSource, (float)arrowDamage);
+       }
 
       int damage = Mth.ceil(Mth.clamp(pow * arrowDamage, 0.0, 2.147483647E9));
       if (this.getPierceLevel() > 0) {
@@ -480,16 +478,15 @@ public abstract class AbstractArrow extends Projectile {
             }
 
             this.doPostHurtEffects(mob);
-            if (mob instanceof Player && currentOwner instanceof ServerPlayer && !this.isSilent() && mob != ownerPlayer) {
-               ownerPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.PLAY_ARROW_HIT_SOUND, 0.0F));
+            if (mob instanceof ServerPlayer player && currentOwner instanceof ServerPlayer && !this.isSilent() && mob != player) {
+               player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.PLAY_ARROW_HIT_SOUND, 0.0F));
             }
 
             if (!entity.isAlive() && this.piercedAndKilledEntities != null) {
                this.piercedAndKilledEntities.add(mob);
             }
 
-            if (!this.level().isClientSide() && currentOwner instanceof ServerPlayer) {
-                ServerPlayer player = (ServerPlayer) !this.level().isClientSide() && currentOwner;
+            if (!this.level().isClientSide() && currentOwner instanceof ServerPlayer player) {
                if (this.piercedAndKilledEntities != null) {
                   CriteriaTriggers.KILLED_BY_ARROW.trigger(player, this.piercedAndKilledEntities, this.firedFromWeapon);
                } else if (!entity.isAlive()) {
@@ -505,19 +502,19 @@ public abstract class AbstractArrow extends Projectile {
       } else if (entity.projectileReceivesSideEffectsOnHit(false)) {
          entity.setRemainingFireTicks(remainingFireTicks);
          this.deflect(ProjectileDeflection.REVERSE, entity, this.owner, false, 0.2);
-         if (this.level() instanceof ServerLevel && this.getDeltaMovement().lengthSqr() < 1.0E-7) {
-            if (this.pickup == AbstractArrow.Pickup.ALLOWED) {
-               this.spawnAtLocation(level, this.getPickupItem(), 0.1F);
-            }
+if (this.level() instanceof ServerLevel serverLevel && this.getDeltaMovement().lengthSqr() < 1.0E-7) {
+             if (this.pickup == AbstractArrow.Pickup.ALLOWED) {
+                this.spawnAtLocation(serverLevel, this.getPickupItem(), 0.1F);
+             }
 
-            this.discard();
-         }
+             this.discard();
+          }
       }
    }
 
-   protected void doKnockback(final LivingEntity mob, final DamageSource damageSource) {
-      double knockback = this.firedFromWeapon != null && this.level() instanceof ServerLevel ? EnchantmentHelper.modifyKnockback(serverLevel, this.firedFromWeapon, mob, damageSource, 0.0F)
-          : 0.0F;
+protected void doKnockback(final LivingEntity mob, final DamageSource damageSource) {
+       double knockback = this.firedFromWeapon != null && this.level() instanceof ServerLevel serverLevel ? EnchantmentHelper.modifyKnockback(serverLevel, this.firedFromWeapon, mob, damageSource, 0.0F)
+           : 0.0F;
       if (knockback > 0.0) {
          double knockbackResistance = Math.max(0.0, 1.0 - mob.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
          Vec3 movement = this.getDeltaMovement().multiply(1.0, 0.0, 1.0).normalize().scale(knockback * 0.6 * knockbackResistance);
@@ -531,10 +528,10 @@ public abstract class AbstractArrow extends Projectile {
    protected void onHitBlock(final BlockHitResult hitResult) {
       this.lastState = this.level().getBlockState(hitResult.getBlockPos());
       super.onHitBlock(hitResult);
-      ItemStack weaponItem = this.getWeaponItem();
-      if (this.level() instanceof ServerLevel && weaponItem != null) {
-         this.hitBlockEnchantmentEffects(serverLevel, hitResult, weaponItem);
-      }
+ItemStack weaponItem = this.getWeaponItem();
+       if (this.level() instanceof ServerLevel serverLevel && weaponItem != null) {
+          this.hitBlockEnchantmentEffects(serverLevel, hitResult, weaponItem);
+       }
 
       Vec3 movement = this.getDeltaMovement();
       Vec3 offsetDirection = new Vec3(Math.signum(movement.x), Math.signum(movement.y), Math.signum(movement.z));
@@ -550,19 +547,19 @@ public abstract class AbstractArrow extends Projectile {
       this.resetPiercedEntities();
    }
 
-   protected void hitBlockEnchantmentEffects(final ServerLevel serverLevel, final BlockHitResult hitResult, final ItemStack weapon) {
-      Vec3 compensatedHitPosition = hitResult.getBlockPos().clampLocationWithin(hitResult.getLocation());
-      EnchantmentHelper.onHitBlock(
-         serverLevel,
-         weapon,
-         this.getOwner() instanceof LivingEntity ? livingOwner  : null,
-         this,
-         null,
-         compensatedHitPosition,
-         serverLevel.getBlockState(hitResult.getBlockPos()),
-         item -> this.firedFromWeapon = null
-      );
-   }
+protected void hitBlockEnchantmentEffects(final ServerLevel serverLevel, final BlockHitResult hitResult, final ItemStack weapon) {
+       Vec3 compensatedHitPosition = hitResult.getBlockPos().clampLocationWithin(hitResult.getLocation());
+       EnchantmentHelper.onHitBlock(
+          serverLevel,
+          weapon,
+          this.getOwner() instanceof LivingEntity livingOwner ? livingOwner : null,
+          this,
+          null,
+          compensatedHitPosition,
+          serverLevel.getBlockState(hitResult.getBlockPos()),
+          item -> this.firedFromWeapon = null
+       );
+    }
 
    @Override
    public @Nullable ItemStack getWeaponItem() {
@@ -592,12 +589,12 @@ public abstract class AbstractArrow extends Projectile {
       );
    }
 
-   @Override
-   protected boolean canHitEntity(final Entity entity) {
-      return entity instanceof Player && this.getOwner() instanceof Player && !player.canHarmPlayer(playerEntity)
-         ? false
-         : super.canHitEntity(entity) && (this.piercingIgnoreEntityIds == null || !this.piercingIgnoreEntityIds.contains(entity.getId()));
-   }
+@Override
+    protected boolean canHitEntity(final Entity entity) {
+       return entity instanceof Player player && this.getOwner() instanceof Player playerEntity && !player.canHarmPlayer(playerEntity)
+          ? false
+          : super.canHitEntity(entity) && (this.piercingIgnoreEntityIds == null || !this.piercingIgnoreEntityIds.contains(entity.getId()));
+    }
 
    @Override
    protected void addAdditionalSaveData(final ValueOutput output) {

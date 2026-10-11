@@ -96,10 +96,10 @@ public static <E, O> RecordCodecBuilder<O, Holder.Reference<E>> retrieveElement(
          return (Optional<HolderGetter<E>>)this.lookups.computeIfAbsent(registryKey, this.lookupProvider::lookup);
       }
 
-      @Override
-      public boolean equals(final Object obj) {
-         return this == obj ? true : obj instanceof RegistryOps.HolderLookupAdapter && this.lookupProvider.equals(adapter.lookupProvider);
-      }
+@Override
+       public boolean equals(final Object obj) {
+          return this == obj ? true : obj instanceof RegistryOps.HolderLookupAdapter adapter && this.lookupProvider.equals(adapter.lookupProvider);
+       }
 
       @Override
       public int hashCode() {

@@ -199,7 +199,7 @@ public class ServerExplosion implements Explosion {
                   if (entity.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entity instanceof Projectile) {
                       Projectile projectile = (Projectile) entity.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entity;
                      projectile.setOwner(this.damageSource.getEntity());
-                  } else if (entity instanceof Player && !player.isSpectator() && (!player.isCreative() || !player.getAbilities().flying)) {
+                  } else if (entity instanceof Player player && !player.isSpectator() && (!player.isCreative() || !player.getAbilities().flying)) {
                      this.hitPlayers.put(player, knockback);
                   }
 

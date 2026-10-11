@@ -136,14 +136,14 @@ public final class WeightedList<E> {
       return false;
    }
 
-   @Override
-   public boolean equals(final @Nullable Object obj) {
-      if (this == obj) {
-         return true;
-      } else {
-         return !(obj instanceof WeightedList<?>) ? false : this.totalWeight == list.totalWeight && Objects.equals(this.items, list.items);
-      }
-   }
+@Override
+    public boolean equals(final @Nullable Object obj) {
+       if (this == obj) {
+          return true;
+       } else {
+          return obj instanceof WeightedList<?> list && this.totalWeight == list.totalWeight && Objects.equals(this.items, list.items);
+       }
+    }
 
    @Override
    public int hashCode() {

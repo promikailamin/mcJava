@@ -367,8 +367,8 @@ public abstract class LivingEntity extends Entity implements Attackable, Waypoin
          this.updateFluidInteraction();
       }
 
-if (this.level() instanceof ServerLevel && onGround && this.fallDistance > 0.0) {
-          this.onChangedBlock(this.level(), pos);
+if (this.level() instanceof ServerLevel serverLevel && onGround && this.fallDistance > 0.0) {
+          this.onChangedBlock(serverLevel, pos);
           double power = Math.max(0, Mth.floor(this.calculateFallPower(this.fallDistance)));
           if (power > 0.0 && !onState.isAir()) {
              double x = this.getX();
@@ -385,7 +385,7 @@ if (this.level() instanceof ServerLevel && onGround && this.fallDistance > 0.0) 
 
              double scale = Math.min(0.2F + power / 15.0, 2.5);
              int particles = (int)(150.0 * scale);
-             this.level().sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, onState), x, y, z, particles, 0.0, 0.0, 0.0, 0.15F);
+             serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, onState), x, y, z, particles, 0.0, 0.0, 0.0, 0.15F);
           }
        }
 
@@ -426,8 +426,7 @@ if (this.level() instanceof ServerLevel && onGround && this.fallDistance > 0.0) 
       super.baseTick();
       ProfilerFiller profiler = Profiler.get();
       profiler.push("livingEntityBaseTick");
-if (this.isAlive() && this.level() instanceof ServerLevel) {
-    ServerLevel level = (ServerLevel) this.isAlive() && this.level();
+if (this.isAlive() && this.level() instanceof ServerLevel level) {
           boolean isPlayer = this instanceof Player;
          if (this.isInWall()) {
             this.hurtServer(level, this.damageSources().inWall(), 1.0F);
@@ -725,8 +724,7 @@ if (this.isAlive() && this.level() instanceof ServerLevel) {
 
 @Override
     public void remove(final Entity.RemovalReason reason) {
-       if ((reason == Entity.RemovalReason.KILLED || reason == Entity.RemovalReason.DISCARDED) && this.level() instanceof ServerLevel) {
-           ServerLevel level = (ServerLevel) (reason == Entity.RemovalReason.KILLED || reason == Entity.RemovalReason.DISCARDED) && this.level();
+       if ((reason == Entity.RemovalReason.KILLED || reason == Entity.RemovalReason.DISCARDED) && this.level() instanceof ServerLevel level) {
           this.triggerOnDeathMobEffects(level, reason);
        }
 
@@ -1336,7 +1334,7 @@ if (this.isAlive() && this.level() instanceof ServerLevel) {
 
       BlocksAttacks blocksAttacks = blockingWith.get(DataComponents.BLOCKS_ATTACKS);
       if (blocksAttacks != null && !blocksAttacks.bypassedBy().map(t -> t.contains(source.typeHolder())).orElse(false)) {
-if (source.getDirectEntity() instanceof AbstractArrow && abstractArrow.getPierceLevel() > 0) {
+if (source.getDirectEntity() instanceof AbstractArrow abstractArrow && abstractArrow.getPierceLevel() > 0) {
              return 0.0F;
           } else {
             Vec3 sourcePosition = source.getSourcePosition();
@@ -1352,9 +1350,9 @@ if (source.getDirectEntity() instanceof AbstractArrow && abstractArrow.getPierce
 
             float damageBlocked = blocksAttacks.resolveBlockedDamage(source, damage, angle);
             blocksAttacks.hurtBlockingItem(this.level(), blockingWith, this, this.getUsedItemHand(), damageBlocked);
-            if (damageBlocked > 0.0F && !source.is(DamageTypeTags.IS_PROJECTILE) && source.getDirectEntity() instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity) damageBlocked > 0.0F && !source.is(DamageTypeTags.IS_PROJECTILE) && source.getDirectEntity();
-               this.blockUsingItem(this.level(), livingEntity, source, damage, damageBlocked >= damage);
+            if (damageBlocked > 0.0F && !source.is(DamageTypeTags.IS_PROJECTILE) && source.getDirectEntity() instanceof LivingEntity livingEntity) {
+                
+               this.blockUsingItem((ServerLevel) this.level(), livingEntity, source, damage, damageBlocked >= damage);
             }
 
             return damageBlocked;
@@ -1374,7 +1372,7 @@ if (source.getDirectEntity() instanceof AbstractArrow && abstractArrow.getPierce
 protected void resolveMobResponsibleForDamage(final DamageSource source) {
        if (source.getEntity() instanceof LivingEntity && !source.is(DamageTypeTags.NO_ANGER)
           && (!source.is(DamageTypes.WIND_CHARGE) || !this.is(EntityTypeTags.NO_ANGER_FROM_WIND_CHARGE))) {
-          this.setLastHurtByMob(livingSource);
+          this.setLastHurtByMob((LivingEntity) source.getEntity());
        }
     }
 
@@ -1383,7 +1381,7 @@ protected void resolveMobResponsibleForDamage(final DamageSource source) {
       if (sourceEntity instanceof Player) {
           Player playerSource = (Player) sourceEntity;
          this.setLastHurtByPlayer(playerSource, 100);
-      } else if (sourceEntity instanceof Wolf && wolf.isTame()) {
+      } else if (sourceEntity instanceof Wolf wolf && wolf.isTame()) {
          if (wolf.getOwnerReference() != null) {
             this.setLastHurtByPlayer(wolf.getOwnerReference().getUUID(), 100);
          } else {
@@ -1563,11 +1561,11 @@ protected void resolveMobResponsibleForDamage(final DamageSource source) {
       return 0L;
    }
 
-   protected float getKnockback(final Entity target, final DamageSource damageSource) {
-      float knockback = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
-      return this.level() instanceof ServerLevel ? EnchantmentHelper.modifyKnockback(level, this.getWeaponItem(), target, damageSource, knockback) / 2.0F
-          : knockback / 2.0F;
-   }
+protected float getKnockback(final Entity target, final DamageSource damageSource) {
+       float knockback = (float)this.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+       return this.level() instanceof ServerLevel serverLevel ? EnchantmentHelper.modifyKnockback(serverLevel, this.getWeaponItem(), target, damageSource, knockback) / 2.0F
+           : knockback / 2.0F;
+    }
 
    protected void dropFromLootTable(final ServerLevel level, final DamageSource source, final boolean playerKilled) {
       Optional<ResourceKey<LootTable>> lootTable = this.getLootTable();
@@ -1987,10 +1985,9 @@ protected void resolveMobResponsibleForDamage(final DamageSource source) {
          dmg = Math.max(dmg - this.getAbsorptionAmount(), 0.0F);
          this.setAbsorptionAmount(this.getAbsorptionAmount() - (originalDamage - dmg));
          float absorbedDamage = originalDamage - dmg;
-         if (absorbedDamage > 0.0F && absorbedDamage < 3.4028235E37F && source.getEntity() instanceof ServerPlayer) {
-             ServerPlayer serverPlayer = (ServerPlayer) absorbedDamage > 0.0F && absorbedDamage < 3.4028235E37F && source.getEntity();
-            serverPlayer.awardStat(Stats.DAMAGE_DEALT_ABSORBED, Math.round(absorbedDamage * 10.0F));
-         }
+if (absorbedDamage > 0.0F && absorbedDamage < 3.4028235E37F && source.getEntity() instanceof ServerPlayer serverPlayer) {
+             serverPlayer.awardStat(Stats.DAMAGE_DEALT_ABSORBED, Math.round(absorbedDamage * 10.0F));
+          }
 
          if (dmg != 0.0F) {
             this.getCombatTracker().recordDamage(source, dmg);
@@ -2754,8 +2751,7 @@ protected void resolveMobResponsibleForDamage(final DamageSource source) {
    public void causeExtraKnockback(
       final Entity target, final float knockback, final Vec3 oldMovement, final DamageSource damageSource, final float damage, final boolean comesFromEffect
    ) {
-      if (knockback > 0.0F && target instanceof LivingEntity) {
-          LivingEntity livingTarget = (LivingEntity) knockback > 0.0F && target;
+if (knockback > 0.0F && target instanceof LivingEntity livingTarget) {
          livingTarget.knockback(
             knockback,
             Mth.sin(this.getYRot() * (float) (Math.PI / 180.0)),
@@ -2907,52 +2903,50 @@ protected void resolveMobResponsibleForDamage(final DamageSource source) {
       return this.recentKineticEnemies == null ? 0 : (int)this.recentKineticEnemies.keySet().stream().filter(filter).count();
    }
 
-   public boolean stabAttack(
-      final EquipmentSlot weaponSlot,
-      final Entity target,
-      final float baseDamage,
-      final boolean dealsDamage,
-      final boolean dealsKnockback,
-      final boolean dismounts
-   ) {
-      if (!(this.level() instanceof ServerLevel)) {
-         return false;
-      } else {
-         ItemStack weaponItem = this.getItemBySlot(weaponSlot);
-         DamageSource damageSource = weaponItem.getDamageSource(this);
-         float postEnchantmentDamage = EnchantmentHelper.modifyDamage(serverLevel, weaponItem, target, damageSource, baseDamage);
-         Vec3 oldMovement = target.getDeltaMovement();
-         boolean affected = dealsKnockback;
-         boolean dealtDamage = dealsDamage && target.hurtServer(serverLevel, damageSource, postEnchantmentDamage);
-         affected |= dealtDamage;
-         if (dealsKnockback) {
-            this.causeExtraKnockback(target, 0.4F, oldMovement, damageSource, postEnchantmentDamage, false);
-            this.causeExtraKnockback(target, this.getKnockback(target, damageSource), oldMovement, damageSource, postEnchantmentDamage, true);
-         }
+public boolean stabAttack(
+       final EquipmentSlot weaponSlot,
+       final Entity target,
+       final float baseDamage,
+       final boolean dealsDamage,
+       final boolean dealsKnockback,
+       final boolean dismounts
+    ) {
+       if (!(this.level() instanceof ServerLevel serverLevel)) {
+          return false;
+       }
+       ItemStack weaponItem = this.getItemBySlot(weaponSlot);
+       DamageSource damageSource = weaponItem.getDamageSource(this);
+       float postEnchantmentDamage = EnchantmentHelper.modifyDamage(serverLevel, weaponItem, target, damageSource, baseDamage);
+       Vec3 oldMovement = target.getDeltaMovement();
+       boolean affected = dealsKnockback;
+       boolean dealtDamage = dealsDamage && target.hurtServer(serverLevel, damageSource, postEnchantmentDamage);
+       affected |= dealtDamage;
+       if (dealsKnockback) {
+          this.causeExtraKnockback(target, 0.4F, oldMovement, damageSource, postEnchantmentDamage, false);
+          this.causeExtraKnockback(target, this.getKnockback(target, damageSource), oldMovement, damageSource, postEnchantmentDamage, true);
+       }
 
-         if (dismounts && target.isPassenger() && !target.is(EntityTypeTags.CANNOT_BE_DISMOUNTED_BY_ITEM_USAGE)) {
-            affected = true;
-            target.stopRiding();
-         }
+       if (dismounts && target.isPassenger() && !target.is(EntityTypeTags.CANNOT_BE_DISMOUNTED_BY_ITEM_USAGE)) {
+          affected = true;
+          target.stopRiding();
+       }
 
-         if (target instanceof LivingEntity) {
-             LivingEntity livingTarget = (LivingEntity) target;
-            weaponItem.hurtEnemy(livingTarget, this);
-         }
+       if (target instanceof LivingEntity livingTarget) {
+          weaponItem.hurtEnemy(livingTarget, this);
+       }
 
-         if (dealtDamage) {
-            EnchantmentHelper.doPostAttackEffects(serverLevel, target, damageSource);
-         }
+if (dealtDamage) {
+           EnchantmentHelper.doPostAttackEffects(serverLevel, target, damageSource);
+        }
 
-         if (!affected) {
-            return false;
-         }
+        if (!affected) {
+           return false;
+        }
 
-         this.setLastHurtMob(target);
-         this.playAttackSound();
-         return true;
-      }
-   }
+        this.setLastHurtMob(target);
+        this.playAttackSound();
+        return true;
+    }
 
    public void onAttack() {
    }
@@ -3148,9 +3142,9 @@ protected void resolveMobResponsibleForDamage(final DamageSource source) {
          this.resetFallDistance();
       }
 
-      if (this.getControllingPassenger() instanceof Player && this.isAlive()) {
-         this.travelRidden(controller, input);
-      } else if (this.canSimulateMovement() && this.isEffectiveAi()) {
+if (this.getControllingPassenger() instanceof Player controller && this.isAlive()) {
+          this.travelRidden(controller, input);
+       } else if (this.canSimulateMovement() && this.isEffectiveAi()) {
          this.travel(input);
       }
 
@@ -3187,9 +3181,9 @@ protected void resolveMobResponsibleForDamage(final DamageSource source) {
 
       this.pushEntities();
       profiler.pop();
-      if (this.level() instanceof ServerLevel && this.isSensitiveToWater() && this.isInWaterOrRain()) {
-         this.hurtServer(serverLevel, this.damageSources().drown(), 1.0F);
-      }
+if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater() && this.isInWaterOrRain()) {
+          this.hurtServer(serverLevel, this.damageSources().drown(), 1.0F);
+       }
    }
 
    protected void applyInput() {
@@ -3393,12 +3387,12 @@ protected void resolveMobResponsibleForDamage(final DamageSource source) {
       return !this.isRemoved();
    }
 
-   @Override
-   public boolean isPushable() {
-      return !this.isAlwaysTicking() && this.level() instanceof ServerLevel && !level.isPositionEntityTicking(this.blockPosition())
-         ? false
-         : this.isAlive() && !this.isSpectator() && !this.onClimbable();
-   }
+@Override
+    public boolean isPushable() {
+       return !this.isAlwaysTicking() && this.level() instanceof ServerLevel serverLevel && !serverLevel.isPositionEntityTicking(this.blockPosition())
+          ? false
+          : this.isAlive() && !this.isSpectator() && !this.onClimbable();
+    }
 
    @Override
    public float getYHeadRot() {
@@ -3871,12 +3865,12 @@ protected void resolveMobResponsibleForDamage(final DamageSource source) {
       this.setPos(bedPosition.getX() + 0.5, bedPosition.getY() + sleepHeight + 0.125, bedPosition.getZ() + 0.5);
    }
 
-   private boolean checkBedExists() {
-      return this.getSleepingPos().map(bedPosition -> {
-         BlockState state = this.level().getBlockState(bedPosition);
-         return state.getBlock() instanceof AbstractBedBlock && bedBlock.getSleepHeight(state, this.level(), bedPosition).isPresent();
-      }).orElse(false);
-   }
+private boolean checkBedExists() {
+       return this.getSleepingPos().map(bedPosition -> {
+          BlockState state = this.level().getBlockState(bedPosition);
+          return state.getBlock() instanceof AbstractBedBlock bedBlock && bedBlock.getSleepHeight(state, this.level(), bedPosition).isPresent();
+       }).orElse(false);
+    }
 
    public void stopSleeping() {
       this.getSleepingPos().filter(this.level()::hasChunkAt).ifPresent(bedPosition -> {

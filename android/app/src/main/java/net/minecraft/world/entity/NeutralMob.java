@@ -88,7 +88,7 @@ public interface NeutralMob {
    }
 
    private static boolean isValidPlayerTarget(final LivingEntity target) {
-      return target instanceof Player && !player.isCreative() && !player.isSpectator() && player.level().getDifficulty() != Difficulty.PEACEFUL;
+      return target instanceof Player player && !player.isCreative() && !player.isSpectator() && player.level().getDifficulty() != Difficulty.PEACEFUL;
    }
 
    default boolean isAngryAt(final LivingEntity entity, final ServerLevel level) {

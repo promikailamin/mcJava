@@ -167,21 +167,20 @@ public class LightningBolt extends Entity {
       return BlockPos.containing(position.x, position.y - 1.0E-6, position.z);
    }
 
-   private void spawnFire(final int additionalSources) {
-      if (!this.visualOnly && this.level() instanceof ServerLevel) {
-          ServerLevel level = (ServerLevel) !this.visualOnly && this.level();
-         BlockPos var7 = this.blockPosition();
-         if (level.canSpreadFireAround(var7)) {
-            BlockState fire = BaseFireBlock.getState(level, var7);
-            if (level.getBlockState(var7).isAir() && fire.canSurvive(level, var7)) {
-               level.setBlockAndUpdate(var7, fire);
-               this.blocksSetOnFire++;
-            }
+private void spawnFire(final int additionalSources) {
+       if (!this.visualOnly && this.level() instanceof ServerLevel level) {
+          BlockPos var7 = this.blockPosition();
+          if (level.canSpreadFireAround(var7)) {
+             BlockState fire = BaseFireBlock.getState(level, var7);
+             if (level.getBlockState(var7).isAir() && fire.canSurvive(level, var7)) {
+                level.setBlockAndUpdate(var7, fire);
+                this.blocksSetOnFire++;
+             }
 
-            for (int i = 0; i < additionalSources; i++) {
-               BlockPos nearbyPos = var7.offset(this.random.nextInt(3) - 1, this.random.nextInt(3) - 1, this.random.nextInt(3) - 1);
-               fire = BaseFireBlock.getState(level, nearbyPos);
-               if (level.getBlockState(nearbyPos).isAir() && fire.canSurvive(level, nearbyPos)) {
+             for (int i = 0; i < additionalSources; i++) {
+                BlockPos nearbyPos = var7.offset(this.random.nextInt(3) - 1, this.random.nextInt(3) - 1, this.random.nextInt(3) - 1);
+                fire = BaseFireBlock.getState(level, nearbyPos);
+                if (level.getBlockState(nearbyPos).isAir() && fire.canSurvive(level, nearbyPos)) {
                   level.setBlockAndUpdate(nearbyPos, fire);
                   this.blocksSetOnFire++;
                }

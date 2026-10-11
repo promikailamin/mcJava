@@ -1012,7 +1012,7 @@ public class Bee extends Animal implements NeutralMob {
 
       @Override
       protected void alertOther(final Mob other, final LivingEntity hurtByMob) {
-         if (other instanceof Bee && this.mob.hasLineOfSight(hurtByMob)) {
+         if (other instanceof Bee hivesWithSpace && this.mob.hasLineOfSight(hurtByMob)) {
             other.setTarget(hurtByMob);
          }
       }

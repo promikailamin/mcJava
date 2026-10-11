@@ -102,7 +102,7 @@ public enum ConversionType {
          to.setBaby(true);
       }
 
-      if (from instanceof AgeableMob && to instanceof AgeableMob) {
+      if (from instanceof AgeableMob oldAgeable && to instanceof AgeableMob) {
           AgeableMob convertedAgeable = (AgeableMob) from instanceof AgeableMob && to;
          convertedAgeable.setAge(oldAgeable.getAge());
          convertedAgeable.forcedAge = oldAgeable.forcedAge;

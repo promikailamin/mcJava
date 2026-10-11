@@ -90,10 +90,10 @@ public final class IntArrayTag implements CollectionTag {
       return new IntArrayTag(cp);
    }
 
-   @Override
-   public boolean equals(final Object obj) {
-      return this == obj ? true : obj instanceof IntArrayTag && Arrays.equals(this.data, intArrayTag.data);
-   }
+@Override
+    public boolean equals(final Object obj) {
+       return this == obj ? true : obj instanceof IntArrayTag intArrayTag && Arrays.equals(this.data, intArrayTag.data);
+    }
 
    @Override
    public int hashCode() {

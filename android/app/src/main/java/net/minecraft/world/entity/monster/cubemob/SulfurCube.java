@@ -336,7 +336,7 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
    public boolean primeTime(final boolean imminent) {
       if (!this.explosionData.isEmpty()
          && this.isAlive()
-         && this.level() instanceof ServerLevel && serverLevel.getGameRules().get(GameRules.TNT_EXPLODES)
+         && this.level() instanceof ServerLevel serverLevel && serverLevel.getGameRules().get(GameRules.TNT_EXPLODES)
          && !this.isPrimed()) {
          int fuse = this.explosionData.get().fuse();
          int fuseTime = imminent ? PrimedTnt.getRandomShortFuse(fuse, this.getRandom()) : fuse;
@@ -474,7 +474,7 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
             } else {
                return Bucketable.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
             }
-         } else if (this.level() instanceof ServerLevel && !serverLevel.getGameRules().get(GameRules.TNT_EXPLODES)) {
+         } else if (this.level() instanceof ServerLevel serverLevel && !serverLevel.getGameRules().get(GameRules.TNT_EXPLODES)) {
             player.sendOverlayMessage(Component.translatable("block.minecraft.tnt.disabled"));
             return InteractionResult.PASS;
          } else {

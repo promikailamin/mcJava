@@ -992,21 +992,21 @@ public class ServerPlayer extends Player {
       }
    }
 
-   @Override
-   public boolean hurtServer(final ServerLevel level, final DamageSource source, final float damage) {
-      if (this.isInvulnerableTo(level, source)) {
-         return false;
-      } else {
-         Entity entity = source.getEntity();
-         if (entity instanceof Player && !this.canHarmPlayer(player)) {
-            return false;
-         } else {
-            return entity instanceof AbstractArrow && arrow.getOwner() instanceof Player && !this.canHarmPlayer(player)
-               ? false
-               : super.hurtServer(level, source, damage);
-         }
-      }
-   }
+@Override
+    public boolean hurtServer(final ServerLevel level, final DamageSource source, final float damage) {
+       if (this.isInvulnerableTo(level, source)) {
+          return false;
+       } else {
+          Entity entity = source.getEntity();
+          if (entity instanceof Player player && !this.canHarmPlayer(player)) {
+             return false;
+          } else {
+             return entity instanceof AbstractArrow arrow && arrow.getOwner() instanceof Player player && !this.canHarmPlayer(player)
+                ? false
+                : super.hurtServer(level, source, damage);
+          }
+       }
+    }
 
    @Override
    public boolean canHarmPlayer(final Player target) {
@@ -1097,34 +1097,34 @@ public class ServerPlayer extends Player {
       final ServerLevel level, final ServerPlayer.RespawnConfig respawnConfig, final boolean consumeSpawnBlock
    ) {
       LevelData.RespawnData respawnData = respawnConfig.respawnData;
-      BlockPos pos = respawnData.pos();
-      float yaw = respawnData.yaw();
-      float pitch = respawnData.pitch();
-      boolean forced = respawnConfig.forced;
-      BlockState blockState = level.getBlockState(pos);
-      Block block = blockState.getBlock();
-      if (block instanceof RespawnAnchorBlock && (forced || blockState.getValue(RespawnAnchorBlock.CHARGE) > 0) && RespawnAnchorBlock.canSetSpawn(level, pos)) {
-         Optional<Vec3> standUpPosition = RespawnAnchorBlock.findStandUpPosition(EntityTypes.PLAYER, level, pos);
-         if (!forced && consumeSpawnBlock && standUpPosition.isPresent()) {
-            level.setBlockAndUpdate(pos, blockState.setValue(RespawnAnchorBlock.CHARGE, blockState.getValue(RespawnAnchorBlock.CHARGE) - 1));
-         }
+BlockPos pos = respawnData.pos();
+       float yaw = respawnData.yaw();
+       float pitch = respawnData.pitch();
+       boolean forced = respawnConfig.forced;
+       BlockState blockState = level.getBlockState(pos);
+       Block block = blockState.getBlock();
+       if (block instanceof RespawnAnchorBlock && (forced || blockState.getValue(RespawnAnchorBlock.CHARGE) > 0) && RespawnAnchorBlock.canSetSpawn(level, pos)) {
+          Optional<Vec3> standUpPosition = RespawnAnchorBlock.findStandUpPosition(EntityTypes.PLAYER, level, pos);
+          if (!forced && consumeSpawnBlock && standUpPosition.isPresent()) {
+             level.setBlockAndUpdate(pos, blockState.setValue(RespawnAnchorBlock.CHARGE, blockState.getValue(RespawnAnchorBlock.CHARGE) - 1));
+          }
 
-         return standUpPosition.map(p -> ServerPlayer.RespawnPosAngle.of(p, pos, 0.0F));
-      } else if (block instanceof AbstractBedBlock && abstractBedBlock.getBedRule(level, pos).canSetSpawn(level)) {
-         return AbstractBedBlock.findStandUpPosition(EntityTypes.PLAYER, level, pos, blockState.getValue(AbstractBedBlock.FACING), yaw)
-            .map(p -> ServerPlayer.RespawnPosAngle.of(p, pos, 0.0F));
-      } else {
-         if (!forced) {
-            return Optional.empty();
-         }
+          return standUpPosition.map(p -> ServerPlayer.RespawnPosAngle.of(p, pos, 0.0F));
+       } else if (block instanceof AbstractBedBlock abstractBedBlock && abstractBedBlock.getBedRule(level, pos).canSetSpawn(level)) {
+          return AbstractBedBlock.findStandUpPosition(EntityTypes.PLAYER, level, pos, blockState.getValue(AbstractBedBlock.FACING), yaw)
+             .map(p -> ServerPlayer.RespawnPosAngle.of(p, pos, 0.0F));
+       } else {
+          if (!forced) {
+             return Optional.empty();
+          }
 
-         boolean freeBottom = block.isPossibleToRespawnInThis(blockState);
-         BlockState topState = level.getBlockState(pos.above());
-         boolean freeTop = topState.getBlock().isPossibleToRespawnInThis(topState);
-         return freeBottom && freeTop
-            ? Optional.of(new ServerPlayer.RespawnPosAngle(new Vec3(pos.getX() + 0.5, pos.getY() + 0.1, pos.getZ() + 0.5), yaw, pitch))
-            : Optional.empty();
-      }
+          boolean freeBottom = block.isPossibleToRespawnInThis(blockState);
+          BlockState topState = level.getBlockState(pos.above());
+          boolean freeTop = topState.getBlock().isPossibleToRespawnInThis(topState);
+          return freeBottom && freeTop
+             ? Optional.of(new ServerPlayer.RespawnPosAngle(new Vec3(pos.getX() + 0.5, pos.getY() + 0.1, pos.getZ() + 0.5), yaw, pitch))
+             : Optional.empty();
+       }
    }
 
    public void showEndCredits() {

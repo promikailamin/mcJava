@@ -138,7 +138,7 @@ public class MaceItem extends Item {
          boolean notTamedByPlayer = !(
             nearby instanceof TamableAnimal && entity instanceof LivingEntity && animal.isTame() && animal.isOwnedBy(livingAttacker)
          );
-         boolean notArmorStand = !(nearby instanceof ArmorStand && armorStand.isMarker());
+         boolean notArmorStand = !(nearby instanceof ArmorStand armorStand && armorStand.isMarker());
          boolean withinRange = entity.distanceToSqr(nearby) <= Math.pow(3.5, 2.0);
          boolean notFlyingInCreative = !(nearby instanceof Player && player.isCreative() && player.getAbilities().flying);
          return notSpectator && notPlayer && notAlliedToPlayer && notTamedByPlayer && notArmorStand && withinRange && notFlyingInCreative;

@@ -1068,8 +1068,8 @@ public class ServerGamePacketListenerImpl
    public void handleContainerSlotStateChanged(final ServerboundContainerSlotStateChangedPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.player.level());
       if (!this.player.isSpectator() && packet.containerId() == this.player.containerMenu.containerId) {
-         if (this.player.containerMenu instanceof CrafterMenu && crafterMenu.getContainer() instanceof CrafterBlockEntity) {
-             CrafterBlockEntity crafterBlockEntity = (CrafterBlockEntity) this.player.containerMenu instanceof CrafterMenu && crafterMenu.getContainer();
+         if (this.player.containerMenu instanceof CrafterMenu crafterMenu && crafterMenu.getContainer() instanceof CrafterBlockEntity) {
+             CrafterBlockEntity crafterBlockEntity = (CrafterBlockEntity) this.player.containerMenu instanceof CrafterMenu crafterMenu && crafterMenu.getContainer();
             crafterBlockEntity.setSlotState(packet.slotId(), packet.newState());
          }
       }
@@ -1455,7 +1455,7 @@ public class ServerGamePacketListenerImpl
                            && pos.getY() >= maxY
                            && wasBlockPlacementAttempt(this.player, itemStack)) {
                            this.player.sendBuildLimitMessage(true, maxY);
-                        } else if (interactionResult instanceof InteractionResult.Success && success.shouldSwing()) {
+                        } else if (interactionResult instanceof InteractionResult.Success success && success.shouldSwing()) {
                            this.player.swingAndResetAttackStrength(hand, swingAnimation, success.swingSource() != InteractionResult.SwingSource.PREDICTED);
                         }
 
@@ -1465,7 +1465,7 @@ public class ServerGamePacketListenerImpl
                            } else if (direction == Direction.DOWN && pos.getY() <= minY) {
                               this.player.sendBuildLimitMessage(false, minY);
                            }
-                        } else if (interactionResult instanceof InteractionResult.Success && success.shouldSwing()) {
+                        } else if (interactionResult instanceof InteractionResult.Success success && success.shouldSwing()) {
                            this.player.swingAndResetAttackStrength(hand, swingAnimation, success.swingSource() != InteractionResult.SwingSource.PREDICTED);
                         }
                      } else {
@@ -1903,7 +1903,7 @@ public class ServerGamePacketListenerImpl
                   if (target instanceof ItemEntity
                      || target instanceof ExperienceOrb
                      || target == this.player
-                     || target instanceof AbstractArrow && !abstractArrow.isAttackable()) {
+                     || target instanceof AbstractArrow abstractArrow && !abstractArrow.isAttackable()) {
                      this.disconnect(Component.translatable("multiplayer.disconnect.invalid_entity_attacked"));
                      LOGGER.warn("Player {} tried to attack an invalid entity", this.player.getPlainTextName());
                   } else if (mainHandItem.isItemEnabled(level.enabledFeatures())) {

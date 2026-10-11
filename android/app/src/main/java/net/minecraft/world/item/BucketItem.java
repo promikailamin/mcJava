@@ -134,7 +134,7 @@ public class BucketItem extends Item implements DispensibleContainerItem {
                }
 
                return true;
-            } else if (block instanceof LiquidBlockContainer && this.content == Fluids.WATER) {
+            } else if (block instanceof LiquidBlockContainer flowingFluid && this.content == Fluids.WATER) {
                container.placeLiquid(level, pos, blockState, flowingFluid.getSource(false));
                this.playEmptySound(user, level, pos);
                return true;

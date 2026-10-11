@@ -90,10 +90,10 @@ public final class LongArrayTag implements CollectionTag {
       return new LongArrayTag(cp);
    }
 
-   @Override
-   public boolean equals(final Object obj) {
-      return this == obj ? true : obj instanceof LongArrayTag && Arrays.equals(this.data, longArrayTag.data);
-   }
+@Override
+    public boolean equals(final Object obj) {
+       return this == obj ? true : obj instanceof LongArrayTag longArrayTag && Arrays.equals(this.data, longArrayTag.data);
+    }
 
    @Override
    public int hashCode() {

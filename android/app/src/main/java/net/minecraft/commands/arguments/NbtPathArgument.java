@@ -282,7 +282,7 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
 @Override
        public int removeTag(final Tag parent) {
-          if (parent instanceof CompoundTag && compound.contains(this.name)) {
+          if (parent instanceof CompoundTag compound && compound.contains(this.name)) {
              compound.remove(this.name);
              return 1;
           } else {
@@ -518,7 +518,7 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public void getTag(final Tag self, final List<Tag> output) {
-         if (self instanceof CompoundTag && this.predicate.test(self)) {
+         if (self instanceof CompoundTag predicate && this.predicate.test(self)) {
             output.add(self);
          }
       }

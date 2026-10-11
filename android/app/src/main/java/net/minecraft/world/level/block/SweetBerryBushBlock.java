@@ -77,7 +77,7 @@ public class SweetBerryBushBlock extends VegetationBlock implements Bonemealable
    ) {
       if (entity instanceof LivingEntity && !entity.is(EntityTypes.FOX) && !entity.is(EntityTypes.BEE)) {
          entity.makeStuckInBlock(state, new Vec3(0.8F, 0.75, 0.8F));
-         if (level instanceof ServerLevel && state.getValue(AGE) != 0) {
+         if (level instanceof ServerLevel state && state.getValue(AGE) != 0) {
             Vec3 movement = entity.isClientAuthoritative() ? entity.getKnownMovement() : entity.oldPosition().subtract(entity.position());
             if (movement.horizontalDistanceSqr() > 0.0) {
                double xs = Math.abs(movement.x());

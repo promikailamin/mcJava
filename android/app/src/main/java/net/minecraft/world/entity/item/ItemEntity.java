@@ -369,16 +369,15 @@ public class ItemEntity extends Entity implements TraceableEntity {
       return false;
    }
 
-   @Override
-   public @Nullable Entity teleport(final TeleportTransition transition) {
-      Entity entity = super.teleport(transition);
-      if (!this.level().isClientSide() && entity instanceof ItemEntity) {
-          ItemEntity item = (ItemEntity) !this.level().isClientSide() && entity;
-         item.mergeWithNeighbours();
-      }
+@Override
+    public @Nullable Entity teleport(final TeleportTransition transition) {
+       Entity entity = super.teleport(transition);
+       if (!this.level().isClientSide() && entity instanceof ItemEntity item) {
+          item.mergeWithNeighbours();
+       }
 
-      return entity;
-   }
+       return entity;
+    }
 
    public ItemStack getItem() {
       return this.getEntityData().get(DATA_ITEM);

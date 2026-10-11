@@ -1510,7 +1510,7 @@ public void handleMountScreenOpen(final ClientboundMountScreenOpenPacket packet)
          }
 
          reporter.close();
-         if (blockEntity instanceof CommandBlockEntity && this.minecraft.gui.screen() instanceof CommandBlockEditScreen) {
+         if (blockEntity instanceof CommandBlockEntity gui && this.minecraft.gui.screen() instanceof CommandBlockEditScreen) {
             ((CommandBlockEditScreen)this.minecraft.gui.screen()).updateGui();
          }
       });

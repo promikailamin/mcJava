@@ -105,7 +105,7 @@ public class HarvestFarmland extends Behavior<Villager> {
             BlockState blockState = level.getBlockState(this.aboveFarmlandPos);
             Block block = blockState.getBlock();
             Block blockBelow = level.getBlockState(this.aboveFarmlandPos.below()).getBlock();
-            if (block instanceof CropBlock && cropBlock.isMaxAge(blockState)) {
+            if (block instanceof CropBlock body && cropBlock.isMaxAge(blockState)) {
                level.destroyBlock(this.aboveFarmlandPos, true, body);
             }
 
@@ -143,7 +143,7 @@ public class HarvestFarmland extends Behavior<Villager> {
                }
             }
 
-            if (block instanceof CropBlock && !cropBlock.isMaxAge(blockState)) {
+            if (block instanceof CropBlock validFarmlandAroundVillager && !cropBlock.isMaxAge(blockState)) {
                this.validFarmlandAroundVillager.remove(this.aboveFarmlandPos);
                this.aboveFarmlandPos = this.getValidFarmland(level);
                if (this.aboveFarmlandPos != null) {

@@ -1,26 +1,20 @@
 A new GitHub issue has been opened.
 
-Issue number: 27
+Issue number: 28
 
 Issue URL:
-https://github.com/promikailamin/mcJava/issues/27
+https://github.com/promikailamin/mcJava/issues/28
 
 Title:
-Fix all and build
+Make all required tools and custom tools to build it
 
 Description:
-**Remaining Issue**: There are 150+ files with switch expressions in the non-excluded code. While most are on enums, the compiler still fails with `MatchException` suggesting at least one pattern matching switch on a sealed type exists that we haven't identified.
+Make all required tools and custom tools in this repo for build this project successfully and build this project.
 
-**Viable Solutions** (per the issue):
-1. **Custom JDK** with MatchException added to java.base
-2. **Complete automated conversion** using OpenRewrite/Error Prone to convert ALL pattern matching switches on sealed types to if-else chains
-3. **Target desktop JDK 21+** instead of Android
-4. **Android 14+** (UpsideDownCake) with better Java 21 support
+### Path to Completion
+As noted in GitHub Issue #27, the complete solution requires automated tooling (OpenRewrite/Error Prone) to convert all 150+ pattern matching switches on sealed types to if-else chains, since manual fixing of each file is impractical at this scale.
 
-The Android build fundamentally cannot compile pattern matching switches on sealed types without a custom JDK. The only way forward on Android is complete automated conversion of all such switches, which requires tooling beyond manual fixes.
-
-
-Now make a AGENTS.md and write here to follow the rules of this AGENTS.md and  write here that this is and GitHub repo and need to follow the issues quarry and work untill the issues has been fixed or work done. if need custom jdk or any custom tools make them also untill the build is complete.
+The infrastructure is now in place (MatchException JAR, build configuration) for the automated conversion to work.
 
 Inspect the repository and implement the requested change.
 

@@ -160,7 +160,7 @@ public class OldMinecartBehavior extends MinecartBehavior {
          moveIntent = Vec3.ZERO;
       }
 
-      if (controllingPassenger instanceof Player && moveIntent.lengthSqr() > 0.0) {
+      if (controllingPassenger instanceof Player moveIntent && moveIntent.lengthSqr() > 0.0) {
          Vec3 riderMovement = moveIntent.normalize();
          double ownDist = this.getDeltaMovement().horizontalDistanceSqr();
          if (riderMovement.lengthSqr() > 0.0 && ownDist < 0.01) {

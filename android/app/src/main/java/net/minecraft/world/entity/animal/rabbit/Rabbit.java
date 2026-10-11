@@ -344,7 +344,7 @@ public class Rabbit extends Animal {
       if (offspring != null) {
          Rabbit.Variant variant = getRandomRabbitVariant(level, this.blockPosition());
          if (this.random.nextInt(20) != 0) {
-            if (partner instanceof Rabbit && this.random.nextBoolean()) {
+            if (partner instanceof Rabbit rabbitPartner && this.random.nextBoolean()) {
                variant = rabbitPartner.getVariant();
             } else {
                variant = this.getVariant();

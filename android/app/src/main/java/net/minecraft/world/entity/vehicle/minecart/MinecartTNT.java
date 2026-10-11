@@ -147,7 +147,7 @@ public class MinecartTNT extends AbstractMinecart {
    }
 
    public void primeFuse(final @Nullable DamageSource source) {
-      if (!(this.level() instanceof ServerLevel && !serverLevel.getGameRules().get(GameRules.TNT_EXPLODES))) {
+      if (!(this.level() instanceof ServerLevel serverLevel && !serverLevel.getGameRules().get(GameRules.TNT_EXPLODES))) {
          this.fuse = 80;
          if (!this.level().isClientSide()) {
             if (source != null && this.ignitionSource == null) {

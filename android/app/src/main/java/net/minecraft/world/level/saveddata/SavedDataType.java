@@ -6,10 +6,10 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.datafix.DataFixTypes;
 
 public record SavedDataType<T extends SavedData>(Identifier id, Supplier<T> constructor, Codec<T> codec, DataFixTypes dataFixType) {
-   @Override
-   public boolean equals(final Object obj) {
-      return obj instanceof SavedDataType<?> && this.id.equals(type.id);
-   }
+@Override
+    public boolean equals(final Object obj) {
+       return obj instanceof SavedDataType<?> type && this.id.equals(type.id);
+    }
 
    @Override
    public int hashCode() {

@@ -168,7 +168,7 @@ public class ThrownEnderpearl extends ThrowableItemProjectile {
          int var7 = SectionPos.blockToSectionCoord(this.position().x());
          int previousChunkZ = SectionPos.blockToSectionCoord(this.position().z());
          Entity owner = this.owner != null ? findOwnerIncludingDeadPlayer(serverLevel, this.owner.getUUID()) : null;
-         if (owner instanceof ServerPlayer && !owner.isAlive()
+         if (owner instanceof ServerPlayer serverPlayer && !owner.isAlive()
             && !serverPlayer.wonGame
             && serverPlayer.level().getGameRules().get(GameRules.ENDER_PEARLS_VANISH_ON_DEATH)) {
             this.discard();

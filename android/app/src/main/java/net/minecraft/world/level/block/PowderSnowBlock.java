@@ -86,7 +86,7 @@ public class PowderSnowBlock extends Block implements BucketPickup {
       effectApplier.runBefore(
          InsideBlockEffectType.EXTINGUISH,
          e -> {
-            if (level instanceof ServerLevel && e.isOnFire()
+            if (level instanceof ServerLevel serverLevel && e.isOnFire()
                && (serverLevel.getGameRules().get(GameRules.MOB_GRIEFING) || e instanceof Player)
                && e.mayInteract(serverLevel, position)) {
                level.destroyBlock(position, false);

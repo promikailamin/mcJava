@@ -111,7 +111,7 @@ public class EntitySelectorParser {
    }
 
    public static <S> boolean allowSelectors(final S source) {
-      return source instanceof PermissionSetSupplier && sender.permissions().hasPermission(Permissions.COMMANDS_ENTITY_SELECTORS);
+      return source instanceof PermissionSetSupplier sender && sender.permissions().hasPermission(Permissions.COMMANDS_ENTITY_SELECTORS);
    }
 
    @Deprecated

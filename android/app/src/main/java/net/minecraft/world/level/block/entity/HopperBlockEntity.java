@@ -281,7 +281,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
    }
 
    public static ItemStack addItem(final @Nullable Container from, final Container container, ItemStack itemStack, final @Nullable Direction direction) {
-      if (container instanceof WorldlyContainer && direction != null) {
+      if (container instanceof WorldlyContainer worldly && direction != null) {
          int[] slots = worldly.getSlotsForFace(direction);
 
          for (int i = 0; i < slots.length && !itemStack.isEmpty(); i++) {
@@ -334,7 +334,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          if (success) {
             if (wasEmpty && container instanceof HopperBlockEntity && !hopperBlockEntity.isOnCustomCooldown()) {
                int skipTickCount = 0;
-               if (from instanceof HopperBlockEntity && hopperBlockEntity.tickedGameTime >= fromHopper.tickedGameTime) {
+               if (from instanceof HopperBlockEntity blockPos && hopperBlockEntity.tickedGameTime >= fromHopper.tickedGameTime) {
                   skipTickCount = 1;
                }
 
@@ -451,7 +451,7 @@ private static @Nullable Container getBlockContainer(final Level level, final Bl
    }
 
    public static void entityInside(final Level level, final BlockPos pos, final BlockState blockState, final Entity entity, final HopperBlockEntity hopper) {
-      if (entity instanceof ItemEntity && !itemEntity.getItem().isEmpty()
+      if (entity instanceof ItemEntity itemEntity && !itemEntity.getItem().isEmpty()
          && entity.getBoundingBox().move(-pos.getX(), -pos.getY(), -pos.getZ()).intersects(hopper.getSuckAabb())) {
          tryMoveItems(level, pos, blockState, hopper, () -> addItem(hopper, itemEntity));
       }

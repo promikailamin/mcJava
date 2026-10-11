@@ -156,7 +156,7 @@ public class BeehiveBlock extends BaseEntityBlock {
       boolean hiveEmptied = false;
       if (honeyLevel >= 5) {
          Item item = itemStack.getItem();
-         if (level instanceof ServerLevel && itemStack.is(Items.SHEARS)) {
+         if (level instanceof ServerLevel itemStack && itemStack.is(Items.SHEARS)) {
             dropHoneycomb(serverLevel, itemStack, state, level.getBlockEntity(pos), player, pos);
             level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BEEHIVE_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
             itemStack.hurtAndBreak(1, player, hand.asEquipmentSlot());
@@ -284,7 +284,7 @@ public class BeehiveBlock extends BaseEntityBlock {
 
 @Override
     public BlockState playerWillDestroy(final Level level, final BlockPos pos, final BlockState state, final Player player) {
-       if (level instanceof ServerLevel && player.preventsBlockDrops()
+       if (level instanceof ServerLevel serverLevel && player.preventsBlockDrops()
           && serverLevel.getGameRules().get(GameRules.BLOCK_DROPS)) {
           BlockEntity blockEntity = level.getBlockEntity(pos);
           if (blockEntity instanceof BeehiveBlockEntity) {
