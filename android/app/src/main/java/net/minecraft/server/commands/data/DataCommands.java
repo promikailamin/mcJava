@@ -177,7 +177,8 @@ public class DataCommands {
           String value = ((StringTag) tag).value();
           return value;
       }
-      else if (tag instanceof PrimitiveTag primitiveTag) {
+      else if (tag instanceof PrimitiveTag) {
+          PrimitiveTag primitiveTag = (PrimitiveTag) tag;
           return primitiveTag.toString();
       }
       else {
@@ -380,13 +381,16 @@ public class DataCommands {
       Tag tag = getSingleTag(path, accessor);
 
       int result;
-      if (tag instanceof NumericTag numericTag) {
+      if (tag instanceof NumericTag) {
+          NumericTag numericTag = (NumericTag) tag;
           result = Mth.floor(numericTag.doubleValue());
       }
-      else if (tag instanceof CollectionTag collectionTag) {
+      else if (tag instanceof CollectionTag) {
+          CollectionTag collectionTag = (CollectionTag) tag;
           result = collectionTag.size();
       }
-      else if (tag instanceof CompoundTag compoundTag) {
+      else if (tag instanceof CompoundTag) {
+          CompoundTag compoundTag = (CompoundTag) tag;
           result = compoundTag.size();
       }
       else if (tag instanceof StringTag) {

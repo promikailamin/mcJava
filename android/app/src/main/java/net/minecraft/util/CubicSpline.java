@@ -31,10 +31,12 @@ public sealed interface CubicSpline<I> permits CubicSpline.Multipoint, CubicSpli
    String parityString();
 
    static <C, I extends BoundedFloatFunction<C>> float sample(final CubicSpline<I> spline, final C coordinate) {
-      if (spline instanceof CubicSpline.Multipoint<I> multipoint) {
+      if (spline instanceof CubicSpline.Multipoint<I>) {
+          CubicSpline.Multipoint<I> multipoint = (CubicSpline.Multipoint<I>) spline;
           return CubicSpline.Multipoint.sample(multipoint, coordinate);
       }
-      else if (spline instanceof CubicSpline.Constant<I> constant) {
+      else if (spline instanceof CubicSpline.Constant<I>) {
+          CubicSpline.Constant<I> constant = (CubicSpline.Constant<I>) spline;
           return constant.value();
       }
       else {
@@ -43,7 +45,8 @@ public sealed interface CubicSpline<I> permits CubicSpline.Multipoint, CubicSpli
    }
 
    static <C, I extends BoundedFloatFunction<C>> BoundedFloatFunction<C> asSampler(final CubicSpline<I> spline) {
-      if (spline instanceof CubicSpline.Multipoint<I> multipoint) {
+      if (spline instanceof CubicSpline.Multipoint<I>) {
+          CubicSpline.Multipoint<I> multipoint = (CubicSpline.Multipoint<I>) spline;
           return new BoundedFloatFunction<C>() {
             @Override
             public float apply(final C c) {
@@ -56,7 +59,8 @@ public sealed interface CubicSpline<I> permits CubicSpline.Multipoint, CubicSpli
             }
          };
       }
-      else if (spline instanceof CubicSpline.Constant<I> constant) {
+      else if (spline instanceof CubicSpline.Constant<I>) {
+          CubicSpline.Constant<I> constant = (CubicSpline.Constant<I>) spline;
           return BoundedFloatFunction.constant(constant.value());
       }
       else {
@@ -72,7 +76,8 @@ public sealed interface CubicSpline<I> permits CubicSpline.Multipoint, CubicSpli
                if (spline instanceof CubicSpline.Constant(float value)) {
                    return Either.left(value);
                }
-               else if (spline instanceof CubicSpline.Multipoint<I> multipoint) {
+               else if (spline instanceof CubicSpline.Multipoint<I>) {
+                   CubicSpline.Multipoint<I> multipoint = (CubicSpline.Multipoint<I>) spline;
                    return Either.right(multipoint);
                }
                else {

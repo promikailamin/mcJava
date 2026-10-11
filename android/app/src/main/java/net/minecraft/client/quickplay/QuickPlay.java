@@ -44,13 +44,16 @@ public class QuickPlay {
          LOGGER.error("Quick play disabled");
          minecraft.gui.setScreen(new TitleScreen());
       } else {
-                  if (quickPlayVariant instanceof GameConfig.QuickPlayMultiplayerData multiplayerData) {
+                  if (quickPlayVariant instanceof GameConfig.QuickPlayMultiplayerData) {
+                      GameConfig.QuickPlayMultiplayerData multiplayerData = (GameConfig.QuickPlayMultiplayerData) quickPlayVariant;
              joinMultiplayerWorld(minecraft, multiplayerData.serverAddress());
          }
-         else if (quickPlayVariant instanceof GameConfig.QuickPlayRealmsData realmsData) {
+         else if (quickPlayVariant instanceof GameConfig.QuickPlayRealmsData) {
+             GameConfig.QuickPlayRealmsData realmsData = (GameConfig.QuickPlayRealmsData) quickPlayVariant;
              joinRealmsWorld(minecraft, realmsClient, realmsData.realmId());
          }
-         else if (quickPlayVariant instanceof GameConfig.QuickPlaySinglePlayerData singlePlayerData) {
+         else if (quickPlayVariant instanceof GameConfig.QuickPlaySinglePlayerData) {
+             GameConfig.QuickPlaySinglePlayerData singlePlayerData = (GameConfig.QuickPlaySinglePlayerData) quickPlayVariant;
              String worldId = singlePlayerData.worldId();
                if (StringUtil.isBlank(worldId)) {
                   worldId = getLatestSingleplayerWorld(minecraft.getLevelSource());
@@ -58,7 +61,8 @@ public class QuickPlay {
 
                joinSingleplayerWorld(minecraft, worldId);
          }
-         else if (quickPlayVariant instanceof GameConfig.QuickPlayDisabled disabled) {
+         else if (quickPlayVariant instanceof GameConfig.QuickPlayDisabled) {
+             GameConfig.QuickPlayDisabled disabled = (GameConfig.QuickPlayDisabled) quickPlayVariant;
              LOGGER.error("Quick play disabled");
                minecraft.gui.setScreen(new TitleScreen());
          }

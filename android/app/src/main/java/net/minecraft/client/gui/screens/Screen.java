@@ -257,9 +257,11 @@ public abstract class Screen extends AbstractContainerEventHandler implements Re
       LocalPlayer player = Objects.requireNonNull(minecraft.player, "Player not available");
       if (event instanceof ClickEvent.RunCommand(String command)) {
          clickCommandAction(player, command, activeScreen);
-      } else if (event instanceof ClickEvent.ShowDialog dialog) {
+      else if (event instanceof ClickEvent.ShowDialog) {
+          ClickEvent.ShowDialog dialog = (ClickEvent.ShowDialog) event;
          player.connection.showDialog(dialog.dialog(), activeScreen);
-      } else if (event instanceof ClickEvent.Custom custom) {
+      else if (event instanceof ClickEvent.Custom) {
+          ClickEvent.Custom custom = (ClickEvent.Custom) event;
          player.connection.send(new ServerboundCustomClickActionPacket(custom.id(), custom.payload()));
          if (minecraft.gui.screen() != activeScreen) {
             minecraft.gui.setScreen(activeScreen);
@@ -274,7 +276,8 @@ public abstract class Screen extends AbstractContainerEventHandler implements Re
       if (event instanceof ClickEvent.OpenUrl(URI uri)) {
          clickUrlAction(minecraft, activeScreen, uri);
          shouldActivateScreen = false;
-      } else if (event instanceof ClickEvent.OpenFile openFile) {
+      else if (event instanceof ClickEvent.OpenFile) {
+          ClickEvent.OpenFile openFile = (ClickEvent.OpenFile) event;
          Blaze3D.openPath(openFile.file().toPath());
          shouldActivateScreen = true;
       } else if (event instanceof ClickEvent.SuggestCommand(String command)) {

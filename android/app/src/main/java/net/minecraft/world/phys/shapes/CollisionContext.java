@@ -22,7 +22,8 @@ public interface CollisionContext {
    }
 
    static CollisionContext of(final Entity entity) {
-      if (entity instanceof AbstractMinecart minecart) {
+      if (entity instanceof AbstractMinecart) {
+          AbstractMinecart minecart = (AbstractMinecart) entity;
           return AbstractMinecart.useExperimentalMovement(minecart.level())
             ? new MinecartCollisionContext(minecart, false)
             : new EntityCollisionContext(entity, false, false);
@@ -56,7 +57,7 @@ static CollisionContext withPosition(final @Nullable Entity entity, final double
           entity != null ? entity.isDescending() : false,
           true,
           entity != null ? position : -Double.MAX_VALUE,
-          entity instanceof LivingEntity living ? living.getMainHandItem() : ItemStack.EMPTY,
+          entity instanceof LivingEntity ? getMainHandItem() : ItemStack.EMPTY,
           false,
           entity
        );

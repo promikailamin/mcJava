@@ -66,10 +66,12 @@ public class ArgumentUtils {
 
    public static <S> JsonObject serializeNodeToJson(final CommandDispatcher<S> dispatcher, final CommandNode<S> node) {
       JsonObject result = new JsonObject();
-            if (node instanceof RootCommandNode<S> rootNode) {
+            if (node instanceof RootCommandNode<S>) {
+                RootCommandNode<S> rootNode = (RootCommandNode<S>) node;
           result.addProperty("type", "root");
       }
-      else if (node instanceof LiteralCommandNode<S> literalNode) {
+      else if (node instanceof LiteralCommandNode<S>) {
+          LiteralCommandNode<S> literalNode = (LiteralCommandNode<S>) node;
           result.addProperty("type", "literal");
       }
       else if (node instanceof ArgumentCommandNode<S, ?> argumentNode) {

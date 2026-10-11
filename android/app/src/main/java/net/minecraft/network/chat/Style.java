@@ -577,8 +577,7 @@ public final class Style {
        if (this == o) {
           return true;
        } else {
-          return o instanceof Style style
-             && this.bold == style.bold
+          return o instanceof Style && this.bold == style.bold
                 && Objects.equals(this.getColor(), style.getColor())
                 && Objects.equals(this.getShadowColor(), style.getShadowColor())
                 && this.italic == style.italic

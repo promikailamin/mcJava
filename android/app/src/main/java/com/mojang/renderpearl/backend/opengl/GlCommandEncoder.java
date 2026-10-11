@@ -564,15 +564,18 @@ class GlCommandEncoder implements CommandEncoderBackend, UncheckedAutoCloseable 
                renderPass.dirtyUniforms.set(i, false);
                Uniform dirtyUniform = glProgram.getUniform(i);
 if (dirtyUniform != null) {
-                   if (dirtyUniform instanceof Uniform.Ubo ubo) {
+                   if (dirtyUniform instanceof Uniform.Ubo) {
+                       Uniform.Ubo ubo = (Uniform.Ubo) dirtyUniform;
                       GpuBufferSlice var26 = (GpuBufferSlice)renderPass.uniforms.get(i);
                       GL33C.glBindBufferRange(35345, ubo.blockBinding(), ((GlBuffer)var26.buffer()).handle(), var26.offset(), var26.length());
-                   } else if (dirtyUniform instanceof Uniform.Utb utb) {
+                   else if (dirtyUniform instanceof Uniform.Utb) {
+                       Uniform.Utb utb = (Uniform.Utb) dirtyUniform;
                       GlStateManager._activeTexture(33984 + utb.samplerIndex());
                       GL33C.glBindTexture(35882, utb.texture());
                       GpuBufferSlice var30 = (GpuBufferSlice)renderPass.uniforms.get(i);
                       GL33C.glTexBuffer(35882, GlConst.toGlInternalId(utb.format()), ((GlBuffer)var30.buffer()).handle());
-                   } else if (dirtyUniform instanceof Uniform.Sampler sampler) {
+                   else if (dirtyUniform instanceof Uniform.Sampler) {
+                       Uniform.Sampler sampler = (Uniform.Sampler) dirtyUniform;
                       TextureViewAndSampler viewAndSampler = (TextureViewAndSampler)renderPass.uniforms.get(i);
                       if (viewAndSampler != null) {
                          GlTextureView textureView = (GlTextureView)viewAndSampler.view();

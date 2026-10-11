@@ -121,7 +121,8 @@ public class SteppedInterpolationHandler extends AbstractInterpolationHandler {
                   if (position instanceof PositionPath.Linear(Vec3 pos)) {
              this.addStep(pos, yRot, xRot, interpolationSteps);
          }
-         else if (position instanceof PositionPath.Stepped var9) {
+         else if (position instanceof PositionPath.Stepped) {
+             PositionPath.Stepped var9 = (PositionPath.Stepped) position;
 
              PositionPath.Stepped var10000 = var9;
 

@@ -116,13 +116,16 @@ public class CrashReport {
    }
 
    private static Throwable replaceMessage(final Throwable original, final String title) {
-      if (original instanceof NullPointerException var4) {
+      if (original instanceof NullPointerException) {
+          NullPointerException var4 = (NullPointerException) original;
           return copyProperties(original, new NullPointerException(title));
       }
-      else if (original instanceof StackOverflowError var5) {
+      else if (original instanceof StackOverflowError) {
+          StackOverflowError var5 = (StackOverflowError) original;
           return copyProperties(original, new StackOverflowError(title));
       }
-      else if (original instanceof OutOfMemoryError var6) {
+      else if (original instanceof OutOfMemoryError) {
+          OutOfMemoryError var6 = (OutOfMemoryError) original;
           return copyProperties(original, new OutOfMemoryError(title));
       }
       else {

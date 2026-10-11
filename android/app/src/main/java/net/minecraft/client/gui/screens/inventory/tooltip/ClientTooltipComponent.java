@@ -12,7 +12,8 @@ public interface ClientTooltipComponent {
    }
 
    static ClientTooltipComponent create(final TooltipComponent component) {
-      if (component instanceof BundleTooltip bundleTooltip) {
+      if (component instanceof BundleTooltip) {
+          BundleTooltip bundleTooltip = (BundleTooltip) component;
           return new ClientBundleTooltip(bundleTooltip.contents());
       }
       else {

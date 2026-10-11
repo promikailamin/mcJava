@@ -43,10 +43,12 @@ public class CraftingRecipeBookComponent extends RecipeBookComponent<AbstractCra
    private boolean canDisplay(final RecipeDisplay display) {
       int gridWidth = this.menu.getGridWidth();
       int gridHeight = this.menu.getGridHeight();
-      if (display instanceof ShapedCraftingRecipeDisplay shaped) {
+      if (display instanceof ShapedCraftingRecipeDisplay) {
+          ShapedCraftingRecipeDisplay shaped = (ShapedCraftingRecipeDisplay) display;
           return gridWidth >= shaped.width() && gridHeight >= shaped.height();
       }
-      else if (display instanceof ShapelessCraftingRecipeDisplay shapeless) {
+      else if (display instanceof ShapelessCraftingRecipeDisplay) {
+          ShapelessCraftingRecipeDisplay shapeless = (ShapelessCraftingRecipeDisplay) display;
           return gridWidth * gridHeight >= shapeless.ingredients().size();
       }
       else {
@@ -57,7 +59,8 @@ public class CraftingRecipeBookComponent extends RecipeBookComponent<AbstractCra
    @Override
    protected void fillGhostRecipe(final GhostSlots ghostSlots, final RecipeDisplay recipe, final ContextMap context) {
       ghostSlots.setResult(this.menu.getResultSlot(), context, recipe.result());
-            if (recipe instanceof ShapedCraftingRecipeDisplay shaped) {
+            if (recipe instanceof ShapedCraftingRecipeDisplay) {
+                ShapedCraftingRecipeDisplay shaped = (ShapedCraftingRecipeDisplay) recipe;
             List<Slot> inputSlots = this.menu.getInputGridSlots();
             PlaceRecipeHelper.placeRecipe(
                this.menu.getGridWidth(),
@@ -71,7 +74,8 @@ public class CraftingRecipeBookComponent extends RecipeBookComponent<AbstractCra
                }
             );
          }
-         else if (recipe instanceof ShapelessCraftingRecipeDisplay shapeless) {
+         else if (recipe instanceof ShapelessCraftingRecipeDisplay) {
+             ShapelessCraftingRecipeDisplay shapeless = (ShapelessCraftingRecipeDisplay) recipe;
             List<Slot> inputSlots = this.menu.getInputGridSlots();
             int slotCount = Math.min(shapeless.ingredients().size(), inputSlots.size());
 

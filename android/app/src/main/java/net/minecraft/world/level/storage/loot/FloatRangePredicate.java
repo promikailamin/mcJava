@@ -18,10 +18,12 @@ public sealed interface FloatRangePredicate extends Validatable permits FloatRan
          .apply(i, FloatRangePredicate.Line::new)
    );
    Codec<FloatRangePredicate> CODEC = Codec.either(POINT_CODEC, LINE_CODEC).xmap(Either::unwrap, range -> {
-      if (range instanceof FloatRangePredicate.Point point) {
+      if (range instanceof FloatRangePredicate.Point) {
+          FloatRangePredicate.Point point = (FloatRangePredicate.Point) range;
           return Either.left(point);
       }
-      else if (range instanceof FloatRangePredicate.Line line) {
+      else if (range instanceof FloatRangePredicate.Line) {
+          FloatRangePredicate.Line line = (FloatRangePredicate.Line) range;
           return Either.right(line);
       }
       else {

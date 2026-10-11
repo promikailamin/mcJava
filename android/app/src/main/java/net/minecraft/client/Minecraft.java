@@ -2393,10 +2393,12 @@ public class Minecraft extends ReentrantBlockableEventLoop<Runnable> implements 
    private void pickBlockOrEntity() {
       if (this.hitResult != null && this.hitResult.getType() != HitResult.Type.MISS) {
          boolean includeData = this.hasControlDown();
-                  if (this.hitResult instanceof BlockHitResult blockHitResult) {
+                  if (this.hitResult instanceof BlockHitResult) {
+                      BlockHitResult blockHitResult = (BlockHitResult) this.hitResult;
              this.gameMode.handlePickItemFromBlock(blockHitResult.getBlockPos(), includeData);
          }
-         else if (this.hitResult instanceof EntityHitResult entityHitResult) {
+         else if (this.hitResult instanceof EntityHitResult) {
+             EntityHitResult entityHitResult = (EntityHitResult) this.hitResult;
              this.gameMode.handlePickItemFromEntity(entityHitResult.getEntity(), includeData);
          }
       }

@@ -20,10 +20,12 @@ public sealed interface ResolvableInt permits ResolvableInt.Constant, Resolvable
       .map(Either::unwrap, ResolvableInt::wrap);
 
    private static Either<ResolvableInt.Constant, ResolvableInt.Reference> wrap(final ResolvableInt resolvableNumber) {
-      if (resolvableNumber instanceof ResolvableInt.Constant constant) {
+      if (resolvableNumber instanceof ResolvableInt.Constant) {
+          ResolvableInt.Constant constant = (ResolvableInt.Constant) resolvableNumber;
           return Either.left(constant);
       }
-      else if (resolvableNumber instanceof ResolvableInt.Reference reference) {
+      else if (resolvableNumber instanceof ResolvableInt.Reference) {
+          ResolvableInt.Reference reference = (ResolvableInt.Reference) resolvableNumber;
           return Either.right(reference);
       }
       else {

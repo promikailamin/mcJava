@@ -20,10 +20,12 @@ public sealed interface ResolvableFloat permits ResolvableFloat.Constant, Resolv
       .map(Either::unwrap, ResolvableFloat::wrap);
 
    private static Either<ResolvableFloat.Constant, ResolvableFloat.Reference> wrap(final ResolvableFloat resolvableNumber) {
-      if (resolvableNumber instanceof ResolvableFloat.Constant constant) {
+      if (resolvableNumber instanceof ResolvableFloat.Constant) {
+          ResolvableFloat.Constant constant = (ResolvableFloat.Constant) resolvableNumber;
           return Either.left(constant);
       }
-      else if (resolvableNumber instanceof ResolvableFloat.Reference reference) {
+      else if (resolvableNumber instanceof ResolvableFloat.Reference) {
+          ResolvableFloat.Reference reference = (ResolvableFloat.Reference) resolvableNumber;
           return Either.right(reference);
       }
       else {

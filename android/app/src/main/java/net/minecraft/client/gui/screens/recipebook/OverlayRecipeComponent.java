@@ -180,7 +180,8 @@ public class OverlayRecipeComponent implements GuiEventListener, Renderable {
 
       private static List<OverlayRecipeComponent.OverlayRecipeButton.Pos> calculateIngredientsPositions(final RecipeDisplay recipe, final ContextMap context) {
          List<OverlayRecipeComponent.OverlayRecipeButton.Pos> result = new ArrayList<>();
-         if (recipe instanceof ShapedCraftingRecipeDisplay shaped) {
+         if (recipe instanceof ShapedCraftingRecipeDisplay) {
+             ShapedCraftingRecipeDisplay shaped = (ShapedCraftingRecipeDisplay) recipe;
             PlaceRecipeHelper.placeRecipe(3, 3, shaped.width(), shaped.height(), shaped.ingredients(), (ingredient, gridIndex, gridXPos, gridYPos) -> {
                List<ItemStack> itemsx = ingredient.resolveForStacks(context);
                if (!itemsx.isEmpty()) {
@@ -188,7 +189,8 @@ public class OverlayRecipeComponent implements GuiEventListener, Renderable {
                }
             });
          }
-         else if (recipe instanceof ShapelessCraftingRecipeDisplay shapeless) {
+         else if (recipe instanceof ShapelessCraftingRecipeDisplay) {
+             ShapelessCraftingRecipeDisplay shapeless = (ShapelessCraftingRecipeDisplay) recipe;
             List<SlotDisplay> ingredients = shapeless.ingredients();
 
             for (int i = 0; i < ingredients.size(); i++) {

@@ -185,21 +185,24 @@ public class SignBlockEntity extends BlockEntity {
       for (Component message : this.getText(slot).getMessages(player.isTextFilteringEnabled())) {
          Style style = message.getStyle();
          ClickEvent event = style.getClickEvent();
-                  if (event instanceof ClickEvent.RunCommand command) {
+                  if (event instanceof ClickEvent.RunCommand) {
+                      ClickEvent.RunCommand command = (ClickEvent.RunCommand) event;
              if (this.allowOpFeatures) {
                   level.getServer().getCommands().performPrefixedCommand(createCommandSourceStack(player, level, pos), command.command());
                }
 
                hasAnyClickCommand = true;
          }
-         else if (event instanceof ClickEvent.ShowDialog dialog) {
+         else if (event instanceof ClickEvent.ShowDialog) {
+             ClickEvent.ShowDialog dialog = (ClickEvent.ShowDialog) event;
              if (this.allowOpFeatures) {
                   player.openDialog(dialog.dialog());
                }
 
                hasAnyClickCommand = true;
          }
-         else if (event instanceof ClickEvent.Custom custom) {
+         else if (event instanceof ClickEvent.Custom) {
+             ClickEvent.Custom custom = (ClickEvent.Custom) event;
              if (this.allowOpFeatures) {
                   level.getServer().handleCustomClickAction(custom.id(), custom.payload());
                }

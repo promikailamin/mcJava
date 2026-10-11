@@ -76,58 +76,72 @@ android {
         // is visible in a single pass while porting the tree.
         options.compilerArgs << "-Xmaxerrs" << "100000"
         options.fork = true
+        
+        // Add MatchException to java.lang module via patch-module
+        def matchExceptionJar = file('../../matchexception/matchexception.jar')
+        if (matchExceptionJar.exists()) {
+            options.compilerArgs << "--patch-module=java.lang=" + matchExceptionJar.absolutePath
+            // Also add to classpath as fallback
+            doFirst {
+                classpath = classpath + files(matchExceptionJar)
+            }
+        }
+        
+        // Debug: print source files count without filtering
+        doFirst {
+            println "Source files (no filter): ${source.files.size()}"
+            source.files.each { f ->
+                if (f.path.contains('net/minecraft/client') || f.path.contains('com/mojang/blaze3d') || f.path.contains('org/lwjgl')) {
+                    println "INCLUDED (should be excluded): ${f.path}"
+                }
+            }
+        }
         // Don't use jrt-fs.jar as it interferes with module system
     }
+
+task printSourceFiles {
+    doLast {
+        sourceSets.main.java.srcDirs.each { dir ->
+            println "Source dir: $dir"
+            fileTree(dir).include("**/*.java").each { file ->
+                println "  ${file.path}"
+            }
+        }
+    }
+}
 
     sourceSets {
         main {
             java {
-                // Fabric Loader decompiled sources: kept for reference, not compiled until
-                // their JVM dependencies (Mixin, TinyRemapper, ASM) are shipped on Android.
-                exclude 'net/fabricmc/**'
-                // Vulkan backend requires the VMA/Vulkan natives; the OpenGL ES backend is the shim target.
-                exclude 'com/mojang/renderpearl/backend/vulkan/**'
-                // JFR (jdk.jfr) is not present on Android; the profiler entries are compiled
-                // out. JvmProfiler.INSTANCE is reduced to the no-op profiler accordingly.
-                exclude 'net/minecraft/util/profiling/jfr/event/**'
-                exclude 'net/minecraft/util/profiling/jfr/parse/**'
-                exclude 'net/minecraft/util/profiling/jfr/serialize/**'
-                exclude 'net/minecraft/util/profiling/jfr/stats/**'
-                exclude 'net/minecraft/util/profiling/jfr/JfrProfiler.java'
-                // SummaryReporter imports the excluded jfr/parse package.
-                exclude 'net/minecraft/util/profiling/jfr/SummaryReporter.java'
-                // javax.swing-based dedicated server admin GUI (desktop-only).
-                exclude 'net/minecraft/server/gui/**'
-                // javax.management JMX registry (JVM-only).
-                exclude 'net/minecraft/util/monitoring/jmx/**'
-                // Client-side rendering code (desktop-only, uses LWJGL/OpenGL, pattern matching switches on sealed types)
-                exclude 'net/minecraft/client/**'
-                // blaze3d depends on client code (LWJGL, OpenGL, etc.) - desktop only
-                exclude 'com/mojang/blaze3d/**'
-                // renderpearl depends on client code - desktop only
-                exclude 'com/mojang/renderpearl/**'
-                // realmsclient is desktop-only
-                exclude 'com/mojang/realmsclient/**'
-                // text2speech is desktop-only
-                exclude 'com/mojang/text2speech/**'
-                // jtracy is desktop-only profiling - but we provide stub implementations
-                // org.lwjgl is desktop-only (replaced by Android shim)
-                exclude 'org/lwjgl/**'
-                // Realms is desktop-only
-                exclude 'net/minecraft/realms/**'
-                // Stubs are for reference only
-                exclude 'stubs/**'
-                // Pro launcher is desktop-only
-                exclude 'pro/minecraft/launch/**'
-                exclude 'pro/minecraft/main_activity.java'
-                exclude 'pro/minecraft/host/**'
+                srcDirs = ['src/main/java']
+                exclude '**/net/minecraft/client/**'
+                exclude '**/com/mojang/blaze3d/**'
+                exclude '**/com/mojang/renderpearl/**'
+                exclude '**/com/mojang/realmsclient/**'
+                exclude '**/com/mojang/text2speech/**'
+                exclude '**/org/lwjgl/**'
+                exclude '**/net/minecraft/realms/**'
+                exclude '**/net/fabricmc/**'
+                exclude '**/stubs/**'
+                exclude '**/pro/minecraft/launch/**'
+                exclude '**/pro/minecraft/main_activity.java'
+                exclude '**/pro/minecraft/host/**'
+                exclude '**/net/minecraft/util/profiling/jfr/event/**'
+                exclude '**/net/minecraft/util/profiling/jfr/parse/**'
+                exclude '**/net/minecraft/util/profiling/jfr/serialize/**'
+                exclude '**/net/minecraft/util/profiling/jfr/stats/**'
+                exclude '**/net/minecraft/util/profiling/jfr/JfrProfiler.java'
+                exclude '**/net/minecraft/util/profiling/jfr/SummaryReporter.java'
+                exclude '**/net/minecraft/server/gui/**'
+                exclude '**/net/minecraft/util/monitoring/jmx/**'
+                exclude '**/com/mojang/renderpearl/backend/vulkan/**'
             }
         }
     }
 }
 
 dependencies {
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.2.0'
+    // coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.2.0'
 
     // --- Minecraft runtime (pure-Java libraries from the 26.3 library list) ---
     implementation 'com.google.guava:guava:33.6.0-jre'

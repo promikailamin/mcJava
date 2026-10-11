@@ -74,43 +74,42 @@ public class TextComponentHoverAndClickEventFix extends DataFix {
       );
    }
 
-private static Dynamic<?> fixTextComponent(final Dynamic<?> dynamic) {
-       return dynamic.renameAndFixField("hoverEvent", "hover_event", TextComponentHoverAndClickEventFix::fixHoverEvent)
-          .renameAndFixField("clickEvent", "click_event", TextComponentHoverAndClickEventFix::fixClickEvent);
+   private static Dynamic<?> fixTextComponent(final Dynamic<?> dynamic) {
+        return dynamic.renameAndFixField("hoverEvent", "hover_event", TextComponentHoverAndClickEventFix::fixHoverEvent)
+           .renameAndFixField("clickEvent", "click_event", TextComponentHoverAndClickEventFix::fixClickEvent);
     }
 
-   private static Dynamic<?> copyFields(Dynamic<?> target, final Dynamic<?> source, final String... fields) {
-      for (String field : fields) {
-         target = Dynamic.copyField(source, field, target, field);
-      }
+    private static Dynamic<?> copyFields(Dynamic<?> target, final Dynamic<?> source, final String... fields) {
+       for (String field : fields) {
+          target = Dynamic.copyField(source, field, target, field);
+       }
 
-      return target;
-   }
-
-private static Dynamic<?> fixHoverEvent(final Dynamic<?> dynamic) {
-       String action = dynamic.get("action").asString("");
-
-       return switch (action) {
-          case "show_text" -> dynamic.renameField("contents", "value");
-          case "show_item" -> {
-             Dynamic<?> contents = dynamic.get("contents").orElseEmptyMap();
-             yield copyFields(dynamic.remove("contents"), contents, "id", "count", "components");
-          }
-          case "show_entity" -> {
-             Dynamic<?> contents = dynamic.get("contents").orElseEmptyMap();
-             yield copyFields(dynamic.remove("contents"), contents, "id", "type", "name").renameField("id", "uuid").renameField("type", "id");
-          }
-          default -> dynamic;
-       };
+       return target;
     }
 
-private static <T> @Nullable Dynamic<T> fixClickEvent(final Dynamic<T> dynamic) {
-       String action = dynamic.get("action").asString("");
-       String value = dynamic.get("value").asString("");
-       return dynamic;
+   private static Dynamic<?> fixHoverEvent(final Dynamic<?> dynamic) {
+        String action = dynamic.get("action").asString("");
+
+        if (action.equals("show_text")) {
+            return dynamic.renameField("contents", "value");
+        } else if (action.equals("show_item")) {
+            Dynamic<?> contents = dynamic.get("contents").orElseEmptyMap();
+            return copyFields(dynamic.remove("contents"), contents, "id", "count", "components");
+        } else if (action.equals("show_entity")) {
+            Dynamic<?> contents = dynamic.get("contents").orElseEmptyMap();
+            return copyFields(dynamic.remove("contents"), contents, "id", "type", "name").renameField("id", "uuid").renameField("type", "id");
+        } else {
+            return dynamic;
+        }
     }
 
-   private static @Nullable Integer parseOldPage(final Dynamic<?> value) {
+   private static <T> @Nullable Dynamic<T> fixClickEvent(final Dynamic<T> dynamic) {
+        String action = dynamic.get("action").asString("");
+        String value = dynamic.get("value").asString("");
+        return dynamic;
+    }
+
+    private static @Nullable Integer parseOldPage(final Dynamic<?> value) {
       Optional<Number> numberValue = value.asNumber().result();
       if (numberValue.isPresent()) {
          return numberValue.get().intValue();
@@ -121,31 +120,32 @@ private static <T> @Nullable Dynamic<T> fixClickEvent(final Dynamic<T> dynamic) 
       } catch (Exception ignored) {
          return null;
       }
-   }
+    }
 
-   private static boolean validateUri(final String uri) {
-      try {
-         URI parsedUri = new URI(uri);
-         String scheme = parsedUri.getScheme();
-         if (scheme == null) {
-            return false;
-         }
+    private static boolean validateUri(final String uri) {
+       try {
+          URI parsedUri = new URI(uri);
+          String scheme = parsedUri.getScheme();
+          if (scheme == null) {
+             return false;
+          }
 
-         String protocol = scheme.toLowerCase(Locale.ROOT);
-         return "http".equals(protocol) || "https".equals(protocol);
-      } catch (URISyntaxException e) {
-         return false;
-      }
-   }
+          String protocol = scheme.toLowerCase(Locale.ROOT);
+          return "http".equals(protocol) || "https".equals(protocol);
+       } catch (URISyntaxException e) {
+          return false;
+       }
+    }
 
-   private static boolean validateChat(final String string) {
-      for (int i = 0; i < string.length(); i++) {
-         char c = string.charAt(i);
-         if (c == 167 || c < ' ' || c == 127) {
-            return false;
-         }
-      }
+    private static boolean validateChat(final String string) {
+       for (int i = 0; i < string.length(); i++) {
+          char c = string.charAt(i);
+          if (c == 167 || c < ' ' || c == 127) {
+             return false;
+          }
+       }
 
-      return true;
-   }
+       return true;
+    }
+
 }

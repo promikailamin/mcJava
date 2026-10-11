@@ -414,13 +414,16 @@ public class GuiGraphicsExtractor {
    ) {
       TextureAtlasSprite sprite = this.guiSprites.getSprite(location);
       GuiSpriteScaling scaling = getSpriteScaling(sprite);
-            if (scaling instanceof GuiSpriteScaling.Stretch stretch) {
+            if (scaling instanceof GuiSpriteScaling.Stretch) {
+                GuiSpriteScaling.Stretch stretch = (GuiSpriteScaling.Stretch) scaling;
           this.blitSprite(renderPipeline, sprite, x, y, width, height, color);
       }
-      else if (scaling instanceof GuiSpriteScaling.Tile tile) {
+      else if (scaling instanceof GuiSpriteScaling.Tile) {
+          GuiSpriteScaling.Tile tile = (GuiSpriteScaling.Tile) scaling;
           this.blitTiledSprite(renderPipeline, sprite, x, y, width, height, 0, 0, tile.width(), tile.height(), tile.width(), tile.height(), color);
       }
-      else if (scaling instanceof GuiSpriteScaling.NineSlice nineSlice) {
+      else if (scaling instanceof GuiSpriteScaling.NineSlice) {
+          GuiSpriteScaling.NineSlice nineSlice = (GuiSpriteScaling.NineSlice) scaling;
           this.blitNineSlicedSprite(renderPipeline, sprite, nineSlice, x, y, width, height, color);
       }
    }
@@ -1304,13 +1307,16 @@ public class GuiGraphicsExtractor {
 private void componentHoverEffect(final Font font, final Style hoveredStyle, final int xMouse, final int yMouse) {
        HoverEvent hoverEvent = hoveredStyle.getHoverEvent();
        if (hoverEvent != null) {
-          if (hoverEvent instanceof HoverEvent.ShowItem showItem) {
+          if (hoverEvent instanceof HoverEvent.ShowItem) {
+              HoverEvent.ShowItem showItem = (HoverEvent.ShowItem) hoverEvent;
              this.setTooltipForNextFrame(font, showItem.item().create(), xMouse, yMouse);
-          } else if (hoverEvent instanceof HoverEvent.ShowEntity showEntity) {
+          else if (hoverEvent instanceof HoverEvent.ShowEntity) {
+              HoverEvent.ShowEntity showEntity = (HoverEvent.ShowEntity) hoverEvent;
              if (this.minecraft.options.advancedItemTooltips) {
                 this.setComponentTooltipForNextFrame(font, showEntity.entity().getTooltipLines(), xMouse, yMouse);
              }
-          } else if (hoverEvent instanceof HoverEvent.ShowText showText) {
+          else if (hoverEvent instanceof HoverEvent.ShowText) {
+              HoverEvent.ShowText showText = (HoverEvent.ShowText) hoverEvent;
              this.setTooltipForNextFrame(font, font.split(showText.text(), Math.max(this.guiWidth() / 2, 200)), xMouse, yMouse);
           }
        }

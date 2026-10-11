@@ -78,7 +78,7 @@ public Component getLocalizedDeathMessage(final LivingEntity victim) {
              : Component.translatable(deathMsg, victim.getDisplayName());
        } else {
           Component name = this.causingEntity == null ? this.directEntity.getDisplayName() : this.causingEntity.getDisplayName();
-          ItemStack held = this.causingEntity instanceof LivingEntity living ? living.getMainHandItem() : ItemStack.EMPTY;
+          ItemStack held = this.causingEntity instanceof LivingEntity ? getMainHandItem() : ItemStack.EMPTY;
           return !held.isEmpty() && held.has(DataComponents.CUSTOM_NAME)
              ? Component.translatable(deathMsg + ".item", victim.getDisplayName(), name, held.getDisplayName())
              : Component.translatable(deathMsg, victim.getDisplayName(), name);
@@ -89,17 +89,22 @@ public Component getLocalizedDeathMessage(final LivingEntity victim) {
       return this.type().msgId();
    }
 
-   public boolean scalesWithDifficulty() {
-      return switch (this.type().scaling()) {
-         case NEVER -> false;
-         case WHEN_CAUSED_BY_LIVING_NON_PLAYER -> this.causingEntity instanceof LivingEntity && !(this.causingEntity instanceof Player);
-         case ALWAYS -> true;
-      };
-   }
+public boolean scalesWithDifficulty() {
+        DamageScaling scaling = this.type().scaling();
+        if (scaling == DamageScaling.NEVER) {
+            return false;
+        } else if (scaling == DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER) {
+            return this.causingEntity instanceof LivingEntity && !(this.causingEntity instanceof Player);
+        } else if (scaling == DamageScaling.ALWAYS) {
+            return true;
+        } else {
+            throw new IllegalStateException("Unexpected value");
+        }
+    }
 
 public boolean isCreativePlayer() {
        Entity entity = this.getEntity();
-       return entity instanceof Player player && player.getAbilities().instabuild;
+       return entity instanceof Player && player.getAbilities().instabuild;
     }
 
    public @Nullable Vec3 getSourcePosition() {

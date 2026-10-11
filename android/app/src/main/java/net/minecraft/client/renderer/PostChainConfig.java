@@ -28,10 +28,12 @@ public record PostChainConfig(Map<Identifier, PostChainConfig.InternalTarget> in
    public sealed interface Input permits PostChainConfig.TargetInput, PostChainConfig.TextureInput {
       Codec<PostChainConfig.Input> CODEC = Codec.xor(PostChainConfig.TextureInput.CODEC, PostChainConfig.TargetInput.CODEC)
          .xmap(either -> (PostChainConfig.Input)either.map(Function.identity(), Function.identity()), input -> {
-            if (input instanceof PostChainConfig.TextureInput texture) {
+            if (input instanceof PostChainConfig.TextureInput) {
+                PostChainConfig.TextureInput texture = (PostChainConfig.TextureInput) input;
                 return Either.left(texture);
             }
-            else if (input instanceof PostChainConfig.TargetInput target) {
+            else if (input instanceof PostChainConfig.TargetInput) {
+                PostChainConfig.TargetInput target = (PostChainConfig.TargetInput) input;
                 return Either.right(target);
             }
             else {

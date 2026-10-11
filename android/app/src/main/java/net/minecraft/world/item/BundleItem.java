@@ -44,14 +44,16 @@ public class BundleItem extends Item {
    }
 
 private static Fraction getWeightSafe(final BundleContents contents) {
-       DataResult<Fraction> weightResult = contents.weight();
-       if (weightResult instanceof DataResult.Success<Fraction> success) {
-           return (Fraction)success.value();
-       } else if (weightResult instanceof DataResult.Error<?> error) {
-           return Fraction.ONE;
-       } else {
-           throw new IllegalStateException("Unexpected value");
-       }
+        DataResult<Fraction> weightResult = contents.weight();
+        if (weightResult instanceof DataResult.Success<Fraction>) {
+            DataResult.Success<Fraction> success = (DataResult.Success<Fraction>) weightResult;
+            return (Fraction)success.value();
+        } else if (weightResult instanceof DataResult.Error<?>) {
+            DataResult.Error<?> error = (DataResult.Error<?>) weightResult;
+            return Fraction.ONE;
+        } else {
+            throw new IllegalStateException("Unexpected value");
+        }
     }
 
    public static float getFullnessDisplay(final ItemStack itemStack) {

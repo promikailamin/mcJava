@@ -1,61 +1,61 @@
 A new GitHub issue has been opened.
 
-Issue number: 25
+Issue number: 26
 
 Issue URL:
-https://github.com/promikailamin/mcJava/issues/25
+https://github.com/promikailamin/mcJava/issues/26
 
 Title:
-Fix and build
+Fix all and build
 
 Description:
-## Summary of Fixes Applied
+I've made extensive fixes to the mcJava project. Here's a summary of what was accomplished:
 
-I've fixed numerous compilation errors in the mcJava project:
+## Fixes Applied
 
-### 1. **Invalid `instanceof CONSTANT, CONSTANT` Patterns** (14 files)
-Fixed incorrectly converted switch expressions that produced invalid syntax like `if (var instanceof A, B)`:
-- `SnbtGrammar.java`, `BlockModelGenerators.java`, `PlayerSocialManager.java`
-- `ScreenDirection.java`, `Direction.java`, `BrushItem.java`
-- `StructureTemplate.java`, `StructurePiece.java`, `SimpleDensityFunction.java`
-- `BellBlock.java`, `SelectableSlotContainer.java`, `DoorBlock.java`
-- `CrafterBlock.java`, `FurnaceRecipeBookComponent.java`
+### 1. **Invalid `instanceof` Patterns Fixed**
+- Fixed incorrectly converted switch expressions that produced invalid syntax like `if (var instanceof A, B)`
 
-### 2. **Pattern Matching Switches on Sealed Types** (8 files)
-Converted to if-else chains to avoid MatchException requirement:
-- `DensityFunction.java`, `MaterialRule.java`, `MaterialCondition.java`
-- `BundleItem.java`, `TagValueOutput.java`, `TagValueInput.java`
-- `GuiGraphicsExtractor.java`, `PostChain.java`, `GlCommandEncoder.java`
+### 2. **Pattern Matching Switches on Sealed Types Converted**
+- Converted to if-else chains in multiple files to avoid MatchException requirement
+- Fixed in: `ServerLevel.java`, `Entity.java`, `CollisionContext.java`, `DamageSource.java`, `LivingEntity.java`
 
-### 3. **Missing Variable Bindings in `instanceof`** (6 files)
-Restored pattern variable bindings that were lost during conversion:
-- `Entity.java` (5 locations), `EntityType.java`, `Block.java` (3 locations)
-- `ServerLevel.java` (3 locations)
+### 3. **Missing Variable Bindings Restored**
+- Fixed pattern variable bindings in `Entity.java` (5 locations), `EntityType.java`, `Block.java` (3 locations), `ServerLevel.java` (3 locations)
 
-### 4. **Syntax Errors** (13+ files)
+### 4. **Syntax Errors Fixed**
 - Missing semicolons after throw statements
-- Corrupted lambda expressions in datafixer files
+- Corrupted lambda expressions
 - Incomplete if-else branches
+- Fixed `keymap.java` (KEYCODE_END → KEYCODE_MOVE_END)
+- Fixed `SectionCategory.java` and `MemoryPool.java` stub files
 
-### 5. **Excluded Problematic Code**
-- Excluded `net/minecraft/client/**` (desktop rendering code)
-- Excluded Vulkan backend, JFR profiling, Swing GUI, JMX monitoring
+### 5. **Created jtracy Stubs**
+- Added no-op implementations for `TracyClient`, `Zone`, `DiscontinuousFrame`, `Plot` in `com/mojang/jtracy/`
 
-## Remaining Issue: MatchException
+### 6. **Updated Build Configuration**
+- Added exclusions for: `net/minecraft/client/**`, `com/mojang/blaze3d/**`, `com/mojang/renderpearl/**`, `com/mojang/realmsclient/**`, `com/mojang/text2speech/**`, `org/lwjgl/**`, `net/minecraft/realms/**`, `net/fabricmc/**`, `stubs/**`, `pro/minecraft/**`
 
-The Java compiler requires `java.lang.MatchException` for pattern matching switches on sealed types. This class doesn't exist in Android's java.base module. All approaches to provide it (boot classpath, patch-module, custom JAR) have failed because java.lang is a sealed module.
+## Remaining Blocker: MatchException
+
+The build fails with `com.sun.tools.javac.code.Symbol$CompletionFailure: class file for java.lang.MatchException not found`. This is a fundamental limitation:
+
+- **Cause**: JDK 21 compiler requires `java.lang.MatchException` for pattern matching switches on sealed types
+- **Problem**: This class doesn't exist in Android's java.base module
+- **Constraint**: java.lang is a sealed module - cannot add classes via boot classpath, patch-module, or custom JAR
 
 ## Recommended Next Steps
 
-1. **Complete conversion**: Run a more robust pattern-matching-switch-to-if-else converter on all remaining sealed type switches
-2. **Use OpenRewrite/Error Prone**: As suggested in the GitHub issue, use automated migration tools
-3. **Provide MatchException via custom JDK**: Build a custom JDK with MatchException added to java.lang
-4. **Target newer Android API**: Android 14+ (UpsideDownCake) has better Java 21 support
+As noted in the GitHub issue, the only viable solutions are:
+1. **Custom JDK**: Build a custom JDK with MatchException added to java.base
+2. **Complete Conversion**: Use automated tools (OpenRewrite/Error Prone) to convert ALL pattern matching switches on sealed types to if-else chains in both source code AND dependencies
+3. **Target Desktop**: Build for desktop JDK 21+ instead of Android
+4. **Android 14+**: Use Android 14 (UpsideDownCake) which has better Java 21 support
 
-The project now has significantly fewer compilation errors, but the fundamental MatchException issue requires either complete elimination of pattern matching on sealed types or a custom runtime environment.
+The project now has significantly fewer compilation errors, but the MatchException issue requires either a custom runtime environment or complete elimination of pattern matching on sealed types from the entire dependency chain.
+
 
 setup all tools needed java, android sdk, ndk etc ... and Fix all errors no matters how much changes and afforts it need just fix all and build it. and download mcsrc (a decompiler tool), Minecraft java latest version, fabric loader latest version and decompile them for assist in this project. perfectly build it. fix all errors and build in any cost.
-
 
 Inspect the repository and implement the requested change.
 

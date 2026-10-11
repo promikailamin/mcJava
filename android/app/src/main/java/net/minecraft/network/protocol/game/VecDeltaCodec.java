@@ -44,7 +44,8 @@ public class VecDeltaCodec {
       if (position instanceof PositionPath.Linear(Vec3 pos)) {
           return this.tryEncode(pos);
       }
-      else if (position instanceof PositionPath.Stepped stepped) {
+      else if (position instanceof PositionPath.Stepped) {
+          PositionPath.Stepped stepped = (PositionPath.Stepped) position;
 
           stepped.endPosition();
           return VecDelta.Stepped.tryEncode(this, stepped.steps());

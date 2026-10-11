@@ -426,7 +426,8 @@ if (this.level() instanceof ServerLevel && onGround && this.fallDistance > 0.0) 
       super.baseTick();
       ProfilerFiller profiler = Profiler.get();
       profiler.push("livingEntityBaseTick");
-if (this.isAlive() && this.level() instanceof ServerLevel level) {
+if (this.isAlive() && this.level() instanceof ServerLevel) {
+    ServerLevel level = (ServerLevel) this.isAlive() && this.level();
           boolean isPlayer = this instanceof Player;
          if (this.isInWall()) {
             this.hurtServer(level, this.damageSources().inWall(), 1.0F);
@@ -724,7 +725,8 @@ if (this.isAlive() && this.level() instanceof ServerLevel level) {
 
 @Override
     public void remove(final Entity.RemovalReason reason) {
-       if ((reason == Entity.RemovalReason.KILLED || reason == Entity.RemovalReason.DISCARDED) && this.level() instanceof ServerLevel level) {
+       if ((reason == Entity.RemovalReason.KILLED || reason == Entity.RemovalReason.DISCARDED) && this.level() instanceof ServerLevel) {
+           ServerLevel level = (ServerLevel) (reason == Entity.RemovalReason.KILLED || reason == Entity.RemovalReason.DISCARDED) && this.level();
           this.triggerOnDeathMobEffects(level, reason);
        }
 
@@ -1334,7 +1336,7 @@ if (this.isAlive() && this.level() instanceof ServerLevel level) {
 
       BlocksAttacks blocksAttacks = blockingWith.get(DataComponents.BLOCKS_ATTACKS);
       if (blocksAttacks != null && !blocksAttacks.bypassedBy().map(t -> t.contains(source.typeHolder())).orElse(false)) {
-if (source.getDirectEntity() instanceof AbstractArrow abstractArrow && abstractArrow.getPierceLevel() > 0) {
+if (source.getDirectEntity() instanceof AbstractArrow && abstractArrow.getPierceLevel() > 0) {
              return 0.0F;
           } else {
             Vec3 sourcePosition = source.getSourcePosition();
@@ -1350,7 +1352,8 @@ if (source.getDirectEntity() instanceof AbstractArrow abstractArrow && abstractA
 
             float damageBlocked = blocksAttacks.resolveBlockedDamage(source, damage, angle);
             blocksAttacks.hurtBlockingItem(this.level(), blockingWith, this, this.getUsedItemHand(), damageBlocked);
-            if (damageBlocked > 0.0F && !source.is(DamageTypeTags.IS_PROJECTILE) && source.getDirectEntity() instanceof LivingEntity livingEntity) {
+            if (damageBlocked > 0.0F && !source.is(DamageTypeTags.IS_PROJECTILE) && source.getDirectEntity() instanceof LivingEntity) {
+                LivingEntity livingEntity = (LivingEntity) damageBlocked > 0.0F && !source.is(DamageTypeTags.IS_PROJECTILE) && source.getDirectEntity();
                this.blockUsingItem(this.level(), livingEntity, source, damage, damageBlocked >= damage);
             }
 
@@ -1369,7 +1372,7 @@ if (source.getDirectEntity() instanceof AbstractArrow abstractArrow && abstractA
    }
 
 protected void resolveMobResponsibleForDamage(final DamageSource source) {
-       if (source.getEntity() instanceof LivingEntity livingSource && !source.is(DamageTypeTags.NO_ANGER)
+       if (source.getEntity() instanceof LivingEntity && !source.is(DamageTypeTags.NO_ANGER)
           && (!source.is(DamageTypes.WIND_CHARGE) || !this.is(EntityTypeTags.NO_ANGER_FROM_WIND_CHARGE))) {
           this.setLastHurtByMob(livingSource);
        }

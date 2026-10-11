@@ -354,7 +354,8 @@ protected ProjectileDeflection hitTargetOrDeflectSelf(final HitResult hitResult)
       if (type == HitResult.Type.ENTITY) {
          EntityHitResult entityHitResult = (EntityHitResult)hitResult;
          Entity entityHit = entityHitResult.getEntity();
-if (entityHit.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entityHit instanceof Projectile projectile) {
+if (entityHit.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entityHit instanceof Projectile) {
+    Projectile projectile = (Projectile) entityHit.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entityHit;
              this.onRedirectProjectile(projectile);
          }
 

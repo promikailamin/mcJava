@@ -71,23 +71,28 @@ public class NbtOps implements DynamicOps<Tag> {
           double value = ((DoubleTag) input).value();
           return outOps.createDouble(value);
       }
-      else if (input instanceof ByteArrayTag byteArrayTag) {
+      else if (input instanceof ByteArrayTag) {
+          ByteArrayTag byteArrayTag = (ByteArrayTag) input;
           return outOps.createByteList(ByteBuffer.wrap(byteArrayTag.getAsByteArray()));
       }
       else if (input instanceof StringTag) {
           String value = ((StringTag) input).value();
           return outOps.createString(value);
       }
-      else if (input instanceof ListTag listTag) {
+      else if (input instanceof ListTag) {
+          ListTag listTag = (ListTag) input;
           return this.convertList(outOps, listTag);
       }
-      else if (input instanceof CompoundTag compoundTag) {
+      else if (input instanceof CompoundTag) {
+          CompoundTag compoundTag = (CompoundTag) input;
           return this.convertMap(outOps, compoundTag);
       }
-      else if (input instanceof IntArrayTag intArrayTag) {
+      else if (input instanceof IntArrayTag) {
+          IntArrayTag intArrayTag = (IntArrayTag) input;
           return outOps.createIntList(Arrays.stream(intArrayTag.getAsIntArray()));
       }
-      else if (input instanceof LongArrayTag longArrayTag) {
+      else if (input instanceof LongArrayTag) {
+          LongArrayTag longArrayTag = (LongArrayTag) input;
           return outOps.createLongList(Arrays.stream(longArrayTag.getAsLongArray()));
       }
       else {
@@ -335,16 +340,20 @@ public DataResult<Consumer<Consumer<Tag>>> getList(final Tag input) {
          if (collection.isEmpty()) {
             return Optional.of(new NbtOps.GenericListCollector());
          }
-         if (collection instanceof ListTag list) {
+         if (collection instanceof ListTag) {
+             ListTag list = (ListTag) collection;
              return Optional.of(new NbtOps.GenericListCollector(list));
          }
-         else if (collection instanceof ByteArrayTag array) {
+         else if (collection instanceof ByteArrayTag) {
+             ByteArrayTag array = (ByteArrayTag) collection;
              return Optional.of(new NbtOps.ByteListCollector(array.getAsByteArray()));
          }
-         else if (collection instanceof IntArrayTag array) {
+         else if (collection instanceof IntArrayTag) {
+             IntArrayTag array = (IntArrayTag) collection;
              return Optional.of(new NbtOps.IntListCollector(array.getAsIntArray()));
          }
-         else if (collection instanceof LongArrayTag array) {
+         else if (collection instanceof LongArrayTag) {
+             LongArrayTag array = (LongArrayTag) collection;
              return Optional.of(new NbtOps.LongListCollector(array.getAsLongArray()));
          }
          else {

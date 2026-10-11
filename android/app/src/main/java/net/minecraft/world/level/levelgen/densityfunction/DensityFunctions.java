@@ -45,7 +45,8 @@ public final class DensityFunctions {
       .dispatch(DensityFunction::codec, Function.identity());
    public static final Codec<DensityFunction> DIRECT_CODEC = Codec.either(NOISE_VALUE_CODEC, FULL_DIRECT_CODEC)
       .xmap(either -> (DensityFunction)either.map(DensityFunctions::constant, Function.identity()), function -> {
-         if (function instanceof ConstantFunction constantFunction) {
+         if (function instanceof ConstantFunction) {
+             ConstantFunction constantFunction = (ConstantFunction) function;
             return Either.left(constantFunction.value());
          } else {
             return Either.right(function);

@@ -115,10 +115,12 @@ public class PostChain implements AutoCloseable {
 List<PostPass.Input> inputs = new ArrayList<>();
 
        for (PostChainConfig.Input input : config.inputs()) {
-          if (input instanceof PostChainConfig.TextureInput textureInput) {
+          if (input instanceof PostChainConfig.TextureInput) {
+              PostChainConfig.TextureInput textureInput = (PostChainConfig.TextureInput) input;
              AbstractTexture texture = textureManager.getTexture(textureInput.location().withPath(path -> "textures/effect/" + path + ".png"));
              inputs.add(new PostPass.TextureInput(textureInput.samplerName(), texture, textureInput.width(), textureInput.height(), textureInput.bilinear()));
-          } else if (input instanceof PostChainConfig.TargetInput targetInput) {
+          else if (input instanceof PostChainConfig.TargetInput) {
+              PostChainConfig.TargetInput targetInput = (PostChainConfig.TargetInput) input;
              inputs.add(new PostPass.TargetInput(targetInput.samplerName(), targetInput.targetId(), targetInput.useDepthBuffer(), targetInput.bilinear()));
           } else {
              throw new IllegalStateException("Unexpected value");

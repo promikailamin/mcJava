@@ -20,17 +20,20 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 public interface DensityFunction {
    Codec<Holder<DensityFunction>> REFERENCE_CODEC = RegistryCodecs.holder(Registries.DENSITY_FUNCTION);
 Codec<DensityFunction> CODEC = RegistryCodecs.holder(Registries.DENSITY_FUNCTION, DensityFunctions.DIRECT_CODEC).xmap(holder -> {
-       if (holder instanceof Holder.Direct<DensityFunction> direct) {
+       if (holder instanceof Holder.Direct<DensityFunction>) {
+           Holder.Direct<DensityFunction> direct = (Holder.Direct<DensityFunction>) holder;
            return (DensityFunction)direct.value();
        }
-       else if (holder instanceof Holder.Reference<DensityFunction> reference) {
+       else if (holder instanceof Holder.Reference<DensityFunction>) {
+           Holder.Reference<DensityFunction> reference = (Holder.Reference<DensityFunction>) holder;
            return new DensityFunctions.HolderHolder(reference);
        }
        else {
            throw new IllegalArgumentException("Unexpected holder type: " + holder);
        }
     }, value -> {
-       if (value instanceof DensityFunctions.HolderHolder holderHolder) {
+       if (value instanceof DensityFunctions.HolderHolder) {
+           DensityFunctions.HolderHolder holderHolder = (DensityFunctions.HolderHolder) value;
            return holderHolder.function();
        } else {
            return Holder.direct(value);

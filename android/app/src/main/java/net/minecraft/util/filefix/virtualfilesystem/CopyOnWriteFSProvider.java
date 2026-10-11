@@ -89,38 +89,39 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
       return this.newChannel(path, options, attrs, FileChannel::open);
    }
 
-   private synchronized <C> C newChannel(
-      final Path path, final Set<? extends OpenOption> options, final FileAttribute<?>[] attrs, final CopyOnWriteFSProvider.ChannelFactory<C> channelFactory
-   ) throws IOException {
-      CopyOnWriteFSPath cowPath = CopyOnWriteFSPath.asCow(path);
-      if (options.contains(StandardOpenOption.DELETE_ON_CLOSE)) {
-         throw new UnsupportedOperationException("DELETE_ON_CLOSE is not supported by CowFS");
-      }
+private synchronized <C> C newChannel(
+       final Path path, final Set<? extends OpenOption> options, final FileAttribute<?>[] attrs, final CopyOnWriteFSProvider.ChannelFactory<C> channelFactory
+    ) throws IOException {
+        CopyOnWriteFSPath cowPath = CopyOnWriteFSPath.asCow(path);
+        if (options.contains(StandardOpenOption.DELETE_ON_CLOSE)) {
+            throw new UnsupportedOperationException("DELETE_ON_CLOSE is not supported by CowFS");
+        }
 
-      Node node = this.fs.fileTree().byPathOrNull(cowPath);
-      if (node == null) {
-         if (!options.contains(StandardOpenOption.CREATE) && !options.contains(StandardOpenOption.CREATE_NEW)) {
-            throw new CowFSNoSuchFileException(cowPath.toString());
-         }
+        Node node = this.fs.fileTree().byPathOrNull(cowPath);
+        if (node == null) {
+            if (!options.contains(StandardOpenOption.CREATE) && !options.contains(StandardOpenOption.CREATE_NEW)) {
+                throw new CowFSNoSuchFileException(cowPath.toString());
+            }
 
-         DirectoryNode directoryNode = this.fs.fileTree().directoryByPath(Objects.requireNonNull(cowPath.getParent()));
-         Path tempFile = this.fs.createTemporaryFilePath();
-         C result = channelFactory.newChannel(tempFile, options, attrs);
-         FileNode child = new FileNode(cowPath, tempFile, true);
-         directoryNode.addChild(child);
-         return result;
-      } else if (node instanceof FileNode fileNode) {
-         if (wantsWrite(options)) {
-            fileNode.ensureCopy();
-         }
+            DirectoryNode directoryNode = this.fs.fileTree().directoryByPath(Objects.requireNonNull(cowPath.getParent()));
+            Path tempFile = this.fs.createTemporaryFilePath();
+            C result = channelFactory.newChannel(tempFile, options, attrs);
+            FileNode child = new FileNode(cowPath, tempFile, true);
+            directoryNode.addChild(child);
+            return result;
+        } else if (node instanceof FileNode) {
+            FileNode fileNode = (FileNode) node;
+            if (wantsWrite(options)) {
+                fileNode.ensureCopy();
+            }
 
-         return channelFactory.newChannel(fileNode.storagePath(), options, attrs);
-      } else if (node instanceof DirectoryNode) {
-         throw new CowFSFileSystemException(cowPath + ": not a regular file");
-      } else {
-         throw new IllegalStateException("Unexpected value");
-      }
-   }
+            return channelFactory.newChannel(fileNode.storagePath(), options, attrs);
+        } else if (node instanceof DirectoryNode) {
+            throw new CowFSFileSystemException(cowPath + ": not a regular file");
+        } else {
+            throw new IllegalStateException("Unexpected value");
+        }
+    }
 
    private static boolean wantsWrite(final Set<? extends OpenOption> options) {
       return options.contains(StandardOpenOption.WRITE) || !options.contains(StandardOpenOption.READ) && options.contains(StandardOpenOption.APPEND);
@@ -265,69 +266,72 @@ public class CopyOnWriteFSProvider extends FileSystemProvider {
       throw new UnsupportedOperationException();
    }
 
-   @Override
-   public synchronized void checkAccess(final Path path, final AccessMode... modes) throws IOException {
-      CopyOnWriteFSPath cowPath = CopyOnWriteFSPath.asCow(path);
-      Node node = this.fs.fileTree().byPath(cowPath);
+@Override
+    public synchronized void checkAccess(final Path path, final AccessMode... modes) throws IOException {
+        CopyOnWriteFSPath cowPath = CopyOnWriteFSPath.asCow(path);
+        Node node = this.fs.fileTree().byPath(cowPath);
 
-      Path checkPath;
-      if (node instanceof DirectoryNode) {
-         checkPath = this.fs.tmpDirectory();
-      } else if (node instanceof FileNode file) {
-         checkPath = file.storagePath();
-      } else {
-         throw new IllegalStateException("Unexpected value");
-      }
-      checkPath.getFileSystem().provider().checkAccess(checkPath, modes);
-   }
+        Path checkPath;
+        if (node instanceof DirectoryNode) {
+            checkPath = this.fs.tmpDirectory();
+        } else if (node instanceof FileNode) {
+            FileNode file = (FileNode) node;
+            checkPath = file.storagePath();
+        } else {
+            throw new IllegalStateException("Unexpected value");
+        }
+        checkPath.getFileSystem().provider().checkAccess(checkPath, modes);
+    }
 
-   @Override
-   public synchronized <V extends FileAttributeView> @Nullable V getFileAttributeView(final Path path, final Class<V> type, final LinkOption... options) {
-      final CopyOnWriteFSPath cowPath = CopyOnWriteFSPath.asCow(path);
-      Node node = this.fs.fileTree().byPathOrNull(cowPath);
+@Override
+    public synchronized <V extends FileAttributeView> @Nullable V getFileAttributeView(final Path path, final Class<V> type, final LinkOption... options) {
+        final CopyOnWriteFSPath cowPath = CopyOnWriteFSPath.asCow(path);
+        Node node = this.fs.fileTree().byPathOrNull(cowPath);
 
-      if (node == null) {
-         if (type == BasicFileAttributeView.class) {
-            return (V) new BasicFileAttributeView() {
-               @Override
-               public String name() {
-                  return "basic";
-               }
+        if (node == null) {
+            if (type == BasicFileAttributeView.class) {
+                return (V) new BasicFileAttributeView() {
+                    @Override
+                    public String name() {
+                        return "basic";
+                    }
 
-               @Override
-               public BasicFileAttributes readAttributes() throws IOException {
-                  throw new CowFSNoSuchFileException(cowPath.toString());
-               }
+                    @Override
+                    public BasicFileAttributes readAttributes() throws IOException {
+                        throw new CowFSNoSuchFileException(cowPath.toString());
+                    }
 
-               @Override
-               public void setTimes(final FileTime lastModifiedTime, final FileTime lastAccessTime, final FileTime createTime) throws IOException {
-                  throw new CowFSNoSuchFileException(cowPath.toString());
-               }
-            };
-         }
-         return null;
-      } else if (node instanceof DirectoryNode) {
-         return type == BasicFileAttributeView.class ? (V) DUMMY_DIRECTORY_VIEW : null;
-      } else if (node instanceof FileNode file) {
-         return (V) Files.getFileAttributeView(file.storagePath(), type, options);
-      } else {
-         throw new IllegalStateException("Unexpected value");
-      }
-   }
+                    @Override
+                    public void setTimes(final FileTime lastModifiedTime, final FileTime lastAccessTime, final FileTime createTime) throws IOException {
+                        throw new CowFSNoSuchFileException(cowPath.toString());
+                    }
+                };
+            }
+            return null;
+        } else if (node instanceof DirectoryNode) {
+            return type == BasicFileAttributeView.class ? (V) DUMMY_DIRECTORY_VIEW : null;
+        } else if (node instanceof FileNode) {
+            FileNode file = (FileNode) node;
+            return (V) Files.getFileAttributeView(file.storagePath(), type, options);
+        } else {
+            throw new IllegalStateException("Unexpected value");
+        }
+    }
 
-   @Override
-   public synchronized <A extends BasicFileAttributes> A readAttributes(final Path path, final Class<A> type, final LinkOption... options) throws IOException {
-      CopyOnWriteFSPath cowPath = CopyOnWriteFSPath.asCow(path);
-      Node node = this.fs.fileTree().byPath(cowPath);
+@Override
+    public synchronized <A extends BasicFileAttributes> A readAttributes(final Path path, final Class<A> type, final LinkOption... options) throws IOException {
+        CopyOnWriteFSPath cowPath = CopyOnWriteFSPath.asCow(path);
+        Node node = this.fs.fileTree().byPath(cowPath);
 
-      if (node instanceof DirectoryNode) {
-         return (A) DummyFileAttributes.DIRECTORY;
-      } else if (node instanceof FileNode file) {
-         return (A) Files.readAttributes(file.storagePath(), type, options);
-      } else {
-         throw new IllegalStateException("Unexpected value");
-      }
-   }
+        if (node instanceof DirectoryNode) {
+            return (A) DummyFileAttributes.DIRECTORY;
+        } else if (node instanceof FileNode) {
+            FileNode file = (FileNode) node;
+            return (A) Files.readAttributes(file.storagePath(), type, options);
+        } else {
+            throw new IllegalStateException("Unexpected value");
+        }
+    }
 
    @Override
    public Map<String, Object> readAttributes(final Path path, final String attributes, final LinkOption... options) {

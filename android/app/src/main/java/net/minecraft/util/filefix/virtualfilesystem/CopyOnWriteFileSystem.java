@@ -207,7 +207,8 @@ public class CopyOnWriteFileSystem extends FileSystem {
    private void collectMoveOperations(final Path outPath, final DirectoryNode folder, final CopyOnWriteFileSystem.Moves result) {
       for (Node childNode : folder.children()) {
          Path target = outPath.resolve(Objects.requireNonNull(childNode.name()));
-         if (childNode instanceof FileNode fileNode) {
+         if (childNode instanceof FileNode) {
+             FileNode fileNode = (FileNode) childNode;
             FileMove move = new FileMove(fileNode.storagePath(), target);
             if (fileNode.isCopy) {
                result.copiedFiles.add(move);
@@ -215,7 +216,8 @@ public class CopyOnWriteFileSystem extends FileSystem {
                result.preexistingFiles.add(move);
             }
          }
-         else if (childNode instanceof DirectoryNode directoryNode) {
+         else if (childNode instanceof DirectoryNode) {
+             DirectoryNode directoryNode = (DirectoryNode) childNode;
             result.directories.add(target);
             this.collectMoveOperations(target, directoryNode, result);
          }

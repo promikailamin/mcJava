@@ -109,11 +109,13 @@ public class TextureSlots {
 
          for (TextureSlots.Data data : Lists.reverse(this.entries)) {
             data.values.forEach((slot, contents) -> {
-                              if (contents instanceof TextureSlots.Value value) {
+                              if (contents instanceof TextureSlots.Value) {
+                                  TextureSlots.Value value = (TextureSlots.Value) contents;
                    unresolved.remove(slot);
                      resolved.put(slot, value.material());
                }
-               else if (contents instanceof TextureSlots.Reference reference) {
+               else if (contents instanceof TextureSlots.Reference) {
+                   TextureSlots.Reference reference = (TextureSlots.Reference) contents;
                    resolved.remove(slot);
                      unresolved.put(slot, reference);
                }

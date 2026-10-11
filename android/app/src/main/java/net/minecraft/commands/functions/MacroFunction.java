@@ -81,23 +81,29 @@ public class MacroFunction<T extends ExecutionCommandSource<T>> implements Comma
       return function;
    }
 
-   private static String stringify(final Tag tag) {
-      if (tag instanceof FloatTag floatTag) {
-         return DECIMAL_FORMAT.format(floatTag.value());
-      } else if (tag instanceof DoubleTag doubleTag) {
-         return DECIMAL_FORMAT.format(doubleTag.value());
-      } else if (tag instanceof ByteTag byteTag) {
-         return String.valueOf(byteTag.value());
-      } else if (tag instanceof ShortTag shortTag) {
-         return String.valueOf(shortTag.value());
-      } else if (tag instanceof LongTag longTag) {
-         return String.valueOf(longTag.value());
-      } else if (tag instanceof StringTag stringTag) {
-         return stringTag.value();
-      } else {
-         return tag.toString();
-      }
-   }
+private static String stringify(final Tag tag) {
+        if (tag instanceof FloatTag) {
+            FloatTag floatTag = (FloatTag) tag;
+            return DECIMAL_FORMAT.format(floatTag.value());
+        } else if (tag instanceof DoubleTag) {
+            DoubleTag doubleTag = (DoubleTag) tag;
+            return DECIMAL_FORMAT.format(doubleTag.value());
+        } else if (tag instanceof ByteTag) {
+            ByteTag byteTag = (ByteTag) tag;
+            return String.valueOf(byteTag.value());
+        } else if (tag instanceof ShortTag) {
+            ShortTag shortTag = (ShortTag) tag;
+            return String.valueOf(shortTag.value());
+        } else if (tag instanceof LongTag) {
+            LongTag longTag = (LongTag) tag;
+            return String.valueOf(longTag.value());
+        } else if (tag instanceof StringTag) {
+            StringTag stringTag = (StringTag) tag;
+            return stringTag.value();
+        } else {
+            return tag.toString();
+        }
+    }
 
    private static void lookupValues(final List<String> values, final IntList indicesToSelect, final List<String> selectedValuesOutput) {
       selectedValuesOutput.clear();

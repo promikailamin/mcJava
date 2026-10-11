@@ -66,7 +66,8 @@ public class PrepareSpawnTask implements ConfigurationTask {
 
    @Override
    public boolean tick() {
-      if (this.state instanceof PrepareSpawnTask.Preparing preparing) {
+      if (this.state instanceof PrepareSpawnTask.Preparing) {
+          PrepareSpawnTask.Preparing preparing = (PrepareSpawnTask.Preparing) this.state;
 
           PrepareSpawnTask.Ready ready = preparing.tick();
           if (ready != null) {
@@ -77,7 +78,8 @@ public class PrepareSpawnTask implements ConfigurationTask {
           }
 
       }
-      else if (this.state instanceof PrepareSpawnTask.Ready ignored) {
+      else if (this.state instanceof PrepareSpawnTask.Ready) {
+          PrepareSpawnTask.Ready ignored = (PrepareSpawnTask.Ready) this.state;
           return true;
       }
       else {
