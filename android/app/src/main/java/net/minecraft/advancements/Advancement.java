@@ -41,15 +41,14 @@ public record Advancement(
                DisplayInfo.CODEC.optionalFieldOf("display").forGetter((Advancement a) -> a.display()),
                AdvancementRewards.CODEC.optionalFieldOf("rewards", AdvancementRewards.EMPTY).forGetter((Advancement a) -> a.rewards()),
                CRITERIA_CODEC.fieldOf("criteria").forGetter((Advancement a) -> a.criteria()),
-               AdvancementRequirements.CODEC.optionalFieldOf("requirements").forGetter((Advancement a) -> Optional.of(a.requirements())),
                Codec.BOOL.optionalFieldOf("sends_telemetry_event", false).forGetter((Advancement a) -> a.sendsTelemetryEvent())
             )
-            .apply(i, (parent, display, rewards, criteria, requirementsOpt, sendsTelemetryEvent) -> {
-               AdvancementRequirements requirements = requirementsOpt.orElseGet(() -> AdvancementRequirements.allOf(criteria.keySet()));
-               return new Advancement(parent, display, rewards, criteria, requirements, sendsTelemetryEvent);
+            .apply(i, (parent, display, rewards, criteria, sendsTelemetryEvent) -> {
+               AdvancementRequirements requirements = AdvancementRequirements.allOf(criteria.keySet());
+               return new Advancement(parent, display, rewards, criteria, requirements, sendsTelemetryEvent, display.map(Advancement::decorateName));
             })
       )
-      .validate(Advancement::validate);
+      .validate(advancement -> Advancement.validate(advancement));
    public static final StreamCodec<RegistryFriendlyByteBuf, Advancement> STREAM_CODEC = StreamCodec.composite(
       Identifier.STREAM_CODEC.apply(ByteBufCodecs::optional),
       Advancement::parent,

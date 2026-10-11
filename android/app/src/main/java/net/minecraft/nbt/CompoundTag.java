@@ -30,7 +30,7 @@ public static final Codec<CompoundTag> CODEC = Codec.PASSTHROUGH
        .comapFlatMap(
           t -> {
              Tag tag = (Tag)t.convert(NbtOps.INSTANCE).getValue();
-             return tag instanceof CompoundTag compoundTag ? DataResult.success(compoundTag == t.getValue() ? compoundTag.copy()  : compoundTag)
+             return tag instanceof CompoundTag compoundTag ? DataResult.success((CompoundTag) tag == t.getValue() ? ((CompoundTag) tag).copy()   : compoundTag)
                 : DataResult.error(() -> "Not a compound tag: " + tag);
           },
           t -> new Dynamic(NbtOps.INSTANCE, t.copy())

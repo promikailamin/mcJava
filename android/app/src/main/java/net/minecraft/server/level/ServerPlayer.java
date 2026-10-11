@@ -1093,24 +1093,24 @@ public class ServerPlayer extends Player {
       }
    }
 
-   private static Optional<ServerPlayer.RespawnPosAngle> findRespawnAndUseSpawnBlock(
-      final ServerLevel level, final ServerPlayer.RespawnConfig respawnConfig, final boolean consumeSpawnBlock
-   ) {
-      LevelData.RespawnData respawnData = respawnConfig.respawnData;
-BlockPos pos = respawnData.pos();
+private static Optional<ServerPlayer.RespawnPosAngle> findRespawnAndUseSpawnBlock(
+       final ServerLevel level, final ServerPlayer.RespawnConfig respawnConfig, final boolean consumeSpawnBlock
+    ) {
+       LevelData.RespawnData respawnData = respawnConfig.respawnData;
+       BlockPos pos = respawnData.pos();
        float yaw = respawnData.yaw();
        float pitch = respawnData.pitch();
        boolean forced = respawnConfig.forced;
        BlockState blockState = level.getBlockState(pos);
        Block block = blockState.getBlock();
-       if (block instanceof RespawnAnchorBlock && (forced || blockState.getValue(RespawnAnchorBlock.CHARGE) > 0) && RespawnAnchorBlock.canSetSpawn(level, pos)) {
-          Optional<Vec3> standUpPosition = RespawnAnchorBlock.findStandUpPosition(EntityTypes.PLAYER, level, pos);
-          if (!forced && consumeSpawnBlock && standUpPosition.isPresent()) {
-             level.setBlockAndUpdate(pos, blockState.setValue(RespawnAnchorBlock.CHARGE, blockState.getValue(RespawnAnchorBlock.CHARGE) - 1));
-          }
+       if (block instanceof RespawnAnchorBlock respawnAnchorBlock && (forced || respawnAnchorBlock.getCharge(blockState) > 0) && RespawnAnchorBlock.canSetSpawn(level, pos)) {
+           Optional<Vec3> standUpPosition = RespawnAnchorBlock.findStandUpPosition(EntityTypes.PLAYER, level, pos);
+           if (!forced && consumeSpawnBlock && standUpPosition.isPresent()) {
+              level.setBlockAndUpdate(pos, respawnAnchorBlock.decreaseCharge(blockState));
+           }
 
-          return standUpPosition.map(p -> ServerPlayer.RespawnPosAngle.of(p, pos, 0.0F));
-       } else if (block instanceof AbstractBedBlock abstractBedBlock && abstractBedBlock.getBedRule(level, pos).canSetSpawn(level)) {
+           return standUpPosition.map(p -> ServerPlayer.RespawnPosAngle.of(p, pos, 0.0F));
+        } else if (block instanceof AbstractBedBlock abstractBedBlock && abstractBedBlock.getBedRule(level, pos).canSetSpawn(level)) {
           return AbstractBedBlock.findStandUpPosition(EntityTypes.PLAYER, level, pos, blockState.getValue(AbstractBedBlock.FACING), yaw)
              .map(p -> ServerPlayer.RespawnPosAngle.of(p, pos, 0.0F));
        } else {

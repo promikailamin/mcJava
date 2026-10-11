@@ -15,14 +15,14 @@ public record ClientboundGameRuleValuesPacket(Map<ResourceKey<GameRule<?>>, Stri
    public static final StreamCodec<FriendlyByteBuf, ClientboundGameRuleValuesPacket> STREAM_CODEC = ByteBufCodecs.map(
          HashMap::new, ResourceKey.streamCodec(Registries.GAME_RULE), ByteBufCodecs.STRING_UTF8
       )
-      .map(ClientboundGameRuleValuesPacket::new, ClientboundGameRuleValuesPacket::values);
+      .map(ClientboundGameRuleValuesPacket::new, packet -> new HashMap<>(packet.values()));
 
-   @Override
-   public PacketType<ClientboundGameRuleValuesPacket> type() {
-      return GamePacketTypes.CLIENTBOUND_GAME_RULE_VALUES;
-   }
+  @Override
+  public PacketType<ClientboundGameRuleValuesPacket> type() {
+     return GamePacketTypes.CLIENTBOUND_GAME_RULE_VALUES;
+  }
 
-   public void handle(final ClientGamePacketListener listener) {
-      listener.handleGameRuleValues(this);
-   }
+  public void handle(final ClientGamePacketListener listener) {
+     listener.handleGameRuleValues(this);
+  }
 }

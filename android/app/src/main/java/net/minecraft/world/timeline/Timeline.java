@@ -7,15 +7,15 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.attribute.AttributeTrack;
 import net.minecraft.world.attribute.EnvironmentAttribute;
+import net.minecraft.world.clock.WorldClock;
 import net.minecraft.world.level.dimension.DimensionType;
 import java.util.Map;
 import java.util.List;
 import java.util.Optional;
 
 public final class Timeline {
-    public static final Codec<Timeline> CODEC = Codec.unit(new Timeline(Holder.direct(WorldClock.DEFAULT), Optional.empty(), Map.of(), Map.of()));
+    public static final Codec<Timeline> CODEC = Codec.unit(new Timeline(Holder.direct(new WorldClock()), Optional.empty(), Map.of(), Map.of()));
     
     private final Holder<WorldClock> clock;
     private final Optional<Integer> periodTicks;

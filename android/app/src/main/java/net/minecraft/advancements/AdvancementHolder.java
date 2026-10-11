@@ -16,10 +16,10 @@ public record AdvancementHolder(Identifier id, Advancement value) {
       output.register(ResourceKey.create(Registries.ADVANCEMENT, this.id), this.value);
    }
 
-   @Override
-   public boolean equals(final Object obj) {
-      return this == obj ? true : obj instanceof AdvancementHolder && this.id.equals(holder.id);
-   }
+@Override
+    public boolean equals(final Object obj) {
+       return this == obj ? true : obj instanceof AdvancementHolder holder && this.id.equals(holder.id);
+    }
 
    @Override
    public int hashCode() {

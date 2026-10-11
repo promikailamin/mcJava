@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.attribute.EnvironmentAttributeMap;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public final class Biome {
     public static final Codec<Biome> CODEC = Codec.unit(new Biome(EnvironmentAttributeMap.EMPTY, Optional.empty(), Optional.empty()));
@@ -37,5 +38,51 @@ public final class Biome {
             this.snow = snow;
             this.rain = rain;
         }
+    }
+    
+    public enum Precipitation {
+        RAIN,
+        SNOW,
+        NONE
+    }
+    
+    public static class BiomeBuilder {
+        private EnvironmentAttributeMap attributes = EnvironmentAttributeMap.EMPTY;
+        private Optional<ResourceKey<DimensionType>> dimension = Optional.empty();
+        private Optional<Float> temperature = Optional.empty();
+        private Precipitation precipitation = Precipitation.NONE;
+        private float downfall = 0.0f;
+        private float temperature_ = 0.0f;
+        
+        public BiomeBuilder precipitation(Precipitation precipitation) {
+            this.precipitation = precipitation;
+            return this;
+        }
+        
+        public BiomeBuilder downfall(float downfall) {
+            this.downfall = downfall;
+            return this;
+        }
+        
+        public BiomeBuilder temperature(float temperature) {
+            this.temperature_ = temperature;
+            return this;
+        }
+        
+        public Biome build() {
+            return new Biome(attributes, dimension, Optional.of(temperature_));
+        }
+    }
+    
+    public Precipitation getPrecipitationAt(net.minecraft.core.BlockPos pos, int seaLevel) {
+        return Precipitation.NONE;
+    }
+    
+    public boolean shouldFreeze(net.minecraft.server.level.ServerLevel level, net.minecraft.core.BlockPos pos) {
+        return false;
+    }
+    
+    public boolean shouldSnow(net.minecraft.server.level.ServerLevel level, net.minecraft.core.BlockPos pos) {
+        return false;
     }
 }

@@ -78,7 +78,7 @@ public Component getLocalizedDeathMessage(final LivingEntity victim) {
              : Component.translatable(deathMsg, victim.getDisplayName());
        } else {
           Component name = this.causingEntity == null ? this.directEntity.getDisplayName() : this.causingEntity.getDisplayName();
-          ItemStack held = this.causingEntity instanceof LivingEntity living ? ((LivingEntity) this.causingEntity).getMainHandItem()  : ItemStack.EMPTY;
+          ItemStack held = this.causingEntity instanceof LivingEntity living ? ((LivingEntity) this.causingEntity).getMainHandItem()   : ItemStack.EMPTY;
           return !held.isEmpty() && held.has(DataComponents.CUSTOM_NAME)
              ? Component.translatable(deathMsg + ".item", victim.getDisplayName(), name, held.getDisplayName())
              : Component.translatable(deathMsg, victim.getDisplayName(), name);

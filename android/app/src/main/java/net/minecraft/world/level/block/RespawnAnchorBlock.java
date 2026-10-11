@@ -206,12 +206,20 @@ public class RespawnAnchorBlock extends Block {
       return true;
    }
 
-   public static int getScaledChargeLevel(final BlockState state, final int maximum) {
-      return Mth.floor((state.getValue(CHARGE) - 0) / 4.0F * maximum);
-   }
-
-   @Override
-   protected int getAnalogOutputSignal(final BlockState state, final Level level, final BlockPos pos, final Direction direction) {
+public static int getScaledChargeLevel(final BlockState state, final int maximum) {
+       return Mth.floor((state.getValue(CHARGE) - 0) / 4.0F * maximum);
+    }
+    
+    public static int getCharge(BlockState state) {
+        return state.getValue(CHARGE);
+    }
+    
+    public static BlockState decreaseCharge(BlockState state) {
+        return state.setValue(CHARGE, state.getValue(CHARGE) - 1);
+    }
+    
+    @Override
+    protected int getAnalogOutputSignal(final BlockState state, final Level level, final BlockPos pos, final Direction direction) {
       return getScaledChargeLevel(state, 15);
    }
 

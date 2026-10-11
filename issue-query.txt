@@ -1,20 +1,37 @@
 A new GitHub issue has been opened.
 
-Issue number: 28
+Issue number: 29
 
 Issue URL:
-https://github.com/promikailamin/mcJava/issues/28
+https://github.com/promikailamin/mcJava/issues/29
 
 Title:
-Make all required tools and custom tools to build it
+Make all tools to build
 
 Description:
-Make all required tools and custom tools in this repo for build this project successfully and build this project.
+## Remaining Issues
 
-### Path to Completion
-As noted in GitHub Issue #27, the complete solution requires automated tooling (OpenRewrite/Error Prone) to convert all 150+ pattern matching switches on sealed types to if-else chains, since manual fixing of each file is impractical at this scale.
+The remaining compilation errors are **deep type system issues** in the decompiled code:
+1. **EnvironmentAttributeMap.java** - Capture type issues with wildcards
+2. **Timeline.java** - Codec type inference problems
+3. **Related classes** - Dependency chain from the above
 
-The infrastructure is now in place (MatchException JAR, build configuration) for the automated conversion to work.
+These require extensive rewrites or automated tooling (OpenRewrite/Error Prone) as noted in AGENTS.md. The infrastructure is in place for such tooling to work.
+
+## Build Commands
+```bash
+cd android
+./gradlew :app:assembleDebug
+```
+
+The fix scripts can be run iteratively:
+```bash
+python3 fix_all_patterns.py
+python3 rewrite_switches_v8.py
+```
+
+
+Make all custom compiler in this ../mcJava/mcJava/tools folder for compile this project successfully and build this project with them
 
 Inspect the repository and implement the requested change.
 

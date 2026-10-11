@@ -45,6 +45,12 @@ public final class EnvironmentAttributeMap {
     public static final Codec<EnvironmentAttributeMap> NETWORK_CODEC = CODEC;
     public static final Codec<EnvironmentAttributeMap> CODEC_ONLY_POSITIONAL = CODEC;
     
+    public <Value> Entry<Value, ?> get(final EnvironmentAttribute<Value> attribute) {
+        @SuppressWarnings("unchecked")
+        Entry<Value, ?> entry = (Entry<Value, ?>) this.entries.get(attribute);
+        return entry;
+    }
+    
     public static class Builder {
         public EnvironmentAttributeMap.Builder putAll(final EnvironmentAttributeMap map) {
             return this;
@@ -65,5 +71,8 @@ public final class EnvironmentAttributeMap {
     }
     
     public record Entry<Value, Argument>(Argument argument, net.minecraft.world.attribute.modifier.AttributeModifier<Value, Argument> modifier) {
+        public Value applyModifier(Value base) {
+            return modifier.apply(base, argument);
+        }
     }
 }
