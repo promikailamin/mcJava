@@ -235,11 +235,11 @@ public class Camera implements TrackedWaypoint.Camera {
       return this.modifyFovBasedOnDeathOrFluid(partialTicks, 70.0F);
    }
 
-   private float modifyFovBasedOnDeathOrFluid(final float partialTicks, float fov) {
-      if (      if (this.entity instanceof LivingEntity cameraEntity &&isDeadOrDying()) {) {
-         float duration = Math.min(cameraEntity.deathTime + partialTicks, 20.0F);
-         fov /= (1.0F - 500.0F / (duration + 500.0F)) * 2.0F + 1.0F;
-      }
+private float modifyFovBasedOnDeathOrFluid(final float partialTicks, float fov) {
+       if (this.entity instanceof LivingEntity cameraEntity && cameraEntity.isDeadOrDying()) {
+          float duration = Math.min(cameraEntity.deathTime + partialTicks, 20.0F);
+          fov /= (1.0F - 500.0F / (duration + 500.0F)) * 2.0F + 1.0F;
+       }
 
       FogType state = this.getFluidInCamera();
       if (state == FogType.LAVA || state == FogType.WATER) {
@@ -250,16 +250,18 @@ public class Camera implements TrackedWaypoint.Camera {
       return fov;
    }
 
-   private void alignWithEntity(final float partialTicks) {
-      if (this.entity.isPassenger()
-         && this.entity.getVehicle() instanceof Minecart && minecart.getBehavior() instanceof NewMinecartBehavior && behavior.cartHasPosRotLerp()) {
-         Vec3 positionOffset = minecart.getPassengerRidingPosition(this.entity)
-            .subtract(minecart.position())
-            .subtract(this.entity.getVehicleAttachmentPoint(minecart))
-            .add(new Vec3(0.0, Mth.lerp(partialTicks, this.eyeHeightOld, this.eyeHeight), 0.0));
-         this.setRotation(this.entity.getViewYRot(partialTicks), this.entity.getViewXRot(partialTicks));
-         this.setPosition(behavior.getCartLerpPosition(partialTicks).add(positionOffset));
-      } else {
+private void alignWithEntity(final float partialTicks) {
+       if (this.entity.isPassenger()
+          && this.entity.getVehicle() instanceof Minecart minecart
+          && minecart.getBehavior() instanceof NewMinecartBehavior behavior
+          && behavior.cartHasPosRotLerp()) {
+          Vec3 positionOffset = minecart.getPassengerRidingPosition(this.entity)
+             .subtract(minecart.position())
+             .subtract(this.entity.getVehicleAttachmentPoint(minecart))
+             .add(new Vec3(0.0, Mth.lerp(partialTicks, this.eyeHeightOld, this.eyeHeight), 0.0));
+          this.setRotation(this.entity.getViewYRot(partialTicks), this.entity.getViewXRot(partialTicks));
+          this.setPosition(behavior.getCartLerpPosition(partialTicks).add(positionOffset));
+       } else {
          this.setRotation(this.entity.getViewYRot(partialTicks), this.entity.getViewXRot(partialTicks));
          this.setPosition(
             Mth.lerp(partialTicks, this.entity.xo, this.entity.getX()),
@@ -284,14 +286,13 @@ public class Camera implements TrackedWaypoint.Camera {
 
          float mountScale = cameraScale;
          float mountDistance = cameraDistance;
-         if (this.entity.isPassenger() && this.entity.getVehicle() instanceof LivingEntity) {
-             LivingEntity mount = (LivingEntity) this.entity.isPassenger() && this.entity.getVehicle();
-            mountScale = mount.getScale();
-            mountDistance = (float)mount.getAttributeValue(Attributes.CAMERA_DISTANCE);
-         }
+if (this.entity.isPassenger() && this.entity.getVehicle() instanceof LivingEntity mount) {
+              mountScale = mount.getScale();
+              mountDistance = (float)mount.getAttributeValue(Attributes.CAMERA_DISTANCE);
+          }
 
-         this.move(-this.getMaxZoom(Math.max(cameraScale * cameraDistance, mountScale * mountDistance)), 0.0F, 0.0F);
-      } else if (this.entity instanceof LivingEntity && entity).isSleeping()) {
+          this.move(-this.getMaxZoom(Math.max(cameraScale * cameraDistance, mountScale * mountDistance)), 0.0F, 0.0F);
+       } else if (this.entity instanceof LivingEntity living && living.isSleeping()) {
          Direction bedOrientation = ((LivingEntity)this.entity).getBedOrientation();
          this.setRotation(bedOrientation != null ? bedOrientation.toYRot() - 180.0F : 0.0F, 0.0F);
          this.move(0.0F, 0.15F, 0.0F);

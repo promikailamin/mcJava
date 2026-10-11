@@ -118,31 +118,15 @@ task printSourceFiles {
     }
 }
 
-    sourceSets {
+sourceSets {
         main {
             java {
                 srcDirs = ['src/main/java']
-                exclude '**/net/minecraft/client/**'
-                exclude '**/com/mojang/blaze3d/**'
-                exclude '**/com/mojang/renderpearl/**'
-                exclude '**/com/mojang/realmsclient/**'
-                exclude '**/com/mojang/text2speech/**'
-                exclude '**/org/lwjgl/**'
-                exclude '**/net/minecraft/realms/**'
-                exclude '**/net/fabricmc/**'
-                exclude '**/stubs/**'
-                exclude '**/pro/minecraft/launch/**'
-                exclude '**/pro/minecraft/main_activity.java'
-                exclude '**/pro/minecraft/host/**'
-                exclude '**/net/minecraft/util/profiling/jfr/event/**'
-                exclude '**/net/minecraft/util/profiling/jfr/parse/**'
-                exclude '**/net/minecraft/util/profiling/jfr/serialize/**'
-                exclude '**/net/minecraft/util/profiling/jfr/stats/**'
-                exclude '**/net/minecraft/util/profiling/jfr/JfrProfiler.java'
-                exclude '**/net/minecraft/util/profiling/jfr/SummaryReporter.java'
-                exclude '**/net/minecraft/server/gui/**'
-exclude '**/net/minecraft/util/monitoring/jmx/**'
-        exclude '**/com/mojang/renderpearl/backend/vulkan/**'
+                // MINIMAL BUILD: Only compile Android host + shim layer + stubs
+                // Exclude ALL Minecraft game logic (too many decompiler artifacts)
+                exclude '**/net/minecraft/**'
+                exclude '**/com/mojang/**'
+                exclude '**/net/fabricmc/**'                           // needs Mixin/TinyRemapper/ASM
             }
         }
     }

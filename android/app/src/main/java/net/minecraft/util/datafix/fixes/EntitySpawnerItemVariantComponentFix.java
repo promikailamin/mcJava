@@ -25,14 +25,14 @@ public final TypeRewriteRule makeRule() {
         Type<?> itemStackType = this.getInputSchema().getType(References.ITEM_STACK);
         OpticFinder<Pair<String, String>> idFinder = DSL.fieldFinder("id", DSL.named(References.ITEM_NAME.typeName(), NamespacedSchema.namespacedString()));
         OpticFinder<?> componentsFinder = itemStackType.findField("components");
-        return this.fixTypeEverywhereTyped(
+return this.fixTypeEverywhereTyped(
             "ItemStack bucket_entity_data variants to separate components",
             itemStackType,
-            return input; -> {
-               String id = return input;.getOptional(idFinder).<String>map(Pair::getSecond).orElse("");
+            input -> {
+               String id = input.getOptional(idFinder).<String>map(Pair::getSecond).orElse("");
                return input;
-            }
-         );
+           }
+        );
      }
 
    private static String getBaseColor(final int packedVariant) {

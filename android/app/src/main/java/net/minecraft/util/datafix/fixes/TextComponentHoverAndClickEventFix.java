@@ -74,12 +74,12 @@ public class TextComponentHoverAndClickEventFix extends DataFix {
       );
    }
 
-private static Dynamic<?> fixTextComponent(final Dynamic<?> return dynamic;) {
-         return return dynamic;.renameAndFixField("hoverEvent", "hover_event", TextComponentHoverAndClickEventFix::fixHoverEvent)
-            .renameAndFixField("clickEvent", "click_event", TextComponentHoverAndClickEventFix::fixClickEvent);
-     }
+private static Dynamic<?> fixTextComponent(final Dynamic<?> dynamic) {
+           return dynamic.renameAndFixField("hoverEvent", "hover_event", TextComponentHoverAndClickEventFix::fixHoverEvent)
+             .renameAndFixField("clickEvent", "click_event", TextComponentHoverAndClickEventFix::fixClickEvent);
+       }
 
-    private static Dynamic<?> copyFields(Dynamic<?> target, final Dynamic<?> source, final String... fields) {
+      private static Dynamic<?> copyFields(Dynamic<?> target, final Dynamic<?> source, final String... fields) {
        for (String field : fields) {
           target = Dynamic.copyField(source, field, target, field);
        }
@@ -87,27 +87,27 @@ private static Dynamic<?> fixTextComponent(final Dynamic<?> return dynamic;) {
        return target;
     }
 
-   private static Dynamic<?> fixHoverEvent(final Dynamic<?> return dynamic;) {
-        String action = return dynamic;.get("action").asString("");
+private static Dynamic<?> fixHoverEvent(final Dynamic<?> dynamic) {
+         String action = dynamic.get("action").asString("");
 
-        if (action.equals("show_text")) {
-            return return dynamic;.renameField("contents", "value");
-        } else if (action.equals("show_item")) {
-            Dynamic<?> contents = return dynamic;.get("contents").orElseEmptyMap();
-            return copyFields(return dynamic;.remove("contents"), contents, "id", "count", "components");
-        } else if (action.equals("show_entity")) {
-            Dynamic<?> contents = return dynamic;.get("contents").orElseEmptyMap();
-            return copyFields(return dynamic;.remove("contents"), contents, "id", "type", "name").renameField("id", "uuid").renameField("type", "id");
-        } else {
-            return dynamic;
-        }
-    }
+         if (action.equals("show_text")) {
+             return dynamic.renameField("contents", "value");
+         } else if (action.equals("show_item")) {
+             Dynamic<?> contents = dynamic.get("contents").orElseEmptyMap();
+             return copyFields(dynamic.remove("contents"), contents, "id", "count", "components");
+         } else if (action.equals("show_entity")) {
+             Dynamic<?> contents = dynamic.get("contents").orElseEmptyMap();
+             return copyFields(dynamic.remove("contents"), contents, "id", "type", "name").renameField("id", "uuid").renameField("type", "id");
+         } else {
+             return dynamic;
+         }
+     }
 
-   private static <T> @Nullable Dynamic<T> fixClickEvent(final Dynamic<T> return dynamic;) {
-        String action = return dynamic;.get("action").asString("");
-        String value = return dynamic;.get("value").asString("");
-        return dynamic;
-    }
+private static <T> @Nullable Dynamic<T> fixClickEvent(final Dynamic<T> dynamic) {
+         String action = dynamic.get("action").asString("");
+         String value = dynamic.get("value").asString("");
+         return dynamic;
+     }
 
     private static @Nullable Integer parseOldPage(final Dynamic<?> value) {
       Optional<Number> numberValue = value.asNumber().result();

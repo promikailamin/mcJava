@@ -805,7 +805,7 @@ public class GL33C {
         return out[0];
     }
 
-    public static void glDeleteSamplers(IntBuffer samplers) { GLES30.glDeleteSamplers(samplers); }
+    public static void glDeleteSamplers(IntBuffer samplers) { GLES30.glDeleteSamplers(samplers.remaining(), samplers); }
     public static void glDeleteSamplers(int sampler) { GLES30.glDeleteSamplers(1, new int[]{sampler}, 0); }
     public static void glBindSampler(int unit, int sampler) { GLES30.glBindSampler(unit, sampler); }
     public static void glSamplerParameteri(int sampler, int pname, int param) { GLES30.glSamplerParameteri(sampler, pname, param); }
@@ -845,7 +845,7 @@ public class GL33C {
         while (d.hasRemaining() && d.get() != 0) { }
         int end = d.position();
         byte[] bytes = new byte[Math.max(0, end - start)];
-        buf.duplicate().position(start).limit(Math.max(start, end)).get(bytes);
+        ((ByteBuffer)buf.duplicate().position(start).limit(Math.max(start, end))).get(bytes);
         return new String(bytes, StandardCharsets.UTF_8);
     }
 

@@ -93,7 +93,7 @@ this.cost.set(0);
        if (player instanceof ServerPlayer serverPlayer
              && itemName
              && !this.inputSlots.getItem(0).getHoverName().getString().equals(this.itemName)) {
-          serverPlayer.getTextFilter().processStreamMessage(this.itemName);
+          if (player instanceof ServerPlayer serverPlayer) { if (player instanceof ServerPlayer serverPlayer) { serverPlayer.getTextFilter().processStreamMessage(this.itemName); } }
        }
 
       this.inputSlots.setItem(0, ItemStack.EMPTY);

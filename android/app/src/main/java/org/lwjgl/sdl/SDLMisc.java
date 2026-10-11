@@ -13,8 +13,12 @@ public final class SDLMisc {
             android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_VIEW,
                     android.net.Uri.parse(url));
             intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
-            pro.minecraft.main_activity.instance().startActivity(intent);
-            return true;
+            pro.minecraft.main_activity activity = pro.minecraft.main_activity.instance();
+            if (activity != null) {
+                activity.startActivity(intent);
+                return true;
+            }
+            return false;
         } catch (RuntimeException e) {
             SDLError.setError(e.getMessage());
             return false;

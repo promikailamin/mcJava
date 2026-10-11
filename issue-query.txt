@@ -1,15 +1,19 @@
 A new GitHub issue has been opened.
 
-Issue number: 33
+Issue number: 34
 
 Issue URL:
-https://github.com/promikailamin/mcJava/issues/33
+https://github.com/promikailamin/mcJava/issues/34
 
 Title:
-Fix all things and build
+Fix and build and create GitHub release
 
 Description:
-Fix all errors and build all things and make a GitHub release with the output
+### Recommendation:
+To properly fix this codebase, a **proper AST-based Java transformer** (OpenRewrite, Error Prone, or custom JavaCompiler plugin) is needed instead of regex-based scripts. The current approach cannot reliably fix 5,013 files with complex Java 21 pattern matching.
+
+The compilation still fails. A proper solution would require significant tooling investment beyond manual fixes.
+
 
 Inspect the repository and implement the requested change.
 

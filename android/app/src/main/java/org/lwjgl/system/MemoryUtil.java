@@ -72,7 +72,7 @@ public final class MemoryUtil {
             ByteBuffer slice = parent.duplicate().order(ByteOrder.nativeOrder());
             slice.position(offset);
             slice.limit(offset + length);
-            return slice.slice();
+            return (ByteBuffer)slice.slice();
         }
     }
 
@@ -209,7 +209,7 @@ public final class MemoryUtil {
         ByteBuffer slice = r.parent().duplicate().order(ByteOrder.nativeOrder());
         slice.position(r.offset() + off);
         slice.limit(end);
-        return slice.slice();
+        return (ByteBuffer)slice.slice();
     }
 
     static long rawOffset(long address) {
@@ -315,7 +315,7 @@ public final class MemoryUtil {
         if (base == null) {
             base = addressOf(buffer);
         }
-        ByteBuffer slice = buffer.duplicate().order(ByteOrder.nativeOrder())
+        ByteBuffer slice = (ByteBuffer)buffer.duplicate().order(ByteOrder.nativeOrder())
                 .position(offset).limit(offset + length).slice();
         SLICES.put(slice, base + offset);
         return slice;
@@ -416,11 +416,11 @@ public final class MemoryUtil {
         }
         if (o instanceof Pointer) {
             Pointer p = (Pointer) o;
-            return (Pointer) o.address();
+            return p.address();
         }
         if (o instanceof Long) {
             Long l = (Long) o;
-            return (Long) o;
+            return l;
         }
         return 0L;
     }
