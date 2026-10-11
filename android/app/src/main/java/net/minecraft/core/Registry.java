@@ -48,7 +48,7 @@ public interface Registry<T> extends IdMap<T>, Keyable, HolderLookup.RegistryLoo
    }
 
 private DataResult<Holder.Reference<T>> safeCastToReference(final Holder<T> holder) {
-       return holder instanceof Holder.Reference<T> ? DataResult.success(reference)
+       return holder instanceof Holder.Reference<T> reference ? DataResult.success(reference)
             : DataResult.error(() -> "Unregistered holder in " + this.key() + ": " + holder);
     }
 

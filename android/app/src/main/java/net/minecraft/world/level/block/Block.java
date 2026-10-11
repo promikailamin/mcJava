@@ -132,7 +132,7 @@ public class Block extends BlockBehaviour implements ItemLike {
    }
 
 public static Block byItem(final @Nullable Item item) {
-       return item instanceof BlockItem ? getBlock() : Blocks.AIR;
+       return item instanceof BlockItem blockItem ? blockItem.getBlock() : Blocks.AIR;
     }
 
    public static BlockState pushEntitiesUp(final BlockState state, final BlockState newState, final LevelAccessor level, final BlockPos pos) {
@@ -434,7 +434,7 @@ public static Block byItem(final @Nullable Item item) {
    }
 
 private static void popResource(final Level level, final Supplier<ItemEntity> entityFactory, final ItemStack itemStack) {
-       if (level instanceof ServerLevel && !itemStack.isEmpty() && serverLevel.getGameRules().get(GameRules.BLOCK_DROPS)) {
+       if (level instanceof ServerLevel serverLevel && !itemStack.isEmpty() && serverLevel.getGameRules().get(GameRules.BLOCK_DROPS)) {
           ItemEntity entity = entityFactory.get();
           entity.setDefaultPickUpDelay();
           level.addFreshEntity(entity);
@@ -523,8 +523,7 @@ private static void popResource(final Level level, final Supplier<ItemEntity> en
 
 public BlockState playerWillDestroy(final Level level, final BlockPos pos, final BlockState state, final Player player) {
        this.spawnDestroyByEntityParticles(level, player, pos, state);
-       if (state.is(BlockTags.GUARDED_BY_PIGLINS) && level instanceof ServerLevel) {
-           ServerLevel serverLevel = (ServerLevel) state.is(BlockTags.GUARDED_BY_PIGLINS) && level;
+       if (state.is(BlockTags.GUARDED_BY_PIGLINS) && level instanceof ServerLevel serverLevel) {
           PiglinAi.angerNearbyPiglins(serverLevel, player, false);
        }
 
@@ -630,7 +629,7 @@ private static <S extends StateHolder<?, S>, T extends Comparable<T>> S setValue
 private record ShapePairKey(VoxelShape first, VoxelShape second) {
        @Override
        public boolean equals(final Object o) {
-          return o instanceof Block.ShapePairKey && this.first == that.first && this.second == that.second;
+          return o instanceof Block.ShapePairKey that && this.first == that.first && this.second == that.second;
        }
 
        @Override

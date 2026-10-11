@@ -78,7 +78,7 @@ public Component getLocalizedDeathMessage(final LivingEntity victim) {
              : Component.translatable(deathMsg, victim.getDisplayName());
        } else {
           Component name = this.causingEntity == null ? this.directEntity.getDisplayName() : this.causingEntity.getDisplayName();
-          ItemStack held = this.causingEntity instanceof LivingEntity ? getMainHandItem() : ItemStack.EMPTY;
+          ItemStack held = this.causingEntity instanceof LivingEntity living ? living.getMainHandItem() : ItemStack.EMPTY;
           return !held.isEmpty() && held.has(DataComponents.CUSTOM_NAME)
              ? Component.translatable(deathMsg + ".item", victim.getDisplayName(), name, held.getDisplayName())
              : Component.translatable(deathMsg, victim.getDisplayName(), name);
@@ -104,7 +104,7 @@ public boolean scalesWithDifficulty() {
 
 public boolean isCreativePlayer() {
        Entity entity = this.getEntity();
-       return entity instanceof Player && player.getAbilities().instabuild;
+       return entity instanceof Player player && player.getAbilities().instabuild;
     }
 
    public @Nullable Vec3 getSourcePosition() {

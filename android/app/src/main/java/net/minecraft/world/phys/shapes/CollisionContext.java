@@ -27,10 +27,9 @@ public interface CollisionContext {
           return AbstractMinecart.useExperimentalMovement(minecart.level())
             ? new MinecartCollisionContext(minecart, false)
             : new EntityCollisionContext(entity, false, false);
-      }
-      else {
+      } else {
           return new EntityCollisionContext(entity, false, false);
-      };
+      }
    }
 
    static CollisionContext of(final Entity entity, final boolean alwaysCollideWithFluid) {
@@ -57,7 +56,7 @@ static CollisionContext withPosition(final @Nullable Entity entity, final double
           entity != null ? entity.isDescending() : false,
           true,
           entity != null ? position : -Double.MAX_VALUE,
-          entity instanceof LivingEntity ? getMainHandItem() : ItemStack.EMPTY,
+          entity instanceof LivingEntity living ? living.getMainHandItem() : ItemStack.EMPTY,
           false,
           entity
        );

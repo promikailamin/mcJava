@@ -1,61 +1,26 @@
 A new GitHub issue has been opened.
 
-Issue number: 26
+Issue number: 27
 
 Issue URL:
-https://github.com/promikailamin/mcJava/issues/26
+https://github.com/promikailamin/mcJava/issues/27
 
 Title:
 Fix all and build
 
 Description:
-I've made extensive fixes to the mcJava project. Here's a summary of what was accomplished:
+**Remaining Issue**: There are 150+ files with switch expressions in the non-excluded code. While most are on enums, the compiler still fails with `MatchException` suggesting at least one pattern matching switch on a sealed type exists that we haven't identified.
 
-## Fixes Applied
+**Viable Solutions** (per the issue):
+1. **Custom JDK** with MatchException added to java.base
+2. **Complete automated conversion** using OpenRewrite/Error Prone to convert ALL pattern matching switches on sealed types to if-else chains
+3. **Target desktop JDK 21+** instead of Android
+4. **Android 14+** (UpsideDownCake) with better Java 21 support
 
-### 1. **Invalid `instanceof` Patterns Fixed**
-- Fixed incorrectly converted switch expressions that produced invalid syntax like `if (var instanceof A, B)`
-
-### 2. **Pattern Matching Switches on Sealed Types Converted**
-- Converted to if-else chains in multiple files to avoid MatchException requirement
-- Fixed in: `ServerLevel.java`, `Entity.java`, `CollisionContext.java`, `DamageSource.java`, `LivingEntity.java`
-
-### 3. **Missing Variable Bindings Restored**
-- Fixed pattern variable bindings in `Entity.java` (5 locations), `EntityType.java`, `Block.java` (3 locations), `ServerLevel.java` (3 locations)
-
-### 4. **Syntax Errors Fixed**
-- Missing semicolons after throw statements
-- Corrupted lambda expressions
-- Incomplete if-else branches
-- Fixed `keymap.java` (KEYCODE_END → KEYCODE_MOVE_END)
-- Fixed `SectionCategory.java` and `MemoryPool.java` stub files
-
-### 5. **Created jtracy Stubs**
-- Added no-op implementations for `TracyClient`, `Zone`, `DiscontinuousFrame`, `Plot` in `com/mojang/jtracy/`
-
-### 6. **Updated Build Configuration**
-- Added exclusions for: `net/minecraft/client/**`, `com/mojang/blaze3d/**`, `com/mojang/renderpearl/**`, `com/mojang/realmsclient/**`, `com/mojang/text2speech/**`, `org/lwjgl/**`, `net/minecraft/realms/**`, `net/fabricmc/**`, `stubs/**`, `pro/minecraft/**`
-
-## Remaining Blocker: MatchException
-
-The build fails with `com.sun.tools.javac.code.Symbol$CompletionFailure: class file for java.lang.MatchException not found`. This is a fundamental limitation:
-
-- **Cause**: JDK 21 compiler requires `java.lang.MatchException` for pattern matching switches on sealed types
-- **Problem**: This class doesn't exist in Android's java.base module
-- **Constraint**: java.lang is a sealed module - cannot add classes via boot classpath, patch-module, or custom JAR
-
-## Recommended Next Steps
-
-As noted in the GitHub issue, the only viable solutions are:
-1. **Custom JDK**: Build a custom JDK with MatchException added to java.base
-2. **Complete Conversion**: Use automated tools (OpenRewrite/Error Prone) to convert ALL pattern matching switches on sealed types to if-else chains in both source code AND dependencies
-3. **Target Desktop**: Build for desktop JDK 21+ instead of Android
-4. **Android 14+**: Use Android 14 (UpsideDownCake) which has better Java 21 support
-
-The project now has significantly fewer compilation errors, but the MatchException issue requires either a custom runtime environment or complete elimination of pattern matching on sealed types from the entire dependency chain.
+The Android build fundamentally cannot compile pattern matching switches on sealed types without a custom JDK. The only way forward on Android is complete automated conversion of all such switches, which requires tooling beyond manual fixes.
 
 
-setup all tools needed java, android sdk, ndk etc ... and Fix all errors no matters how much changes and afforts it need just fix all and build it. and download mcsrc (a decompiler tool), Minecraft java latest version, fabric loader latest version and decompile them for assist in this project. perfectly build it. fix all errors and build in any cost.
+Now make a AGENTS.md and write here to follow the rules of this AGENTS.md and  write here that this is and GitHub repo and need to follow the issues quarry and work untill the issues has been fixed or work done. if need custom jdk or any custom tools make them also untill the build is complete.
 
 Inspect the repository and implement the requested change.
 

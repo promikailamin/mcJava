@@ -77,18 +77,26 @@ android {
         options.compilerArgs << "-Xmaxerrs" << "100000"
         options.fork = true
         
-        // Add MatchException to java.lang module via patch-module
+        // Add MatchException to java.base module via patch-module (java.lang is in java.base)
         def matchExceptionJar = file('../../matchexception/matchexception.jar')
+        println "MatchException JAR path: ${matchExceptionJar.absolutePath}, exists: ${matchExceptionJar.exists()}"
         if (matchExceptionJar.exists()) {
-            options.compilerArgs << "--patch-module=java.lang=" + matchExceptionJar.absolutePath
+            options.compilerArgs << "--patch-module=java.base=" + matchExceptionJar.absolutePath
+            // Also add to boot classpath as fallback
+            options.compilerArgs << "-Xbootclasspath/a:" + matchExceptionJar.absolutePath
             // Also add to classpath as fallback
             doFirst {
                 classpath = classpath + files(matchExceptionJar)
             }
+            // Add to forked JVM's boot classpath
+            options.forkOptions.jvmArgs << "-Xbootclasspath/a:" + matchExceptionJar.absolutePath
+            options.forkOptions.jvmArgs << "--patch-module=java.base=" + matchExceptionJar.absolutePath
         }
         
-        // Debug: print source files count without filtering
+        // Debug: print compiler args
         doFirst {
+            println "Compiler args: ${options.compilerArgs}"
+            println "Fork JVM args: ${options.forkOptions.jvmArgs}"
             println "Source files (no filter): ${source.files.size()}"
             source.files.each { f ->
                 if (f.path.contains('net/minecraft/client') || f.path.contains('com/mojang/blaze3d') || f.path.contains('org/lwjgl')) {
