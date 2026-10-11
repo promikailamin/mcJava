@@ -97,10 +97,15 @@ public final class EntityPredicate {
       return new LootContext.Builder(lootParams).create(Optional.empty());
    }
 
-   @Override
-   public boolean equals(final Object o) {
-      return o == this || o instanceof EntityPredicate Objects && Objects.equals(this.parts, that.parts);
-   }
+@Override
+    public boolean equals(final Object o) {
+       if (this == o) {
+          return true;
+       } else if (o instanceof EntityPredicate that) {
+          return this.parts.equals(that.parts);
+       }
+       return false;
+    }
 
    @Override
    public int hashCode() {

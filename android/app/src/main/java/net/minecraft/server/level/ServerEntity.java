@@ -163,7 +163,7 @@ public class ServerEntity {
                packet = this.createMovePacket(position, yRotn, xRotn, shouldSendPosition, shouldSendRotation);
             }
 
-            if (this.entity.needsSync || this.trackDelta || this.entity instanceof LivingEntity livingEntity && livingEntity.isFallFlying()) {
+            if (this.entity.needsSync || this.trackDelta || this.entity instanceof LivingEntity livingEntity &&isFallFlying()) {
                Vec3 movement = this.entity.getDeltaMovement();
                double diff = movement.distanceToSqr(this.lastSentMovement);
                if (diff > 1.0E-7 || diff > 0.0 && movement.lengthSqr() == 0.0) {

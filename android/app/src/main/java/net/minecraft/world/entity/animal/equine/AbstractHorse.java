@@ -90,7 +90,7 @@ public abstract class AbstractHorse extends Animal implements PlayerRideableJump
    private static final float MAX_HEALTH = generateMaxHealth(i -> i - 1);
    private static final float BACKWARDS_MOVE_SPEED_FACTOR = 0.25F;
    private static final float SIDEWAYS_MOVE_SPEED_FACTOR = 0.5F;
-   private static final TargetingConditions.Selector PARENT_HORSE_SELECTOR = (target, level) -> target instanceof AbstractHorse horse && isBred();
+   private static final TargetingConditions.Selector PARENT_HORSE_SELECTOR = (target, level) -> target instanceof AbstractHorse && isBred();
    private static final TargetingConditions MOMMY_TARGETING = TargetingConditions.forNonCombat()
       .range(16.0)
       .ignoreLineOfSight()

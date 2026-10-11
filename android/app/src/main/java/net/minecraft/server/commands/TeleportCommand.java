@@ -254,7 +254,7 @@ public class TeleportCommand {
             lookAt.perform(source, victim);
          }
 
-         if (!(victim instanceof LivingEntity living && isFallFlying())) {
+         if (!(victim instanceof LivingEntity && isFallFlying())) {
             victim.setDeltaMovement(victim.getDeltaMovement().multiply(1.0, 0.0, 1.0));
             victim.setOnGround(true);
          }

@@ -100,7 +100,8 @@ public abstract class AbstractArrow extends Projectile {
       }
 
       this.setPos(x, y, z);
-if (firedFromWeapon != null && level instanceof ServerLevel serverLevel) {
+if (firedFromWeapon != null && level instanceof ServerLevel) {
+    ServerLevel serverLevel = (ServerLevel) firedFromWeapon != null && level;
           if (firedFromWeapon.isEmpty()) {
              throw new IllegalArgumentException("Invalid weapon firing an arrow");
           }
@@ -478,7 +479,7 @@ if (this.getWeaponItem() != null && this.level() instanceof ServerLevel serverLe
             }
 
             this.doPostHurtEffects(mob);
-            if (mob instanceof ServerPlayer player && currentOwner instanceof ServerPlayer serverPlayer && isSilent() && mob != player) {
+            if (mob instanceof ServerPlayer connection && currentOwner instanceof ServerPlayer && isSilent() && mob != player) {
                player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.PLAY_ARROW_HIT_SOUND, 0.0F));
             }
 
@@ -486,7 +487,8 @@ if (this.getWeaponItem() != null && this.level() instanceof ServerLevel serverLe
                this.piercedAndKilledEntities.add(mob);
             }
 
-            if (!this.level().isClientSide() && currentOwner instanceof ServerPlayer player) {
+            if (!this.level().isClientSide() && currentOwner instanceof ServerPlayer) {
+                ServerPlayer player = (ServerPlayer) !this.level().isClientSide() && currentOwner;
                if (this.piercedAndKilledEntities != null) {
                   CriteriaTriggers.KILLED_BY_ARROW.trigger(player, this.piercedAndKilledEntities, this.firedFromWeapon);
                } else if (!entity.isAlive()) {
@@ -591,7 +593,7 @@ protected void hitBlockEnchantmentEffects(final ServerLevel serverLevel, final B
 
 @Override
     protected boolean canHitEntity(final Entity entity) {
-       return entity instanceof Player player && this.getOwner() instanceof Player playerEntity && !player.canHarmPlayer(playerEntity)
+       return entity instanceof Player playerEntity && this.getOwner() instanceof Player && !player.canHarmPlayer(playerEntity)
           ? false
           : super.canHitEntity(entity) && (this.piercingIgnoreEntityIds == null || !this.piercingIgnoreEntityIds.contains(entity.getId()));
     }

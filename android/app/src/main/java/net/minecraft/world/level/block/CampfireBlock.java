@@ -86,7 +86,7 @@ public class CampfireBlock extends BaseEntityBlock implements SimpleWaterloggedB
           CampfireBlockEntity campfire = (CampfireBlockEntity) level.getBlockEntity(pos);
          ItemStack itemInHand = player.getItemInHand(hand);
          if (level.recipeAccess().propertySet(RecipePropertySet.CAMPFIRE_INPUT).test(itemInHand)) {
-            if (level instanceof ServerLevel itemStack && campfire.placeFood(serverLevel, player, itemInHand)) {
+            if (level instanceof ServerLevel serverLevel && campfire.placeFood(serverLevel, player, itemInHand)) {
                player.awardStat(Stats.INTERACT_WITH_CAMPFIRE);
                return InteractionResult.SUCCESS_SERVER;
             }
@@ -217,16 +217,17 @@ public class CampfireBlock extends BaseEntityBlock implements SimpleWaterloggedB
       }
    }
 
-   @Override
-   protected void onProjectileHit(final Level level, final BlockState state, final BlockHitResult blockHit, final Projectile projectile) {
-      BlockPos pos = blockHit.getBlockPos();
-      if (level instanceof ServerLevel projectile && projectile.isOnFire()
-         && projectile.mayInteract(serverLevel, pos)
-         && !state.getValue(LIT)
-         && !state.getValue(WATERLOGGED)) {
-         level.setBlock(pos, state.setValue(BlockStateProperties.LIT, true), 11);
-      }
-   }
+@Override
+    protected void onProjectileHit(final Level level, final BlockState state, final BlockHitResult blockHit, final Projectile projectile) {
+       BlockPos pos = blockHit.getBlockPos();
+       if (level instanceof ServerLevel serverLevel
+             && projectile.isOnFire()
+             && projectile.mayInteract(serverLevel, pos)
+             && !state.getValue(LIT)
+             && !state.getValue(WATERLOGGED)) {
+          level.setBlock(pos, state.setValue(BlockStateProperties.LIT, true), 11);
+       }
+    }
 
    public static void makeParticles(final Level level, final BlockPos pos, final boolean isSignalFire, final boolean smoking) {
       RandomSource random = level.getRandom();

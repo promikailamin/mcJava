@@ -93,13 +93,13 @@ public class HoneyBlock extends HalfTransparentBlock {
       return dx + 1.0E-7 > overlapDistance || dz + 1.0E-7 > overlapDistance;
    }
 
-   private void maybeDoSlideAchievement(final Entity entity, final BlockPos pos) {
-      if (entity instanceof ServerPlayer serverPlayer && level.getGameTime() % 20L == 0L) {
-         CriteriaTriggers.HONEY_BLOCK_SLIDE.trigger(serverPlayer, entity.level().getBlockState(pos));
-      }
-   }
+private void maybeDoSlideAchievement(final Entity entity, final BlockPos pos) {
+       if (entity instanceof ServerPlayer serverPlayer && serverPlayer.level().getGameTime() % 20L == 0L) {
+          CriteriaTriggers.HONEY_BLOCK_SLIDE.trigger(serverPlayer, entity.level().getBlockState(pos));
+       }
+    }
 
-   private void doSlideMovement(final Entity entity) {
+    private void doSlideMovement(final Entity entity) {
       Vec3 deltaMovement = entity.getDeltaMovement();
       if (getOldDeltaY(entity.getDeltaMovement().y) < -0.13) {
          double horizontalReductionFactor = -0.05 / getOldDeltaY(entity.getDeltaMovement().y);

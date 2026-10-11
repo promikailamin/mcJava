@@ -470,13 +470,13 @@ public enum Direction implements Directional, StringRepresentable {
          return input != null && input.getAxis() == this;
       }
 
-public Direction.Plane getPlane() {
-          if (this == X || this == Z) {
-              return Direction.Plane.HORIZONTAL;
-          } else {
-              return Direction.Plane.VERTICAL;
-          }
-      }
+    public Direction.Plane getPlane() {
+        if (this == X || this == Z) {
+            return Direction.Plane.HORIZONTAL;
+        } else {
+            return Direction.Plane.VERTICAL;
+        }
+    }
 
       @Override
       public String getSerializedName() {

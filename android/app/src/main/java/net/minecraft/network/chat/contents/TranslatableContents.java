@@ -207,14 +207,17 @@ public class TranslatableContents implements ComponentContents {
       return MutableComponent.create(new TranslatableContents(this.key, this.fallback, argsCopy));
    }
 
-   @Override
-   public boolean equals(final Object o) {
-      return this == o
-         ? true
-         : o instanceof TranslatableContents Objects && Objects.equals(this.key, that.key)
-            && Objects.equals(this.fallback, that.fallback)
-            && Arrays.equals(this.args, that.args);
-   }
+@Override
+    public boolean equals(final Object o) {
+       if (this == o) {
+          return true;
+       } else if (o instanceof TranslatableContents that) {
+          return this.key.equals(that.key)
+             && Objects.equals(this.fallback, that.fallback)
+             && Arrays.equals(this.args, that.args);
+       }
+       return false;
+    }
 
    @Override
    public int hashCode() {

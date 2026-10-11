@@ -146,8 +146,7 @@ public enum ConversionType {
          }
       }
 
-      if (from instanceof Zombie fromZombie && fromZombie.canBreakDoors() && to instanceof Zombie) {
-          Zombie toZombie = (Zombie) from instanceof Zombie fromZombie && canBreakDoors() && to;
+      if (from instanceof Zombie fromZombie && fromZombie.canBreakDoors() && to instanceof Zombie toZombie) {
          toZombie.setCanBreakDoors(true);
       }
    }

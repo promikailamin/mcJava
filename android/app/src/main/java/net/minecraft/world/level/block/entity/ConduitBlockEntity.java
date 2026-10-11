@@ -206,7 +206,7 @@ public class ConduitBlockEntity extends BlockEntity {
 
    private static @Nullable EntityReference<LivingEntity> selectNewTarget(final ServerLevel level, final BlockPos pos) {
       List<LivingEntity> candidates = level.getEntitiesOfClass(
-         LivingEntity.class, getDestroyRangeAABB(pos), input -> input instanceof Enemy input && isInWaterOrRain()
+         LivingEntity.class, getDestroyRangeAABB(pos), input -> input instanceof Enemy && isInWaterOrRain()
       );
       return candidates.isEmpty() ? null : EntityReference.of(Util.getRandom(candidates, level.getRandom()));
    }

@@ -69,7 +69,7 @@ public class ThrownEnderpearl extends ThrowableItemProjectile {
 
    @Override
    public @Nullable Entity getOwner() {
-      return this.owner != null && this.level() instanceof ServerLevel ? this.owner.getEntity(serverLevel, Entity.class)  : super.getOwner();
+      return this.owner != null && this.level() instanceof ServerLevel ? this.owner.getEntity(serverLevel, Entity.class)   : super.getOwner();
    }
 
    private static @Nullable Entity findOwnerIncludingDeadPlayer(final ServerLevel serverLevel, final UUID uuid) {
@@ -168,7 +168,7 @@ public class ThrownEnderpearl extends ThrowableItemProjectile {
          int var7 = SectionPos.blockToSectionCoord(this.position().x());
          int previousChunkZ = SectionPos.blockToSectionCoord(this.position().z());
          Entity owner = this.owner != null ? findOwnerIncludingDeadPlayer(serverLevel, this.owner.getUUID()) : null;
-         if (owner instanceof ServerPlayer serverPlayer && !owner.isAlive()
+         if (owner instanceof ServerPlayer owner &&isAlive()
             && !serverPlayer.wonGame
             && serverPlayer.level().getGameRules().get(GameRules.ENDER_PEARLS_VANISH_ON_DEATH)) {
             this.discard();

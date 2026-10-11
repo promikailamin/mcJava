@@ -92,7 +92,12 @@ public final class LongArrayTag implements CollectionTag {
 
 @Override
     public boolean equals(final Object obj) {
-       return this == obj ? true : obj instanceof LongArrayTag longArrayTag && Arrays.equals(this.data, longArrayTag.data);
+       if (this == obj) {
+          return true;
+       } else if (obj instanceof LongArrayTag that) {
+          return Arrays.equals(this.data, that.data);
+       }
+       return false;
     }
 
    @Override

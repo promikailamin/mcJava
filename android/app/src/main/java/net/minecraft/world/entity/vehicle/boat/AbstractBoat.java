@@ -284,7 +284,7 @@ public abstract class AbstractBoat extends VehicleEntity implements Leashable {
                   && this.getPassengers().size() < this.getMaxPassengers()
                   && !entity.isPassenger()
                   && this.hasEnoughSpaceFor(entity)
-                  && entity instanceof LivingEntity entity && is(EntityTypeTags.CANNOT_BE_PUSHED_ONTO_BOATS)) {
+                  && entity instanceof LivingEntity && is(EntityTypeTags.CANNOT_BE_PUSHED_ONTO_BOATS)) {
                   entity.startRiding(this);
                } else {
                   this.push(entity);
@@ -706,11 +706,11 @@ public abstract class AbstractBoat extends VehicleEntity implements Leashable {
       }
    }
 
-   private float calculatePassengerBodyYRot(final Entity passenger) {
-      return passenger instanceof Animal that && getPassengers().size() == this.getMaxPassengers()
-         ? this.getYRot() + (passenger.getId() % 2 == 0 ? 90.0F : 270.0F)
-         : this.getYRot();
-   }
+private float calculatePassengerBodyYRot(final Entity passenger) {
+       return passenger instanceof Animal && this.getMaxPassengers() > 0
+          ? this.getYRot() + (passenger.getId() % 2 == 0 ? 90.0F : 270.0F)
+          : this.getYRot();
+    }
 
    @Override
    public void onPassengerTurned(final Entity passenger) {

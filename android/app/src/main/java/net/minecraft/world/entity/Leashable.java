@@ -87,7 +87,8 @@ public interface Leashable {
    }
 
 private static <E extends Entity & Leashable> void restoreLeashFromSave(final E entity, final Leashable.LeashData leashData) {
-       if (leashData.delayedLeashInfo != null && entity.level() instanceof ServerLevel serverLevel) {
+       if (leashData.delayedLeashInfo != null && entity.level() instanceof ServerLevel) {
+           ServerLevel serverLevel = (ServerLevel) leashData.delayedLeashInfo != null && entity.level();
           Optional<UUID> leashUuid = leashData.delayedLeashInfo.left();
           Optional<BlockPos> pos = leashData.delayedLeashInfo.right();
           if (leashUuid.isPresent()) {
@@ -319,7 +320,8 @@ private static Vec3 getHolderMovement(final Entity leashHolder) {
          }
       }
 
-if (synch && entity.level() instanceof ServerLevel level) {
+if (synch && entity.level() instanceof ServerLevel) {
+    ServerLevel level = (ServerLevel) synch && entity.level();
           level.getChunkSource().sendToTrackingPlayers(entity, new ClientboundSetEntityLinkPacket(entity, holder));
        }
 
@@ -357,7 +359,7 @@ if (synch && entity.level() instanceof ServerLevel level) {
 static List<Leashable> leashableInArea(final Level level, final Vec3 pos, final Predicate<Leashable> test) {
        double size = 32.0;
        AABB scanArea = AABB.ofSize(pos, 32.0, 32.0, 32.0);
-       return level.getEntitiesOfClass(Entity.class, scanArea, e -> e instanceof Leashable leashable && test.test(leashable))
+       return level.getEntitiesOfClass(Entity.class, scanArea, e -> e instanceof Leashable test &&test(leashable))
           .stream()
           .map(Leashable.class::cast)
           .toList();

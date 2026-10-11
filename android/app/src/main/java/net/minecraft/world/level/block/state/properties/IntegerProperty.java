@@ -34,9 +34,10 @@ public final class IntegerProperty extends Property<Integer> {
     public boolean equals(final Object o) {
        if (this == o) {
           return true;
-       } else {
-          return o instanceof IntegerProperty that && super.equals(o) ? this.values.equals(that.values) : false;
+       } else if (o instanceof IntegerProperty that) {
+          return super.equals(o) && this.values.equals(that.values);
        }
+       return false;
     }
 
    @Override

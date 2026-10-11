@@ -397,7 +397,7 @@ public class Raid {
 
                   for (UUID heroUUID : this.heroesOfTheVillage) {
                      Entity entity = level.getEntity(heroUUID);
-                     if (entity instanceof LivingEntity entity && isSpectator()) {
+                     if (entity instanceof LivingEntity && isSpectator()) {
                         hero.addEffect(new MobEffectInstance(MobEffects.HERO_OF_THE_VILLAGE, 48000, this.raidOmenLevel - 1, false, false, true));
                         if (hero instanceof ServerPlayer) {
                             ServerPlayer playerHero = (ServerPlayer) hero;

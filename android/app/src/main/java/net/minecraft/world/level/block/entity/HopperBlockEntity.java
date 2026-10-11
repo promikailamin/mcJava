@@ -301,7 +301,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
    private static boolean canPlaceItemInContainer(final Container container, final ItemStack itemStack, final int slot, final @Nullable Direction direction) {
       return !container.canPlaceItem(slot, itemStack)
          ? false
-         : !(container instanceof WorldlyContainer worldly && canPlaceItemThroughFace(slot, itemStack, direction));
+         : !(container instanceof WorldlyContainer && canPlaceItemThroughFace(slot, itemStack, direction));
    }
 
    private static boolean canTakeItemFromContainer(
@@ -309,7 +309,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
    ) {
       return !from.canTakeItem(into, slot, itemStack)
          ? false
-         : !(from instanceof WorldlyContainer worldly && canTakeItemThroughFace(slot, itemStack, direction));
+         : !(from instanceof WorldlyContainer && canTakeItemThroughFace(slot, itemStack, direction));
    }
 
    private static ItemStack tryMoveInItem(
@@ -332,9 +332,9 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          }
 
          if (success) {
-            if (wasEmpty && container instanceof HopperBlockEntity hopperBlockEntity && isOnCustomCooldown()) {
+            if (wasEmpty && container instanceof HopperBlockEntity && isOnCustomCooldown()) {
                int skipTickCount = 0;
-               if (from instanceof HopperBlockEntity blockPos && hopperBlockEntity.tickedGameTime >= fromHopper.tickedGameTime) {
+               if (from instanceof HopperBlockEntity hopperBlockEntity && hopperBlockEntity.tickedGameTime >= fromHopper.tickedGameTime) {
                   skipTickCount = 1;
                }
 
@@ -450,11 +450,12 @@ private static @Nullable Container getBlockContainer(final Level level, final Bl
       this.items = items;
    }
 
-   public static void entityInside(final Level level, final BlockPos pos, final BlockState blockState, final Entity entity, final HopperBlockEntity hopper) {
-      if (entity instanceof ItemEntity itemEntity && !itemEntity.getItem().isEmpty()
-         && entity.getBoundingBox().move(-pos.getX(), -pos.getY(), -pos.getZ()).intersects(hopper.getSuckAabb())) {
-         tryMoveItems(level, pos, blockState, hopper, () -> addItem(hopper, itemEntity));
-      }
+public static void entityInside(final Level level, final BlockPos pos, final BlockState blockState, final Entity entity, final HopperBlockEntity hopper) {
+       if (entity instanceof ItemEntity itemEntity
+             && !itemEntity.getItem().isEmpty()
+             && entity.getBoundingBox().move(-pos.getX(), -pos.getY(), -pos.getZ()).intersects(hopper.getSuckAabb())) {
+          tryMoveItems(level, pos, blockState, hopper, () -> addItem(hopper, itemEntity));
+       }
    }
 
    @Override

@@ -290,11 +290,11 @@ public class ServerPlayerGameMode {
       }
 
       BlockEntity blockEntity = this.level.getBlockEntity(pos);
-      Block block = state.getBlock();
-      if (block instanceof GameMasterBlock that && player.canUseGameMasterBlocks()) {
-         this.level.sendBlockUpdated(pos, state, state, 3);
-         return false;
-      }
+Block block = state.getBlock();
+       if (block instanceof GameMasterBlock gameMasterBlock && gameMasterBlock.canUseGameMasterBlocks()) {
+          this.level.sendBlockUpdated(pos, state, state, 3);
+          return false;
+       }
 
       if (this.player.blockActionRestricted(this.level, pos, this.gameModeForPlayer)) {
          return false;

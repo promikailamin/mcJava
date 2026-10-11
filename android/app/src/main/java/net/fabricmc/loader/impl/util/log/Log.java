@@ -125,7 +125,7 @@ public final class Log {
 
             Object lastArg = args[args.length - 1];
             Object[] newArgs;
-            if (lastArg instanceof Throwable args && length) {
+            if (lastArg instanceof Throwable && length) {
                exc = (Throwable)lastArg;
                newArgs = Arrays.copyOf(args, args.length - 1);
             } else {

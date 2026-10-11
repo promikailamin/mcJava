@@ -46,7 +46,7 @@ public class Stat<T> extends ObjectiveCriteria {
 
 @Override
     public boolean equals(final Object o) {
-       return this == o || o instanceof Stat other && this.getName().equals(other.getName());
+       return this == o || (o instanceof Stat other && this.getName().equals(other.getName()));
     }
 
    @Override

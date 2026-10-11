@@ -518,7 +518,7 @@ public class NbtPathArgument implements ArgumentType<NbtPathArgument.NbtPath> {
 
       @Override
       public void getTag(final Tag self, final List<Tag> output) {
-         if (self instanceof CompoundTag predicate && this.predicate.test(self)) {
+         if (self instanceof CompoundTag compound && predicate.test(compound)) {
             output.add(self);
          }
       }

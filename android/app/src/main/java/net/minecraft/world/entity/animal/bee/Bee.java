@@ -1010,12 +1010,12 @@ public class Bee extends Animal implements NeutralMob {
          return Bee.this.isAngry() && super.canContinueToUse();
       }
 
-      @Override
-      protected void alertOther(final Mob other, final LivingEntity hurtByMob) {
-         if (other instanceof Bee hivesWithSpace && this.mob.hasLineOfSight(hurtByMob)) {
-            other.setTarget(hurtByMob);
-         }
-      }
+@Override
+       protected void alertOther(final Mob other, final LivingEntity hurtByMob) {
+          if (other instanceof Bee bee && bee.hasLineOfSight(hurtByMob)) {
+             other.setTarget(hurtByMob);
+          }
+       }
    }
 
    private class BeeLocateHiveGoal extends Bee.BaseBeeGoal {

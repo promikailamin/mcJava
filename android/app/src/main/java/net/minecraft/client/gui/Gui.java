@@ -103,7 +103,7 @@ public class Gui {
       profiler.push("screen");
       LocalPlayer player = this.minecraft.player;
       if (this.screen != null || player == null) {
-         if (this.screen instanceof InBedChatScreen hud && !player.isSleeping()) {
+         if (         if (this.screen instanceof InBedChatScreen player && !player.isSleeping()) {) {
             inBedScreen.onPlayerWokeUp();
          }
       } else if (player.isDeadOrDying() && !(this.screen instanceof DeathScreen)) {

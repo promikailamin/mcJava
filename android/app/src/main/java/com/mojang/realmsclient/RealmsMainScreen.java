@@ -153,7 +153,7 @@ public class RealmsMainScreen extends RealmsScreen {
    public RealmsMainScreen(final Screen lastScreen) {
       super(TITLE);
       this.lastScreen = lastScreen;
-      this.redirectToPdpIfNoRealms = lastScreen instanceof TitleScreen Minecraft && Minecraft.getInstance().gui.screen() == lastScreen;
+      this.redirectToPdpIfNoRealms = lastScreen instanceof TitleScreen gui &&screen() == lastScreen;
       this.header = new RealmsHeader(this, this::openJoinRealmScreen);
       this.inviteNarrationLimiter = RateLimiter.create(0.016666668F);
    }

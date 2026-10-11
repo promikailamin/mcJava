@@ -28,11 +28,11 @@ public class RecipeManager implements RecipeAccess {
    private static final Logger LOGGER = LogUtils.getLogger();
    private static final Map<ResourceKey<RecipePropertySet>, RecipeManager.IngredientExtractor> RECIPE_PROPERTY_SETS = Map.of(
       RecipePropertySet.SMITHING_ADDITION,
-      recipe -> recipe instanceof SmithingRecipe sr ? ((SmithingRecipe) recipe).additionIngredient()     : Optional.empty(),
+      recipe -> recipe instanceof SmithingRecipe ? ((SmithingRecipe) recipe).additionIngredient()        : Optional.empty(),
       RecipePropertySet.SMITHING_BASE,
       recipe -> recipe instanceof SmithingRecipe ? Optional.of(((SmithingRecipe) recipe).baseIngredient())  : Optional.empty(),
       RecipePropertySet.SMITHING_TEMPLATE,
-      recipe -> recipe instanceof SmithingRecipe sr ? ((SmithingRecipe) recipe).templateIngredient()     : Optional.empty(),
+      recipe -> recipe instanceof SmithingRecipe ? ((SmithingRecipe) recipe).templateIngredient()        : Optional.empty(),
       RecipePropertySet.FURNACE_INPUT,
       forSingleInput(RecipeType.SMELTING),
       RecipePropertySet.BLAST_FURNACE_INPUT,

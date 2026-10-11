@@ -229,7 +229,7 @@ public class CrashReport {
    }
 
    public static CrashReport forThrowable(Throwable t, final String title) {
-      while (t instanceof CompletionException t && getCause() != null) {
+      while (t instanceof CompletionException && getCause() != null) {
          t = t.getCause();
       }
 

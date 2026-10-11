@@ -608,7 +608,7 @@ public class GameRenderer implements AutoCloseable, TrackedWaypoint.Projector, R
       }
 
       Entity cameraEntity = this.minecraft.getCameraEntity();
-      boolean renderOutline = cameraEntity instanceof Player that && minecraft.gui.hud.isHidden();
+      boolean renderOutline = cameraEntity instanceof Player minecraft &&gui.hud.isHidden();
       if (renderOutline && !((Player)cameraEntity).getAbilities().mayBuild) {
          ItemStack itemStack = ((LivingEntity)cameraEntity).getMainHandItem();
          HitResult hitResult = this.minecraft.hitResult;

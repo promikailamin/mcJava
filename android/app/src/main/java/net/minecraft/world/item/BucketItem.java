@@ -61,7 +61,7 @@ public class BucketItem extends Item implements DispensibleContainerItem {
          BlockPos placePos = clicked.getBlock() instanceof LiquidBlockContainer && this.content == Fluids.WATER ? pos : directionOffsetPos;
          if (this.emptyContents(player, level, placePos, hitResult)) {
             this.checkExtraContent(player, level, itemStack, placePos);
-            if (player instanceof ServerPlayer that && content != Fluids.EMPTY) {
+            if (player instanceof ServerPlayer && content != Fluids.EMPTY) {
                CriteriaTriggers.PLACED_BLOCK.trigger(serverPlayer, placePos, itemStack);
             }
 
@@ -116,8 +116,8 @@ public class BucketItem extends Item implements DispensibleContainerItem {
          Block block = blockState.getBlock();
          boolean mayReplace = blockState.canBeReplaced(this.content);
          boolean shiftKeyDown = user != null && user.isShiftKeyDown();
-         boolean placeLiquid = mayReplace
-            || block instanceof LiquidBlockContainer container && canPlaceLiquid(user, level, pos, blockState, this.content);
+boolean placeLiquid = mayReplace
+             || (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(this.content));
          boolean canPlaceFluidInsideBlock = blockState.isAir() || placeLiquid && (!shiftKeyDown || hitResult == null);
          if (canPlaceFluidInsideBlock) {
             if (level.environmentAttributes().getValue(EnvironmentAttributes.WATER_EVAPORATES, pos) && this.content.is(FluidTags.WATER)) {
@@ -134,7 +134,7 @@ public class BucketItem extends Item implements DispensibleContainerItem {
                }
 
                return true;
-            } else if (block instanceof LiquidBlockContainer flowingFluid && this.content == Fluids.WATER) {
+            } else if (block instanceof LiquidBlockContainer container && this.content == Fluids.WATER) {
                container.placeLiquid(level, pos, blockState, flowingFluid.getSource(false));
                this.playEmptySound(user, level, pos);
                return true;

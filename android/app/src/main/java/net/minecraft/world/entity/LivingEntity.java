@@ -418,35 +418,34 @@ if (this.level() instanceof ServerLevel serverLevel && onGround && this.fallDist
          });
       }
 
-      if (this.level() instanceof ServerLevel) {
-          ServerLevel serverLevel = (ServerLevel) this.level();
+      if (this.level() instanceof ServerLevel serverLevel) {
          EnchantmentHelper.tickEffects(serverLevel, this);
       }
 
-      super.baseTick();
-      ProfilerFiller profiler = Profiler.get();
-      profiler.push("livingEntityBaseTick");
-if (this.isAlive() && this.level() instanceof ServerLevel level) {
+super.baseTick();
+       ProfilerFiller profiler = Profiler.get();
+       profiler.push("livingEntityBaseTick");
+       if (this.isAlive() && this.level() instanceof ServerLevel level) {
           boolean isPlayer = this instanceof Player;
-         if (this.isInWall()) {
-            this.hurtServer(level, this.damageSources().inWall(), 1.0F);
-         } else if (isPlayer && !level.getWorldBorder().isWithinBounds(this.getBoundingBox())) {
-            double dist = level.getWorldBorder().getDistanceToBorder(this) + level.getWorldBorder().getSafeZone();
-            if (dist < 0.0) {
-               double damagePerBlock = level.getWorldBorder().getDamagePerBlock();
-               if (damagePerBlock > 0.0) {
-                  this.hurtServer(level, this.damageSources().outOfBorder(), Math.max(1, Mth.floor(-dist * damagePerBlock)));
-               }
-            }
-         }
+          if (this.isInWall()) {
+             this.hurtServer(level, this.damageSources().inWall(), 1.0F);
+          } else if (isPlayer && !level.getWorldBorder().isWithinBounds(this.getBoundingBox())) {
+             double dist = level.getWorldBorder().getDistanceToBorder(this) + level.getWorldBorder().getSafeZone();
+             if (dist < 0.0) {
+                double damagePerBlock = level.getWorldBorder().getDamagePerBlock();
+                if (damagePerBlock > 0.0) {
+                   this.hurtServer(level, this.damageSources().outOfBorder(), Math.max(1, Mth.floor(-dist * damagePerBlock)));
+                }
+             }
+          }
 
-         if (this.isEyeInFluid(FluidTags.WATER) && !level.getBlockState(BlockPos.containing(this.getX(), this.getEyeY(), this.getZ())).is(Blocks.BUBBLE_COLUMN)
-            )
-          {
-            boolean canDrownInWater = !this.canBreatheUnderwater()
-               && !MobEffectUtil.hasWaterBreathing(this)
-               && (!isPlayer || !((Player)this).getAbilities().invulnerable);
-            if (canDrownInWater) {
+          if (this.isEyeInFluid(FluidTags.WATER) && !level.getBlockState(BlockPos.containing(this.getX(), this.getEyeY(), this.getZ())).is(Blocks.BUBBLE_COLUMN)
+             )
+           {
+             boolean canDrownInWater = !this.canBreatheUnderwater()
+                && !MobEffectUtil.hasWaterBreathing(this)
+                && (!isPlayer || !((Player)this).getAbilities().invulnerable);
+             if (canDrownInWater) {
                this.setAirSupply(this.decreaseAirSupply(this.getAirSupply()));
                if (this.shouldTakeDrowningDamage()) {
                   this.setAirSupply(0);
@@ -661,16 +660,15 @@ if (this.isAlive() && this.level() instanceof ServerLevel level) {
       return this.lastHurtMobTimestamp;
    }
 
-   public void setLastHurtMob(final Entity target) {
-      if (target instanceof LivingEntity) {
-          LivingEntity livingEntity = (LivingEntity) target;
-         this.lastHurtMob = livingEntity;
-      } else {
-         this.lastHurtMob = null;
-      }
+public void setLastHurtMob(final Entity target) {
+       if (target instanceof LivingEntity livingEntity) {
+          this.lastHurtMob = livingEntity;
+       } else {
+          this.lastHurtMob = null;
+       }
 
-      this.lastHurtMobTimestamp = this.tickCount;
-   }
+       this.lastHurtMobTimestamp = this.tickCount;
+    }
 
    public int getNoActionTime() {
       return this.noActionTime;
@@ -728,16 +726,15 @@ if (this.isAlive() && this.level() instanceof ServerLevel level) {
           this.triggerOnDeathMobEffects(level, reason);
        }
 
-      super.remove(reason);
-      this.brain.clearMemories();
-      this.getCombatTracker().recheckStatus();
-   }
+       super.remove(reason);
+       this.brain.clearMemories();
+       this.getCombatTracker().recheckStatus();
+    }
 
    @Override
    public void onRemoval(final Entity.RemovalReason reason) {
       super.onRemoval(reason);
-      if (this.level() instanceof ServerLevel) {
-          ServerLevel serverLevel = (ServerLevel) this.level();
+      if (this.level() instanceof ServerLevel serverLevel) {
          serverLevel.getWaypointManager().untrackWaypoint(this);
       }
    }
@@ -847,8 +844,7 @@ if (this.isAlive() && this.level() instanceof ServerLevel level) {
    }
 
    protected void tickEffects() {
-      if (this.level() instanceof ServerLevel) {
-          ServerLevel serverLevel = (ServerLevel) this.level();
+      if (this.level() instanceof ServerLevel serverLevel) {
          Iterator<Holder<MobEffect>> iterator = this.activeEffects.keySet().iterator();
 
          try {
@@ -949,7 +945,7 @@ if (this.isAlive() && this.level() instanceof ServerLevel level) {
    }
 
    public boolean canAttack(final LivingEntity target) {
-      return target instanceof Player that && level().getDifficulty() == Difficulty.PEACEFUL ? false : target.canBeSeenAsEnemy();
+      return target instanceof Player target && level().getDifficulty() == Difficulty.PEACEFUL ? false : target.canBeSeenAsEnemy();
    }
 
    public boolean canBeSeenAsEnemy() {
@@ -1083,14 +1079,13 @@ if (this.isAlive() && this.level() instanceof ServerLevel level) {
       }
    }
 
-   public void sendEffectToPassengers(final MobEffectInstance effect) {
-      for (Entity passenger : this.getPassengers()) {
-         if (passenger instanceof ServerPlayer) {
-             ServerPlayer serverPlayer = (ServerPlayer) passenger;
-            serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(this.getId(), effect, false));
-         }
-      }
-   }
+public void sendEffectToPassengers(final MobEffectInstance effect) {
+       for (Entity passenger : this.getPassengers()) {
+          if (passenger instanceof ServerPlayer serverPlayer) {
+             serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(this.getId(), effect, false));
+          }
+       }
+    }
 
    protected void onEffectUpdated(final MobEffectInstance effect, final boolean doRefreshAttributes, final @Nullable Entity source) {
       if (!this.level().isClientSide()) {
@@ -1113,12 +1108,11 @@ if (this.isAlive() && this.level() instanceof ServerLevel level) {
          for (MobEffectInstance effect : effects) {
             effect.getEffect().value().removeAttributeModifiers(this.getAttributes());
 
-            for (Entity passenger : this.getPassengers()) {
-               if (passenger instanceof ServerPlayer) {
-                   ServerPlayer serverPlayer = (ServerPlayer) passenger;
-                  serverPlayer.connection.send(new ClientboundRemoveMobEffectPacket(this.getId(), effect.getEffect()));
-               }
-            }
+for (Entity passenger : this.getPassengers()) {
+                if (passenger instanceof ServerPlayer serverPlayer) {
+                   serverPlayer.connection.send(new ClientboundRemoveMobEffectPacket(this.getId(), effect.getEffect()));
+                }
+             }
          }
 
          this.refreshDirtyAttributes();
@@ -1287,18 +1281,16 @@ if (this.isAlive() && this.level() instanceof ServerLevel level) {
          }
       }
 
-      if (this instanceof ServerPlayer) {
-          ServerPlayer serverPlayer = (ServerPlayer) this;
-         CriteriaTriggers.ENTITY_HURT_PLAYER.trigger(serverPlayer, source, originalDamage, damage, blocked);
-         if (damageBlocked > 0.0F && damageBlocked < 3.4028235E37F) {
-            serverPlayer.awardStat(Stats.DAMAGE_BLOCKED_BY_SHIELD, Math.round(damageBlocked * 10.0F));
-         }
-      }
+if (this instanceof ServerPlayer serverPlayer) {
+          CriteriaTriggers.ENTITY_HURT_PLAYER.trigger(serverPlayer, source, originalDamage, damage, blocked);
+          if (damageBlocked > 0.0F && damageBlocked < 3.4028235E37F) {
+             serverPlayer.awardStat(Stats.DAMAGE_BLOCKED_BY_SHIELD, Math.round(damageBlocked * 10.0F));
+          }
+       }
 
-      if (source.getEntity() instanceof ServerPlayer) {
-          ServerPlayer sourcePlayer = (ServerPlayer) source.getEntity();
-         CriteriaTriggers.PLAYER_HURT_ENTITY.trigger(sourcePlayer, this, source, originalDamage, damage, blocked);
-      }
+       if (source.getEntity() instanceof ServerPlayer sourcePlayer) {
+          CriteriaTriggers.PLAYER_HURT_ENTITY.trigger(sourcePlayer, this, source, originalDamage, damage, blocked);
+       }
 
       return success;
    }
@@ -1350,10 +1342,9 @@ if (source.getDirectEntity() instanceof AbstractArrow abstractArrow && abstractA
 
             float damageBlocked = blocksAttacks.resolveBlockedDamage(source, damage, angle);
             blocksAttacks.hurtBlockingItem(this.level(), blockingWith, this, this.getUsedItemHand(), damageBlocked);
-            if (damageBlocked > 0.0F && !source.is(DamageTypeTags.IS_PROJECTILE) && source.getDirectEntity() instanceof LivingEntity livingEntity) {
-                
-               this.blockUsingItem((ServerLevel) this.level(), livingEntity, source, damage, damageBlocked >= damage);
-            }
+if (damageBlocked > 0.0F && !source.is(DamageTypeTags.IS_PROJECTILE) && source.getDirectEntity() instanceof LivingEntity livingEntity) {
+                this.blockUsingItem((ServerLevel) this.level(), livingEntity, source, damage, damageBlocked >= damage);
+             }
 
             return damageBlocked;
          }
@@ -1381,7 +1372,7 @@ protected void resolveMobResponsibleForDamage(final DamageSource source) {
       if (sourceEntity instanceof Player) {
           Player playerSource = (Player) sourceEntity;
          this.setLastHurtByPlayer(playerSource, 100);
-      } else if (sourceEntity instanceof Wolf wolf && wolf.isTame()) {
+      } else if (sourceEntity instanceof Wolf wolf &&isTame()) {
          if (wolf.getOwnerReference() != null) {
             this.setLastHurtByPlayer(wolf.getOwnerReference().getUUID(), 100);
          } else {
@@ -1423,18 +1414,17 @@ protected void resolveMobResponsibleForDamage(final DamageSource source) {
          }
       }
 
-      if (protectionItem != null) {
-         if (this instanceof ServerPlayer) {
-             ServerPlayer player = (ServerPlayer) this;
-            player.awardStat(Stats.ITEM_USED.get(protectionItem.getItem()));
-            CriteriaTriggers.USED_TOTEM.trigger(player, protectionItem);
-            protectionItem.causeUseVibration(this, GameEvent.ITEM_INTERACT_FINISH);
-         }
+if (protectionItem != null) {
+          if (this instanceof ServerPlayer player) {
+             player.awardStat(Stats.ITEM_USED.get(protectionItem.getItem()));
+             CriteriaTriggers.USED_TOTEM.trigger(player, protectionItem);
+             protectionItem.causeUseVibration(this, GameEvent.ITEM_INTERACT_FINISH);
+          }
 
-         this.setHealth(1.0F);
-         protection.applyEffects(protectionItem, this);
-         this.level().broadcastEntityEvent(this, (byte)35);
-      }
+          this.setHealth(1.0F);
+          protection.applyEffects(protectionItem, this);
+          this.level().broadcastEntityEvent(this, (byte)35);
+       }
 
       return protection != null;
    }
@@ -1489,8 +1479,7 @@ protected void resolveMobResponsibleForDamage(final DamageSource source) {
          }
 
          this.handleKillingBlow();
-         if (this.level() instanceof ServerLevel) {
-             ServerLevel serverLevel = (ServerLevel) this.level();
+         if (this.level() instanceof ServerLevel serverLevel) {
             if (sourceEntity == null || sourceEntity.killedEntity(serverLevel, this, source)) {
                this.gameEvent(GameEvent.ENTITY_DIE);
                this.dropAllDeathLoot(serverLevel, source);
@@ -1509,8 +1498,7 @@ protected void resolveMobResponsibleForDamage(final DamageSource source) {
    }
 
    protected void createWitherRose(final @Nullable LivingEntity killer) {
-      if (this.level() instanceof ServerLevel) {
-          ServerLevel serverLevel = (ServerLevel) this.level();
+      if (this.level() instanceof ServerLevel serverLevel) {
          boolean var6 = false;
          if (killer instanceof WitherBoss) {
             if (serverLevel.getGameRules().get(GameRules.MOB_GRIEFING)) {
@@ -1729,8 +1717,7 @@ protected float getKnockback(final Entity target, final DamageSource damageSourc
    }
 
    public void postPiercingAttack() {
-      if (this.level() instanceof ServerLevel) {
-          ServerLevel serverLevel = (ServerLevel) this.level();
+      if (this.level() instanceof ServerLevel serverLevel) {
          EnchantmentHelper.doPostPiercingAttackEffects(serverLevel, this);
       }
    }
@@ -1944,11 +1931,10 @@ protected float getKnockback(final Entity target, final DamageSource damageSourc
          float oldDamage = damage;
          damage = Math.max(v / 25.0F, 0.0F);
          float damageResisted = oldDamage - damage;
-         if (damageResisted > 0.0F && damageResisted < 3.4028235E37F) {
-            if (this instanceof ServerPlayer) {
-                ServerPlayer serverPlayer = (ServerPlayer) this;
-               serverPlayer.awardStat(Stats.DAMAGE_RESISTED, Math.round(damageResisted * 10.0F));
-            } else if (damageSource.getEntity() instanceof ServerPlayer) {
+if (damageResisted > 0.0F && damageResisted < 3.4028235E37F) {
+             if (this instanceof ServerPlayer serverPlayer) {
+                serverPlayer.awardStat(Stats.DAMAGE_RESISTED, Math.round(damageResisted * 10.0F));
+             } else if (damageSource.getEntity() instanceof ServerPlayer) {
                ((ServerPlayer)damageSource.getEntity()).awardStat(Stats.DAMAGE_DEALT_RESISTED, Math.round(damageResisted * 10.0F));
             }
          }
@@ -1963,8 +1949,7 @@ protected float getKnockback(final Entity target, final DamageSource damageSourc
       }
 
       float enchantmentArmor;
-      if (this.level() instanceof ServerLevel) {
-          ServerLevel serverLevel = (ServerLevel) this.level();
+      if (this.level() instanceof ServerLevel serverLevel) {
          enchantmentArmor = EnchantmentHelper.getDamageProtection(serverLevel, this, damageSource);
       } else {
          enchantmentArmor = 0.0F;
@@ -1984,10 +1969,10 @@ protected float getKnockback(final Entity target, final DamageSource damageSourc
          float originalDamage = dmg;
          dmg = Math.max(dmg - this.getAbsorptionAmount(), 0.0F);
          this.setAbsorptionAmount(this.getAbsorptionAmount() - (originalDamage - dmg));
-         float absorbedDamage = originalDamage - dmg;
-if (absorbedDamage > 0.0F && absorbedDamage < 3.4028235E37F && source.getEntity() instanceof ServerPlayer serverPlayer) {
-             serverPlayer.awardStat(Stats.DAMAGE_DEALT_ABSORBED, Math.round(absorbedDamage * 10.0F));
-          }
+float absorbedDamage = originalDamage - dmg;
+          if (absorbedDamage > 0.0F && absorbedDamage < 3.4028235E37F && source.getEntity() instanceof ServerPlayer serverPlayer) {
+              serverPlayer.awardStat(Stats.DAMAGE_DEALT_ABSORBED, Math.round(absorbedDamage * 10.0F));
+           }
 
          if (dmg != 0.0F) {
             this.getCombatTracker().recordDamage(source, dmg);
@@ -2050,8 +2035,7 @@ if (absorbedDamage > 0.0F && absorbedDamage < 3.4028235E37F && source.getEntity(
 
    public boolean swing(final InteractionHand hand, final SwingAnimation animation, final boolean sendToSwingingEntity) {
       if (this.swingState.startIfAble(hand, animation, this.getModifiedSwingDuration(animation))) {
-         if (this.level() instanceof ServerLevel) {
-             ServerLevel serverLevel = (ServerLevel) this.level();
+         if (this.level() instanceof ServerLevel serverLevel) {
             ClientboundSwingAnimationPacket packet = new ClientboundSwingAnimationPacket(this, hand, animation);
             ServerChunkCache chunkSource = serverLevel.getChunkSource();
             if (sendToSwingingEntity) {
@@ -2752,7 +2736,7 @@ if (absorbedDamage > 0.0F && absorbedDamage < 3.4028235E37F && source.getEntity(
       final Entity target, final float knockback, final Vec3 oldMovement, final DamageSource damageSource, final float damage, final boolean comesFromEffect
    ) {
 if (knockback > 0.0F && target instanceof LivingEntity livingTarget) {
-         livingTarget.knockback(
+          livingTarget.knockback(
             knockback,
             Mth.sin(this.getYRot() * (float) (Math.PI / 180.0)),
             -Mth.cos(this.getYRot() * (float) (Math.PI / 180.0)),
@@ -2931,9 +2915,9 @@ public boolean stabAttack(
           target.stopRiding();
        }
 
-       if (target instanceof LivingEntity livingTarget) {
-          weaponItem.hurtEnemy(livingTarget, this);
-       }
+if (target instanceof LivingEntity livingTarget) {
+           weaponItem.hurtEnemy(livingTarget, this);
+        }
 
 if (dealtDamage) {
            EnchantmentHelper.doPostAttackEffects(serverLevel, target, damageSource);
@@ -2992,8 +2976,7 @@ if (dealtDamage) {
                      instance.addTransientModifier(modifier);
                   }
                });
-               if (this.level() instanceof ServerLevel) {
-                   ServerLevel serverLevel = (ServerLevel) this.level();
+               if (this.level() instanceof ServerLevel serverLevel) {
                   EnchantmentHelper.runLocationChangedEffects(serverLevel, current, this, slot);
                }
             }
@@ -3142,7 +3125,7 @@ if (dealtDamage) {
          this.resetFallDistance();
       }
 
-if (this.getControllingPassenger() instanceof Player controller && this.isAlive()) {
+if (this.getControllingPassenger() instanceof Player && this.isAlive()) {
           this.travelRidden(controller, input);
        } else if (this.canSimulateMovement() && this.isEffectiveAi()) {
          this.travel(input);
@@ -3157,8 +3140,7 @@ if (this.getControllingPassenger() instanceof Player controller && this.isAlive(
       }
 
       profiler.pop();
-      if (this.level() instanceof ServerLevel) {
-          ServerLevel serverLevel = (ServerLevel) this.level();
+      if (this.level() instanceof ServerLevel serverLevel) {
          profiler.push("freezing");
          if (!this.isInPowderSnow || !this.canFreeze()) {
             this.setTicksFrozen(Math.max(0, this.getTicksFrozen() - 2));
@@ -3241,8 +3223,7 @@ if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater()
    protected void pushEntities() {
       List<Entity> pushableEntities = this.level().getPushableEntities(this, this.getBoundingBox());
       if (!pushableEntities.isEmpty()) {
-         if (this.level() instanceof ServerLevel) {
-             ServerLevel serverLevel = (ServerLevel) this.level();
+         if (this.level() instanceof ServerLevel serverLevel) {
             int maxCramming = serverLevel.getGameRules().get(GameRules.MAX_ENTITY_CRAMMING);
             if (maxCramming > 0 && pushableEntities.size() > maxCramming - 1 && this.random.nextInt(4) == 0) {
                int count = 0;
@@ -3270,9 +3251,8 @@ if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater()
       List<Entity> entities = this.level().getEntities(this, minmax);
       if (!entities.isEmpty()) {
          for (Entity entity : entities) {
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity) entity;
-               this.doAutoAttackOnTouch(livingEntity);
+if (entity instanceof LivingEntity livingEntity) {
+                this.doAutoAttackOnTouch(livingEntity);
                this.autoSpinAttackTicks = 0;
                this.setDeltaMovement(this.getDeltaMovement().scale(-0.2));
                break;
@@ -3332,7 +3312,7 @@ if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater()
 
    public void onItemPickup(final ItemEntity entity) {
       if (entity.getOwner() instanceof ServerPlayer) {
-          ServerPlayer serverPlayer = (ServerPlayer) entity.getOwner();
+          entity.getOwner();
          CriteriaTriggers.THROWN_ITEM_PICKED_UP_BY_ENTITY.trigger(serverPlayer, entity.getItem(), this);
       }
    }
@@ -3868,7 +3848,7 @@ if (this.level() instanceof ServerLevel serverLevel && this.isSensitiveToWater()
 private boolean checkBedExists() {
        return this.getSleepingPos().map(bedPosition -> {
           BlockState state = this.level().getBlockState(bedPosition);
-          return state.getBlock() instanceof AbstractBedBlock bedBlock && bedBlock.getSleepHeight(state, this.level(), bedPosition).isPresent();
+          return state.getBlock() instanceof AbstractBedBlock && bedBlock.getSleepHeight(state, this.level(), bedPosition).isPresent();
        }).orElse(false);
     }
 

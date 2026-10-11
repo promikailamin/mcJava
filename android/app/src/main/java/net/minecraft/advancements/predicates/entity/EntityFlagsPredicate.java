@@ -58,7 +58,7 @@ public record EntityFlagsPredicate(
       }
 
       if (this.isFlying.isPresent()) {
-         boolean entityIsFlying = entity instanceof LivingEntity player && (living.isFallFlying() || living instanceof Player player && getAbilities().flying);
+         boolean entityIsFlying = entity instanceof LivingEntity living && living.isFallFlying() || entity instanceof Player player && player.getAbilities().flying;
          if (entityIsFlying != this.isFlying.get()) {
             return false;
          }

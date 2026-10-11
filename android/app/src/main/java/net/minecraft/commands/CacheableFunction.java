@@ -30,10 +30,15 @@ public class CacheableFunction {
       return this.id;
    }
 
-   @Override
-   public boolean equals(final Object obj) {
-      return obj == this ? true : obj instanceof CacheableFunction cacheableFunction && this.getId().equals(cacheableFunction.getId());
-   }
+@Override
+    public boolean equals(final Object obj) {
+       if (this == obj) {
+          return true;
+       } else if (obj instanceof CacheableFunction that) {
+          return this.getId().equals(that.getId());
+       }
+       return false;
+    }
 
    @Override
    public int hashCode() {

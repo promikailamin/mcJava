@@ -320,7 +320,8 @@ public class Inventory implements Container, Nameable {
 
 int slotHasSpaceFor = itemStack.getMaxStackSize() - this.getItem(slot).getCount();
           boolean added = this.add(slot, itemStack.split(slotHasSpaceFor));
-          if (added && shouldSendSetSlotPacket && this.player instanceof ServerPlayer serverPlayer) {
+          if (added && shouldSendSetSlotPacket && this.player instanceof ServerPlayer) {
+              ServerPlayer serverPlayer = (ServerPlayer) added && shouldSendSetSlotPacket && this.player;
              serverPlayer.connection.send(this.createInventoryUpdatePacket(slot));
           }
       }

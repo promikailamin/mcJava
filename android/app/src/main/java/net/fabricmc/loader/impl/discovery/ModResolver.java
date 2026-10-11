@@ -42,7 +42,7 @@ public class ModResolver {
             for (ModDependency dep : mod.getMetadata().getDependencies()) {
                if (dep.getKind().isPositive()
                   && dep.getKind() != ModDependency.Kind.SUGGESTS
-                  && dep instanceof ModDependencyImpl modsById && containsKey(dep.getModId())) {
+                  && dep instanceof ModDependencyImpl dep &&getModId())) {
                   Collection<ModCandidateImpl> disabledMatches = envDisabledMods.get(dep.getModId());
                   if (disabledMatches != null) {
                      for (ModCandidateImpl m : disabledMatches) {

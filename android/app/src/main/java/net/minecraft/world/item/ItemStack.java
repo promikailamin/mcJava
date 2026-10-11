@@ -379,18 +379,18 @@ public final class ItemStack implements DataComponentHolder, ItemInstance {
       return this.getItem().getDestroySpeed(this, state);
    }
 
-   public InteractionResult use(final Level level, final Player player, final InteractionHand hand) {
-      ItemStack stackBeforeUse = this.copy();
-      boolean isInstantlyUsed = this.getUseDuration(player) <= 0;
-      InteractionResult result = this.getItem().use(level, player, hand);
-if (isInstantlyUsed && result instanceof InteractionResult.Success success) {
+public InteractionResult use(final Level level, final Player player, final InteractionHand hand) {
+       ItemStack stackBeforeUse = this.copy();
+       boolean isInstantlyUsed = this.getUseDuration(player) <= 0;
+       InteractionResult result = this.getItem().use(level, player, hand);
+       if (isInstantlyUsed && result instanceof InteractionResult.Success success) {
           ItemStack transformTo = success.heldItemTransformedTo() == null ? this : success.heldItemTransformedTo();
           ItemStack resultItemStack = transformTo.applyAfterUseComponentSideEffects(player, stackBeforeUse);
           return success.heldItemTransformedTo(resultItemStack);
        } else {
           return result;
        }
-   }
+    }
 
    public ItemStack finishUsingItem(final Level level, final LivingEntity livingEntity) {
       ItemStack stackBeforeUse = this.copy();

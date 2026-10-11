@@ -1,15 +1,15 @@
 A new GitHub issue has been opened.
 
-Issue number: 31
+Issue number: 33
 
 Issue URL:
-https://github.com/promikailamin/mcJava/issues/31
+https://github.com/promikailamin/mcJava/issues/33
 
 Title:
-Write build.yml
+Fix all things and build
 
 Description:
-Write build.yml for build this project but in build.yml.txt (i have some reason for it)
+Fix all errors and build all things and make a GitHub release with the output
 
 Inspect the repository and implement the requested change.
 

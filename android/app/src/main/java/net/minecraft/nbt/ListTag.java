@@ -169,7 +169,7 @@ private static Tag wrapIfNeeded(final byte elementType, final Tag tag) {
        if (elementType != 10) {
           return tag;
        } else {
-          return tag instanceof CompoundTag compoundTag && !isWrapper(compoundTag) ? compoundTag : wrapElement(tag);
+          return tag instanceof CompoundTag && !isWrapper(compoundTag) ? compoundTag : wrapElement(tag);
        }
     }
 
@@ -371,7 +371,12 @@ public float getFloatOr(final int index, final float defaultValue) {
 
 @Override
     public boolean equals(final Object obj) {
-       return this == obj ? true : obj instanceof ListTag listTag && Objects.equals(this.list, listTag.list);
+       if (this == obj) {
+          return true;
+       } else if (obj instanceof ListTag that) {
+          return this.list.equals(that.list);
+       }
+       return false;
     }
 
    @Override

@@ -57,22 +57,23 @@ public class ClipContext {
       COLLIDER(BlockBehaviour.BlockStateBase::getCollisionShape),
       OUTLINE(BlockBehaviour.BlockStateBase::getShape),
       VISUAL(BlockBehaviour.BlockStateBase::getVisualShape),
-      FALLDAMAGE_RESETTING(
+FALLDAMAGE_RESETTING(
          (state, level, pos, collisionContext) -> {
             if (state.is(BlockTags.FALL_DAMAGE_RESETTING)) {
                return Shapes.block();
             }
 
-            if (collisionContext instanceof EntityCollisionContext entityCollisionContext && entityCollisionContext.getEntity() != null
-               && entityCollisionContext.getEntity().is(EntityTypes.PLAYER)) {
+            if (collisionContext instanceof EntityCollisionContext entityCollisionContext
+                  && entityCollisionContext.getEntity() != null) {
                if (state.is(Blocks.END_GATEWAY) || state.is(Blocks.END_PORTAL)) {
                   return Shapes.block();
                }
 
-if (level instanceof ServerLevel serverLevel && state.is(Blocks.NETHER_PORTAL)
-                   && serverLevel.getGameRules().get(GameRules.PLAYERS_NETHER_PORTAL_DEFAULT_DELAY) == 0) {
-                   return Shapes.block();
-                }
+               if (level instanceof ServerLevel serverLevel
+                     && state.is(Blocks.NETHER_PORTAL)
+                     && serverLevel.getGameRules().get(GameRules.PLAYERS_NETHER_PORTAL_DEFAULT_DELAY) == 0) {
+                  return Shapes.block();
+               }
             }
 
             return Shapes.empty();

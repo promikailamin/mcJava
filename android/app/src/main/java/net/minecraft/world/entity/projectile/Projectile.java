@@ -207,7 +207,7 @@ public abstract class Projectile extends Entity implements TraceableEntity {
 public boolean canBreakBlockInAdventureMode(final ServerLevel level, final BlockInWorld blockInWorld) {
        Entity owner = this.getOwner();
        GameType worldGameMode = level.getServer().getDefaultGameType();
-       return (owner != null || worldGameMode == GameType.ADVENTURE) && !(owner instanceof Player player && player.gameMode() != GameType.ADVENTURE)
+       return (owner != null || worldGameMode == GameType.ADVENTURE) && !(owner instanceof Player player &&gameMode() != GameType.ADVENTURE)
           ? this.canBreak != null && this.canBreak.test(blockInWorld)
           : true;
     }
@@ -354,7 +354,8 @@ protected ProjectileDeflection hitTargetOrDeflectSelf(final HitResult hitResult)
       if (type == HitResult.Type.ENTITY) {
          EntityHitResult entityHitResult = (EntityHitResult)hitResult;
          Entity entityHit = entityHitResult.getEntity();
-if (entityHit.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entityHit instanceof Projectile projectile) {
+if (entityHit.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entityHit instanceof Projectile) {
+    Projectile projectile = (Projectile) entityHit.is(EntityTypeTags.REDIRECTABLE_PROJECTILE) && entityHit;
           this.onRedirectProjectile(projectile);
        }
 

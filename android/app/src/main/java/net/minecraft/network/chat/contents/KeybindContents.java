@@ -42,7 +42,7 @@ public class KeybindContents implements ComponentContents {
 
 @Override
     public boolean equals(final Object o) {
-       return this == o ? true : o instanceof KeybindContents that && name.equals(that.name);
+       return this == o ? true : o instanceof KeybindContents name &&equals(that.name);
     }
 
    @Override

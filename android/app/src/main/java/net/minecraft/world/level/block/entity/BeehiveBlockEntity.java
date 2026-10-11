@@ -121,7 +121,7 @@ public class BeehiveBlockEntity extends BlockEntity {
       List<Entity> releasedFromHive = this.releaseAllOccupants(state, releaseReason);
       if (player != null) {
          for (Entity released : releasedFromHive) {
-            if (released instanceof Bee bee && player.position().distanceToSqr(released.position()) <= 16.0) {
+            if (released instanceof Bee bee && bee.position().distanceToSqr(released.position()) <= 16.0) {
                if (!this.isSedated()) {
                   bee.setTarget(player);
                } else {

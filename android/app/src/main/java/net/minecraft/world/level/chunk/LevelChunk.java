@@ -199,7 +199,7 @@ public class LevelChunk extends ChunkAccess implements DebugValueSource {
 
 @Override
     public GameEventListenerRegistry getListenerRegistry(final int section) {
-       return this.level instanceof ServerLevel serverLevel ? (GameEventListenerRegistry)this.gameEventListenerRegistrySections
+       return this.level instanceof ServerLevel ? (GameEventListenerRegistry)this.gameEventListenerRegistrySections
              .computeIfAbsent(section, key -> new EuclideanGameEventListenerRegistry((ServerLevel) this.level, section, this::removeGameEventListenerRegistry))
           : super.getListenerRegistry(section);
     }
@@ -315,7 +315,7 @@ public class LevelChunk extends ChunkAccess implements DebugValueSource {
          this.removeBlockEntity(pos);
       }
 
-if ((blockChanged || newBlock instanceof BaseRailBlock) && this.level instanceof ServerLevel serverLevel && ((flags & 1) != 0 || movedByPiston)) {
+if ((blockChanged || newBlock instanceof BaseRailBlock) && this.level instanceof ServerLevel && ((flags & 1) != 0 || movedByPiston)) {
           oldState.affectNeighborsAfterRemoval(serverLevel, pos, movedByPiston);
        }
 

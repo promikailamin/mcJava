@@ -89,11 +89,12 @@ public class AnvilMenu extends ItemCombinerMenu {
          this.inputSlots.setItem(1, ItemStack.EMPTY);
       }
 
-      this.cost.set(0);
-      if (player instanceof ServerPlayer serverPlayer && !StringUtil.isBlank(this.itemName)
-         && !this.inputSlots.getItem(0).getHoverName().getString().equals(this.itemName)) {
-         serverPlayer.getTextFilter().processStreamMessage(this.itemName);
-      }
+this.cost.set(0);
+       if (player instanceof ServerPlayer serverPlayer
+             && itemName
+             && !this.inputSlots.getItem(0).getHoverName().getString().equals(this.itemName)) {
+          serverPlayer.getTextFilter().processStreamMessage(this.itemName);
+       }
 
       this.inputSlots.setItem(0, ItemStack.EMPTY);
       this.access.execute((level, pos) -> {

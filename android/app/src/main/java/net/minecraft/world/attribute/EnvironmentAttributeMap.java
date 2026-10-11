@@ -28,7 +28,12 @@ public final class EnvironmentAttributeMap {
     
     @Override
     public boolean equals(final Object obj) {
-        return obj == this ? true : obj instanceof EnvironmentAttributeMap other && this.entries.equals(other.entries);
+       if (obj == this) {
+          return true;
+       } else if (obj instanceof EnvironmentAttributeMap other) {
+          return this.entries.equals(other.entries);
+       }
+       return false;
     }
     
     @Override

@@ -190,7 +190,7 @@ public abstract class SignBlock extends BaseEntityBlock implements SimpleWaterlo
    @Override
    public void setPlacedBy(final Level level, final BlockPos pos, final BlockState state, final @Nullable LivingEntity by, final ItemStack itemStack) {
       if (!level.isClientSide()
-         && by instanceof ServerPlayer state && getBlock() instanceof SignBlock && level.getBlockEntity(pos) instanceof SignBlockEntity && !signEntity.isWaxed()
+         && by instanceof ServerPlayer level &&getBlockEntity(pos) instanceof SignBlockEntity && !signEntity.isWaxed()
          && signEntity.getText(SignTextSlot.FRONT).hasEditableText(player.isTextFilteringEnabled())) {
          sign.openTextEdit(player, signEntity, SignTextSlot.FRONT);
       }

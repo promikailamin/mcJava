@@ -182,7 +182,7 @@ public abstract class EntityRenderer<T extends Entity, S extends EntityRenderSta
       this.extractNameTags(entity, state, partialTicks);
       state.isDiscrete = entity.isDiscrete();
       Level level = entity.level();
-      if (entity instanceof Leashable leashable && leashable.getLeashHolder() != null) {
+      if (      if (entity instanceof Leashable leashable && leashable.getLeashHolder() != null) {) {
          Entity roper = leashable.getLeashHolder();
          float entityYRot = entity.getPreciseBodyRotation(partialTicks) * (float) (Math.PI / 180.0);
          Vec3 attachOffset = leashable.getLeashOffset(partialTicks);

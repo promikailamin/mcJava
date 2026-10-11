@@ -24,9 +24,12 @@ public record MobEffectsPredicate(Map<Holder<MobEffect>, MobEffectsPredicate.Mob
    public static final StreamCodec<RegistryFriendlyByteBuf, MobEffectsPredicate> STREAM_CODEC = MobEffectsPredicate.MobEffectInstancePredicate.MAP_STREAM_CODEC
       .map(MobEffectsPredicate::new, MobEffectsPredicate::effectMap);
 
-   public boolean matches(final Entity entity) {
-      return entity instanceof LivingEntity living && this.matches(living.getActiveEffectsMap());
-   }
+public boolean matches(final Entity entity) {
+       if (entity instanceof LivingEntity living) {
+          return this.matches(living.getActiveEffectsMap());
+       }
+       return false;
+    }
 
    public boolean matches(final LivingEntity entity) {
       return this.matches(entity.getActiveEffectsMap());

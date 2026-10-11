@@ -42,14 +42,15 @@ public class Vec2 {
       return new Vec2(this.x + v, this.y + v);
    }
 
-   @Override
-   public boolean equals(final Object rhs) {
-      if (this == rhs) {
-         return true;
-      } else {
-         return rhs instanceof Vec2 other && this.x == other.x && this.y == other.y;
-      }
-   }
+@Override
+    public boolean equals(final Object rhs) {
+       if (this == rhs) {
+          return true;
+       } else if (rhs instanceof Vec2 other) {
+          return this.x == other.x && this.y == other.y;
+       }
+       return false;
+    }
 
    @Override
    public int hashCode() {

@@ -73,7 +73,7 @@ public final class NaturalSpawner {
       Object2IntOpenHashMap<MobCategory> mobCounts = new Object2IntOpenHashMap();
 
       for (Entity entity : entities) {
-         if (!(entity instanceof Mob mob && (isPersistenceRequired() || mob.requiresCustomPersistence()))) {
+         if (!(entity instanceof Mob mob && mob.requiresCustomPersistence())) {
             MobCategory category = entity.getType().getCategory();
             if (category != MobCategory.MISC) {
                BlockPos pos = entity.blockPosition();

@@ -372,7 +372,8 @@ public class ItemEntity extends Entity implements TraceableEntity {
 @Override
     public @Nullable Entity teleport(final TeleportTransition transition) {
        Entity entity = super.teleport(transition);
-       if (!this.level().isClientSide() && entity instanceof ItemEntity item) {
+       if (!this.level().isClientSide() && entity instanceof ItemEntity) {
+           ItemEntity item = (ItemEntity) !this.level().isClientSide() && entity;
           item.mergeWithNeighbours();
        }
 

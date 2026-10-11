@@ -998,10 +998,10 @@ public class ServerPlayer extends Player {
           return false;
        } else {
           Entity entity = source.getEntity();
-          if (entity instanceof Player player && !this.canHarmPlayer(player)) {
+          if (entity instanceof Player player && this.canHarmPlayer(player)) {
              return false;
           } else {
-             return entity instanceof AbstractArrow arrow && arrow.getOwner() instanceof Player player && !this.canHarmPlayer(player)
+             return entity instanceof AbstractArrow arrow && arrow.getOwner() instanceof Player && !this.canHarmPlayer(player)
                 ? false
                 : super.hurtServer(level, source, damage);
           }
@@ -1110,7 +1110,7 @@ private static Optional<ServerPlayer.RespawnPosAngle> findRespawnAndUseSpawnBloc
            }
 
            return standUpPosition.map(p -> ServerPlayer.RespawnPosAngle.of(p, pos, 0.0F));
-        } else if (block instanceof AbstractBedBlock abstractBedBlock && abstractBedBlock.getBedRule(level, pos)) {
+        } else if (block instanceof AbstractBedBlock abstractBedBlock &&getBedRule(level, pos)) {
           return AbstractBedBlock.findStandUpPosition(EntityTypes.PLAYER, level, pos, blockState.getValue(AbstractBedBlock.FACING), yaw)
              .map(p -> ServerPlayer.RespawnPosAngle.of(p, pos, 0.0F));
        } else {

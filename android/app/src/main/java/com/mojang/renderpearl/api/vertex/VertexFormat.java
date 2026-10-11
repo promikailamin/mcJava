@@ -59,7 +59,7 @@ public class VertexFormat {
 
    @Override
    public boolean equals(final Object o) {
-      return this == o ? true : o instanceof VertexFormat that && elements.equals(format.elements) && this.vertexSize == format.vertexSize;
+      return this == o ? true : o instanceof VertexFormat elements &&equals(format.elements) && this.vertexSize == format.vertexSize;
    }
 
    @Override

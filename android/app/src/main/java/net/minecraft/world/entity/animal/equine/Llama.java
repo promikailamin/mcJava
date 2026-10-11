@@ -313,7 +313,7 @@ public class Llama extends AbstractChestedHorse implements RangedAttackMob {
 
 @Override
     public boolean canMate(final Animal partner) {
-       return partner != this && partner instanceof Llama llama && llama.canParent() && this.canParent();
+       return partner != this && partner instanceof Llama llama &&canParent() && this.canParent();
     }
 
    public @Nullable Llama getBreedOffspring(final ServerLevel level, final AgeableMob partner) {

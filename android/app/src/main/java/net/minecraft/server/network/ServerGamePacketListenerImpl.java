@@ -486,10 +486,10 @@ public class ServerGamePacketListenerImpl
             xDist = targetX - this.vehicleLastGoodX;
             yDist = targetY - this.vehicleLastGoodY;
             zDist = targetZ - this.vehicleLastGoodZ;
-            boolean vehicleRestsOnSomething = vehicle.verticalCollisionBelow;
+boolean vehicleRestsOnSomething = vehicle.verticalCollisionBelow;
             if (vehicle instanceof LivingEntity livingVehicle && livingVehicle.onClimbable()) {
-               livingVehicle.resetFallDistance();
-            }
+                livingVehicle.resetFallDistance();
+             }
 
             vehicle.move(MoverType.PLAYER, new Vec3(xDist, yDist, zDist));
             double oyDist = yDist;
@@ -1068,9 +1068,8 @@ public class ServerGamePacketListenerImpl
    public void handleContainerSlotStateChanged(final ServerboundContainerSlotStateChangedPacket packet) {
       PacketUtils.ensureRunningOnSameThread(packet, this, this.player.level());
       if (!this.player.isSpectator() && packet.containerId() == this.player.containerMenu.containerId) {
-         if (this.player.containerMenu instanceof CrafterMenu crafterMenu && crafterMenu.getContainer() instanceof CrafterBlockEntity) {
-             CrafterBlockEntity crafterBlockEntity = (CrafterBlockEntity) this.player.containerMenu instanceof CrafterMenu crafterMenu && crafterMenu.getContainer();
-            crafterBlockEntity.setSlotState(packet.slotId(), packet.newState());
+         if (this.player.containerMenu instanceof CrafterMenu crafterMenu && crafterMenu.getContainer() instanceof CrafterBlockEntity crafterBlockEntity) {
+             crafterBlockEntity.setSlotState(packet.slotId(), packet.newState());
          }
       }
    }
@@ -1412,7 +1411,7 @@ public class ServerGamePacketListenerImpl
       }
 
       Item item = itemStack.getItem();
-      return (item instanceof BlockItem || item instanceof BucketItem bucket && bucket.getContent() != Fluids.EMPTY)
+      return (item instanceof BlockItem || item instanceof BucketItem bucket &&getContent() != Fluids.EMPTY)
          && !player.getCooldowns().isOnCooldown(itemStack);
    }
 
@@ -1903,7 +1902,7 @@ public class ServerGamePacketListenerImpl
                   if (target instanceof ItemEntity
                      || target instanceof ExperienceOrb
                      || target == this.player
-                     || target instanceof AbstractArrow abstractArrow && !abstractArrow.isAttackable()) {
+                     || target instanceof AbstractArrow abstractArrow &&isAttackable()) {
                      this.disconnect(Component.translatable("multiplayer.disconnect.invalid_entity_attacked"));
                      LOGGER.warn("Player {} tried to attack an invalid entity", this.player.getPlainTextName());
                   } else if (mainHandItem.isItemEnabled(level.enabledFeatures())) {

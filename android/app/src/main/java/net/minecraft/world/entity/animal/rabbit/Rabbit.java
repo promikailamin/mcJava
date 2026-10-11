@@ -339,23 +339,23 @@ public class Rabbit extends Animal {
       return this.getVariant() == Rabbit.Variant.EVIL ? SoundSource.HOSTILE : SoundSource.NEUTRAL;
    }
 
-   public @Nullable Rabbit getBreedOffspring(final ServerLevel level, final AgeableMob partner) {
-      Rabbit offspring = EntityTypes.RABBIT.create(level, EntitySpawnReason.BREEDING);
-      if (offspring != null) {
-         Rabbit.Variant variant = getRandomRabbitVariant(level, this.blockPosition());
-         if (this.random.nextInt(20) != 0) {
-            if (partner instanceof Rabbit rabbitPartner && this.random.nextBoolean()) {
-               variant = rabbitPartner.getVariant();
-            } else {
-               variant = this.getVariant();
-            }
-         }
+public @Nullable Rabbit getBreedOffspring(final ServerLevel level, final AgeableMob partner) {
+       Rabbit offspring = EntityTypes.RABBIT.create(level, EntitySpawnReason.BREEDING);
+       if (offspring != null) {
+          Rabbit.Variant variant = getRandomRabbitVariant(level, this.blockPosition());
+          if (this.random.nextInt(20) != 0) {
+             if (partner instanceof Rabbit rabbitPartner && this.random.nextBoolean()) {
+                variant = rabbitPartner.getVariant();
+             } else {
+                variant = this.getVariant();
+             }
+          }
 
-         offspring.setVariant(variant);
-      }
+          offspring.setVariant(variant);
+       }
 
-      return offspring;
-   }
+       return offspring;
+    }
 
    @Override
    public boolean isFood(final ItemStack itemStack) {

@@ -112,7 +112,7 @@ public class EntrypointPatch extends GamePatch {
                if (newGameInsn == null && type == EnvType.SERVER) {
                   newGameInsn = (MethodInsnNode)this.findInsn(
                      mainMethod,
-                     insn -> insn instanceof MethodInsnNode insn && getOpcode() == 183
+                     insn -> insn instanceof MethodInsnNode && getOpcode() == 183
                         && this.hasStrInMethod(((MethodInsnNode)insn).owner, "<clinit>", "()V", "^[a-fA-F0-9]{40}$", classSource),
                      false
                   );
@@ -269,7 +269,7 @@ public class EntrypointPatch extends GamePatch {
             } else {
                Log.debug(LogCategory.GAME_PATCH, "20w22a+ detected, patching main method...");
                LdcInsnNode serverPropertiesLdc = (LdcInsnNode)this.findInsn(
-                  gameMethod, insn -> insn instanceof LdcInsnNode cst && equals("server.properties"), false
+                  gameMethod, insn -> insn instanceof LdcInsnNode server &&properties"), false
                );
                this.moveBefore(it, serverPropertiesLdc);
                MethodNode serverStartMethod = this.findMethod(
@@ -329,7 +329,7 @@ public class EntrypointPatch extends GamePatch {
                   MethodInsnNode dedicatedServerConstructor = (MethodInsnNode)this.findInsn(
                      serverStartMethod,
                      insn -> {
-                        if (insn instanceof MethodInsnNode name && equals("<init>")) {
+                        if (insn instanceof MethodInsnNode && equals("<init>")) {
                            Type constructorType = Type.getMethodType(((MethodInsnNode)insn).desc);
                            return constructorType.getArgumentTypes().length <= 0
                               ? false
@@ -468,7 +468,7 @@ public class EntrypointPatch extends GamePatch {
                for (AbstractInsnNode insn : method.instructions) {
                   if (insn instanceof LdcInsnNode) {
                      Object cst = ((LdcInsnNode)insn).cst;
-                     if (cst instanceof String cst && equals(str)) {
+                     if (cst instanceof String && equals(str)) {
                         return true;
                      }
                   }

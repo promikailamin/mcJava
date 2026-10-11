@@ -59,10 +59,15 @@ public final class DataComponentExactPredicate implements Predicate<DataComponen
       return this.expectedComponents.isEmpty();
    }
 
-   @Override
-   public boolean equals(final Object obj) {
-      return obj instanceof DataComponentExactPredicate predicate && this.expectedComponents.equals(predicate.expectedComponents);
-   }
+@Override
+    public boolean equals(final Object obj) {
+       if (this == obj) {
+          return true;
+       } else if (obj instanceof DataComponentExactPredicate that) {
+          return this.expectedComponents.equals(that.expectedComponents);
+       }
+       return false;
+    }
 
    @Override
    public int hashCode() {

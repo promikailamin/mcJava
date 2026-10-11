@@ -24,7 +24,7 @@ public final class VersionIntervalImpl implements VersionInterval {
       assert max != null || !maxInclusive;
       assert min == null || min instanceof SemanticVersion || minInclusive;
       assert max == null || max instanceof SemanticVersion || maxInclusive;
-      assert min == null || max == null || min instanceof SemanticVersion min && equals(max);
+      assert min == null || max == null || min instanceof SemanticVersion && equals(max);
    }
 
    @Override

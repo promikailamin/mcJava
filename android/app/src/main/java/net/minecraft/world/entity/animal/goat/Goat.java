@@ -154,7 +154,7 @@ public @Nullable Goat getBreedOffspring(final ServerLevel level, final AgeableMo
        if (newGoat != null) {
           GoatAi.initMemories(newGoat, level.getRandom());
           AgeableMob selected = level.getRandom().nextBoolean() ? this : partner;
-          boolean babyIsScreaming = selected instanceof Goat goat && goat.isScreamingGoat()
+          boolean babyIsScreaming = selected instanceof Goat goat &&isScreamingGoat()
              || level.getRandom().nextDouble() < 0.02;
           newGoat.setScreamingGoat(babyIsScreaming);
        }

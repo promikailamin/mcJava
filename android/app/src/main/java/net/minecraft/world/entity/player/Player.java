@@ -522,31 +522,31 @@ public abstract class Player extends Avatar implements ContainerUser {
       return this.isAutoSpinAttack() && this.autoSpinAttackItemStack != null ? this.autoSpinAttackItemStack : super.getWeaponItem();
    }
 
-   @Override
-   public void die(final DamageSource source) {
-      super.die(source);
-      this.reapplyPosition();
-if (!this.isSpectator() && this.level() instanceof ServerLevel level) {
+@Override
+    public void die(final DamageSource source) {
+       super.die(source);
+       this.reapplyPosition();
+       if (!this.isSpectator() && this.level() instanceof ServerLevel level) {
           this.dropAllDeathLoot(level, source);
        }
 
-      if (source != null) {
-         this.setDeltaMovement(
-            -Mth.cos((this.getHurtDir() + this.getYRot()) * (float) (Math.PI / 180.0)) * 0.1F,
-            0.1F,
-            -Mth.sin((this.getHurtDir() + this.getYRot()) * (float) (Math.PI / 180.0)) * 0.1F
-         );
-      } else {
-         this.setDeltaMovement(0.0, 0.1, 0.0);
-      }
+       if (source != null) {
+          this.setDeltaMovement(
+             -Mth.cos((this.getHurtDir() + this.getYRot()) * (float) (Math.PI / 180.0)) * 0.1F,
+             0.1F,
+             -Mth.sin((this.getHurtDir() + this.getYRot()) * (float) (Math.PI / 180.0)) * 0.1F
+          );
+       } else {
+          this.setDeltaMovement(0.0, 0.1, 0.0);
+       }
 
-      this.awardStat(Stats.DEATHS);
-      this.resetStat(Stats.CUSTOM.get(Stats.TIME_SINCE_DEATH));
-      this.resetStat(Stats.CUSTOM.get(Stats.TIME_SINCE_REST));
-      this.clearFire();
-      this.setSharedFlagOnFire(false);
-      this.setLastDeathLocation(Optional.of(GlobalPos.of(this.level().dimension(), this.blockPosition())));
-   }
+       this.awardStat(Stats.DEATHS);
+       this.resetStat(Stats.CUSTOM.get(Stats.TIME_SINCE_DEATH));
+       this.resetStat(Stats.CUSTOM.get(Stats.TIME_SINCE_REST));
+       this.clearFire();
+       this.setSharedFlagOnFire(false);
+       this.setLastDeathLocation(Optional.of(GlobalPos.of(this.level().dimension(), this.blockPosition())));
+    }
 
    @Override
    protected void dropEquipment(final ServerLevel level) {
@@ -827,27 +827,27 @@ if (!this.isSpectator() && this.level() instanceof ServerLevel level) {
             }
 
             return interact;
-         } else {
-            if (!itemStack.isEmpty() && entity instanceof LivingEntity livingEntity) {
-               if (this.hasInfiniteMaterials()) {
-                  itemStack = itemStackClone;
-               }
+} else {
+             if (!itemStack.isEmpty() && entity instanceof LivingEntity livingEntity) {
+                if (this.hasInfiniteMaterials()) {
+                   itemStack = itemStackClone;
+                }
 
-               InteractionResult interactionResult = itemStack.interactLivingEntity(this, livingEntity, hand);
-               if (interactionResult.consumesAction()) {
-                  this.level().gameEvent(GameEvent.ENTITY_INTERACT, entity.position(), GameEvent.Context.of(this));
-                  if (itemStack.isEmpty() && !this.hasInfiniteMaterials()) {
-                     this.setItemInHand(hand, ItemStack.EMPTY);
-                  }
+                InteractionResult interactionResult = itemStack.interactLivingEntity(this, livingEntity, hand);
+                if (interactionResult.consumesAction()) {
+                   this.level().gameEvent(GameEvent.ENTITY_INTERACT, entity.position(), GameEvent.Context.of(this));
+                   if (itemStack.isEmpty() && !this.hasInfiniteMaterials()) {
+                      this.setItemInHand(hand, ItemStack.EMPTY);
+                   }
 
-                  return interactionResult;
-               }
-            }
+                   return interactionResult;
+                }
+             }
 
-            return InteractionResult.PASS;
-         }
-      }
-   }
+             return InteractionResult.PASS;
+          }
+       }
+    }
 
    @Override
    public void removeVehicle() {
@@ -1010,7 +1010,7 @@ if (!this.isSpectator() && this.level() instanceof ServerLevel level) {
 
    private boolean deflectProjectile(final Entity entity) {
       if (entity.is(EntityTypeTags.REDIRECTABLE_PROJECTILE)
-         && entity instanceof Projectile projectile && projectile.deflect(ProjectileDeflection.AIM_DEFLECT, this, EntityReference.of(this), true, 1.0)) {
+         && entity instanceof Projectile projectile &&deflect(ProjectileDeflection.AIM_DEFLECT, this, EntityReference.of(this), true, 1.0)) {
          this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.PLAYER_ATTACK_NODAMAGE, this.getSoundSource());
          return true;
       } else {
@@ -1025,7 +1025,7 @@ if (!this.isSpectator() && this.level() instanceof ServerLevel level) {
          && !this.isInWater()
          && !this.isMobilityRestricted()
          && !this.isPassenger()
-         && entity instanceof LivingEntity livingEntity && isSprinting();
+         && entity instanceof LivingEntity && isSprinting();
    }
 
    private boolean isSweepAttack(final boolean fullStrengthAttack, final boolean criticalAttack, final boolean knockbackAttack) {
@@ -1083,7 +1083,7 @@ if (!this.isSpectator() && this.level() instanceof ServerLevel level) {
       }
 
       boolean itemHurtEnemy = false;
-      if (this.level() instanceof ServerLevel) {
+      if (this.level() instanceof ServerLevel serverLevel) {
           ServerLevel serverLevel = (ServerLevel) this.level();
          if (hurtTarget instanceof LivingEntity) {
              LivingEntity livingTarget = (LivingEntity) hurtTarget;
@@ -1142,7 +1142,7 @@ if (!this.isSpectator() && this.level() instanceof ServerLevel level) {
          this.setSprinting(false);
       }
 
-if (entity instanceof ServerPlayer serverPlayer && entity.syncVelocity) {
+if (entity instanceof ServerPlayer entity &&syncVelocity) {
           serverPlayer.connection.send(new ClientboundSetEntityMotionPacket(entity));
           entity.syncVelocity = false;
           entity.setDeltaMovement(oldMovement);
@@ -1156,7 +1156,7 @@ if (entity instanceof ServerPlayer serverPlayer && entity.syncVelocity) {
 
    private void doSweepAttack(final Entity entity, final float baseDamage, final DamageSource damageSource, final float attackStrengthScale) {
       this.playServerSideSound(SoundEvents.PLAYER_ATTACK_SWEEP);
-      if (this.level() instanceof ServerLevel) {
+      if (this.level() instanceof ServerLevel serverLevel) {
           ServerLevel serverLevel = (ServerLevel) this.level();
          float var12 = 1.0F + (float)this.getAttributeValue(Attributes.SWEEPING_DAMAGE_RATIO) * baseDamage;
 
@@ -1164,7 +1164,7 @@ if (entity instanceof ServerPlayer serverPlayer && entity.syncVelocity) {
             if (nearby != this
                && nearby != entity
                && !this.isAlliedTo(nearby)
-               && !(nearby instanceof ArmorStand armorStand && armorStand.isMarker())
+               && !(nearby instanceof ArmorStand armorStand &&isMarker())
                && this.distanceToSqr(nearby) < 9.0) {
                float enchantedDamage = this.getEnchantedDamage(nearby, var12, damageSource) * attackStrengthScale;
                if (nearby.hurtServer(serverLevel, damageSource, enchantedDamage)) {

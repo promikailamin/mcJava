@@ -244,7 +244,7 @@ public class SulfurCube extends AbstractCubeMob implements Bucketable, Shearable
       if (this.hasBodyItem()) {
          if (this.canExplode() && !this.isPrimed()) {
             Entity sourceEntity = source.getDirectEntity();
-            if (source.is(DamageTypeTags.IS_FIRE) || sourceEntity instanceof AbstractArrow projectile && isOnFire()) {
+            if (source.is(DamageTypeTags.IS_FIRE) || sourceEntity instanceof AbstractArrow && isOnFire()) {
                this.primeTime(false);
             } else if (source.is(DamageTypeTags.IS_EXPLOSION)) {
                this.primeTime(true);

@@ -221,7 +221,7 @@ public abstract class Mob extends LivingEntity implements Targeting, EquipmentUs
    @Override
    public @Nullable LivingEntity getControllingPassenger() {
       Entity firstPassenger = this.getFirstPassenger();
-      return !this.isNoAi() && firstPassenger instanceof Mob firstPassenger && canControlVehicle() ? passenger : null;
+      return !this.isNoAi() && firstPassenger instanceof Mob && canControlVehicle() ? passenger : null;
    }
 
    public Sensing getSensing() {

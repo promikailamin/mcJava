@@ -114,7 +114,7 @@ public class BehaviorUtils {
 
 public static boolean isWithinAttackRange(final Mob body, final LivingEntity target, final int projectileAttackRangeMargin) {
        Item item = body.getMainHandItem().getItem();
-       if (item instanceof ProjectileWeaponItem body && body.canUseNonMeleeWeapon(body.getMainHandItem())) {
+       if (item instanceof ProjectileWeaponItem weapon && weapon.canUseNonMeleeWeapon(body.getMainHandItem())) {
           int maxAllowedDistance = weapon.getDefaultProjectileRange() - projectileAttackRangeMargin;
           return body.closerThan(target, maxAllowedDistance);
        } else {

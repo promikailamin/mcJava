@@ -168,7 +168,8 @@ public class LightningBolt extends Entity {
    }
 
 private void spawnFire(final int additionalSources) {
-       if (!this.visualOnly && this.level() instanceof ServerLevel level) {
+       if (!this.visualOnly && this.level() instanceof ServerLevel) {
+           ServerLevel level = (ServerLevel) !this.visualOnly && this.level();
           BlockPos var7 = this.blockPosition();
           if (level.canSpreadFireAround(var7)) {
              BlockState fire = BaseFireBlock.getState(level, var7);

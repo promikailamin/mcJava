@@ -207,7 +207,7 @@ public class ThrownTrident extends AbstractArrow {
 
    private byte getLoyaltyFromItem(final ItemStack tridentItem) {
       return this.level() instanceof ServerLevel ? (byte)Mth.clamp(EnchantmentHelper.getTridentReturnToOwnerAcceleration(serverLevel, tridentItem, this), 0, 127)
-          : 0;
+           : 0;
    }
 
    @Override

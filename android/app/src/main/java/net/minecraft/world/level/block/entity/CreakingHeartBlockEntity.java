@@ -181,22 +181,21 @@ public class CreakingHeartBlockEntity extends BlockEntity {
          this.setCreakingInfo(creaking.getUUID());
       }
 
-      if (this.level instanceof ServerLevel creakingInfo && this.creakingInfo.right().isPresent()) {
-         UUID uuid = (UUID)this.creakingInfo.right().get();
-         if (serverLevel.getEntity(uuid) instanceof Creaking) {
-             Creaking resolvedCreaking = (Creaking) serverLevel.getEntity(uuid);
-            this.setCreakingInfo(resolvedCreaking);
-            return Optional.of(resolvedCreaking);
-         } else {
-            if (this.ticksExisted >= 30L) {
-               this.clearCreakingInfo();
-            }
+if (this.level instanceof ServerLevel serverLevel && this.creakingInfo.right().isPresent()) {
+          UUID uuid = (UUID)this.creakingInfo.right().get();
+          if (serverLevel.getEntity(uuid) instanceof Creaking resolvedCreaking) {
+             this.setCreakingInfo(resolvedCreaking);
+             return Optional.of(resolvedCreaking);
+          } else {
+             if (this.ticksExisted >= 30L) {
+                this.clearCreakingInfo();
+             }
 
-            return NO_CREAKING;
-         }
-      } else {
-         return NO_CREAKING;
-      }
+             return NO_CREAKING;
+          }
+       } else {
+          return NO_CREAKING;
+       }
    }
 
    private static @Nullable Creaking spawnProtector(final ServerLevel level, final CreakingHeartBlockEntity entity) {

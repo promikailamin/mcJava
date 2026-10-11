@@ -15,15 +15,15 @@ public class WebBlock extends Block {
       super(properties);
    }
 
-   @Override
-   protected void entityInside(
-      final BlockState state, final Level level, final BlockPos pos, final Entity entity, final InsideBlockEffectApplier effectApplier, final boolean isPrecise
-   ) {
-      Vec3 speedMultiplier = new Vec3(0.25, 0.05F, 0.25);
-      if (entity instanceof LivingEntity livingEntity && livingEntity.hasEffect(MobEffects.WEAVING)) {
-         speedMultiplier = new Vec3(0.5, 0.25, 0.5);
-      }
+@Override
+    protected void entityInside(
+       final BlockState state, final Level level, final BlockPos pos, final Entity entity, final InsideBlockEffectApplier effectApplier, final boolean isPrecise
+    ) {
+       Vec3 speedMultiplier = new Vec3(0.25, 0.05F, 0.25);
+       if (entity instanceof LivingEntity livingEntity && livingEntity.hasEffect(MobEffects.WEAVING)) {
+          speedMultiplier = new Vec3(0.5, 0.25, 0.5);
+       }
 
-      entity.makeStuckInBlock(state, speedMultiplier);
-   }
+       entity.makeStuckInBlock(state, speedMultiplier);
+    }
 }

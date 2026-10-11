@@ -152,7 +152,7 @@ public class CreakingHeartBlock extends BaseEntityBlock {
    protected void onExplosionHit(
       final BlockState state, final ServerLevel level, final BlockPos pos, final Explosion explosion, final BiConsumer<ItemStack, BlockPos> onHit
    ) {
-      if (level.getBlockEntity(pos) instanceof CreakingHeartBlockEntity && explosion instanceof ServerExplosion explosion && getBlockInteraction().shouldAffectBlocklikeEntities()) {
+      if (level.getBlockEntity(pos) instanceof CreakingHeartBlockEntity && explosion instanceof ServerExplosion && getBlockInteraction().shouldAffectBlocklikeEntities()) {
          creakingHeartBlockEntity.removeProtector(serverExplosion.getDamageSource());
          if (explosion.getIndirectSourceEntity() instanceof Player && explosion.getBlockInteraction().shouldAffectBlocklikeEntities()) {
             this.tryAwardExperience(player, state, level, pos);

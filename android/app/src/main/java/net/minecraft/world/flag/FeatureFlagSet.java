@@ -95,10 +95,15 @@ public final class FeatureFlagSet {
       return newMask == 0L ? EMPTY : new FeatureFlagSet(this.universe, newMask);
    }
 
-   @Override
-   public boolean equals(final Object o) {
-      return this == o ? true : o instanceof FeatureFlagSet that && this.universe == that.universe && this.mask == that.mask;
-   }
+@Override
+    public boolean equals(final Object o) {
+       if (this == o) {
+          return true;
+       } else if (o instanceof FeatureFlagSet that) {
+          return this.universe == that.universe && this.mask == that.mask;
+       }
+       return false;
+    }
 
    @Override
    public int hashCode() {

@@ -35,7 +35,7 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
 
    @Override
    protected void slotClicked(final Slot slot, final int slotId, final int buttonNum, final ContainerInput containerInput) {
-      if (slot instanceof CrafterSlot menu && !slot.hasItem() && !this.player.isSpectator()) {
+      if (slot instanceof CrafterSlot slot &&hasItem() && !this.player.isSpectator()) {
          switch (containerInput) {
             case PICKUP:
                if (this.menu.isSlotDisabled(slotId)) {
@@ -98,7 +98,7 @@ public class CrafterScreen extends AbstractContainerScreen<CrafterMenu> {
    public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
       super.extractRenderState(graphics, mouseX, mouseY, a);
       this.extractRedstone(graphics);
-      if (this.hoveredSlot instanceof CrafterSlot menu && !this.menu.isSlotDisabled(this.hoveredSlot.index)
+      if (this.hoveredSlot instanceof CrafterSlot this &&menu.isSlotDisabled(this.hoveredSlot.index)
          && this.menu.getCarried().isEmpty()
          && !this.hoveredSlot.hasItem()
          && !this.player.isSpectator()) {

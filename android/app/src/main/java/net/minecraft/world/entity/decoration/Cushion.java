@@ -59,7 +59,7 @@ public class Cushion extends BlockAttachedEntity {
       this.playSound(SoundEvents.CUSHION_BREAK, 1.0F, 1.0F);
       this.showBreakingParticles();
       if (level.getGameRules().get(GameRules.ENTITY_DROPS)) {
-         if (!(causedBy instanceof Player player && hasInfiniteMaterials())) {
+         if (!(causedBy instanceof Player && hasInfiniteMaterials())) {
             ItemEntity itemEntity = this.spawnAtLocation(level, this.getCushionItemStackWithData());
             if (itemEntity != null && causedBy instanceof LightningBolt) {
                itemEntity.setInvulnerableTime(20);

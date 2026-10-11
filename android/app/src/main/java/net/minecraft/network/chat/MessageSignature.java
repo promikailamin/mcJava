@@ -43,7 +43,12 @@ public record MessageSignature(byte[] bytes) {
 
 @Override
     public boolean equals(final Object o) {
-       return this == o || o instanceof MessageSignature that && Arrays.equals(this.bytes, that.bytes);
+       if (this == o) {
+          return true;
+       } else if (o instanceof MessageSignature that) {
+          return Arrays.equals(this.bytes, that.bytes);
+       }
+       return false;
     }
 
    @Override

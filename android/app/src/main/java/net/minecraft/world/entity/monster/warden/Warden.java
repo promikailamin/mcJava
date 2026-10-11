@@ -398,7 +398,7 @@ public class Warden extends Monster implements VibrationSystem {
 
    @Contract("null->false")
    public boolean canTargetEntity(final @Nullable Entity entity) {
-      return entity instanceof LivingEntity that && level() == entity.level()
+      return entity instanceof LivingEntity entity && level() == entity.level()
          && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity)
          && !this.isAlliedTo(entity)
          && !livingEntity.is(EntityTypes.ARMOR_STAND)
@@ -457,7 +457,7 @@ public class Warden extends Monster implements VibrationSystem {
          WardenAi.setDigCooldown(this);
          boolean maybeSwitchTarget = !(this.getTarget() instanceof Player);
          int newAnger = this.angerManagement.increaseAnger(entity, amount);
-         if (entity instanceof Player player && maybeSwitchTarget && AngerLevel.byAnger(newAnger).isAngry()) {
+         if (entity instanceof Player AngerLevel && maybeSwitchTarget && AngerLevel.byAnger(newAnger).isAngry()) {
             this.getBrain().eraseMemory(MemoryModuleType.ATTACK_TARGET);
          }
 
@@ -502,7 +502,7 @@ public class Warden extends Monster implements VibrationSystem {
          Entity attacker = source.getEntity();
          this.increaseAngerAt(attacker, AngerLevel.ANGRY.getMinimumAnger() + 20, false);
 if (this.brain.getMemory(MemoryModuleType.ATTACK_TARGET).isEmpty()
-    && (attacker instanceof LivingEntity source && isDirect() || this.closerThan(source, 5.0))) {
+          && attacker instanceof LivingEntity livingAttacker && this.closerThan(source, 5.0)) {
             this.setAttackTarget(livingAttacker);
          }
       }

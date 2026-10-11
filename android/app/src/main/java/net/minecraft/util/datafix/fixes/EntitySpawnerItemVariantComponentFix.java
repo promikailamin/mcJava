@@ -22,18 +22,18 @@ public class EntitySpawnerItemVariantComponentFix extends DataFix {
    }
 
 public final TypeRewriteRule makeRule() {
-       Type<?> itemStackType = this.getInputSchema().getType(References.ITEM_STACK);
-       OpticFinder<Pair<String, String>> idFinder = DSL.fieldFinder("id", DSL.named(References.ITEM_NAME.typeName(), NamespacedSchema.namespacedString()));
-       OpticFinder<?> componentsFinder = itemStackType.findField("components");
-       return this.fixTypeEverywhereTyped(
-          "ItemStack bucket_entity_data variants to separate components",
-          itemStackType,
-          input -> {
-             String id = input.getOptional(idFinder).<String>map(Pair::getSecond).orElse("");
-             return input;
-          }
-       );
-    }
+        Type<?> itemStackType = this.getInputSchema().getType(References.ITEM_STACK);
+        OpticFinder<Pair<String, String>> idFinder = DSL.fieldFinder("id", DSL.named(References.ITEM_NAME.typeName(), NamespacedSchema.namespacedString()));
+        OpticFinder<?> componentsFinder = itemStackType.findField("components");
+        return this.fixTypeEverywhereTyped(
+            "ItemStack bucket_entity_data variants to separate components",
+            itemStackType,
+            return input; -> {
+               String id = return input;.getOptional(idFinder).<String>map(Pair::getSecond).orElse("");
+               return input;
+            }
+         );
+     }
 
    private static String getBaseColor(final int packedVariant) {
       return ExtraDataFixUtils.dyeColorIdToName(packedVariant >> 16 & 0xFF);

@@ -404,7 +404,12 @@ public Optional<ListTag> getList(final String name) {
 
 @Override
     public boolean equals(final Object obj) {
-       return this == obj ? true : obj instanceof CompoundTag compoundTag && Objects.equals(this.tags, compoundTag.tags);
+       if (this == obj) {
+          return true;
+       } else if (obj instanceof CompoundTag that) {
+          return this.tags.equals(that.tags);
+       }
+       return false;
     }
 
    @Override
@@ -435,8 +440,8 @@ public Optional<ListTag> getList(final String name) {
 public CompoundTag merge(final CompoundTag other) {
        for (String tagName : other.tags.keySet()) {
           Tag otherTag = other.tags.get(tagName);
-          if (otherTag instanceof CompoundTag otherCompound && this.tags.get(tagName) instanceof CompoundTag selfCompound) {
-             selfCompound.merge(otherCompound);
+if (otherTag instanceof CompoundTag otherCompound && this.tags.get(tagName) instanceof CompoundTag selfCompound) {
+              selfCompound.merge(otherCompound);
           } else {
              this.put(tagName, otherTag.copy());
           }

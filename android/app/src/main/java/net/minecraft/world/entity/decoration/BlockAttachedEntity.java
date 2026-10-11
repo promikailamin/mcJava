@@ -124,7 +124,7 @@ public abstract class BlockAttachedEntity extends Entity {
 
 @Override
     public void move(final MoverType moverType, final Vec3 delta) {
-       if (this.level() instanceof ServerLevel level && !this.isRemoved() && delta.lengthSqr() > 0.0) {
+       if (this.level() instanceof ServerLevel && !this.isRemoved() && delta.lengthSqr() > 0.0) {
           this.kill(level);
           this.dropItem(level, null);
        }
@@ -132,7 +132,7 @@ public abstract class BlockAttachedEntity extends Entity {
 
 @Override
     public void push(final double xa, final double ya, final double za) {
-       if (this.level() instanceof ServerLevel level && !this.isRemoved() && xa * xa + ya * ya + za * za > 0.0) {
+       if (this.level() instanceof ServerLevel && !this.isRemoved() && xa * xa + ya * ya + za * za > 0.0) {
           this.kill(level);
           this.dropItem(level, null);
        }

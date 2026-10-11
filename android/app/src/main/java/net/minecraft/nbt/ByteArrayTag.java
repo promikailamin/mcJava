@@ -86,7 +86,12 @@ public final class ByteArrayTag implements CollectionTag {
 
 @Override
     public boolean equals(final Object obj) {
-       return this == obj ? true : obj instanceof ByteArrayTag byteArrayTag && Arrays.equals(this.data, byteArrayTag.data);
+       if (this == obj) {
+          return true;
+       } else if (obj instanceof ByteArrayTag that) {
+          return Arrays.equals(this.data, that.data);
+       }
+       return false;
     }
 
    @Override

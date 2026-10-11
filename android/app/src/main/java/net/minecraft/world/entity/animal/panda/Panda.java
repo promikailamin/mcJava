@@ -867,7 +867,7 @@ public class Panda extends Animal {
 
       @Override
       protected void alertOther(final Mob other, final LivingEntity hurtByMob) {
-         if (other instanceof Panda mob && other.isAggressive()) {
+         if (other instanceof Panda other &&isAggressive()) {
             other.setTarget(hurtByMob);
          }
       }

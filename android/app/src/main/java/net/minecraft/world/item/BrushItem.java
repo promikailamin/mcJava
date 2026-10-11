@@ -60,7 +60,7 @@ public class BrushItem extends Item {
       if (ticksRemaining >= 0 && livingEntity instanceof Player) {
           Player player = (Player) ticksRemaining >= 0 && livingEntity;
          HitResult hitResult = this.calculateHitResult(player);
-         if (hitResult instanceof BlockHitResult hitResult && getType() == HitResult.Type.BLOCK) {
+         if (hitResult instanceof BlockHitResult && getType() == HitResult.Type.BLOCK) {
             int timeElapsed = this.getUseDuration(itemStack, livingEntity) - ticksRemaining + 1;
             boolean isLastTickBeforeBackswing = timeElapsed % 10 == 5;
             if (isLastTickBeforeBackswing) {
@@ -80,8 +80,8 @@ public class BrushItem extends Item {
                }
 
                level.playSound(player, pos, brushSound, SoundSource.BLOCKS);
-               if (level instanceof ServerLevel level && getBlockEntity(pos) instanceof BrushableBlockEntity) {
-                   BrushableBlockEntity brushableBlockEntity = (BrushableBlockEntity) level instanceof ServerLevel level && getBlockEntity(pos);
+               if (level instanceof ServerLevel brushableBlockEntity && getBlockEntity(pos) instanceof BrushableBlockEntity) {
+                   BrushableBlockEntity brushableBlockEntity = (BrushableBlockEntity) level instanceof ServerLevel && getBlockEntity(pos);
                   boolean brushingUpdatedState = brushableBlockEntity.brush(level.getGameTime(), serverLevel, player, blockHitResult.getDirection(), itemStack);
                   if (brushingUpdatedState) {
                      EquipmentSlot equippedHand = itemStack.equals(player.getItemBySlot(EquipmentSlot.OFFHAND))

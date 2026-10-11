@@ -36,10 +36,15 @@ private MemoryMap(final Map<MemoryModuleType<?>, ExpirableValue<?>> memories) {
       return (ExpirableValue<U>)this.memories.get(type);
    }
 
-   @Override
-   public boolean equals(final Object obj) {
-      return obj instanceof MemoryMap memories && this.memories.equals(map.memories);
-   }
+@Override
+    public boolean equals(final Object obj) {
+       if (this == obj) {
+          return true;
+       } else if (obj instanceof MemoryMap that) {
+          return this.memories.equals(that.memories);
+       }
+       return false;
+    }
 
    @Override
    public int hashCode() {

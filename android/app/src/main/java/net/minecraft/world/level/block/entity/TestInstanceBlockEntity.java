@@ -255,7 +255,7 @@ public class TestInstanceBlockEntity extends BlockEntity implements BoundingBoxR
 
    public boolean exportTest(final Consumer<Component> feedbackOutput) {
       Optional<Identifier> saved = this.saveTest(feedbackOutput);
-      return !saved.isEmpty() && this.level instanceof ServerLevel serverLevel ? export((ServerLevel) this.level, saved.get(), feedbackOutput)     : false;
+      return !saved.isEmpty() && this.level instanceof ServerLevel ? export((ServerLevel) this.level, saved.get(), feedbackOutput)        : false;
    }
 
    public static boolean export(final ServerLevel level, final Identifier structureId, final Consumer<Component> feedbackOutput) {

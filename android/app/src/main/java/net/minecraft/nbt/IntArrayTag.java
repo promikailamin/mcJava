@@ -92,7 +92,12 @@ public final class IntArrayTag implements CollectionTag {
 
 @Override
     public boolean equals(final Object obj) {
-       return this == obj ? true : obj instanceof IntArrayTag intArrayTag && Arrays.equals(this.data, intArrayTag.data);
+       if (this == obj) {
+          return true;
+       } else if (obj instanceof IntArrayTag that) {
+          return Arrays.equals(this.data, that.data);
+       }
+       return false;
     }
 
    @Override

@@ -111,7 +111,7 @@ public record DebugBrainDump(
          inventoryStr = "";
       }
 
-      boolean wantsGolem = entity instanceof Villager villager && villager.wantsToSpawnGolem(gameTime);
+      boolean wantsGolem = entity instanceof Villager villager &&wantsToSpawnGolem(gameTime);
       int angerLevel = entity instanceof Warden ? getClientAngerLevel() : -1;
       List<String> activities = brain.getActiveActivities().stream().map(Activity::getName).toList();
       List<String> behaviors = brain.getRunningBehaviors().stream().map(BehaviorControl::debugString).toList();

@@ -52,18 +52,12 @@ public class WitherRoseBlock extends FlowerBlock {
       }
    }
 
-   @Override
-   protected void entityInside(
-      final BlockState state, final Level level, final BlockPos pos, final Entity entity, final InsideBlockEffectApplier effectApplier, final boolean isPrecise
-   ) {
-      if (level instanceof ServerLevel level && getDifficulty() != Difficulty.PEACEFUL
-         && entity instanceof LivingEntity livingEntity && !livingEntity.isInvulnerableTo(serverLevel, level.damageSources().wither())) {
-         livingEntity.addEffect(this.getBeeInteractionEffect());
-      }
-   }
-
-   @Override
-   public MobEffectInstance getBeeInteractionEffect() {
-      return new MobEffectInstance(MobEffects.WITHER, 40);
-   }
+@Override
+    protected void entityInside(
+       final BlockState state, final Level level, final BlockPos pos, final Entity entity, final InsideBlockEffectApplier effectApplier, final boolean isPrecise
+    ) {
+       if (level instanceof ServerLevel serverLevel && serverLevel.getDifficulty() != Difficulty.PEACEFUL) {
+          entity.addEffect(new MobEffectInstance(MobEffects.WITHER, 40));
+       }
+    }
 }

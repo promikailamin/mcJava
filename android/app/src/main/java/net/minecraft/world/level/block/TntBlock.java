@@ -83,7 +83,7 @@ public class TntBlock extends Block {
    public static boolean prime(final Level level, final BlockPos pos, final @Nullable LivingEntity source, final ItemStack itemStack) {
       if (!(level instanceof ServerLevel serverLevel && serverLevel.getGameRules().get(GameRules.TNT_EXPLODES))) {
          return false;
-      } else if (source instanceof Player player && player.gameMode() == GameType.ADVENTURE
+      } else if (source instanceof Player player &&gameMode() == GameType.ADVENTURE
          && !itemStack.canBreakBlockInAdventureMode(new BlockInWorld(level, pos, false))) {
          return false;
       } else {

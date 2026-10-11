@@ -79,7 +79,7 @@ public class ArmorStand extends LivingEntity {
    public static final EntityDataAccessor<Rotations> DATA_RIGHT_ARM_POSE = SynchedEntityData.defineId(ArmorStand.class, EntityDataSerializers.ROTATIONS);
    public static final EntityDataAccessor<Rotations> DATA_LEFT_LEG_POSE = SynchedEntityData.defineId(ArmorStand.class, EntityDataSerializers.ROTATIONS);
    public static final EntityDataAccessor<Rotations> DATA_RIGHT_LEG_POSE = SynchedEntityData.defineId(ArmorStand.class, EntityDataSerializers.ROTATIONS);
-   private static final Predicate<Entity> RIDABLE_MINECARTS = entity -> entity instanceof AbstractMinecart minecart && isRideable();
+   private static final Predicate<Entity> RIDABLE_MINECARTS = entity -> entity instanceof AbstractMinecart && isRideable();
    private static final boolean DEFAULT_INVISIBLE = false;
    private static final int DEFAULT_DISABLED_SLOTS = 0;
    private static final boolean DEFAULT_SMALL = false;
@@ -574,10 +574,10 @@ public class ArmorStand extends LivingEntity {
       return super.isPickable() && !this.isMarker();
    }
 
-   @Override
-   public boolean skipAttackInteraction(final Entity source) {
-      return source instanceof Player that && level().mayInteract(playerSource, this.blockPosition());
-   }
+@Override
+    public boolean skipAttackInteraction(final Entity source) {
+       return source instanceof Player player && this.blockPosition();
+    }
 
    @Override
    public HumanoidArm getMainArm() {

@@ -179,17 +179,18 @@ public abstract class SpeleothemBlock extends Block implements SimpleWaterlogged
       return blockState.is(BlockTags.SPELEOTHEMS) && blockState.getValue(TIP_DIRECTION) == tipDirection;
    }
 
-   @Override
-   protected void onProjectileHit(final Level level, final BlockState state, final BlockHitResult blockHit, final Projectile projectile) {
-      if (!level.isClientSide()) {
-         BlockPos blockPos = blockHit.getBlockPos();
-         if (level instanceof ServerLevel projectile && projectile.mayInteract(serverLevel, blockPos)
-            && projectile.mayBreak(serverLevel, blockPos)
-            && projectile instanceof ThrownTrident projectile && getDeltaMovement().length() > 0.6) {
-            level.destroyBlock(blockPos, true);
-         }
-      }
-   }
+@Override
+    protected void onProjectileHit(final Level level, final BlockState state, final BlockHitResult blockHit, final Projectile projectile) {
+       if (!level.isClientSide()) {
+          BlockPos blockPos = blockHit.getBlockPos();
+          if (level instanceof ServerLevel serverLevel
+             && projectile.mayInteract(serverLevel, blockPos)
+             && projectile.mayBreak(serverLevel, blockPos)
+             && projectile instanceof ThrownTrident projectile &&getDeltaMovement().length() > 0.6) {
+             level.destroyBlock(blockPos, true);
+          }
+       }
+    }
 
    @Override
    protected void tick(final BlockState state, final ServerLevel level, final BlockPos pos, final RandomSource random) {

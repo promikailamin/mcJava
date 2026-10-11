@@ -155,13 +155,13 @@ public class OldMinecartBehavior extends MinecartBehavior {
       Vec3 moveIntent;
       if (this.minecart.getFirstPassenger() instanceof ServerPlayer) {
           ServerPlayer player = (ServerPlayer) this.minecart.getFirstPassenger();
-         moveIntent = player.getLastClientMoveIntent();
-      } else {
-         moveIntent = Vec3.ZERO;
-      }
+moveIntent = player.getLastClientMoveIntent();
+       } else {
+          moveIntent = Vec3.ZERO;
+       }
 
-      if (controllingPassenger instanceof Player moveIntent && moveIntent.lengthSqr() > 0.0) {
-         Vec3 riderMovement = moveIntent.normalize();
+       if (controllingPassenger instanceof Player player && moveIntent.lengthSqr() > 0.0) {
+          Vec3 riderMovement = moveIntent.normalize();
          double ownDist = this.getDeltaMovement().horizontalDistanceSqr();
          if (riderMovement.lengthSqr() > 0.0 && ownDist < 0.01) {
             this.setDeltaMovement(this.getDeltaMovement().add(moveIntent.x * 0.001, 0.0, moveIntent.z * 0.001));

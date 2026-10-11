@@ -31,7 +31,7 @@ public class Pufferfish extends AbstractFish {
    private static final EntityDataAccessor<Integer> PUFF_STATE = SynchedEntityData.defineId(Pufferfish.class, EntityDataSerializers.INT);
    private int inflateCounter;
    private int deflateTimer;
-   private static final TargetingConditions.Selector SCARY_MOB = (target, level) -> target instanceof Player player && isCreative()
+   private static final TargetingConditions.Selector SCARY_MOB = (target, level) -> target instanceof Player && isCreative()
       ? false
       : !target.is(EntityTypeTags.NOT_SCARY_FOR_PUFFERFISH);
    private static final TargetingConditions TARGETING_CONDITIONS = TargetingConditions.forNonCombat()
@@ -146,20 +146,19 @@ public class Pufferfish extends AbstractFish {
       }
    }
 
-   @Override
-   public void playerTouch(final Player player) {
-      if (this.doTeamsAllowDamage(player)) {
-         int puffState = this.getPuffState();
-         if (player instanceof ServerPlayer serverPlayer && puffState > 0
-            && player.hurtServer(serverPlayer.level(), this.damageSources().mobAttack(this), 1 + puffState)) {
-            if (!this.isSilent()) {
-               serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.PUFFER_FISH_STING, 0.0F));
-            }
+@Override
+    public void playerTouch(final Player player) {
+       if (this.doTeamsAllowDamage(player)) {
+          int puffState = this.getPuffState();
+          if (player instanceof ServerPlayer serverPlayer && puffState > 0) {
+             if (!this.isSilent()) {
+                serverPlayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.PUFFER_FISH_STING, 0.0F));
+             }
 
-            player.addEffect(new MobEffectInstance(MobEffects.POISON, 60 * puffState, 0), this);
-         }
-      }
-   }
+             player.addEffect(new MobEffectInstance(MobEffects.POISON, 60 * puffState, 0), this);
+          }
+       }
+    }
 
    @Override
    protected SoundEvent getDeathSound() {

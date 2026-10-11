@@ -873,7 +873,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ServerEntityGet
 
 @Override
     public boolean mayInteract(final Entity entity, final BlockPos pos) {
-       return !(entity instanceof Player player && (this.server.isUnderSpawnProtection(this, pos, player) || !this.getWorldBorder().isWithinBounds(pos)));
+       return !(entity instanceof Player player && this.isUnderSpawnProtection(pos, player) || !this.getWorldBorder().isWithinBounds(pos));
     }
 
    public void save(final @Nullable ProgressListener progressListener, final boolean flush, final boolean noSave) {
@@ -2020,7 +2020,8 @@ private final class EntityCallbacks implements LevelCallback<Entity> {
        }
 
        public void onDestroyed(final Entity entity) {
-          if (entity instanceof WaypointTransmitter waypoint) {
+          if (entity instanceof WaypointTransmitter) {
+              WaypointTransmitter waypoint = (WaypointTransmitter) entity;
              ServerLevel.this.getWaypointManager().untrackWaypoint(waypoint);
           }
 
@@ -2047,7 +2048,7 @@ private final class EntityCallbacks implements LevelCallback<Entity> {
             ServerLevel.this.updateSleepingPlayerList();
          }
 
-if (entity instanceof WaypointTransmitter waypoint && waypoint.isTransmittingWaypoint()) {
+           if (entity instanceof WaypointTransmitter waypoint && waypoint.isTransmittingWaypoint()) {
              ServerLevel.this.getWaypointManager().trackWaypoint(waypoint);
           }
 

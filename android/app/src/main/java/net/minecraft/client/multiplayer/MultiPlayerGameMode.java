@@ -129,7 +129,7 @@ public class MultiPlayerGameMode {
       }
 
       Block oldBlock = oldState.getBlock();
-      if (oldBlock instanceof GameMasterBlock that && minecraft.player.canUseGameMasterBlocks()) {
+      if (      if (oldBlock instanceof GameMasterBlock minecraft && minecraft.player.canUseGameMasterBlocks()) {) {
          return false;
       }
 

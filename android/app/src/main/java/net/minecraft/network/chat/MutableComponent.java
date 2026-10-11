@@ -102,9 +102,12 @@ public final class MutableComponent implements Component {
 
 @Override
     public boolean equals(final Object o) {
-       return this == o
-          ? true
-          : o instanceof MutableComponent that && this.contents.equals(that.contents) && this.style.equals(that.style) && this.siblings.equals(that.siblings);
+       if (this == o) {
+          return true;
+       } else if (o instanceof MutableComponent that) {
+          return this.contents.equals(that.contents) && this.style.equals(that.style) && this.siblings.equals(that.siblings);
+       }
+       return false;
     }
 
    @Override

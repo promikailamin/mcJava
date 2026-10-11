@@ -196,7 +196,7 @@ public class ShulkerBullet extends Projectile {
             this.finalTarget = null;
          }
 
-         if (finalTarget == null || !finalTarget.isAlive() || finalTarget instanceof Player finalTarget && isSpectator()) {
+         if (finalTarget == null || !finalTarget.isAlive() || finalTarget instanceof Player && isSpectator()) {
             this.applyGravity();
          } else {
             this.targetDeltaX = Mth.clamp(this.targetDeltaX * 1.025, -1.0, 1.0);

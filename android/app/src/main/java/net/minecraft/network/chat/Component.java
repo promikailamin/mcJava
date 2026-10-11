@@ -54,7 +54,7 @@ public interface Component extends Message, FormattedText {
    List<Component> getSiblings();
 
 default @Nullable String tryCollapseToString() {
-       return this.getContents() instanceof PlainTextContents text && this.getSiblings().isEmpty() && this.getStyle().isEmpty() ? text.text() : null;
+       return this.getContents() instanceof PlainTextContents && this.getSiblings().isEmpty() && this.getStyle().isEmpty() ? text.text() : null;
     }
 
    default MutableComponent plainCopy() {

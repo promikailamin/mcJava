@@ -2337,7 +2337,7 @@ public InteractionResult interact(final Player player, final InteractionHand han
            && player.isSecondaryUseActive()
            && this instanceof Leashable leashable && leashable.canBeLeashed()
            && this.isAlive()
-           && !(this instanceof LivingEntity le && le.isBaby())) {
+           && !(this instanceof LivingEntity le &&isBaby())) {
          List<Leashable> mobsToLeash = Leashable.leashableInArea(this, l -> l.getLeashHolder() == player);
          if (!mobsToLeash.isEmpty()) {
             boolean anyLeashed = false;
@@ -2361,13 +2361,14 @@ ItemStack heldItem = player.getItemInHand(hand);
        if (heldItem.is(Items.SHEARS) && this.shearOffAllLeashConnections(player)) {
           heldItem.hurtAndBreak(1, player, hand);
           return InteractionResult.SUCCESS;
-} else if (this instanceof Mob target && heldItem.is(Items.SHEARS)
+} else if (this instanceof Mob heldItem &&is(Items.SHEARS)
            && target.canShearEquipment(player)
            && !player.isSecondaryUseActive()
            && target.attemptToShearEquipment(player, hand, heldItem)) {
            return InteractionResult.SUCCESS;
         } else {
-           if (this.isAlive() && this instanceof Leashable leashable) {
+           if (this.isAlive() && this instanceof Leashable) {
+               Leashable leashable = (Leashable) this.isAlive() && this;
             if (leashable.getLeashHolder() == player) {
                if (!this.level().isClientSide()) {
                   if (player.hasInfiniteMaterials()) {
@@ -2576,7 +2577,7 @@ public boolean shearOffAllLeashConnections(final @Nullable Player player) {
          this.passengers = ImmutableList.of(passenger);
       } else {
          List<Entity> newPassengers = Lists.newArrayList(this.passengers);
-         if (!this.level().isClientSide() && passenger instanceof Player player && getFirstPassenger() instanceof Player) {
+         if (!this.level().isClientSide() && passenger instanceof Player && getFirstPassenger() instanceof Player) {
             newPassengers.add(0, passenger);
          } else {
             newPassengers.add(passenger);
@@ -2672,7 +2673,7 @@ public boolean shearOffAllLeashConnections(final @Nullable Player player) {
    }
 
 public Vec3 getHandHoldingItemAngle(final Item item) {
-        if (!(this instanceof Player player)) {
+        if (!(this instanceof Player)) {
            return Vec3.ZERO;
         } else {
            boolean itemOnlyInOffhand = player.getOffhandItem().is(item) && !player.getMainHandItem().is(item);
@@ -3317,7 +3318,8 @@ protected void removeAfterChangingDimensions() {
            leashable.removeLeash();
         }
 
-        if (this instanceof WaypointTransmitter waypointTransmitter && this.level instanceof ServerLevel serverLevel) {
+        if (this instanceof WaypointTransmitter waypointTransmitter && this.level() instanceof ServerLevel serverLevel) {
+            ServerLevel serverLevel = (ServerLevel) this.level();
            serverLevel.getWaypointManager().untrackWaypoint(waypointTransmitter);
         }
      }
@@ -3961,15 +3963,15 @@ public boolean canTeleport(final Level from, final Level to) {
          }
 
 this.levelCallback.onMove();
-          if (!this.firstTick && this.level instanceof ServerLevel serverLevel && !this.isRemoved()) {
-             if (this instanceof WaypointTransmitter waypointTransmitter && waypointTransmitter.isTransmittingWaypoint()) {
-                serverLevel.getWaypointManager().updateWaypoint(waypointTransmitter);
-             }
+if (!this.firstTick && this.level instanceof ServerLevel serverLevel && this.isRemoved()) {
+              if (this instanceof WaypointTransmitter waypointTransmitter && waypointTransmitter.isTransmittingWaypoint()) {
+                 serverLevel.getWaypointManager().updateWaypoint(waypointTransmitter);
+              }
 
-             if (this instanceof ServerPlayer player && player.isReceivingWaypoints() && player.connection != null) {
-                serverLevel.getWaypointManager().updatePlayer(player);
-             }
-          }
+              if (this instanceof ServerPlayer player && player.isReceivingWaypoints() && player.connection != null) {
+                 serverLevel.getWaypointManager().updatePlayer(player);
+              }
+           }
        }
     }
 

@@ -98,7 +98,7 @@ public static <E, O> RecordCodecBuilder<O, Holder.Reference<E>> retrieveElement(
 
 @Override
        public boolean equals(final Object obj) {
-          return this == obj ? true : obj instanceof RegistryOps.HolderLookupAdapter adapter && this.lookupProvider.equals(adapter.lookupProvider);
+          return this == obj ? true : obj instanceof RegistryOps.HolderLookupAdapter && this.lookupProvider.equals(adapter.lookupProvider);
        }
 
       @Override

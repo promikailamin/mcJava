@@ -65,14 +65,15 @@ public class AuthenticationHandler extends ChannelDuplexHandler {
    }
 
 public void write(final ChannelHandlerContext ctx, final Object msg, final ChannelPromise promise) throws Exception {
-       if (msg instanceof HttpResponse response && response.status().code() == HttpResponseStatus.SWITCHING_PROTOCOLS.code()
-          && ctx.channel().attr(ATTR_WEBSOCKET_ALLOWED).get() != null
-          && ((Boolean)ctx.channel().attr(ATTR_WEBSOCKET_ALLOWED).get()).equals(Boolean.TRUE)) {
+       if (msg instanceof HttpResponse response
+             && response.status().code() == HttpResponseStatus.SWITCHING_PROTOCOLS.code()
+             && ctx.channel().attr(ATTR_WEBSOCKET_ALLOWED).get() != null
+             && ((Boolean)ctx.channel().attr(ATTR_WEBSOCKET_ALLOWED).get()).equals(Boolean.TRUE)) {
           response.headers().set(HttpHeaderNames.SEC_WEBSOCKET_PROTOCOL, "minecraft-v1");
        }
 
-      super.write(ctx, msg, promise);
-   }
+       super.write(ctx, msg, promise);
+    }
 
    private AuthenticationHandler.SecurityCheckResult performSecurityChecks(final HttpRequest request) {
       String tokenInAuthorizationHeader = this.parseTokenInAuthorizationHeader(request);

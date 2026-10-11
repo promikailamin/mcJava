@@ -77,10 +77,15 @@ public class AdvancementNode {
       return this.y;
    }
 
-   @Override
-   public boolean equals(final Object obj) {
-      return this == obj ? true : obj instanceof AdvancementNode that && this.holder.equals(that.holder);
-   }
+@Override
+    public boolean equals(final Object obj) {
+       if (this == obj) {
+          return true;
+       } else if (obj instanceof AdvancementNode that) {
+          return this.holder.equals(that.holder);
+       }
+       return false;
+    }
 
    @Override
    public int hashCode() {

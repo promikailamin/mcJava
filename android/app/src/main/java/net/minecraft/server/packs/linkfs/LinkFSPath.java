@@ -328,7 +328,7 @@ LinkFSPath resolveName(final String name) {
    private LinkFSPath toLinkPath(final @Nullable Path path) {
       if (path == null) {
          throw new NullPointerException();
-      } else if (path instanceof LinkFSPath p && p.fileSystem == this.fileSystem) {
+      } else if (path instanceof LinkFSPath p &&fileSystem == this.fileSystem) {
          return p;
       } else {
          throw new ProviderMismatchException();

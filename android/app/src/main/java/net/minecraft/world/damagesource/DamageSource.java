@@ -90,17 +90,17 @@ public Component getLocalizedDeathMessage(final LivingEntity victim) {
    }
 
 public boolean scalesWithDifficulty() {
-        DamageScaling scaling = this.type().scaling();
-        if (scaling == DamageScaling.NEVER) {
-            return false;
-        } else if (scaling == DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER) {
-            return this.causingEntity instanceof LivingEntity && !(this.causingEntity instanceof Player);
-        } else if (scaling == DamageScaling.ALWAYS) {
-            return true;
-        } else {
-            throw new IllegalStateException("Unexpected value");
-        }
-    }
+         DamageScaling scaling = this.type().scaling();
+         if (scaling == DamageScaling.NEVER) {
+             return false;
+         } else if (scaling == DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER) {
+             return this.causingEntity instanceof LivingEntity && !(this.causingEntity instanceof Player);
+         } else if (scaling == DamageScaling.ALWAYS) {
+             return true;
+         } else {
+             throw new IllegalStateException("Unexpected value");
+         }
+     }
 
 public boolean isCreativePlayer() {
        Entity entity = this.getEntity();

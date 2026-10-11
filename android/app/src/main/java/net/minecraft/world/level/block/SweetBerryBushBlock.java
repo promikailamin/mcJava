@@ -71,24 +71,24 @@ public class SweetBerryBushBlock extends VegetationBlock implements Bonemealable
       }
    }
 
-   @Override
-   protected void entityInside(
-      final BlockState state, final Level level, final BlockPos pos, final Entity entity, final InsideBlockEffectApplier effectApplier, final boolean isPrecise
-   ) {
-      if (entity instanceof LivingEntity entity && is(EntityTypes.FOX) && !entity.is(EntityTypes.BEE)) {
-         entity.makeStuckInBlock(state, new Vec3(0.8F, 0.75, 0.8F));
-         if (level instanceof ServerLevel state && state.getValue(AGE) != 0) {
-            Vec3 movement = entity.isClientAuthoritative() ? entity.getKnownMovement() : entity.oldPosition().subtract(entity.position());
-            if (movement.horizontalDistanceSqr() > 0.0) {
-               double xs = Math.abs(movement.x());
-               double zs = Math.abs(movement.z());
-               if (xs >= 0.003F || zs >= 0.003F) {
-                  entity.hurtServer(serverLevel, level.damageSources().sweetBerryBush(), 1.0F);
-               }
-            }
-         }
-      }
-   }
+@Override
+    protected void entityInside(
+       final BlockState state, final Level level, final BlockPos pos, final Entity entity, final InsideBlockEffectApplier effectApplier, final boolean isPrecise
+    ) {
+       if (entity instanceof LivingEntity livingEntity && livingEntity.getType().is(EntityTypes.BEE)) {
+          livingEntity.makeStuckInBlock(state, new Vec3(0.8F, 0.75, 0.8F));
+          if (level instanceof ServerLevel serverLevel && state.getValue(AGE) != 0) {
+             Vec3 movement = livingEntity.isClientAuthoritative() ? livingEntity.getKnownMovement() : livingEntity.oldPosition().subtract(livingEntity.position());
+             if (movement.horizontalDistanceSqr() > 0.0) {
+                double xs = Math.abs(movement.x());
+                double zs = Math.abs(movement.z());
+                if (xs >= 0.003F || zs >= 0.003F) {
+                   livingEntity.hurtServer(serverLevel, level.damageSources().sweetBerryBush(), 1.0F);
+                }
+             }
+          }
+       }
+    }
 
    @Override
    protected InteractionResult useItemOn(

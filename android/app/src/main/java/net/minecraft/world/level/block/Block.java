@@ -132,7 +132,7 @@ public class Block extends BlockBehaviour implements ItemLike {
    }
 
 public static Block byItem(final @Nullable Item item) {
-       return item instanceof BlockItem blockItem ? ((BlockItem) item).getBlock()       : Blocks.AIR;
+       return item instanceof BlockItem ? ((BlockItem) item).getBlock()          : Blocks.AIR;
     }
 
    public static BlockState pushEntitiesUp(final BlockState state, final BlockState newState, final LevelAccessor level, final BlockPos pos) {
@@ -378,7 +378,7 @@ public static Block byItem(final @Nullable Item item) {
    }
 
    public static void dropResources(final BlockState state, final Level level, final BlockPos pos) {
-      if (level instanceof ServerLevel) {
+      if (level instanceof ServerLevel serverLevel) {
           ServerLevel serverLevel = (ServerLevel) level;
          getDrops(state, serverLevel, pos, null).forEach(stack -> popResource(level, pos, stack));
          state.spawnAfterBreak(serverLevel, pos, ItemStack.EMPTY, true);
@@ -386,7 +386,7 @@ public static Block byItem(final @Nullable Item item) {
    }
 
    public static void dropResources(final BlockState state, final LevelAccessor level, final BlockPos pos, final @Nullable BlockEntity blockEntity) {
-      if (level instanceof ServerLevel) {
+      if (level instanceof ServerLevel serverLevel) {
           ServerLevel serverLevel = (ServerLevel) level;
          getDrops(state, serverLevel, pos, blockEntity).forEach(stack -> popResource(serverLevel, pos, stack));
          state.spawnAfterBreak(serverLevel, pos, ItemStack.EMPTY, true);
@@ -401,7 +401,7 @@ public static Block byItem(final @Nullable Item item) {
       final @Nullable Entity breaker,
       final ItemStack tool
    ) {
-      if (level instanceof ServerLevel) {
+      if (level instanceof ServerLevel serverLevel) {
           ServerLevel serverLevel = (ServerLevel) level;
          getDrops(state, serverLevel, pos, blockEntity, breaker, tool).forEach(stack -> popResource(level, pos, stack));
          state.spawnAfterBreak(serverLevel, pos, tool, true);
@@ -523,7 +523,8 @@ private static void popResource(final Level level, final Supplier<ItemEntity> en
 
 public BlockState playerWillDestroy(final Level level, final BlockPos pos, final BlockState state, final Player player) {
        this.spawnDestroyByEntityParticles(level, player, pos, state);
-       if (state.is(BlockTags.GUARDED_BY_PIGLINS) && level instanceof ServerLevel serverLevel) {
+       if (state.is(BlockTags.GUARDED_BY_PIGLINS) && level instanceof ServerLevel) {
+           ServerLevel serverLevel = (ServerLevel) state.is(BlockTags.GUARDED_BY_PIGLINS) && level;
           PiglinAi.angerNearbyPiglins(serverLevel, player, false);
        }
 
@@ -629,7 +630,7 @@ private static <S extends StateHolder<?, S>, T extends Comparable<T>> S setValue
 private record ShapePairKey(VoxelShape first, VoxelShape second) {
        @Override
        public boolean equals(final Object o) {
-          return o instanceof Block.ShapePairKey that && this.first == that.first && this.second == that.second;
+          return o instanceof Block.ShapePairKey && this.first == that.first && this.second == that.second;
        }
 
        @Override

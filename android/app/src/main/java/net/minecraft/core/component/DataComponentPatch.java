@@ -213,7 +213,12 @@ public final class DataComponentPatch {
 
 @Override
     public boolean equals(final Object obj) {
-       return this == obj ? true : obj instanceof DataComponentPatch patch && this.map.equals(patch.map);
+       if (this == obj) {
+          return true;
+       } else if (obj instanceof DataComponentPatch that) {
+          return this.map.equals(that.map);
+       }
+       return false;
     }
 
    @Override
