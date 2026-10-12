@@ -172,7 +172,6 @@ jobs:
 
                       opencode run \
                           --model opencode/nemotron-3-ultra-free \
-                          --format json \
                           "$prompt" 2>&1 | tee opencode-output.txt
                   fi
 
