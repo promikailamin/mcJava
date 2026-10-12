@@ -1,0 +1,54 @@
+[0m
+> build · nemotron-3-ultra-free
+[0m
+[0m$ [0mls -la /home/runner/work/mcJava/mcJava
+total 72
+drwxr-xr-x 9 runner runner 4096 Oct 12 07:29 .
+drwxr-xr-x 3 runner runner 4096 Oct 12 07:29 ..
+drwxr-xr-x 7 runner runner 4096 Oct 12 07:29 .git
+drwxr-xr-x 3 runner runner 4096 Oct 12 07:29 .github
+-rw-r--r-- 1 runner runner  621 Oct 12 07:29 .gitignore
+drwxr-xr-x 2 runner runner 4096 Oct 12 07:29 .opencode-sessions
+-rw-r--r-- 1 runner runner 3120 Oct 12 07:29 AGENTS.md
+-rw-r--r-- 1 runner runner 1350 Oct 12 07:29 LICENSE
+-rw-r--r-- 1 runner runner 1624 Oct 12 07:29 README.md
+drwxr-xr-x 4 runner runner 4096 Oct 12 07:29 android
+-rw-r--r-- 1 runner runner  847 Oct 12 07:29 build.gradle.kts
+drwxr-xr-x 2 runner runner 4096 Oct 12 07:29 docs
+-rw-r--r-- 1 runner runner  354 Oct 12 07:29 gradle.properties
+-rw-r--r-- 1 runner runner  721 Oct 12 07:29 issue-query.txt
+-rw-r--r-- 1 runner runner   43 Oct 12 07:29 opencode-output.txt
+drwxr-xr-x 2 runner runner 4096 Oct 12 07:29 scripts
+-rw-r--r-- 1 runner runner  460 Oct 12 07:29 settings.gradle.kts
+drwxr-xr-x 3 runner runner 4096 Oct 12 07:29 tools
+[0m
+[0m$ [0mls -la /home/runner/work/mcJava/mcJava/.gitignore
+-rw-r--r-- 1 runner runner 621 Oct 12 07:29 /home/runner/work/mcJava/mcJava/.gitignore
+[0m
+[0m→ [0mRead .gitignore
+[0m
+[0m$ [0mfind /home/runner/work/mcJava/mcJava -type f -name "*.kts" -o -name "*.gradle" -o -name "*.properties" | head -30
+/home/runner/work/mcJava/mcJava/tools/gradle/setupDecompWorkspace.gradle
+/home/runner/work/mcJava/mcJava/settings.gradle.kts
+/home/runner/work/mcJava/mcJava/android/settings.gradle.kts
+/home/runner/work/mcJava/mcJava/android/app/build.gradle.kts
+/home/runner/work/mcJava/mcJava/android/build.gradle.kts
+/home/runner/work/mcJava/mcJava/android/gradle/wrapper/gradle-wrapper.properties
+/home/runner/work/mcJava/mcJava/android/gradle.properties
+/home/runner/work/mcJava/mcJava/build.gradle.kts
+/home/runner/work/mcJava/mcJava/gradle.properties
+[0m
+[0m$ [0mls -la /home/runner/work/mcJava/mcJava/android/
+total 28
+drwxr-xr-x 4 runner runner 4096 Oct 12 07:29 .
+drwxr-xr-x 9 runner runner 4096 Oct 12 07:29 ..
+drwxr-xr-x 3 runner runner 4096 Oct 12 07:29 app
+-rw-r--r-- 1 runner runner  548 Oct 12 07:29 build.gradle.kts
+drwxr-xr-x 3 runner runner 4096 Oct 12 07:29 gradle
+-rw-r--r-- 1 runner runner  494 Oct 12 07:29 gradle.properties
+-rw-r--r-- 1 runner runner  452 Oct 12 07:29 settings.gradle.kts
+[0m
+[0m→ [0mRead build.gradle.kts
+[0m→ [0mRead settings.gradle.kts
+[0m→ [0mRead android/build.gradle.kts
+[0m→ [0mRead android/app/build.gradle.kts
