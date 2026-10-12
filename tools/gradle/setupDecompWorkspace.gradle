@@ -1,0 +1,141 @@
+// Gradle plugin for setting up decompilation workspace
+// Apply this in the root build.gradle.kts
+
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.api.tasks.Delete
+import org.gradle.api.tasks.Exec
+import org.gradle.api.tasks.Copy
+
+class SetupDecompWorkspacePlugin implements Plugin<Project> {
+    @Override
+    void apply(Project project) {
+        def minecraftVersion = project.hasProperty('minecraftVersion') ? project.minecraftVersion : '1.20.4'
+        def mappingsVersion = project.hasProperty('mappingsVersion') ? project.mappingsVersion : '1.20.4+build.1'
+        def fabricLoaderVersion = project.hasProperty('fabricLoaderVersion') ? project.fabricLoaderVersion : '0.15.11'
+        
+        def mcDir = project.file("${project.rootDir}/minecraft")
+        def fabricDir = project.file("${project.rootDir}/fabric")
+        def toolsDir = project.file("${project.rootDir}/tools")
+        def decompilerDir = project.file("${toolsDir}/decompiler")
+        def mappingsDir = project.file("${toolsDir}/mappings")
+        def buildDir = project.file("${project.rootDir}/build")
+        
+        // Create directories
+        project.tasks.register('createDirectories', Copy) {
+            from(project.rootDir)
+            includeEmptyDirs = true
+            into(buildDir)
+            doLast {
+                [mcDir, fabricDir, toolsDir, decompilerDir, mappingsDir, buildDir].each { it.mkdirs() }
+                [mcDir, fabricDir].each { dir ->
+                    ['client', 'server', 'assets', 'libraries'].each { sub -> new File(dir, sub).mkdirs() }
+                }
+                ['loader', 'api', 'loom'].each { sub -> new File(fabricDir, sub).mkdirs() }
+            }
+        }
+        
+        // Download Minecraft client
+        project.tasks.register('downloadMinecraft', Exec) {
+            dependsOn 'createDirectories'
+            workingDir mcDir
+            commandLine 'bash', '-c', """
+                MANIFEST_URL="https://launchermeta.mojang.com/mc/game/version_manifest_v2.json"
+                VERSION_JSON=\$(curl -s "\$MANIFEST_URL" | jq -r ".versions[] | select(.id == \\"$minecraftVersion\\") | .url")
+                VERSION_INFO=\$(curl -s "\$VERSION_JSON")
+                CLIENT_URL=\$(echo "\$VERSION_INFO" | jq -r '.downloads.client.url')
+                curl -L -o "client/minecraft-$minecraftVersion.jar" "\$CLIENT_URL"
+            """
+        }
+        
+        // Download Fabric Loader
+        project.tasks.register('downloadFabric', Exec) {
+            dependsOn 'createDirectories'
+            workingDir fabricDir
+            commandLine 'bash', '-c', """
+                FABRIC_API_URL="https://meta.fabricmc.net/v2/versions/loader/$minecraftVersion/$fabricLoaderVersion/profile/json"
+                FABRIC_PROFILE=\$(curl -s "\$FABRIC_API_URL")
+                LOADER_URL=\$(echo "\$FABRIC_PROFILE" | jq -r '.libraries[] | select(.name | contains("fabric-loader")) | .url' | head -1)
+                if [ -n "\$LOADER_URL" ] && [ "\$LOADER_URL" != "null" ]; then
+                    curl -L -o "loader/fabric-loader-$fabricLoaderVersion.jar" "\$LOADER_URL"
+                fi
+                # Download Fabric API
+                FABRIC_API_VERSION="0.91.0+1.20.4"
+                curl -L -o "api/fabric-api-\$FABRIC_API_VERSION.jar" "https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/\$FABRIC_API_VERSION/fabric-api-\$FABRIC_API_VERSION.jar"
+            """
+        }
+        
+        // Download Yarn mappings
+        project.tasks.register('downloadMappings', Exec) {
+            dependsOn 'createDirectories'
+            workingDir mappingsDir
+            commandLine 'bash', '-c', """
+                curl -L -o "yarn-$mappingsVersion.jar" "https://maven.fabricmc.net/net/fabricmc/yarn/$mappingsVersion/yarn-$mappingsVersion.jar"
+            """
+        }
+        
+        // Download decompilers
+        project.tasks.register('downloadDecompilers', Exec) {
+            dependsOn 'createDirectories'
+            workingDir decompilerDir
+            commandLine 'bash', '-c', """
+                curl -L -o fernflower.jar "https://github.com/fesh0r/fernflower/releases/download/2.0.1/fernflower.jar"
+                curl -L -o vineflower.jar "https://github.com/Vineflower/vineflower/releases/latest/download/vineflower.jar" 2>/dev/null || true
+            """
+        }
+        
+        // Decompile Minecraft
+        project.tasks.register('decompileMinecraft', Exec) {
+            dependsOn ['downloadMinecraft', 'downloadDecompilers']
+            workingDir decompilerDir
+            doFirst {
+                project.file("${mcDir}/client/src").mkdirs()
+            }
+            commandLine 'bash', '-c', """
+                if [ -f vineflower.jar ]; then
+                    java -jar vineflower.jar --outputDir="${mcDir}/client/src" "${mcDir}/client/minecraft-$minecraftVersion.jar"
+                elif [ -f fernflower.jar ]; then
+                    java -jar fernflower.jar -dgs=1 -hdc=0 -rbr=0 -asc=1 -udv=0 "${mcDir}/client/minecraft-$minecraftVersion.jar" "${mcDir}/client/src"
+                fi
+            """
+        }
+        
+        // Remap with TinyRemapper
+        project.tasks.register('remapSources', Exec) {
+            dependsOn ['decompileMinecraft', 'downloadMappings']
+            workingDir project.rootDir
+            doFirst {
+                // Download TinyRemapper if not present
+                def tinyRemapper = project.file("${toolsDir}/tinyremapper.jar")
+                if (!tinyRemapper.exists()) {
+                    project.exec {
+                        workingDir toolsDir
+                        commandLine 'curl', '-L', '-o', 'tinyremapper.jar', 'https://maven.fabricmc.net/net/fabricmc/tiny-remapper/0.11.0/tiny-remapper-0.11.0.jar'
+                    }
+                }
+            }
+            commandLine 'bash', '-c', """
+                java -jar ${toolsDir}/tinyremapper.jar \
+                    --input "${mcDir}/client/src" \
+                    --output "${mcDir}/client/src-mapped" \
+                    --mappings "${mappingsDir}/yarn-$mappingsVersion.jar" \
+                    --side CLIENT
+            """
+        }
+        
+        // Copy to Android project
+        project.tasks.register('copyToAndroid', Copy) {
+            dependsOn 'remapSources'
+            from "${mcDir}/client/src-mapped"
+            into "${project.rootDir}/android/app/src/main/java"
+            include '**/*.java'
+        }
+        
+        // Aggregate task
+        project.tasks.register('setupDecompWorkspace') {
+            dependsOn ['downloadMinecraft', 'downloadFabric', 'downloadMappings', 'downloadDecompilers', 'decompileMinecraft', 'remapSources', 'copyToAndroid']
+            group = 'mcJava'
+            description = 'Sets up complete decompilation workspace and copies to Android project'
+        }
+    }
+}

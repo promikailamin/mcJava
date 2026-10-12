@@ -1,22 +1,59 @@
-# Gradle / Android build output
-android/.gradle/
-android/build/
-android/app/build/
-android/local.properties
-.kotlin/
+# Gradle
+.gradle/
 build/
-captures/
+*/build/
+!*/src/main/**/build.gradle.kts
+!*/src/main/**/settings.gradle.kts
+
+# Local configuration
+local.properties
+gradle.properties.local
 
 # IDE
 .idea/
 *.iml
-
-# Local downloads & decompile workspace (kept out of the repository)
-dl/
-mcsrc/
-/dl/*.jar
-/fabric-loader-0.19.5.jar
-/vineflower-1.12.0.jar
+*.iws
+*.ipr
+.vscode/
+*.swp
+*.swo
 
 # OS
 .DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Android
+*.apk
+*.aar
+*.ap_
+*.dex
+*.class
+*.hprof
+
+# Native
+*.so
+*.o
+*.obj
+
+# Decompilation output
+minecraft/client/src/
+minecraft/client/src-mapped/
+fabric/loader/*.jar
+fabric/api/*.jar
+fabric/loom/*.jar
+tools/decompiler/*.jar
+tools/mappings/*.jar
+tools/tinyremapper.jar
+
+# Downloads
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# Temporary
+tmp/
+temp/
+*.tmp

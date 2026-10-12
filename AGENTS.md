@@ -1,85 +1,90 @@
-# AGENTS.md - mcJava Android Port
+# AGENTS.md
+
+This file provides guidance to AI agents working on the mcJava project.
 
 ## Project Overview
-This is an experimental port of **Minecraft Java Edition 26.3** (with Fabric Loader 0.19.5) onto **Android / OpenGL ES 3.2**. The game logic is the real decompiled client. The desktop-native layer (LWJGL, SDL3, GLX/GLFW, OpenAL, etc.) is replaced by a pure-Java shim layer.
+
+mcJava is a project to port Minecraft Java Edition with Fabric Loader to Android. The goal is to create a playable Minecraft Java Edition experience on Android devices using OpenGL ES.
 
 ## Repository Structure
-- `android/` - Android Gradle Project
-  - `android/app/src/main/java/net/minecraft/` - Decompiled client (Minecraft 26.3)
-  - `android/app/src/main/java/com/mojang/` - Decompiled Blaze3D / Realms / RenderPearl
-  - `android/app/src/main/java/net/fabricmc/` - Fabric Loader sources (reference only, NOT compiled)
-  - `android/app/src/main/java/org/lwjgl/` - Authored LWJGL shim (GL33C→GLES 3.2 bridge, SDL3 emulation, etc.)
-  - `android/app/src/main/java/pro/minecraft/` - Authored Android host (main_activity, game_view, game_renderer, client_launcher, fabric_bootstrap)
-- `matchexception/` - Custom MatchException class for Java 21 pattern matching on sealed types
 
-## Build Requirements
-- Android Studio / AGP 8.5.2
-- `compileSdk 35`
-- JDK 21 (sources use record patterns / pattern-matching switch)
-- `multiDexEnabled true`
-
-## Build Command
-```bash
-cd android
-./gradlew :app:assembleDebug
+```
+/home/runner/work/mcJava/mcJava/
+├── android/                 # Android project
+│   ├── app/
+│   │   ├── src/main/
+│   │   │   ├── java/        # Java/Kotlin source code
+│   │   │   ├── assets/      # Game assets
+│   │   │   ├── jniLibs/     # Native libraries
+│   │   │   └── res/         # Android resources
+│   │   ├── build.gradle.kts
+│   │   └── ...
+│   ├── build.gradle.kts
+│   ├── settings.gradle.kts
+│   ├── gradle.properties
+│   └── gradle/wrapper/
+├── minecraft/               # Minecraft Java Edition source
+│   ├── client/              # Client source code
+│   ├── server/              # Server source code
+│   ├── assets/              # Game assets
+│   └── libraries/           # Dependencies
+├── fabric/                  # Fabric Loader and API
+│   ├── loader/              # Fabric Loader source
+│   ├── api/                 # Fabric API
+│   └── loom/                # Loom Gradle plugin
+├── tools/                   # Build and decompilation tools
+│   ├── decompiler/          # Decompilation tools
+│   ├── mappings/            # MCP/Yarn mappings
+│   ├── gradle/              # Custom Gradle plugins
+│   └── scripts/             # Utility scripts
+├── docs/                    # Documentation
+├── scripts/                 # Build and setup scripts
+└── build/                   # Build output
 ```
 
-## Current Issues (GitHub Issue #27)
+## Development Guidelines
 
-### Primary Issue: MatchException Missing
-The Android build fails because `java.lang.MatchException` is not available in Android's JDK. This class is required by the Java 21 compiler when compiling pattern matching switches on sealed types.
+1. **Code Style**: Follow standard Java/Android conventions
+2. **OpenGL**: Use OpenGL ES 3.0+ for rendering
+3. **Threading**: Main thread for UI, separate threads for game logic
+4. **Memory**: Be mindful of mobile memory constraints
+5. **Performance**: Optimize for mobile GPUs
 
-**Solution Implemented**: Custom `matchexception.jar` added via `--patch-module=java.base` and `-Xbootclasspath/a` in the JavaCompile task configuration.
+## Key Components
 
-### Secondary Issues: Decompiled Code Bugs
-The decompiled source contains numerous bugs that prevent compilation:
-1. **Incorrect pattern matching instanceof syntax**: Code uses `o instanceof Type` but references pattern variables that don't exist (e.g., `o instanceof Vec3i && ... vec3i.getX()`)
-2. **Missing return statements**: Methods with incomplete control flow
-3. **Pattern matching switch on sealed types**: 150+ files with switch expressions that may need conversion
+### Minecraft Client Port
+- Port `net.minecraft.client` to Android
+- Adapt LWJGL to Android OpenGL ES
+- Handle touch input vs mouse/keyboard
+- Manage Android lifecycle (pause/resume)
 
-## Fix Strategy
+### Fabric Loader Integration
+- Port Fabric Loader to Android
+- Ensure mixin compatibility
+- Handle mod loading on Android
 
-### 1. MatchException (DONE)
-Custom JAR with `java.lang.MatchException` patched into `java.base` module via compiler arguments.
+### Android Integration
+- Native activity or GameActivity
+- EGL/OpenGL ES context management
+- Asset loading from APK
+- Input handling (touch, gamepad, keyboard)
 
-### 2. Pattern Matching instanceof Fixes (IN PROGRESS)
-Fix incorrect instanceof patterns:
-- `o instanceof Type && ... varName.method()` → `o instanceof Type varName && ... varName.method()`
+## Build System
 
-### 3. Missing Return Statements
-Add missing return statements in methods with incomplete control flow.
+- Gradle with Kotlin DSL
+- Custom plugins for decompilation
+- NDK for native code
+- ProGuard/R8 for optimization
 
-### 4. Pattern Matching Switch on Sealed Types
-If compilation fails due to MatchException still, convert all pattern matching switches on sealed types to if-else chains using automated tooling (OpenRewrite/Error Prone scripts available in repo root).
+## Testing
 
-## Excluded Source Subtrees
-The following are excluded from compilation (JVM-only dependencies):
-- `net/fabricmc/**` (needs Mixin/TinyRemapper/ASM)
-- `com/mojang/renderpearl/backend/vulkan/**` (needs VMA/Vulkan natives)
-- `net/minecraft/util/profiling/jfr/**` (needs jdk.jfr)
-- `net/minecraft/server/gui/**` (javax.swing)
-- `net/minecraft/util/monitoring/jmx/**` (javax.management)
-- `com/mojang/blaze3d/**`, `net/minecraft/client/**`, `org/lwjgl/**`, etc.
+- Unit tests for core logic
+- Instrumented tests for Android components
+- Manual testing on devices/emulators
 
-## Development Workflow
-1. Run `./gradlew :app:compileDebugJavaWithJavac` to see compilation errors
-2. Fix errors in source files under `android/app/src/main/java/`
-3. Repeat until clean compilation
-4. Run full build `./gradlew :app:assembleDebug`
+## Important Notes
 
-## Available Fix Scripts
-Root directory contains Python scripts for automated fixes:
-- `fix_pattern_matching*.py` - Fix pattern matching instanceof/switch issues
-- `rewrite_switches*.py` - Convert switch expressions to if-else
-- `find_pattern_switches.py` - Find pattern matching switches
-- `auto_fix.sh` - Automated fix runner
-
-## Coding Conventions
-- **Authored code** (pro/minecraft/, org/lwjgl/): snake_case for files and members
-- **Upstream code** (net/minecraft/, com.mojang/): Keep original camelCase for minimal diffs
-- No emojis in code/comments unless explicitly requested
-
-## Verification
-- Run lint/typecheck if available (check for `npm run lint`, `./gradlew check`, etc.)
-- Do NOT commit changes unless explicitly asked
-- Keep temporary files inside repository workspace
+- This is a complex porting project
+- Many Minecraft internals need adaptation
+- Legal: Only for educational/research purposes
+- Requires owning Minecraft Java Edition
