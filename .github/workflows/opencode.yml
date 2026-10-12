@@ -9,7 +9,8 @@ on:
 permissions:
     contents: write
     issues: write
-    actions: read
+    actions: write
+    workflows: write
 
 concurrency:
     group: issue-opencode-${{ github.event.issue.number }}
