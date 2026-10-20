@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">mcJava - Minecraft Java Edition</string>
-    <string name="loading">Loading Minecraft...</string>
-    <string name="error_loading">Failed to load Minecraft</string>
-    <string name="permission_storage_desc">Storage access is required to load game assets and worlds</string>
-</resources>
