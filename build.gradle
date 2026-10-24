@@ -1,0 +1,105 @@
+plugins {
+    id "fabric-loom" version "1.8-SNAPSHOT"
+    id "java"
+    id "maven-publish"
+}
+
+version = "1.0.0"
+group = "pro.codeservermod"
+archivesBaseName = "CoreServerMod"
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://maven.fabricmc.net/" }
+    maven { url "https://maven.fabricmc.net/repository/snapshots/" }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:1.21.4"
+    mappings "net.fabricmc:yarn:1.21.4+build.1:v2"
+    modImplementation "net.fabricmc:fabric-loader:0.16.9"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.118.0+1.21.4"
+    modImplementation "com.github.jponge:lzma-java:1.3"
+    include "net.fabricmc:fabric-mixin-compile-extensions:1.0.1"
+}
+
+loom {
+    mappingsNamespace = "intermediary"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    options.release = 21
+}
+
+jar {
+    manifest {
+        attributes(
+            "Fabric-Mod-Loading-Plugin": "pro.codeservermod.CoreServerMod",
+            "Mod-ID": "coreservermod",
+            "Mod-Name": "CoreServerMod",
+            "Mod-Version": version,
+            "Mod-Authors": "promikailamin",
+            "Mod-Description": "Minecraft Fabric Server Enhancement Mod - Accelerates crop/tree growth, automates mob behaviors, reduces waiting times",
+            "Mod-Contact": "https://github.com/promikailamin/mcJava/issues/47",
+            "Mod-License": "MIT",
+            "Mod-Icon": "assets/coreservermod/icon.png",
+            "Mixin-Configs": "coreservermod.mixins.json",
+            "Implementation-Title": "CoreServerMod",
+            "Implementation-Version": version,
+            "Implementation-Vendor": "promikailamin"
+        )
+    }
+}
+
+tasks.named("remapJar") {
+    dependsOn("mixinExportCompileRefMap")
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url = uri("build/repo")
+        }
+    }
+}
+
+tasks.register("generateConfig") {
+    doLast {
+        def configDir = file("src/main/resources/config")
+        configDir.mkdirs()
+        def configFile = file("src/main/resources/config/coreservermod.json")
+        if (!configFile.exists()) {
+            configFile.write('''{
+  "sugar_cane_soul_sand_enabled": true,
+  "sugar_cane_growth_interval_seconds": 1,
+  "sapling_growth_time_seconds": 15,
+  "crop_growth_time_seconds": 15,
+  "iron_golem_spawn_enabled": true,
+  "iron_golem_spawn_interval_seconds": 5,
+  "max_automatic_golems_per_area": 10,
+  "animal_breeding_cooldown_disabled": true,
+  "baby_growth_time_seconds": 15,
+  "instant_growth_when_fed": true,
+  "sheep_wool_regrowth_seconds": 5,
+  "villager_emerald_drop_enabled": true,
+  "villager_emerald_drop_chance": 0.4,
+  "guaranteed_chicken_from_egg": true,
+  "chicken_egg_interval_seconds": 20
+}''')
+        }
+    }
+}
+
+tasks.named("processResources") {
+    dependsOn("generateConfig")
+}

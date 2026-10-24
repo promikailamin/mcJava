@@ -1,0 +1,16 @@
+rootProject.name = "CoreServerMod"
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven { url "https://maven.fabricmc.net/" }
+        maven { url "https://maven.fabricmc.net/repository/snapshots/" }
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "fabric-loom") {
+                useModule("com.github.fabricmc:fabric-loom:1.8-SNAPSHOT")
+            }
+        }
+    }
+}
