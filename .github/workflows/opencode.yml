@@ -159,14 +159,14 @@ jobs:
                       opencode run \
                           --model opencode/deepseek-v4.1-flash-free \
                           --continue \
-                          --auto
+                          --auto \
                           "$prompt" 2>&1 | tee opencode-output.txt
                   else
                       echo "Starting a new OpenCode session..."
 
                       opencode run \
                           --model opencode/deepseek-v4.1-flash-free \
-                          --auto
+                          --auto \
                           "$prompt" 2>&1 | tee opencode-output.txt
                   fi
 
