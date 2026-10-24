@@ -1,18 +1,19 @@
 package pro.codeservermod;
 
 import com.mojang.logging.LogUtils;
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.world.ServerWorld;
 import org.slf4j.Logger;
+import pro.codeservermod.handler.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class CoreServerMod implements ModInitializer {
+public class CoreServerMod implements DedicatedServerModInitializer {
     public static final String MOD_ID = "coreservermod";
     public static final Logger LOGGER = LogUtils.getLogger();
     
@@ -20,7 +21,7 @@ public class CoreServerMod implements ModInitializer {
     public static Path CONFIG_PATH;
 
     @Override
-    public void onInitialize() {
+    public void onInitializeServer() {
         LOGGER.info("Initializing CoreServerMod...");
         
         CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("coreservermod.json");

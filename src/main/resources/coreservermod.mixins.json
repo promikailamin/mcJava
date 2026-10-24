@@ -9,6 +9,7 @@
     "CropBlockMixin",
     "AnimalEntityMixin",
     "SheepEntityMixin",
+    "SheepShearedMixin",
     "VillagerTradeMixin",
     "ThrownEggEntityMixin",
     "ChickenEntityMixin"

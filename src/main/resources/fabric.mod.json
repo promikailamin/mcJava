@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "coreservermod",
-  "version": "${version}",
+  "version": "1.0.0",
   "name": "CoreServerMod",
   "description": "Minecraft Fabric Server Enhancement Mod - Accelerates crop/tree growth, automates mob behaviors, reduces waiting times",
   "authors": ["promikailamin"],
@@ -13,9 +13,6 @@
   "icon": "assets/coreservermod/icon.png",
   "environment": "server",
   "entrypoints": {
-    "main": [
-      "pro.codeservermod.CoreServerMod"
-    ],
     "server": [
       "pro.codeservermod.CoreServerMod"
     ]

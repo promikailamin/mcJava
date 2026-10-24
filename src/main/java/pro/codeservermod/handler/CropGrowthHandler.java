@@ -43,10 +43,10 @@ public class CropGrowthHandler {
             }
             
             int maxAge = crop.getMaxAge();
-            int currentAge = state.get(crop.getAgeProperty());
+            int currentAge = crop.getAge(state);
             
             if (currentAge < maxAge) {
-                world.setBlockState(pos, state.cycle(crop.getAgeProperty()));
+                world.setBlockState(pos, crop.withAge(currentAge + 1));
             } else {
                 TRACKED_CROPS.remove(pos);
             }

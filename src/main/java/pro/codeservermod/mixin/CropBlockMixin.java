@@ -15,14 +15,15 @@ import pro.codeservermod.CoreServerMod;
 public class CropBlockMixin {
     @Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
     private void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
-        if (!CoreServerMod.CONFIG.crop_growth_time_seconds > 0) return;
+        if (!(CoreServerMod.CONFIG.crop_growth_time_seconds > 0)) return;
         
-        int maxAge = ((CropBlock) (Object) this).getMaxAge();
-        int currentAge = state.get(((CropBlock) (Object) this).getAgeProperty());
+        CropBlock crop = (CropBlock) (Object) this;
+        int maxAge = crop.getMaxAge();
+        int currentAge = crop.getAge(state);
         
         if (currentAge < maxAge) {
             if (random.nextInt(20 * CoreServerMod.CONFIG.crop_growth_time_seconds) == 0) {
-                world.setBlockState(pos, state.cycle(((CropBlock) (Object) this).getAgeProperty()));
+                world.setBlockState(pos, crop.withAge(currentAge + 1));
             }
             ci.cancel();
         }

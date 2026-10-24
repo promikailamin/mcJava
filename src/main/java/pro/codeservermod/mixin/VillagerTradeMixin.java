@@ -14,8 +14,8 @@ import pro.codeservermod.handler.VillagerEmeraldHandler;
 
 @Mixin(VillagerEntity.class)
 public class VillagerTradeMixin {
-    @Inject(method = "onTrade", at = @At("TAIL"))
-    private void onTrade(ItemStack stack, int count, CallbackInfo ci) {
+    @Inject(method = "restockAndUpdateDemandBonus", at = @At("TAIL"))
+    private void onTrade(CallbackInfo ci) {
         if (!CoreServerMod.CONFIG.villager_emerald_drop_enabled) return;
         
         VillagerEntity villager = (VillagerEntity) (Object) this;

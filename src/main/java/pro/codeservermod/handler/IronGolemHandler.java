@@ -1,5 +1,7 @@
 package pro.codeservermod.handler;
 
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.VillagerEntity;
@@ -7,7 +9,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.village.Village;
+import net.minecraft.entity.SpawnReason;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,9 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class IronGolemHandler {
-    private static final Map<BlockPos, Long> VILLAGER_WAKE_TIMES = new ConcurrentHashMap<>();
-    private static final Map<Village, Integer> GOLEM_COUNTS = new ConcurrentHashMap<>();
-    private static final Set<Village> PROCESSED_VILLAGES = ConcurrentHashMap.newKeySet();
+    private static final Map<BlockPos, Long> VILLAGER_IRON_BLOCK_TIMES = new ConcurrentHashMap<>();
     private static int tickCounter = 0;
 
     public static void register(net.minecraft.server.MinecraftServer server) {
@@ -26,7 +26,10 @@ public class IronGolemHandler {
     }
 
     public static void scheduleGolemCheck(ServerWorld world, BlockPos villagerPos) {
-        VILLAGER_WAKE_TIMES.put(villagerPos.toImmutable(), world.getTime());
+        // Check if the villager is on an iron block
+        if (world.getBlockState(villagerPos.down()).isOf(Blocks.IRON_BLOCK)) {
+            VILLAGER_IRON_BLOCK_TIMES.put(villagerPos.toImmutable(), world.getTime());
+        }
     }
 
     public static void tick(ServerWorld world) {
@@ -37,44 +40,31 @@ public class IronGolemHandler {
         
         if (!pro.codeservermod.CoreServerMod.CONFIG.iron_golem_spawn_enabled) return;
 
-        for (Map.Entry<BlockPos, Long> entry : new HashMap<>(VILLAGER_WAKE_TIMES).entrySet()) {
+        // Clean up entries for villagers no longer on iron blocks
+        for (Map.Entry<BlockPos, Long> entry : new HashMap<>(VILLAGER_IRON_BLOCK_TIMES).entrySet()) {
             BlockPos villagerPos = entry.getKey();
-            long wakeTime = entry.getValue();
             
             if (!world.isChunkLoaded(villagerPos.getX() >> 4, villagerPos.getZ() >> 4)) continue;
             
-            Village village = world.getVillageCollection().getVillage(villagerPos);
-            if (village == null) {
-                VILLAGER_WAKE_TIMES.remove(villagerPos);
+            // Check if villager is still on iron block
+            if (!world.getBlockState(villagerPos.down()).isOf(Blocks.IRON_BLOCK)) {
+                VILLAGER_IRON_BLOCK_TIMES.remove(villagerPos);
                 continue;
             }
             
-            int currentGolems = countGolemsInVillage(world, village);
-            int maxGolems = pro.codeservermod.CoreServerMod.CONFIG.max_automatic_golems_per_area;
-            
-            if (currentGolems >= maxGolems) {
-                continue;
-            }
-            
-            if (canSpawnGolem(world, village, villagerPos)) {
-                spawnGolem(world, village, villagerPos);
+            // Check for valid spawn position
+            if (canSpawnGolem(world, villagerPos)) {
+                spawnGolem(world, villagerPos);
             }
         }
     }
 
-    private static int countGolemsInVillage(ServerWorld world, Village village) {
-        Box bounds = new Box(village.getCenter()).expand(64);
-        return world.getEntitiesByType(EntityType.IRON_GOLEM, bounds, e -> true).size();
-    }
-
-    private static boolean canSpawnGolem(ServerWorld world, Village village, BlockPos villagerPos) {
-        // Check if there's a valid spawn position near the village center
-        BlockPos center = village.getCenter();
-        
+    private static boolean canSpawnGolem(ServerWorld world, BlockPos villagerPos) {
+        // Check if there's a valid spawn position near the villager
         for (int x = -16; x <= 16; x += 4) {
             for (int z = -16; z <= 16; z += 4) {
                 for (int y = -4; y <= 4; y++) {
-                    BlockPos checkPos = center.add(x, y, z);
+                    BlockPos checkPos = villagerPos.add(x, y, z);
                     if (isValidSpawnPosition(world, checkPos)) {
                         return true;
                     }
@@ -94,18 +84,21 @@ public class IronGolemHandler {
         if (world.getBlockState(pos).getFluidState().isStill()) return false;
         if (world.getBlockState(pos.up()).getFluidState().isStill()) return false;
         
+        // Check collision
+        Box box = EntityType.IRON_GOLEM.getDimensions().getBoxAt(Vec3d.ofCenter(pos));
+        Entity testEntity = EntityType.IRON_GOLEM.create(world, SpawnReason.TRIGGERED);
+        if (testEntity == null || !world.isSpaceEmpty(testEntity, box)) return false;
+        
         return true;
     }
 
-    private static void spawnGolem(ServerWorld world, Village village, BlockPos villagerPos) {
-        BlockPos center = village.getCenter();
-        
+    private static void spawnGolem(ServerWorld world, BlockPos villagerPos) {
         for (int x = -16; x <= 16; x += 4) {
             for (int z = -16; z <= 16; z += 4) {
                 for (int y = -4; y <= 4; y++) {
-                    BlockPos spawnPos = center.add(x, y, z);
+                    BlockPos spawnPos = villagerPos.add(x, y, z);
                     if (isValidSpawnPosition(world, spawnPos)) {
-                        IronGolemEntity golem = EntityType.IRON_GOLEM.create(world);
+                        IronGolemEntity golem = EntityType.IRON_GOLEM.create(world, SpawnReason.TRIGGERED);
                         if (golem != null) {
                             golem.refreshPositionAndAngles(Vec3d.ofCenter(spawnPos), 0, 0);
                             golem.setPersistent();
@@ -119,8 +112,6 @@ public class IronGolemHandler {
     }
 
     public static void cleanup() {
-        VILLAGER_WAKE_TIMES.clear();
-        GOLEM_COUNTS.clear();
-        PROCESSED_VILLAGES.clear();
+        VILLAGER_IRON_BLOCK_TIMES.clear();
     }
 }

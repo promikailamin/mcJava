@@ -33,7 +33,7 @@ public class SheepWoolHandler {
             if (currentTime - shearTime >= intervalTicks) {
                 net.minecraft.entity.Entity entity = world.getEntityById(sheepId);
                 if (entity instanceof SheepEntity sheep) {
-                    if (!sheep.hasWool()) {
+                    if (sheep.isSheared()) {
                         sheep.setSheared(false);
                         SHEARED_SHEEP.remove(sheepId);
                     }

@@ -35,8 +35,7 @@ public class BabyGrowthHandler {
         // Check if it's a valid breeding food for this animal
         if (baby.isBreedingItem(stack)) {
             FED_BABIES.add(baby.getId());
-            baby.setBaby(false);
-            baby.growUp();
+            baby.growUp(-24000);
         }
     }
 
@@ -72,8 +71,7 @@ public class BabyGrowthHandler {
             }
             
             if (currentTime - spawnTime >= intervalTicks) {
-                animal.setBaby(false);
-                animal.growUp();
+                animal.growUp(-24000);
                 BABY_ENTITIES.remove(entityId);
             }
         }

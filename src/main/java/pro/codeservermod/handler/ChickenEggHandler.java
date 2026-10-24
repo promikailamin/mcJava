@@ -41,7 +41,7 @@ public class ChickenEggHandler {
                 net.minecraft.entity.Entity entity = world.getEntityById(chickenId);
                 if (entity instanceof ChickenEntity chicken && !chicken.isBaby()) {
                     ItemStack egg = new ItemStack(Items.EGG, 1);
-                    chicken.dropStack(egg);
+                    chicken.dropStack(world, egg);
                     CHICKEN_EGG_TIMERS.put(chickenId, currentTime);
                 } else if (entity == null || entity instanceof ChickenEntity chicken && chicken.isBaby()) {
                     CHICKEN_EGG_TIMERS.remove(chickenId);

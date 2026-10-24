@@ -1,0 +1,87 @@
+[15:09:10] [main/INFO]: Loading Minecraft 1.21.4 with Fabric Loader 0.16.9
+[15:09:10] [main/INFO]: Loading 44 mods:
+	- coreservermod 1.0.0
+	   \-- net_fabricmc_fabric-mixin-compile-extensions 0.6.0
+	- fabric-api 0.118.0+1.21.4
+	   |-- fabric-api-base 0.4.54+b47eab6b04
+	   |-- fabric-api-lookup-api-v1 1.6.86+b1caf1e904
+	   |-- fabric-biome-api-v1 15.0.6+b1c29d8e04
+	   |-- fabric-block-api-v1 1.0.31+7feeb73304
+	   |-- fabric-block-view-api-v2 1.0.19+7feeb73304
+	   |-- fabric-blockrenderlayer-v1 2.0.8+7feeb73304
+	   |-- fabric-client-tags-api-v1 1.1.29+20ea1e2304
+	   |-- fabric-command-api-v1 1.2.62+f71b366f04
+	   |-- fabric-command-api-v2 2.2.41+e496eb1504
+	   |-- fabric-commands-v0 0.2.79+df3654b304
+	   |-- fabric-content-registries-v0 9.1.19+25d1a67604
+	   |-- fabric-convention-tags-v1 2.1.17+7f945d5b04
+	   |-- fabric-convention-tags-v2 2.13.0+360374ac04
+	   |-- fabric-crash-report-info-v1 0.3.6+7feeb73304
+	   |-- fabric-data-attachment-api-v1 1.6.0+4e7c604904
+	   |-- fabric-data-generation-api-v1 22.2.12+60b6f1b704
+	   |-- fabric-dimensions-v1 4.0.10+7feeb73304
+	   |-- fabric-entity-events-v1 2.0.14+da99546b04
+	   |-- fabric-events-interaction-v0 4.0.3+a4eebcf004
+	   |-- fabric-game-rule-api-v1 1.0.63+7d48d43904
+	   |-- fabric-item-api-v1 11.3.0+ee91fa1f04
+	   |-- fabric-item-group-api-v1 4.2.2+fcb9601404
+	   |-- fabric-key-binding-api-v1 1.0.57+7d48d43904
+	   |-- fabric-keybindings-v0 0.2.55+df3654b304
+	   |-- fabric-lifecycle-events-v1 2.5.4+bf2a60eb04
+	   |-- fabric-loot-api-v2 3.0.38+3f89f5a504
+	   |-- fabric-loot-api-v3 1.0.26+203e6b2304
+	   |-- fabric-message-api-v1 6.0.25+7feeb73304
+	   |-- fabric-model-loading-api-v1 4.3.0+ae23723504
+	   |-- fabric-networking-api-v1 4.3.10+8998135104
+	   |-- fabric-object-builder-api-v1 18.0.13+7d48d43904
+	   |-- fabric-particles-v1 4.0.14+7feeb73304
+	   |-- fabric-recipe-api-v1 8.1.0+640e77ae04
+	   |-- fabric-registry-sync-v0 6.1.9+360374ac04
+	   |-- fabric-renderer-api-v1 5.0.3+50f0feb204
+	   |-- fabric-renderer-indigo 2.0.3+50f0feb204
+	   |-- fabric-rendering-data-attachment-v1 0.3.57+73761d2e04
+	   |-- fabric-rendering-fluids-v1 3.1.19+7feeb73304
+	   |-- fabric-rendering-v1 10.2.1+0d31b09f04
+	   |-- fabric-resource-conditions-api-v1 5.0.13+203e6b2304
+	   |-- fabric-resource-loader-v0 3.1.1+360374ac04
+	   |-- fabric-screen-api-v1 2.0.38+7feeb73304
+	   |-- fabric-screen-handler-api-v1 1.3.116+7feeb73304
+	   |-- fabric-sound-api-v1 1.0.32+7feeb73304
+	   |-- fabric-tag-api-v1 1.0.7+7d48d43904
+	   |-- fabric-transfer-api-v1 5.4.9+efa825c904
+	   \-- fabric-transitive-access-wideners-v1 6.3.2+56e78b9b04
+	- fabricloader 0.16.9
+	   \-- mixinextras 0.4.1
+	- java 21
+	- minecraft 1.21.4
+[15:09:10] [main/INFO]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/home/runner/work/mcJava/mcJava/test-server/libraries/net/fabricmc/sponge-mixin/0.15.4+mixin.0.8.7/sponge-mixin-0.15.4+mixin.0.8.7.jar Service=Knot/Fabric Env=SERVER
+[15:09:10] [main/INFO]: Compatibility level set to JAVA_21
+[15:09:11] [main/INFO]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.4.1).
+[15:09:17] [main/INFO]: Initializing CoreServerMod...
+[15:09:17] [main/INFO]: Configuration loaded from ./config/coreservermod.json
+[15:09:17] [main/INFO]: CoreServerMod initialized successfully!
+[15:09:17] [main/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[15:09:19] [main/INFO]: Loaded 1370 recipes
+[15:09:19] [main/INFO]: Loaded 1481 advancements
+[15:09:19] [main/INFO]: Applied 0 biome modifications to 0 of 65 new biomes in 1.541 ms
+[15:09:19] [Server thread/INFO]: Starting minecraft server version 1.21.4
+[15:09:19] [Server thread/INFO]: Loading properties
+[15:09:19] [Server thread/INFO]: Default game type: SURVIVAL
+[15:09:19] [Server thread/INFO]: Generating keypair
+[15:09:19] [Server thread/INFO]: Starting Minecraft server on *:25565
+[15:09:19] [Server thread/INFO]: Using epoll channel type
+[15:09:19] [Server thread/WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[15:09:20] [Server thread/WARN]: The server will make no attempt to authenticate usernames. Beware.
+[15:09:20] [Server thread/WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[15:09:20] [Server thread/WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[15:09:20] [Server thread/INFO]: Preparing level "world"
+[15:09:20] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[15:09:23] [Worker-Main-1/INFO]: Preparing spawn area: 0%
+[15:09:23] [Worker-Main-1/INFO]: Preparing spawn area: 0%
+[15:09:23] [Worker-Main-1/INFO]: Preparing spawn area: 0%
+[15:09:23] [Worker-Main-1/INFO]: Preparing spawn area: 0%
+[15:09:23] [Worker-Main-1/INFO]: Preparing spawn area: 0%
+[15:09:23] [Worker-Main-1/INFO]: Preparing spawn area: 0%
+[15:09:23] [Server thread/INFO]: Time elapsed: 3033 ms
+[15:09:23] [Server thread/INFO]: Done (3.326s)! For help, type "help"
+[15:09:23] [Server thread/INFO]: CoreServerMod: Server started, registering tick handlers

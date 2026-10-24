@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "coreservermod",
+  "version": "1.0.0",
+  "name": "CoreServerMod",
+  "description": "Minecraft Fabric Server Enhancement Mod - Accelerates crop/tree growth, automates mob behaviors, reduces waiting times",
+  "authors": ["promikailamin"],
+  "contact": {
+    "homepage": "https://github.com/promikailamin/mcJava",
+    "issues": "https://github.com/promikailamin/mcJava/issues/47"
+  },
+  "license": "MIT",
+  "icon": "assets/coreservermod/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "server": [
+      "pro.codeservermod.CoreServerMod"
+    ]
+  },
+  "mixins": [
+    "coreservermod.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.9",
+    "minecraft": "~1.21.4",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "badges": ["server"],
+      "links": {
+        "issues": "https://github.com/promikailamin/mcJava/issues"
+      }
+    }
+  }
+}

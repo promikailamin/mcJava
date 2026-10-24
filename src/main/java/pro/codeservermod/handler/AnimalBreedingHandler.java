@@ -1,8 +1,7 @@
 package pro.codeservermod.handler;
 
-import net.minecraft.entity.AnimalEntity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 

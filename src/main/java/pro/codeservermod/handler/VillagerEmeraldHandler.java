@@ -8,12 +8,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class VillagerEmeraldHandler {
     private static final Map<Integer, Long> TRADE_COOLDOWNS = new ConcurrentHashMap<>();
-    private static final Set<Integer> PROCESSED_TRADES = ConcurrentHashMap.newKeySet();
     private static final Random RANDOM = Random.create();
 
     public static void register(net.minecraft.server.MinecraftServer server) {
@@ -49,7 +47,7 @@ public class VillagerEmeraldHandler {
         // 40% chance to drop emerald
         if (RANDOM.nextDouble() < pro.codeservermod.CoreServerMod.CONFIG.villager_emerald_drop_chance) {
             ItemStack emerald = new ItemStack(Items.EMERALD, 1);
-            villager.dropStack(emerald);
+            villager.dropStack(world, emerald);
         }
     }
 
@@ -60,6 +58,5 @@ public class VillagerEmeraldHandler {
 
     public static void cleanup() {
         TRADE_COOLDOWNS.clear();
-        PROCESSED_TRADES.clear();
     }
 }

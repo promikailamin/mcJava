@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "package": "pro.codeservermod.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "SugarCaneBlockMixin",
+    "SaplingGeneratorMixin",
+    "VillagerWakeMixin",
+    "CropBlockMixin",
+    "AnimalEntityMixin",
+    "SheepEntityMixin",
+    "SheepShearedMixin",
+    "VillagerTradeMixin",
+    "ThrownEggEntityMixin",
+    "ChickenEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -13,9 +13,7 @@ public class SugarCaneHandler {
     private static final int GROWTH_INTERVAL_TICKS = 20;
 
     public static void register(net.minecraft.server.MinecraftServer server) {
-        server.getOverworld().getChunkManager().getThreadedAnvilChunkStorage().getChunkMap().forEach((pos, chunk) -> {
-            // Initial scan could be added here if needed
-        });
+        // Initial scan could be added here if needed
     }
 
     public static void trackPosition(ServerWorld world, BlockPos pos) {

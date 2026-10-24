@@ -11,13 +11,16 @@ import pro.codeservermod.handler.IronGolemHandler;
 
 @Mixin(VillagerEntity.class)
 public class VillagerWakeMixin {
-    @Inject(method = "onWakingUp", at = @At("TAIL"))
-    private void onWakingUp(CallbackInfo ci) {
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void onTick(CallbackInfo ci) {
         if (!CoreServerMod.CONFIG.iron_golem_spawn_enabled) return;
         
         VillagerEntity villager = (VillagerEntity) (Object) this;
         if (villager.getWorld() instanceof ServerWorld serverWorld) {
-            IronGolemHandler.scheduleGolemCheck(serverWorld, villager.getBlockPos());
+            // Check if villager is standing on iron block
+            if (serverWorld.getBlockState(villager.getBlockPos().down()).isOf(net.minecraft.block.Blocks.IRON_BLOCK)) {
+                IronGolemHandler.scheduleGolemCheck(serverWorld, villager.getBlockPos());
+            }
         }
     }
 }

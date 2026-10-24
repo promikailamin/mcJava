@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Fabric-Mod-Loading-Plugin: pro.codeservermod.CoreServerMod
+Mod-ID: coreservermod
+Mod-Name: CoreServerMod
+Mod-Version: 1.0.0
+Mod-Authors: promikailamin
+Mod-Description: Minecraft Fabric Server Enhancement Mod - Accelerates c
+ rop/tree growth, automates mob behaviors, reduces waiting times
+Mod-Contact: https://github.com/promikailamin/mcJava/issues/47
+Mod-License: MIT
+Mod-Icon: assets/coreservermod/icon.png
+Mixin-Configs: coreservermod.mixins.json
+Implementation-Title: CoreServerMod
+Implementation-Version: 1.0.0
+Implementation-Vendor: promikailamin
+

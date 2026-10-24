@@ -1,0 +1,17 @@
+{
+  "sugar_cane_soul_sand_enabled": true,
+  "sugar_cane_growth_interval_seconds": 1,
+  "sapling_growth_time_seconds": 15,
+  "crop_growth_time_seconds": 15,
+  "iron_golem_spawn_enabled": true,
+  "iron_golem_spawn_interval_seconds": 5,
+  "max_automatic_golems_per_area": 10,
+  "animal_breeding_cooldown_disabled": true,
+  "baby_growth_time_seconds": 15,
+  "instant_growth_when_fed": true,
+  "sheep_wool_regrowth_seconds": 5,
+  "villager_emerald_drop_enabled": true,
+  "villager_emerald_drop_chance": 0.4,
+  "guaranteed_chicken_from_egg": true,
+  "chicken_egg_interval_seconds": 20
+}
