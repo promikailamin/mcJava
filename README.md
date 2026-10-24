@@ -1,6 +1,6 @@
 # CoreServerMod
 
-A Fabric server-side mod for Minecraft Java Edition 1.21.4 that accelerates various game mechanics to reduce waiting times and automate repetitive tasks.
+A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates various game mechanics to reduce waiting times and automate repetitive tasks.
 
 ## Features
 
@@ -14,10 +14,11 @@ A Fabric server-side mod for Minecraft Java Edition 1.21.4 that accelerates vari
 - Requires valid environmental and space conditions
 
 ### 3. Iron Block Villager
-- Villagers standing on iron blocks become special golem-spawning villagers
-- Attempts to spawn exactly one iron golem every 100 server ticks (5 seconds) when a valid spawn position exists
+- Every 10 seconds the mod checks all villagers for one standing on top of an iron block
+- Matching villagers receive the `CreateVillager` tag and the visible name tag `CreateVillager`
+- Tagged villagers attempt to spawn one iron golem every 5 seconds when a valid spawn position exists
 - Does not require beds, village membership, gossip, panic, nearby mobs, professions, or other vanilla golem eligibility checks
-- Moving off the iron block disables special behavior; standing on one again reactivates it with a fresh 5-second interval
+- When a tagged villager is no longer standing on an iron block, its tag, name tag, and golem-spawning power are removed
 - Other villagers retain vanilla behavior
 
 ### 4. Accelerated Crop Growth
@@ -47,8 +48,8 @@ A Fabric server-side mod for Minecraft Java Edition 1.21.4 that accelerates vari
 
 ## Installation
 
-1. Install Fabric Loader 0.16.9+ for Minecraft 1.21.4
-2. Install Fabric API 0.118.0+1.21.4
+1. Install Fabric Loader 0.20.1+ for Minecraft 26.2 (requires Java 25)
+2. Install Fabric API 0.161.0+26.2
 3. Place `CoreServerMod-1.0.0.jar` in your server's `mods` folder
 4. Start the server - a default configuration file will be generated at `config/coreservermod.json`
 
@@ -99,8 +100,8 @@ The mod generates a configuration file at `config/coreservermod.json` on first l
 ## Building from Source
 
 Requirements:
-- Java 21+
-- Gradle 8.11+
+- Java 25+
+- Gradle 9.8.1+ (the included wrapper downloads the correct version)
 
 ```bash
 ./gradlew build
@@ -118,10 +119,10 @@ A test server setup is included in the `test-server/` directory with scripts:
 
 ## Compatibility
 
-- Minecraft: 1.21.4
-- Fabric Loader: 0.16.9+
-- Fabric API: 0.118.0+1.21.4
-- Java: 21+
+- Minecraft: 26.2
+- Fabric Loader: 0.20.1+
+- Fabric API: 0.161.0+26.2
+- Java: 25+
 
 ## License
 

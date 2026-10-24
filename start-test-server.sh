@@ -1,6 +1,6 @@
 #!/bin/bash
 # CoreServerMod Test Server Start Script
-# Launches a dedicated Minecraft 1.21.4 Fabric server for testing
+# Launches a dedicated Minecraft 26.2 Fabric server for testing
 
 set -euo pipefail
 
@@ -14,10 +14,10 @@ WORLD_DIR="$SERVER_DIR/world"
 LOGS_DIR="$SERVER_DIR/logs"
 
 # Server configuration
-MINECRAFT_VERSION="1.21.4"
-FABRIC_LOADER_VERSION="0.16.9"
-FABRIC_API_VERSION="0.118.0+1.21.4"
-JAVA_VERSION="21"
+MINECRAFT_VERSION="26.2"
+FABRIC_LOADER_VERSION="0.20.1"
+FABRIC_API_VERSION="0.161.0+26.2"
+JAVA_VERSION="25"
 SERVER_JAR="fabric-server-mc${MINECRAFT_VERSION}-loader${FABRIC_LOADER_VERSION}-launcher1.0.1.jar"
 SERVER_URL="https://meta.fabricmc.net/v2/versions/loader/${MINECRAFT_VERSION}/${FABRIC_LOADER_VERSION}/1.0.1/server/jar"
 FABRIC_API_URL="https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/${FABRIC_API_VERSION}/fabric-api-${FABRIC_API_VERSION}.jar"

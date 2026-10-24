@@ -1,48 +1,42 @@
 plugins {
-    id "fabric-loom" version "1.9.2"
+    id "net.fabricmc.fabric-loom" version "1.19.3"
     id "java"
     id "maven-publish"
 }
 
 version = "1.0.0"
-group = "pro.codeservermod"
+group = "pro.coreservermod"
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 repositories {
     mavenCentral()
     maven { url "https://maven.fabricmc.net/" }
-    maven { url "https://maven.fabricmc.net/repository/snapshots/" }
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:1.21.4"
-    mappings "net.fabricmc:yarn:1.21.4+build.1:v2"
-    modImplementation "net.fabricmc:fabric-loader:0.16.9"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:0.118.0+1.21.4"
-    modImplementation "com.github.jponge:lzma-java:1.3"
-    include "net.fabricmc:fabric-mixin-compile-extensions:0.6.0"
+    minecraft "com.mojang:minecraft:26.2"
+    implementation "net.fabricmc:fabric-loader:0.20.1"
+    implementation "net.fabricmc.fabric-api:fabric-api:0.161.0+26.2"
 }
-
-
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
-    options.release = 21
+    options.release = 25
 }
 
 jar {
     manifest {
         attributes(
-            "Fabric-Mod-Loading-Plugin": "pro.codeservermod.CoreServerMod",
+            "Fabric-Mod-Loading-Plugin": "pro.coreservermod.CoreServerMod",
             "Mod-ID": "coreservermod",
             "Mod-Name": "CoreServerMod",
             "Mod-Version": version,
             "Mod-Authors": "promikailamin",
             "Mod-Description": "Minecraft Fabric Server Enhancement Mod - Accelerates crop/tree growth, automates mob behaviors, reduces waiting times",
-            "Mod-Contact": "https://github.com/promikailamin/mcJava/issues/47",
+            "Mod-Contact": "https://github.com/promikailamin/mcJava/issues/53",
             "Mod-License": "MIT",
             "Mod-Icon": "assets/coreservermod/icon.png",
             "Mixin-Configs": "coreservermod.mixins.json",
@@ -52,8 +46,6 @@ jar {
         )
     }
 }
-
-
 
 publishing {
     publications {

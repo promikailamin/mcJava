@@ -1,4 +1,4 @@
-package pro.codeservermod;
+package pro.coreservermod;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,7 +35,7 @@ public class Config {
     public static Config fromJson(String json) {
         JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
         Config config = new Config();
-        
+
         config.sugar_cane_soul_sand_enabled = getBoolean(obj, "sugar_cane_soul_sand_enabled", true);
         config.sugar_cane_growth_interval_seconds = clampInt(getInt(obj, "sugar_cane_growth_interval_seconds", 1), 1, 3600);
         config.sapling_growth_time_seconds = clampInt(getInt(obj, "sapling_growth_time_seconds", 15), 1, 3600);
@@ -51,7 +51,7 @@ public class Config {
         config.villager_emerald_drop_chance = clampDouble(getDouble(obj, "villager_emerald_drop_chance", 0.4), 0.0, 1.0);
         config.guaranteed_chicken_from_egg = getBoolean(obj, "guaranteed_chicken_from_egg", true);
         config.chicken_egg_interval_seconds = clampInt(getInt(obj, "chicken_egg_interval_seconds", 20), 1, 3600);
-        
+
         return config;
     }
 

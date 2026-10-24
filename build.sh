@@ -13,7 +13,7 @@ echo "Working directory: $SCRIPT_DIR"
 # Check for Gradle wrapper
 if [ ! -f "./gradlew" ]; then
     echo "Generating Gradle wrapper..."
-    gradle wrapper --gradle-version 8.10
+    gradle wrapper --gradle-version 9.8.1
 fi
 
 # Make gradlew executable
@@ -28,10 +28,11 @@ JAR_PATH=$(find build/libs -name "CoreServerMod-*.jar" | head -1)
 if [ -n "$JAR_PATH" ] && [ -f "$JAR_PATH" ]; then
     echo "Build successful! JAR: $JAR_PATH"
     
-    # Copy to test server mods directory
-    mkdir -p test-server/mods
+    # Copy to distribution and test server mods directories
+    mkdir -p dist test-server/mods
+    cp "$JAR_PATH" dist/
     cp "$JAR_PATH" test-server/mods/
-    echo "Copied JAR to test-server/mods/"
+    echo "Copied JAR to dist/ and test-server/mods/"
 else
     echo "Build failed! JAR not found."
     exit 1
