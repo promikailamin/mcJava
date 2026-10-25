@@ -24,6 +24,10 @@ public class Config {
     public boolean destroyer_creeper_spawn_enabled = true;
     public int destroyer_creeper_spawn_interval_seconds = 5;
     public int max_automatic_creepers_per_area = 10;
+    public boolean slime_summoner_spawn_enabled = true;
+    public int slime_summoner_spawn_interval_seconds = 2;
+    public int slime_summoner_slimes_per_summon = 4;
+    public int max_automatic_slimes_per_area = 24;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
@@ -57,6 +61,10 @@ public class Config {
         config.destroyer_creeper_spawn_enabled = getBoolean(obj, "destroyer_creeper_spawn_enabled", true);
         config.destroyer_creeper_spawn_interval_seconds = clampInt(getInt(obj, "destroyer_creeper_spawn_interval_seconds", 5), 1, 3600);
         config.max_automatic_creepers_per_area = clampInt(getInt(obj, "max_automatic_creepers_per_area", 10), 0, 100);
+        config.slime_summoner_spawn_enabled = getBoolean(obj, "slime_summoner_spawn_enabled", true);
+        config.slime_summoner_spawn_interval_seconds = clampInt(getInt(obj, "slime_summoner_spawn_interval_seconds", 2), 1, 3600);
+        config.slime_summoner_slimes_per_summon = clampInt(getInt(obj, "slime_summoner_slimes_per_summon", 4), 1, 32);
+        config.max_automatic_slimes_per_area = clampInt(getInt(obj, "max_automatic_slimes_per_area", 24), 0, 200);
 
         return config;
     }

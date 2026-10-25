@@ -84,6 +84,16 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
 - When a TheDestroyer is no longer standing on a TNT block, its tag, name tag, and creeper-spawning power are removed
 - Other villagers retain vanilla behavior
 
+### 13. TheSlimeSummoner Villager
+- The mod checks all villagers every tick for one standing on top of a slime block
+- Matching villagers receive the `TheSlimeSummoner` tag and the visible name tag `TheSlimeSummoner` in bold green text
+- When a villager becomes a TheSlimeSummoner, conversion sounds and particles play and a message is broadcast in chat
+- A TheSlimeSummoner summons a burst of 4 slimes every 2 seconds when valid spawn positions exist
+- Slimes spawn on top of solid blocks, including slime blocks, cobblestone, mud, and hopper blocks
+- Automatic slime summoning stops for that villager once the nearby slime limit is reached
+- When a TheSlimeSummoner is no longer standing on a slime block, its tag, name tag, and slime-summoning power are removed
+- Other villagers retain vanilla behavior
+
 ## Installation
 
 1. Install Fabric Loader 0.19.5+ for Minecraft 26.2 (requires Java 25)
@@ -114,7 +124,11 @@ The mod generates a configuration file at `config/coreservermod.json` on first l
   "chicken_egg_interval_seconds": 20,
   "destroyer_creeper_spawn_enabled": true,
   "destroyer_creeper_spawn_interval_seconds": 5,
-  "max_automatic_creepers_per_area": 10
+  "max_automatic_creepers_per_area": 10,
+  "slime_summoner_spawn_enabled": true,
+  "slime_summoner_spawn_interval_seconds": 2,
+  "slime_summoner_slimes_per_summon": 4,
+  "max_automatic_slimes_per_area": 24
 }
 ```
 
@@ -140,6 +154,10 @@ The mod generates a configuration file at `config/coreservermod.json` on first l
 | `destroyer_creeper_spawn_enabled` | `true` | Enable creeper spawning from TNT block villagers |
 | `destroyer_creeper_spawn_interval_seconds` | `5` | Interval between creeper spawn attempts (seconds) |
 | `max_automatic_creepers_per_area` | `10` | Maximum automatic creepers per area |
+| `slime_summoner_spawn_enabled` | `true` | Enable slime summoning from slime block villagers |
+| `slime_summoner_spawn_interval_seconds` | `2` | Interval between slime summon bursts (seconds) |
+| `slime_summoner_slimes_per_summon` | `4` | Slimes summoned per burst |
+| `max_automatic_slimes_per_area` | `24` | Maximum automatic slimes per area |
 
 ## Building from Source
 

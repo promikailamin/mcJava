@@ -84,7 +84,11 @@ tasks.register("generateConfig") {
   "chicken_egg_interval_seconds": 20,
   "destroyer_creeper_spawn_enabled": true,
   "destroyer_creeper_spawn_interval_seconds": 5,
-  "max_automatic_creepers_per_area": 10
+  "max_automatic_creepers_per_area": 10,
+  "slime_summoner_spawn_enabled": true,
+  "slime_summoner_spawn_interval_seconds": 2,
+  "slime_summoner_slimes_per_summon": 4,
+  "max_automatic_slimes_per_area": 24
 }''')
         }
     }

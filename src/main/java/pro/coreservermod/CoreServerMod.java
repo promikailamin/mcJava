@@ -20,6 +20,7 @@ import pro.coreservermod.handler.SaplingHandler;
 import pro.coreservermod.handler.SheepWoolHandler;
 import pro.coreservermod.handler.SugarCaneHandler;
 import pro.coreservermod.handler.TheDestroyerHandler;
+import pro.coreservermod.handler.TheSlimeSummonerHandler;
 import pro.coreservermod.handler.TheTraderHandler;
 import pro.coreservermod.handler.VillagerEmeraldHandler;
 
@@ -103,6 +104,7 @@ public class CoreServerMod implements DedicatedServerModInitializer {
                 BadVillagerHandler.tick(level);
                 TheTraderHandler.tick(level);
                 TheDestroyerHandler.tick(level);
+                TheSlimeSummonerHandler.tick(level);
                 CropGrowthHandler.tick(level);
                 AnimalBreedingHandler.tick(level);
                 BabyGrowthHandler.tick(level);
@@ -120,6 +122,7 @@ public class CoreServerMod implements DedicatedServerModInitializer {
         BadVillagerHandler.register(server);
         TheTraderHandler.register(server);
         TheDestroyerHandler.register(server);
+        TheSlimeSummonerHandler.register(server);
         CropGrowthHandler.register(server);
         AnimalBreedingHandler.register(server);
         BabyGrowthHandler.register(server);
@@ -136,6 +139,7 @@ public class CoreServerMod implements DedicatedServerModInitializer {
         BadVillagerHandler.cleanup();
         TheTraderHandler.cleanup();
         TheDestroyerHandler.cleanup();
+        TheSlimeSummonerHandler.cleanup();
         CropGrowthHandler.cleanup();
         AnimalBreedingHandler.cleanup();
         BabyGrowthHandler.cleanup();
