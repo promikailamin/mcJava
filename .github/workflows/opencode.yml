@@ -90,6 +90,7 @@ jobs:
           6. You may use GitHub CLI (gh), Git, and available repository tools.
           7. You may comment on this issue using:
              gh issue comment "${ISSUE_NUMBER}" --repo "${REPOSITORY}" --body "Your update"
+          7.5. You should always make a comment on the issue when you finish a task.
           8. You may read and update issues, inspect pull requests, and perform other GitHub operations permitted by the token.
           9. Do not expose, print, commit, or write tokens or other secrets into files or logs.
           10. Do not modify unrelated files or repository settings unnecessarily.
