@@ -111,15 +111,10 @@ The compiled JAR will be in `build/libs/` and `dist/`.
 
 ## Continuous Integration
 
-The workflow definitions are kept in `ci/workflows/` and installed into
-`.github/workflows/` with:
+The GitHub Actions workflows live in `.github/workflows/`:
 
-```bash
-./ci/install-workflows.sh
-```
-
-- **Build** (`ci/workflows/build.yml`) runs on pushes, pull requests, and manual dispatch. It builds the mod, uploads the JAR as the `coreservermod-build` artifact, and publishes the JAR to `dist/` and `test-server/mods/` on `main`.
-- **Test** (`ci/workflows/test.yml`) is started manually with workflow dispatch. It downloads the artifact from the latest successful Build run and boots the test server with it. If no build artifact is available, the Test run cancels itself.
+- **Build** (`build.yml`) runs on pushes to `main`, pull requests, and manual dispatch. It builds the mod, uploads the JAR as the `coreservermod-build` artifact, and publishes the JAR to `dist/` and `test-server/mods/` on `main`.
+- **Test** (`test.yml`) is started manually with workflow dispatch. It downloads the artifact from the latest successful Build run and boots the test server with it. If no build artifact is available, the Test run cancels itself.
 
 ## Test Server
 

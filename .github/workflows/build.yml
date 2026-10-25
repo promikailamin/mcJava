@@ -17,6 +17,7 @@ jobs:
     build:
         name: Build mod
         runs-on: ubuntu-latest
+        timeout-minutes: 30
 
         steps:
             - name: Checkout repository
@@ -43,8 +44,10 @@ jobs:
               run: |
                   set -euo pipefail
                   mkdir -p build-artifact
-                  jar="$(find build/libs -maxdepth 1 -name 'CoreServerMod-*.jar' \
-                      ! -name '*-dev.jar' ! -name '*-sources.jar' | head -1)"
+                  jar="$(find build/libs -maxdepth 1 -type f \
+                      -name 'CoreServerMod-*.jar' \
+                      ! -name '*-dev.jar' ! -name '*-sources.jar' \
+                      -print -quit)"
                   if [ -z "$jar" ] || [ ! -f "$jar" ]; then
                       echo "::error::Built JAR was not found in build/libs."
                       exit 1
@@ -67,8 +70,10 @@ jobs:
               run: |
                   set -euo pipefail
 
-                  jar="$(find build/libs -maxdepth 1 -name 'CoreServerMod-*.jar' \
-                      ! -name '*-dev.jar' ! -name '*-sources.jar' | head -1)"
+                  jar="$(find build/libs -maxdepth 1 -type f \
+                      -name 'CoreServerMod-*.jar' \
+                      ! -name '*-dev.jar' ! -name '*-sources.jar' \
+                      -print -quit)"
                   mkdir -p dist test-server/mods
                   cp "$jar" dist/
                   cp "$jar" test-server/mods/

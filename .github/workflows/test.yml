@@ -29,20 +29,22 @@ jobs:
                   set -euo pipefail
 
                   run_id="$(gh run list \
-                      --workflow=build.yml \
-                      --status=success \
-                      --limit=1 \
+                      --repo "$GITHUB_REPOSITORY" \
+                      --workflow build.yml \
+                      --status success \
+                      --limit 1 \
                       --json databaseId \
                       --jq '.[0].databaseId // empty')"
 
                   if [ -z "$run_id" ]; then
-                      echo "::error::No successful Build workflow run found. Cancelling test workflow."
-                      gh run cancel "$GITHUB_RUN_ID" || true
+                      echo "::error::No successful Build workflow run found. Cancelling this Test run."
+                      gh run cancel "$GITHUB_RUN_ID" \
+                          --repo "$GITHUB_REPOSITORY" || true
                       exit 1
                   fi
 
                   echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
-                  echo "Using build workflow run: $run_id"
+                  echo "Using Build workflow run: $run_id"
 
             - name: Download build artifact
               id: download
@@ -53,17 +55,21 @@ jobs:
                   set -euo pipefail
 
                   if ! gh run download "$RUN_ID" \
+                      --repo "$GITHUB_REPOSITORY" \
                       --name coreservermod-build \
                       --dir build-artifact; then
-                      echo "::error::No build artifact found for run $RUN_ID. Cancelling test workflow."
-                      gh run cancel "$GITHUB_RUN_ID" || true
+                      echo "::error::No build artifact found for Build run $RUN_ID. Cancelling this Test run."
+                      gh run cancel "$GITHUB_RUN_ID" \
+                          --repo "$GITHUB_REPOSITORY" || true
                       exit 1
                   fi
 
-                  jar="$(find build-artifact -maxdepth 1 -name '*.jar' | head -1)"
+                  jar="$(find build-artifact -maxdepth 1 -type f \
+                      -name '*.jar' -print -quit)"
                   if [ -z "$jar" ] || [ ! -f "$jar" ]; then
-                      echo "::error::The downloaded build artifact does not contain a JAR. Cancelling test workflow."
-                      gh run cancel "$GITHUB_RUN_ID" || true
+                      echo "::error::The downloaded build artifact does not contain a JAR. Cancelling this Test run."
+                      gh run cancel "$GITHUB_RUN_ID" \
+                          --repo "$GITHUB_REPOSITORY" || true
                       exit 1
                   fi
 
@@ -81,8 +87,10 @@ jobs:
                   set -euo pipefail
                   mkdir -p test-server/mods
                   rm -f test-server/mods/CoreServerMod-*.jar
+                  rm -f test-server/mods/fabric-api-*.jar
                   cp "${{ steps.download.outputs.jar }}" \
                       "test-server/mods/$(basename "${{ steps.download.outputs.jar }}")"
+                  rm -rf test-server/world
                   ls -l test-server/mods
 
             - name: Start test server
