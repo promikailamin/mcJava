@@ -1,0 +1,148 @@
+name: Test
+
+on:
+    workflow_dispatch:
+
+permissions:
+    actions: write
+    contents: read
+
+concurrency:
+    group: test-${{ github.ref }}
+    cancel-in-progress: false
+
+jobs:
+    test:
+        name: Test latest build
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Find latest successful build
+              id: find-build
+              env:
+                  GH_TOKEN: ${{ github.token }}
+              run: |
+                  set -euo pipefail
+
+                  run_id="$(gh run list \
+                      --workflow=build.yml \
+                      --status=success \
+                      --limit=1 \
+                      --json databaseId \
+                      --jq '.[0].databaseId // empty')"
+
+                  if [ -z "$run_id" ]; then
+                      echo "::error::No successful Build workflow run found. Cancelling test workflow."
+                      gh run cancel "$GITHUB_RUN_ID" || true
+                      exit 1
+                  fi
+
+                  echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
+                  echo "Using build workflow run: $run_id"
+
+            - name: Download build artifact
+              id: download
+              env:
+                  GH_TOKEN: ${{ github.token }}
+                  RUN_ID: ${{ steps.find-build.outputs.run_id }}
+              run: |
+                  set -euo pipefail
+
+                  if ! gh run download "$RUN_ID" \
+                      --name coreservermod-build \
+                      --dir build-artifact; then
+                      echo "::error::No build artifact found for run $RUN_ID. Cancelling test workflow."
+                      gh run cancel "$GITHUB_RUN_ID" || true
+                      exit 1
+                  fi
+
+                  jar="$(find build-artifact -maxdepth 1 -name '*.jar' | head -1)"
+                  if [ -z "$jar" ] || [ ! -f "$jar" ]; then
+                      echo "::error::The downloaded build artifact does not contain a JAR. Cancelling test workflow."
+                      gh run cancel "$GITHUB_RUN_ID" || true
+                      exit 1
+                  fi
+
+                  echo "jar=$jar" >> "$GITHUB_OUTPUT"
+                  echo "Testing artifact: $jar"
+
+            - name: Set up Java 25
+              uses: actions/setup-java@v4
+              with:
+                  distribution: temurin
+                  java-version: "25"
+
+            - name: Install artifact into test server
+              run: |
+                  set -euo pipefail
+                  mkdir -p test-server/mods
+                  rm -f test-server/mods/CoreServerMod-*.jar
+                  cp "${{ steps.download.outputs.jar }}" \
+                      "test-server/mods/$(basename "${{ steps.download.outputs.jar }}")"
+                  ls -l test-server/mods
+
+            - name: Start test server
+              run: |
+                  set -euo pipefail
+
+                  chmod +x ./start-test-server.sh
+                  mkdir -p test-server/logs
+
+                  rm -f server-console
+                  mkfifo server-console
+
+                  ./start-test-server.sh \
+                      < server-console \
+                      > test-server/logs/ci-console.log 2>&1 &
+                  server_pid=$!
+                  echo "$server_pid" > test-server/server.pid
+
+                  exec 3>server-console
+
+                  for _ in $(seq 1 180); do
+                      if grep -q 'Done (' test-server/logs/ci-console.log 2>/dev/null; then
+                          echo "Server started successfully with the build artifact."
+                          echo "stop" >&3
+                          exec 3>&-
+
+                          for _ in $(seq 1 60); do
+                              if ! kill -0 "$server_pid" 2>/dev/null; then
+                                  echo "Server stopped cleanly."
+                                  exit 0
+                              fi
+                              sleep 1
+                          done
+
+                          echo "::warning::Server did not stop within 60 seconds; terminating it."
+                          kill "$server_pid" 2>/dev/null || true
+                          exit 0
+                      fi
+
+                      if ! kill -0 "$server_pid" 2>/dev/null; then
+                          echo "::error::Server exited before completing startup."
+                          tail -n 200 test-server/logs/ci-console.log || true
+                          exit 1
+                      fi
+
+                      sleep 1
+                  done
+
+                  echo "::error::Server did not finish startup within 180 seconds."
+                  tail -n 200 test-server/logs/ci-console.log || true
+                  echo "stop" >&3 || true
+                  exec 3>&- || true
+                  kill "$server_pid" 2>/dev/null || true
+                  exit 1
+
+            - name: Upload test server logs
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: test-server-logs
+                  path: test-server/logs/
+                  if-no-files-found: ignore
+                  retention-days: 7
