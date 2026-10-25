@@ -10,7 +10,9 @@
     "SheepShearedMixin",
     "VillagerTradeMixin",
     "ThrownEggEntityMixin",
-    "ChickenEntityMixin"
+    "ChickenEntityMixin",
+    "DisplayAccessor",
+    "TextDisplayAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

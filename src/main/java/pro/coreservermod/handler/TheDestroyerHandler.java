@@ -18,13 +18,15 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import pro.coreservermod.CoreServerMod;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class TheDestroyerHandler {
     public static final String THE_DESTROYER_TAG = "TheDestroyer";
-    private static final Component THE_DESTROYER_NAME = Component.literal(THE_DESTROYER_TAG)
-            .withStyle(ChatFormatting.RED, ChatFormatting.BOLD);
-    private static final int CREEPER_SEARCH_RADIUS = 16;
+    private static final int CREEPER_SEARCH_RADIUS = SpawnerSupport.SEARCH_RADIUS;
+    private static final Map<UUID, BlockPos> SPAWN_AREAS = new HashMap<>();
 
     public static void register(MinecraftServer server) {
     }
@@ -33,38 +35,90 @@ public class TheDestroyerHandler {
         if (!CoreServerMod.CONFIG.destroyer_creeper_spawn_enabled) return;
 
         long gameTime = world.getGameTime();
+        int intervalTicks = Math.max(1, 20 * CoreServerMod.CONFIG.destroyer_creeper_spawn_interval_seconds);
+        boolean spawnTick = gameTime % intervalTicks == 0;
 
-        updateDestroyers(world);
-
-        int intervalTicks = 20 * CoreServerMod.CONFIG.destroyer_creeper_spawn_interval_seconds;
-        if (gameTime % intervalTicks == 0) {
-            spawnCreepersForDestroyers(world);
+        if (gameTime % 20 == 0) {
+            SpawnerHologram.cleanup(world, THE_DESTROYER_TAG);
         }
+
+        updateDestroyers(world, gameTime, intervalTicks, spawnTick);
     }
 
-    private static void updateDestroyers(ServerLevel world) {
+    private static void updateDestroyers(ServerLevel world, long gameTime, int intervalTicks,
+                                         boolean spawnTick) {
         for (Villager villager : world.getEntities(EntityTypes.VILLAGER, villager -> true)) {
             boolean onTnt = isStandingOnTnt(world, villager);
             boolean hasTag = villager.entityTags().contains(THE_DESTROYER_TAG);
 
-            if (onTnt) {
-                if (!hasTag) {
-                    villager.addTag(THE_DESTROYER_TAG);
-                    playConversionEffects(world, villager);
-                    broadcastConversionMessage(world);
+            if (!onTnt) {
+                if (hasTag) {
+                    villager.removeTag(THE_DESTROYER_TAG);
+                    SpawnerHologram.remove(villager, THE_DESTROYER_TAG);
+                    if (SPAWN_AREAS.remove(villager.getUUID()) != null) {
+                        broadcastAreaLost(world);
+                    }
                 }
-                if (!THE_DESTROYER_NAME.equals(villager.getCustomName())) {
-                    villager.setCustomName(THE_DESTROYER_NAME);
-                    villager.setCustomNameVisible(true);
-                }
-            } else if (hasTag) {
-                villager.removeTag(THE_DESTROYER_TAG);
-                if (THE_DESTROYER_NAME.equals(villager.getCustomName())) {
-                    villager.setCustomName(null);
-                    villager.setCustomNameVisible(false);
-                }
+                continue;
+            }
+
+            boolean newlyConverted = !hasTag;
+            if (newlyConverted) {
+                villager.addTag(THE_DESTROYER_TAG);
+                playConversionEffects(world, villager);
+                broadcastConversionMessage(world);
+            }
+
+            updateSpawnArea(world, villager, gameTime, newlyConverted);
+            updateHologram(world, villager, gameTime, intervalTicks,
+                    SPAWN_AREAS.containsKey(villager.getUUID()));
+
+            if (spawnTick) {
+                trySpawnCreeper(world, villager);
             }
         }
+    }
+
+    private static void updateSpawnArea(ServerLevel world, Villager villager, long gameTime,
+                                        boolean forceSearch) {
+        UUID id = villager.getUUID();
+        BlockPos cached = SPAWN_AREAS.get(id);
+        boolean lost = false;
+
+        if (cached != null && !isValidSpawnPosition(world, cached)) {
+            SPAWN_AREAS.remove(id);
+            cached = null;
+            lost = true;
+        }
+
+        if (cached == null && (forceSearch || lost || gameTime % SpawnerSupport.SEARCH_RETRY_TICKS == 0)) {
+            BlockPos found = SpawnerSupport.findNearestSpawnPosition(world, villager.blockPosition(),
+                    pos -> !pos.equals(villager.blockPosition()) && isValidSpawnPosition(world, pos));
+
+            if (lost) {
+                broadcastAreaLost(world);
+            }
+            if (found != null) {
+                SPAWN_AREAS.put(id, found);
+                broadcastAreaFound(world, found);
+            }
+        }
+    }
+
+    private static void updateHologram(ServerLevel world, Villager villager, long gameTime,
+                                       int intervalTicks, boolean hasSpawnArea) {
+        int remainingTicks = intervalTicks - (int) (gameTime % intervalTicks);
+        int seconds = Math.max(1, (remainingTicks + 19) / 20);
+        String status = hasSpawnArea
+                ? "Spawning in " + seconds + (seconds == 1 ? " second!" : " seconds!")
+                : "Searching for spawn area...";
+
+        Component hologram = Component.literal(THE_DESTROYER_TAG)
+                .withStyle(ChatFormatting.RED, ChatFormatting.BOLD)
+                .append(Component.literal("\n" + status)
+                        .withStyle(hasSpawnArea ? ChatFormatting.YELLOW : ChatFormatting.RED));
+
+        SpawnerHologram.update(world, villager, THE_DESTROYER_TAG, hologram);
     }
 
     private static void playConversionEffects(ServerLevel world, Villager villager) {
@@ -81,26 +135,49 @@ public class TheDestroyerHandler {
     }
 
     private static void broadcastConversionMessage(ServerLevel world) {
-        MinecraftServer server = world.getServer();
-        if (server == null) return;
-
-        Component message = Component.literal("A villager has become ")
+        broadcast(world, Component.literal("A villager has become ")
                 .withStyle(ChatFormatting.YELLOW)
                 .append(Component.literal(THE_DESTROYER_TAG).withStyle(ChatFormatting.RED, ChatFormatting.BOLD))
-                .append(Component.literal("!").withStyle(ChatFormatting.YELLOW));
+                .append(Component.literal("!").withStyle(ChatFormatting.YELLOW)));
+    }
 
+    private static void broadcastAreaFound(ServerLevel world, BlockPos pos) {
+        broadcast(world, Component.literal("[")
+                .withStyle(ChatFormatting.DARK_GRAY)
+                .append(Component.literal(THE_DESTROYER_TAG).withStyle(ChatFormatting.RED, ChatFormatting.BOLD))
+                .append(Component.literal("] I found my spawn area at ").withStyle(ChatFormatting.YELLOW))
+                .append(Component.literal(pos.getX() + ", " + pos.getY() + ", " + pos.getZ())
+                        .withStyle(ChatFormatting.WHITE))
+                .append(Component.literal("!").withStyle(ChatFormatting.YELLOW)));
+    }
+
+    private static void broadcastAreaLost(ServerLevel world) {
+        broadcast(world, Component.literal("[")
+                .withStyle(ChatFormatting.DARK_GRAY)
+                .append(Component.literal(THE_DESTROYER_TAG).withStyle(ChatFormatting.RED, ChatFormatting.BOLD))
+                .append(Component.literal("] I lost my spawn area!").withStyle(ChatFormatting.RED)));
+    }
+
+    private static void broadcast(ServerLevel world, Component message) {
+        MinecraftServer server = world.getServer();
+        if (server == null) return;
         server.getPlayerList().broadcastSystemMessage(message, false);
     }
 
-    private static void spawnCreepersForDestroyers(ServerLevel world) {
-        for (Villager villager : world.getEntities(EntityTypes.VILLAGER, villager -> true)) {
-            if (!villager.entityTags().contains(THE_DESTROYER_TAG)) continue;
-            if (!isStandingOnTnt(world, villager)) continue;
-            if (hasReachedCreeperLimit(world, villager.blockPosition())) continue;
-            if (canSpawnCreeper(world, villager.blockPosition())) {
-                spawnCreeper(world, villager.blockPosition());
-            }
-        }
+    private static void trySpawnCreeper(ServerLevel world, Villager villager) {
+        if (hasReachedCreeperLimit(world, villager.blockPosition())) return;
+
+        BlockPos spawnPos = SpawnerSupport.findNearestSpawnPosition(world, villager.blockPosition(),
+                pos -> !pos.equals(villager.blockPosition()) && canSpawnCreeperAt(world, pos));
+        if (spawnPos == null) return;
+
+        Creeper creeper = EntityTypes.CREEPER.create(world, EntitySpawnReason.TRIGGERED);
+        if (creeper == null) return;
+
+        creeper.snapTo(Vec3.atBottomCenterOf(spawnPos), 0.0F, 0.0F);
+        creeper.setPersistenceRequired();
+        world.addFreshEntity(creeper);
+        playCreeperSpawnEffects(world, creeper);
     }
 
     private static boolean isStandingOnTnt(ServerLevel world, Villager villager) {
@@ -120,61 +197,27 @@ public class TheDestroyerHandler {
         return nearby.size() >= max;
     }
 
-    private static boolean canSpawnCreeper(ServerLevel world, BlockPos villagerPos) {
-        for (int x = -CREEPER_SEARCH_RADIUS; x <= CREEPER_SEARCH_RADIUS; x += 4) {
-            for (int z = -CREEPER_SEARCH_RADIUS; z <= CREEPER_SEARCH_RADIUS; z += 4) {
-                for (int y = -4; y <= 4; y++) {
-                    BlockPos checkPos = villagerPos.offset(x, y, z);
-                    if (isValidSpawnPosition(world, checkPos)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+    private static boolean canSpawnCreeperAt(ServerLevel world, BlockPos pos) {
+        if (!isValidSpawnPosition(world, pos)) return false;
+        return SpawnerSupport.hasNoEntity(world, creeperBox(pos));
     }
 
     private static boolean isValidSpawnPosition(ServerLevel world, BlockPos pos) {
+        if (!world.isLoaded(pos) || !world.isLoaded(pos.below())) return false;
+
         BlockState below = world.getBlockState(pos.below());
         if (!isValidCreeperBase(below)) return false;
 
-        BlockState state = world.getBlockState(pos);
-        BlockState above = world.getBlockState(pos.above());
+        return SpawnerSupport.hasClearSpace(world, pos, creeperBox(pos));
+    }
 
-        if (!isAirOrWater(state) || !isAirOrWater(above)) return false;
-
-        AABB box = EntityTypes.CREEPER.getDimensions()
-                .makeBoundingBox(Vec3.atCenterOf(pos));
-        return world.noCollision(box);
+    private static AABB creeperBox(BlockPos pos) {
+        return EntityTypes.CREEPER.getDimensions()
+                .makeBoundingBox(Vec3.atBottomCenterOf(pos));
     }
 
     private static boolean isValidCreeperBase(BlockState state) {
         return state.is(Blocks.COBBLESTONE) || state.is(Blocks.MUD) || state.is(Blocks.HOPPER);
-    }
-
-    private static boolean isAirOrWater(BlockState state) {
-        return state.isAir() || state.is(Blocks.WATER);
-    }
-
-    private static boolean spawnCreeper(ServerLevel world, BlockPos villagerPos) {
-        for (int x = -CREEPER_SEARCH_RADIUS; x <= CREEPER_SEARCH_RADIUS; x += 4) {
-            for (int z = -CREEPER_SEARCH_RADIUS; z <= CREEPER_SEARCH_RADIUS; z += 4) {
-                for (int y = -4; y <= 4; y++) {
-                    BlockPos spawnPos = villagerPos.offset(x, y, z);
-                    if (isValidSpawnPosition(world, spawnPos)) {
-                        Creeper creeper = EntityTypes.CREEPER.create(world, EntitySpawnReason.TRIGGERED);
-                        if (creeper != null) {
-                            creeper.snapTo(Vec3.atCenterOf(spawnPos), 0.0F, 0.0F);
-                            creeper.setPersistenceRequired();
-                            world.addFreshEntity(creeper);
-                            playCreeperSpawnEffects(world, creeper);
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     private static void playCreeperSpawnEffects(ServerLevel world, Creeper creeper) {
@@ -190,5 +233,6 @@ public class TheDestroyerHandler {
     }
 
     public static void cleanup() {
+        SPAWN_AREAS.clear();
     }
 }

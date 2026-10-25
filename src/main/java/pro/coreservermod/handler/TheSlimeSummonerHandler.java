@@ -9,7 +9,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.Pose;
@@ -21,13 +20,15 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import pro.coreservermod.CoreServerMod;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class TheSlimeSummonerHandler {
     public static final String THE_SLIME_SUMMONER_TAG = "TheSlimeSummoner";
-    private static final Component THE_SLIME_SUMMONER_NAME = Component.literal(THE_SLIME_SUMMONER_TAG)
-            .withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD);
-    private static final int SLIME_SEARCH_RADIUS = 16;
+    private static final int SLIME_SEARCH_RADIUS = SpawnerSupport.SEARCH_RADIUS;
+    private static final Map<UUID, BlockPos> SPAWN_AREAS = new HashMap<>();
 
     public static void register(MinecraftServer server) {
     }
@@ -36,38 +37,90 @@ public class TheSlimeSummonerHandler {
         if (!CoreServerMod.CONFIG.slime_summoner_spawn_enabled) return;
 
         long gameTime = world.getGameTime();
+        int intervalTicks = Math.max(1, 20 * CoreServerMod.CONFIG.slime_summoner_spawn_interval_seconds);
+        boolean spawnTick = gameTime % intervalTicks == 0;
 
-        updateSlimeSummoners(world);
-
-        int intervalTicks = 20 * CoreServerMod.CONFIG.slime_summoner_spawn_interval_seconds;
-        if (gameTime % intervalTicks == 0) {
-            summonSlimesForSummoners(world);
+        if (gameTime % 20 == 0) {
+            SpawnerHologram.cleanup(world, THE_SLIME_SUMMONER_TAG);
         }
+
+        updateSlimeSummoners(world, gameTime, intervalTicks, spawnTick);
     }
 
-    private static void updateSlimeSummoners(ServerLevel world) {
+    private static void updateSlimeSummoners(ServerLevel world, long gameTime, int intervalTicks,
+                                             boolean spawnTick) {
         for (Villager villager : world.getEntities(EntityTypes.VILLAGER, villager -> true)) {
             boolean onSlimeBlock = isStandingOnSlimeBlock(world, villager);
             boolean hasTag = villager.entityTags().contains(THE_SLIME_SUMMONER_TAG);
 
-            if (onSlimeBlock) {
-                if (!hasTag) {
-                    villager.addTag(THE_SLIME_SUMMONER_TAG);
-                    playConversionEffects(world, villager);
-                    broadcastConversionMessage(world);
+            if (!onSlimeBlock) {
+                if (hasTag) {
+                    villager.removeTag(THE_SLIME_SUMMONER_TAG);
+                    SpawnerHologram.remove(villager, THE_SLIME_SUMMONER_TAG);
+                    if (SPAWN_AREAS.remove(villager.getUUID()) != null) {
+                        broadcastAreaLost(world);
+                    }
                 }
-                if (!THE_SLIME_SUMMONER_NAME.equals(villager.getCustomName())) {
-                    villager.setCustomName(THE_SLIME_SUMMONER_NAME);
-                    villager.setCustomNameVisible(true);
-                }
-            } else if (hasTag) {
-                villager.removeTag(THE_SLIME_SUMMONER_TAG);
-                if (THE_SLIME_SUMMONER_NAME.equals(villager.getCustomName())) {
-                    villager.setCustomName(null);
-                    villager.setCustomNameVisible(false);
-                }
+                continue;
+            }
+
+            boolean newlyConverted = !hasTag;
+            if (newlyConverted) {
+                villager.addTag(THE_SLIME_SUMMONER_TAG);
+                playConversionEffects(world, villager);
+                broadcastConversionMessage(world);
+            }
+
+            updateSpawnArea(world, villager, gameTime, newlyConverted);
+            updateHologram(world, villager, gameTime, intervalTicks,
+                    SPAWN_AREAS.containsKey(villager.getUUID()));
+
+            if (spawnTick) {
+                summonSlimes(world, villager);
             }
         }
+    }
+
+    private static void updateSpawnArea(ServerLevel world, Villager villager, long gameTime,
+                                        boolean forceSearch) {
+        UUID id = villager.getUUID();
+        BlockPos cached = SPAWN_AREAS.get(id);
+        boolean lost = false;
+
+        if (cached != null && !isValidSpawnArea(world, cached)) {
+            SPAWN_AREAS.remove(id);
+            cached = null;
+            lost = true;
+        }
+
+        if (cached == null && (forceSearch || lost || gameTime % SpawnerSupport.SEARCH_RETRY_TICKS == 0)) {
+            BlockPos found = SpawnerSupport.findNearestSpawnPosition(world, villager.blockPosition(),
+                    pos -> !pos.equals(villager.blockPosition()) && isValidSpawnArea(world, pos));
+
+            if (lost) {
+                broadcastAreaLost(world);
+            }
+            if (found != null) {
+                SPAWN_AREAS.put(id, found);
+                broadcastAreaFound(world, found);
+            }
+        }
+    }
+
+    private static void updateHologram(ServerLevel world, Villager villager, long gameTime,
+                                       int intervalTicks, boolean hasSpawnArea) {
+        int remainingTicks = intervalTicks - (int) (gameTime % intervalTicks);
+        int seconds = Math.max(1, (remainingTicks + 19) / 20);
+        String status = hasSpawnArea
+                ? "Spawning in " + seconds + (seconds == 1 ? " second!" : " seconds!")
+                : "Searching for spawn area...";
+
+        Component hologram = Component.literal(THE_SLIME_SUMMONER_TAG)
+                .withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD)
+                .append(Component.literal("\n" + status)
+                        .withStyle(hasSpawnArea ? ChatFormatting.YELLOW : ChatFormatting.RED));
+
+        SpawnerHologram.update(world, villager, THE_SLIME_SUMMONER_TAG, hologram);
     }
 
     private static void playConversionEffects(ServerLevel world, Villager villager) {
@@ -84,39 +137,55 @@ public class TheSlimeSummonerHandler {
     }
 
     private static void broadcastConversionMessage(ServerLevel world) {
+        broadcast(world, Component.literal("A villager has become ")
+                .withStyle(ChatFormatting.YELLOW)
+                .append(Component.literal(THE_SLIME_SUMMONER_TAG)
+                        .withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD))
+                .append(Component.literal("!").withStyle(ChatFormatting.YELLOW)));
+    }
+
+    private static void broadcastAreaFound(ServerLevel world, BlockPos pos) {
+        broadcast(world, Component.literal("[")
+                .withStyle(ChatFormatting.DARK_GRAY)
+                .append(Component.literal(THE_SLIME_SUMMONER_TAG)
+                        .withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD))
+                .append(Component.literal("] I found my spawn area at ").withStyle(ChatFormatting.YELLOW))
+                .append(Component.literal(pos.getX() + ", " + pos.getY() + ", " + pos.getZ())
+                        .withStyle(ChatFormatting.WHITE))
+                .append(Component.literal("!").withStyle(ChatFormatting.YELLOW)));
+    }
+
+    private static void broadcastAreaLost(ServerLevel world) {
+        broadcast(world, Component.literal("[")
+                .withStyle(ChatFormatting.DARK_GRAY)
+                .append(Component.literal(THE_SLIME_SUMMONER_TAG)
+                        .withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD))
+                .append(Component.literal("] I lost my spawn area!").withStyle(ChatFormatting.RED)));
+    }
+
+    private static void broadcast(ServerLevel world, Component message) {
         MinecraftServer server = world.getServer();
         if (server == null) return;
-
-        Component message = Component.literal("A villager has become ")
-                .withStyle(ChatFormatting.YELLOW)
-                .append(Component.literal(THE_SLIME_SUMMONER_TAG).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD))
-                .append(Component.literal("!").withStyle(ChatFormatting.YELLOW));
-
         server.getPlayerList().broadcastSystemMessage(message, false);
     }
 
-    private static void summonSlimesForSummoners(ServerLevel world) {
-        for (Villager villager : world.getEntities(EntityTypes.VILLAGER, villager -> true)) {
-            if (!villager.entityTags().contains(THE_SLIME_SUMMONER_TAG)) continue;
-            if (!isStandingOnSlimeBlock(world, villager)) continue;
+    private static void summonSlimes(ServerLevel world, Villager villager) {
+        int toSpawn = CoreServerMod.CONFIG.slime_summoner_slimes_per_summon;
+        int max = CoreServerMod.CONFIG.max_automatic_slimes_per_area;
+        if (max > 0) {
+            int nearby = countNearbySlimes(world, villager.blockPosition());
+            toSpawn = Math.min(toSpawn, max - nearby);
+        }
+        if (toSpawn <= 0) return;
 
-            int toSpawn = CoreServerMod.CONFIG.slime_summoner_slimes_per_summon;
-            int max = CoreServerMod.CONFIG.max_automatic_slimes_per_area;
-            if (max > 0) {
-                int nearby = countNearbySlimes(world, villager.blockPosition());
-                toSpawn = Math.min(toSpawn, max - nearby);
-            }
-            if (toSpawn <= 0) continue;
+        boolean summoned = false;
+        for (int i = 0; i < toSpawn; i++) {
+            if (!spawnSlime(world, villager)) break;
+            summoned = true;
+        }
 
-            boolean summoned = false;
-            for (int i = 0; i < toSpawn; i++) {
-                if (!spawnSlime(world, villager)) break;
-                summoned = true;
-            }
-
-            if (summoned) {
-                playSummonEffects(world, villager);
-            }
+        if (summoned) {
+            playSummonEffects(world, villager);
         }
     }
 
@@ -139,64 +208,42 @@ public class TheSlimeSummonerHandler {
         if (slime == null) return false;
 
         slime.setSize(1 + villager.getRandom().nextInt(2), true);
-        BlockPos villagerPos = villager.blockPosition();
-        var random = villager.getRandom();
 
-        for (int attempt = 0; attempt < 64; attempt++) {
-            BlockPos spawnPos = villagerPos.offset(
-                    random.nextInt(SLIME_SEARCH_RADIUS * 2 + 1) - SLIME_SEARCH_RADIUS,
-                    random.nextInt(9) - 4,
-                    random.nextInt(SLIME_SEARCH_RADIUS * 2 + 1) - SLIME_SEARCH_RADIUS
-            );
-            if (isValidSpawnPosition(world, spawnPos, slime)) {
-                spawnSlimeAt(world, slime, spawnPos);
-                return true;
-            }
-        }
+        BlockPos spawnPos = SpawnerSupport.findNearestSpawnPosition(world, villager.blockPosition(),
+                pos -> !pos.equals(villager.blockPosition()) && canSpawnSlimeAt(world, pos, slime));
+        if (spawnPos == null) return false;
 
-        for (int x = -SLIME_SEARCH_RADIUS; x <= SLIME_SEARCH_RADIUS; x += 4) {
-            for (int z = -SLIME_SEARCH_RADIUS; z <= SLIME_SEARCH_RADIUS; z += 4) {
-                for (int y = -4; y <= 4; y++) {
-                    BlockPos spawnPos = villagerPos.offset(x, y, z);
-                    if (isValidSpawnPosition(world, spawnPos, slime)) {
-                        spawnSlimeAt(world, slime, spawnPos);
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
-    private static void spawnSlimeAt(ServerLevel world, Slime slime, BlockPos spawnPos) {
-        slime.snapTo(Vec3.atCenterOf(spawnPos), 0.0F, 0.0F);
+        slime.snapTo(Vec3.atBottomCenterOf(spawnPos), 0.0F, 0.0F);
         slime.setPersistenceRequired();
         world.addFreshEntity(slime);
+        return true;
     }
 
-    private static boolean isValidSpawnPosition(ServerLevel world, BlockPos pos, Slime slime) {
-        BlockPos belowPos = pos.below();
+    private static boolean canSpawnSlimeAt(ServerLevel world, BlockPos pos, Slime slime) {
+        if (!isValidSlimeBase(world, pos.below())) return false;
+        return SpawnerSupport.hasClearSpace(world, pos, slimeBox(slime, pos))
+                && SpawnerSupport.hasNoEntity(world, slimeBox(slime, pos));
+    }
+
+    private static boolean isValidSpawnArea(ServerLevel world, BlockPos pos) {
+        if (!world.isLoaded(pos) || !world.isLoaded(pos.below())) return false;
+        if (!isValidSlimeBase(world, pos.below())) return false;
+
+        AABB box = EntityTypes.SLIME.getDimensions()
+                .makeBoundingBox(Vec3.atBottomCenterOf(pos));
+        return SpawnerSupport.hasClearSpace(world, pos, box);
+    }
+
+    private static boolean isValidSlimeBase(ServerLevel world, BlockPos belowPos) {
         BlockState below = world.getBlockState(belowPos);
-        if (!below.is(Blocks.SLIME_BLOCK) && !below.isFaceSturdy(world, belowPos, Direction.UP)) {
-            return false;
-        }
-
-        BlockState state = world.getBlockState(pos);
-        BlockState above = world.getBlockState(pos.above());
-
-        if (!isAirOrWater(state) || !isAirOrWater(above)) return false;
-
-        AABB box = slime.getDimensions(Pose.STANDING)
-                .makeBoundingBox(Vec3.atCenterOf(pos));
-        if (!world.noCollision(box)) return false;
-
-        List<Entity> overlapping = world.getEntitiesOfClass(Entity.class, box, Entity::isAlive);
-        return overlapping.isEmpty();
+        if (below.is(Blocks.SLIME_BLOCK)) return true;
+        return below.isFaceSturdy(world, belowPos, Direction.UP)
+                && below.isCollisionShapeFullBlock(world, belowPos);
     }
 
-    private static boolean isAirOrWater(BlockState state) {
-        return state.isAir() || state.is(Blocks.WATER);
+    private static AABB slimeBox(Slime slime, BlockPos pos) {
+        return slime.getDimensions(Pose.STANDING)
+                .makeBoundingBox(Vec3.atBottomCenterOf(pos));
     }
 
     private static void playSummonEffects(ServerLevel world, Villager villager) {
@@ -209,5 +256,6 @@ public class TheSlimeSummonerHandler {
     }
 
     public static void cleanup() {
+        SPAWN_AREAS.clear();
     }
 }

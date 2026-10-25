@@ -15,13 +15,14 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
 
 ### 3. Iron Block Villager
 - The mod checks all villagers every tick for one standing on top of an iron block
-- Matching villagers receive the `CreateVillager` tag and the visible name tag `CreateVillager` in bold gold text
+- Matching villagers receive the `CreateVillager` tag and a floating two-line hologram showing the name and spawn countdown
 - When a villager becomes a CreateVillager, conversion sounds and particles play and a message is broadcast in chat
 - Tagged villagers attempt to spawn one iron golem every 5 seconds when a valid spawn position exists
-- Each iron golem spawn plays its own sounds and particles without sending another chat message
-- Iron golems only spawn on top of cobblestone, mud block, or hopper blocks; water or flowing water directly above a valid block is ignored, making that position valid for spawning
+- Spawn areas are searched up to 16 blocks horizontally and 4 vertically; chat messages announce immediately when an area is found or lost
+- Iron golems only spawn on top of cobblestone, mud block, or hopper blocks
+- A spawn position must be air or water with no buttons, trapdoors, slabs, or other non-air blocks in the mob's space; water above a valid base is allowed
 - Does not require beds, village membership, gossip, panic, nearby mobs, professions, or other vanilla golem eligibility checks
-- When a tagged villager is no longer standing on an iron block, its tag, name tag, and golem-spawning power are removed
+- When a tagged villager is no longer standing on an iron block, its tag, hologram, and golem-spawning power are removed
 - Other villagers retain vanilla behavior
 
 ### 4. Bad Villager
@@ -76,22 +77,26 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
 
 ### 12. TheDestroyer Villager
 - The mod checks all villagers every tick for one standing on top of a TNT block
-- Matching villagers receive the `TheDestroyer` tag and the visible name tag `TheDestroyer` in bold red text
+- Matching villagers receive the `TheDestroyer` tag and a floating two-line hologram showing the name and spawn countdown
 - When a villager becomes a TheDestroyer, conversion sounds and particles play and a message is broadcast in chat
 - A TheDestroyer attempts to spawn one creeper every 5 seconds when a valid spawn position exists
 - Creepers only spawn on top of cobblestone, mud block, or hopper blocks
+- A spawn position must be air or water with no buttons, trapdoors, slabs, or other non-air blocks in the creeper's space
+- Spawn areas are searched up to 16 blocks horizontally and 4 vertically; chat messages announce immediately when an area is found or lost
 - Each creeper spawn plays its own sounds and particles
-- When a TheDestroyer is no longer standing on a TNT block, its tag, name tag, and creeper-spawning power are removed
+- When a TheDestroyer is no longer standing on a TNT block, its tag, hologram, and creeper-spawning power are removed
 - Other villagers retain vanilla behavior
 
 ### 13. TheSlimeSummoner Villager
 - The mod checks all villagers every tick for one standing on top of a slime block
-- Matching villagers receive the `TheSlimeSummoner` tag and the visible name tag `TheSlimeSummoner` in bold green text
+- Matching villagers receive the `TheSlimeSummoner` tag and a floating two-line hologram showing the name and spawn countdown
 - When a villager becomes a TheSlimeSummoner, conversion sounds and particles play and a message is broadcast in chat
 - A TheSlimeSummoner summons a burst of 4 slimes every 2 seconds when valid spawn positions exist
 - Slimes spawn on top of solid blocks, including slime blocks, cobblestone, mud, and hopper blocks
+- A spawn position must be air or water with no buttons, trapdoors, slabs, or other non-air blocks in the slime's space
+- Spawn areas are searched up to 16 blocks horizontally and 4 vertically; chat messages announce immediately when an area is found or lost
 - Automatic slime summoning stops for that villager once the nearby slime limit is reached
-- When a TheSlimeSummoner is no longer standing on a slime block, its tag, name tag, and slime-summoning power are removed
+- When a TheSlimeSummoner is no longer standing on a slime block, its tag, hologram, and slime-summoning power are removed
 - Other villagers retain vanilla behavior
 
 ### 14. Create Fly Integration (Optional)
