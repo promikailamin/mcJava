@@ -28,6 +28,8 @@ public class Config {
     public int slime_summoner_spawn_interval_seconds = 2;
     public int slime_summoner_slimes_per_summon = 4;
     public int max_automatic_slimes_per_area = 24;
+    public boolean create_flowing_water_washing_enabled = true;
+    public int create_flowing_water_washing_interval_ticks = 10;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
@@ -65,6 +67,9 @@ public class Config {
         config.slime_summoner_spawn_interval_seconds = clampInt(getInt(obj, "slime_summoner_spawn_interval_seconds", 2), 1, 3600);
         config.slime_summoner_slimes_per_summon = clampInt(getInt(obj, "slime_summoner_slimes_per_summon", 4), 1, 32);
         config.max_automatic_slimes_per_area = clampInt(getInt(obj, "max_automatic_slimes_per_area", 24), 0, 200);
+        config.create_flowing_water_washing_enabled = getBoolean(obj, "create_flowing_water_washing_enabled", true);
+        config.create_flowing_water_washing_interval_ticks = clampInt(
+                getInt(obj, "create_flowing_water_washing_interval_ticks", 10), 1, 1200);
 
         return config;
     }

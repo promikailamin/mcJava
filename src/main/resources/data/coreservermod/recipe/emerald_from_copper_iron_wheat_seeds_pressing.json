@@ -1,0 +1,19 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": ["create"]
+    }
+  ],
+  "type": "create:compacting",
+  "ingredients": [
+    "minecraft:copper_ingot",
+    "minecraft:iron_ingot",
+    "minecraft:wheat_seeds"
+  ],
+  "results": [
+    {
+      "id": "minecraft:emerald"
+    }
+  ]
+}

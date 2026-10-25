@@ -94,12 +94,24 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
 - When a TheSlimeSummoner is no longer standing on a slime block, its tag, name tag, and slime-summoning power are removed
 - Other villagers retain vanilla behavior
 
+### 14. Create Fly Integration (Optional)
+- When [Create Fly](https://modrinth.com/mod/create-fly) is installed, the mod automatically enables Create recipe and washing integration
+- Adds two Mechanical Press (Compacting) recipes and two Mechanical Mixer (Mixing) recipes:
+  - 1 copper ingot + 1 iron ingot + 1 wheat seeds -> 1 emerald
+  - 1 sugar cane + 1 snowball -> 1 slime ball
+- Dropped items in flowing water are washed using Create's existing Splashing recipes
+- This includes gravel -> flint, ice -> packed ice, and every other item that Create can wash with a fan and water
+- Flowing-water washing is faster than fan washing and does not require a fan, leaves, or a water source block
+- Only flowing water works; still source blocks are ignored
+- The integration is optional - CoreServerMod still loads and works normally without Create Fly
+
 ## Installation
 
 1. Install Fabric Loader 0.19.5+ for Minecraft 26.2 (requires Java 25)
 2. Install Fabric API 0.161.0+26.2
-3. Place `CoreServerMod-1.0.0.jar` in your server's `mods` folder
-4. Start the server - a default configuration file will be generated at `config/coreservermod.json`
+3. Optionally install Create Fly 6.0.9+ for 26.2 to enable the Create recipes and flowing-water washing
+4. Place `CoreServerMod-1.0.0.jar` in your server's `mods` folder
+5. Start the server - a default configuration file will be generated at `config/coreservermod.json`
 
 ## Configuration
 
@@ -128,7 +140,9 @@ The mod generates a configuration file at `config/coreservermod.json` on first l
   "slime_summoner_spawn_enabled": true,
   "slime_summoner_spawn_interval_seconds": 2,
   "slime_summoner_slimes_per_summon": 4,
-  "max_automatic_slimes_per_area": 24
+  "max_automatic_slimes_per_area": 24,
+  "create_flowing_water_washing_enabled": true,
+  "create_flowing_water_washing_interval_ticks": 10
 }
 ```
 
@@ -158,6 +172,8 @@ The mod generates a configuration file at `config/coreservermod.json` on first l
 | `slime_summoner_spawn_interval_seconds` | `2` | Interval between slime summon bursts (seconds) |
 | `slime_summoner_slimes_per_summon` | `4` | Slimes summoned per burst |
 | `max_automatic_slimes_per_area` | `24` | Maximum automatic slimes per area |
+| `create_flowing_water_washing_enabled` | `true` | Enable Create Splashing recipes in flowing water when Create Fly is installed |
+| `create_flowing_water_washing_interval_ticks` | `10` | Ticks an item must stay in flowing water before it is washed (lower is faster) |
 
 ## Building from Source
 
@@ -192,6 +208,7 @@ A test server setup is included in the `test-server/` directory with scripts:
 - Fabric Loader: 0.19.5+
 - Fabric API: 0.161.0+26.2
 - Java: 25+
+- Create Fly: 6.0.9+ for 26.2 (optional, enables recipes and flowing-water washing)
 
 ## License
 

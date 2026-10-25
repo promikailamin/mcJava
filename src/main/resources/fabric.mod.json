@@ -26,6 +26,9 @@
     "java": ">=25",
     "fabric-api": "*"
   },
+  "suggests": {
+    "create": ">=6.0.9"
+  },
   "custom": {
     "modmenu": {
       "badges": ["server"],

@@ -14,6 +14,7 @@ import pro.coreservermod.handler.BabyGrowthHandler;
 import pro.coreservermod.handler.BadVillagerHandler;
 import pro.coreservermod.handler.ChickenEggHandler;
 import pro.coreservermod.handler.ChickenSpawnHandler;
+import pro.coreservermod.handler.CreateFlowingWaterWashingHandler;
 import pro.coreservermod.handler.CropGrowthHandler;
 import pro.coreservermod.handler.IronGolemHandler;
 import pro.coreservermod.handler.SaplingHandler;
@@ -35,12 +36,19 @@ public class CoreServerMod implements DedicatedServerModInitializer {
     public static Config CONFIG;
     public static Path CONFIG_PATH;
 
+    private static boolean createLoaded;
+
     @Override
     public void onInitializeServer() {
         LOGGER.info("Initializing CoreServerMod...");
 
         CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("coreservermod.json");
         loadConfig();
+
+        createLoaded = FabricLoader.getInstance().isModLoaded("create");
+        if (createLoaded) {
+            LOGGER.info("Create detected, enabling Create Fly integration");
+        }
 
         registerEventHandlers();
 
@@ -111,6 +119,9 @@ public class CoreServerMod implements DedicatedServerModInitializer {
                 SheepWoolHandler.tick(level);
                 VillagerEmeraldHandler.tick(level);
                 ChickenEggHandler.tick(level);
+                if (createLoaded) {
+                    CreateFlowingWaterWashingHandler.tick(level);
+                }
             }
         });
     }
@@ -147,5 +158,8 @@ public class CoreServerMod implements DedicatedServerModInitializer {
         VillagerEmeraldHandler.cleanup();
         ChickenEggHandler.cleanup();
         ChickenSpawnHandler.cleanup();
+        if (createLoaded) {
+            CreateFlowingWaterWashingHandler.cleanup();
+        }
     }
 }
