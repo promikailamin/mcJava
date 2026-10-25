@@ -14,13 +14,6 @@
   "villager_emerald_drop_chance": 0.4,
   "guaranteed_chicken_from_egg": true,
   "chicken_egg_interval_seconds": 20,
-  "destroyer_creeper_spawn_enabled": true,
-  "destroyer_creeper_spawn_interval_seconds": 5,
-  "max_automatic_creepers_per_area": 10,
-  "slime_summoner_spawn_enabled": true,
-  "slime_summoner_spawn_interval_seconds": 2,
-  "slime_summoner_slimes_per_summon": 4,
-  "max_automatic_slimes_per_area": 24,
   "create_flowing_water_washing_enabled": true,
   "create_flowing_water_washing_interval_ticks": 10
 }

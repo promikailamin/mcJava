@@ -21,13 +21,6 @@ public class Config {
     public double villager_emerald_drop_chance = 0.4;
     public boolean guaranteed_chicken_from_egg = true;
     public int chicken_egg_interval_seconds = 20;
-    public boolean destroyer_creeper_spawn_enabled = true;
-    public int destroyer_creeper_spawn_interval_seconds = 5;
-    public int max_automatic_creepers_per_area = 10;
-    public boolean slime_summoner_spawn_enabled = true;
-    public int slime_summoner_spawn_interval_seconds = 2;
-    public int slime_summoner_slimes_per_summon = 4;
-    public int max_automatic_slimes_per_area = 24;
     public boolean create_flowing_water_washing_enabled = true;
     public int create_flowing_water_washing_interval_ticks = 10;
 
@@ -60,13 +53,6 @@ public class Config {
         config.villager_emerald_drop_chance = clampDouble(getDouble(obj, "villager_emerald_drop_chance", 0.4), 0.0, 1.0);
         config.guaranteed_chicken_from_egg = getBoolean(obj, "guaranteed_chicken_from_egg", true);
         config.chicken_egg_interval_seconds = clampInt(getInt(obj, "chicken_egg_interval_seconds", 20), 1, 3600);
-        config.destroyer_creeper_spawn_enabled = getBoolean(obj, "destroyer_creeper_spawn_enabled", true);
-        config.destroyer_creeper_spawn_interval_seconds = clampInt(getInt(obj, "destroyer_creeper_spawn_interval_seconds", 5), 1, 3600);
-        config.max_automatic_creepers_per_area = clampInt(getInt(obj, "max_automatic_creepers_per_area", 10), 0, 100);
-        config.slime_summoner_spawn_enabled = getBoolean(obj, "slime_summoner_spawn_enabled", true);
-        config.slime_summoner_spawn_interval_seconds = clampInt(getInt(obj, "slime_summoner_spawn_interval_seconds", 2), 1, 3600);
-        config.slime_summoner_slimes_per_summon = clampInt(getInt(obj, "slime_summoner_slimes_per_summon", 4), 1, 32);
-        config.max_automatic_slimes_per_area = clampInt(getInt(obj, "max_automatic_slimes_per_area", 24), 0, 200);
         config.create_flowing_water_washing_enabled = getBoolean(obj, "create_flowing_water_washing_enabled", true);
         config.create_flowing_water_washing_interval_ticks = clampInt(
                 getInt(obj, "create_flowing_water_washing_interval_ticks", 10), 1, 1200);

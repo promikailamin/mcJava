@@ -59,47 +59,7 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
 - Adult chickens produce one egg approximately every 20 seconds regardless of location or movement
 - Baby chickens do not lay eggs
 
-### 11. TheTrader Villager
-- The mod checks all villagers every tick for one standing on top of an emerald block
-- A villager named `TheTrader` with a name tag also becomes a TheTrader
-- Matching villagers receive the `TheTrader` tag and, when created with an emerald block, the visible name tag `TheTrader` in bold green text
-- When a villager becomes a TheTrader, conversion sounds and particles play and a message is broadcast in chat
-- A TheTrader picks up nearby dropped items and instantly drops emeralds using these trades:
-  - 8 sticks for 1 emerald
-  - 4 planks of any wood type for 1 emerald
-  - 1 log of any wood type for 1 emerald
-  - 1 iron ingot for 1 emerald
-  - 1 diamond for 9 emeralds
-- Emeralds are never picked up or consumed by a TheTrader
-- Leftover items that do not complete a trade remain on the ground
-- When a TheTrader created with an emerald block is no longer standing on it, its tag and name tag are removed
-- Other villagers retain vanilla behavior
-
-### 12. TheDestroyer Villager
-- The mod checks all villagers every tick for one standing on top of a TNT block
-- Matching villagers receive the `TheDestroyer` tag and a floating two-line hologram showing the name and spawn countdown
-- When a villager becomes a TheDestroyer, conversion sounds and particles play and a message is broadcast in chat
-- A TheDestroyer attempts to spawn one creeper every 5 seconds when a valid spawn position exists
-- Creepers only spawn on top of cobblestone, mud block, or hopper blocks
-- A spawn position must be air or water with no buttons, trapdoors, slabs, or other non-air blocks in the creeper's space
-- Spawn areas are searched up to 16 blocks horizontally and 4 vertically; chat messages announce immediately when an area is found or lost
-- Each creeper spawn plays its own sounds and particles
-- When a TheDestroyer is no longer standing on a TNT block, its tag, hologram, and creeper-spawning power are removed
-- Other villagers retain vanilla behavior
-
-### 13. TheSlimeSummoner Villager
-- The mod checks all villagers every tick for one standing on top of a slime block
-- Matching villagers receive the `TheSlimeSummoner` tag and a floating two-line hologram showing the name and spawn countdown
-- When a villager becomes a TheSlimeSummoner, conversion sounds and particles play and a message is broadcast in chat
-- A TheSlimeSummoner summons a burst of 4 slimes every 2 seconds when valid spawn positions exist
-- Slimes spawn on top of solid blocks, including slime blocks, cobblestone, mud, and hopper blocks
-- A spawn position must be air or water with no buttons, trapdoors, slabs, or other non-air blocks in the slime's space
-- Spawn areas are searched up to 16 blocks horizontally and 4 vertically; chat messages announce immediately when an area is found or lost
-- Automatic slime summoning stops for that villager once the nearby slime limit is reached
-- When a TheSlimeSummoner is no longer standing on a slime block, its tag, hologram, and slime-summoning power are removed
-- Other villagers retain vanilla behavior
-
-### 14. Create Fly Integration (Optional)
+### 11. Create Fly Integration (Optional)
 - When [Create Fly](https://modrinth.com/mod/create-fly) is installed, the mod automatically enables Create recipe and washing integration
 - Adds two Mechanical Press (Compacting) recipes and two Mechanical Mixer (Mixing) recipes:
   - 1 copper ingot + 1 iron ingot + 1 wheat seeds -> 1 emerald
@@ -139,13 +99,6 @@ The mod generates a configuration file at `config/coreservermod.json` on first l
   "villager_emerald_drop_chance": 0.4,
   "guaranteed_chicken_from_egg": true,
   "chicken_egg_interval_seconds": 20,
-  "destroyer_creeper_spawn_enabled": true,
-  "destroyer_creeper_spawn_interval_seconds": 5,
-  "max_automatic_creepers_per_area": 10,
-  "slime_summoner_spawn_enabled": true,
-  "slime_summoner_spawn_interval_seconds": 2,
-  "slime_summoner_slimes_per_summon": 4,
-  "max_automatic_slimes_per_area": 24,
   "create_flowing_water_washing_enabled": true,
   "create_flowing_water_washing_interval_ticks": 10
 }
@@ -170,13 +123,6 @@ The mod generates a configuration file at `config/coreservermod.json` on first l
 | `villager_emerald_drop_chance` | `0.4` | Chance (0.0-1.0) for emerald drop per trade |
 | `guaranteed_chicken_from_egg` | `true` | Guarantee chicken spawn from thrown eggs |
 | `chicken_egg_interval_seconds` | `20` | Interval for chicken egg laying (seconds) |
-| `destroyer_creeper_spawn_enabled` | `true` | Enable creeper spawning from TNT block villagers |
-| `destroyer_creeper_spawn_interval_seconds` | `5` | Interval between creeper spawn attempts (seconds) |
-| `max_automatic_creepers_per_area` | `10` | Maximum automatic creepers per area |
-| `slime_summoner_spawn_enabled` | `true` | Enable slime summoning from slime block villagers |
-| `slime_summoner_spawn_interval_seconds` | `2` | Interval between slime summon bursts (seconds) |
-| `slime_summoner_slimes_per_summon` | `4` | Slimes summoned per burst |
-| `max_automatic_slimes_per_area` | `24` | Maximum automatic slimes per area |
 | `create_flowing_water_washing_enabled` | `true` | Enable Create Splashing recipes in flowing water when Create Fly is installed |
 | `create_flowing_water_washing_interval_ticks` | `10` | Ticks an item must stay in flowing water before it is washed (lower is faster) |
 
