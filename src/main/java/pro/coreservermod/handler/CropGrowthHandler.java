@@ -1,55 +1,83 @@
 package pro.coreservermod.handler;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 import pro.coreservermod.CoreServerMod;
 
-import java.util.Set;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CropGrowthHandler {
-    private static final Set<BlockPos> TRACKED_CROPS = ConcurrentHashMap.newKeySet();
+    private static final Map<ResourceKey<Level>, Map<BlockPos, Long>> TRACKED_CROPS = new ConcurrentHashMap<>();
 
     public static void register(MinecraftServer server) {
-        // Could do initial scan
+        // Tracking is populated by block placement and chunk loading.
+    }
+
+    private static Map<BlockPos, Long> crops(ServerLevel world) {
+        return TRACKED_CROPS.computeIfAbsent(world.dimension(), key -> new ConcurrentHashMap<>());
+    }
+
+    public static void scanChunk(ServerLevel world, LevelChunk chunk) {
+        chunk.findBlocks(
+                state -> state.getBlock() instanceof CropBlock,
+                (pos, state) -> crops(world).putIfAbsent(pos.immutable(), world.getGameTime())
+        );
     }
 
     public static void trackCrop(ServerLevel world, BlockPos pos) {
-        BlockState state = world.getBlockState(pos);
-        if (state.getBlock() instanceof CropBlock) {
-            TRACKED_CROPS.add(pos.immutable());
+        crops(world).put(pos.immutable(), world.getGameTime());
+    }
+
+    public static void untrackCrop(ServerLevel world, BlockPos pos) {
+        Map<BlockPos, Long> tracked = TRACKED_CROPS.get(world.dimension());
+        if (tracked != null) {
+            tracked.remove(pos);
         }
     }
 
-    public static void untrackCrop(BlockPos pos) {
-        TRACKED_CROPS.remove(pos);
+    public static void untrackChunk(ServerLevel world, LevelChunk chunk) {
+        Map<BlockPos, Long> tracked = TRACKED_CROPS.get(world.dimension());
+        if (tracked == null) return;
+
+        tracked.keySet().removeIf(pos -> chunk.getPos().equals(ChunkPos.containing(pos)));
     }
 
     public static void tick(ServerLevel world) {
-        if (TRACKED_CROPS.isEmpty()) return;
+        Map<BlockPos, Long> tracked = TRACKED_CROPS.get(world.dimension());
+        if (tracked == null || tracked.isEmpty()) return;
 
-        int intervalTicks = 20 * CoreServerMod.CONFIG.crop_growth_time_seconds;
-        if (world.getGameTime() % intervalTicks != 0) return;
+        int totalTicks = 20 * CoreServerMod.CONFIG.crop_growth_time_seconds;
+        long currentTime = world.getGameTime();
 
-        for (BlockPos pos : new java.util.HashSet<>(TRACKED_CROPS)) {
+        for (Map.Entry<BlockPos, Long> entry : tracked.entrySet()) {
+            BlockPos pos = entry.getKey();
             if (!world.isLoaded(pos)) continue;
 
             BlockState state = world.getBlockState(pos);
             if (!(state.getBlock() instanceof CropBlock crop)) {
-                TRACKED_CROPS.remove(pos);
+                tracked.remove(pos);
                 continue;
             }
 
             int maxAge = crop.getMaxAge();
             int currentAge = crop.getAge(state);
+            if (currentAge >= maxAge) {
+                tracked.remove(pos);
+                continue;
+            }
 
-            if (currentAge < maxAge) {
-                world.setBlockAndUpdate(pos, crop.getStateForAge(currentAge + 1));
-            } else {
-                TRACKED_CROPS.remove(pos);
+            long elapsed = currentTime - entry.getValue();
+            int targetAge = (int) Math.min(maxAge, elapsed * maxAge / totalTicks);
+            if (targetAge > currentAge) {
+                world.setBlockAndUpdate(pos, crop.getStateForAge(targetAge));
             }
         }
     }

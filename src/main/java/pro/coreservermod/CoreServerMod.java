@@ -1,6 +1,7 @@
 package pro.coreservermod;
 
 import net.fabricmc.api.DedicatedServerModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -67,6 +68,18 @@ public class CoreServerMod implements DedicatedServerModInitializer {
     }
 
     private void registerEventHandlers() {
+        ServerChunkEvents.CHUNK_LOAD.register((world, chunk, generated) -> {
+            SugarCaneHandler.scanChunk(world, chunk);
+            SaplingHandler.scanChunk(world, chunk);
+            CropGrowthHandler.scanChunk(world, chunk);
+        });
+
+        ServerChunkEvents.CHUNK_UNLOAD.register((world, chunk) -> {
+            SugarCaneHandler.untrackChunk(world, chunk);
+            SaplingHandler.untrackChunk(world, chunk);
+            CropGrowthHandler.untrackChunk(world, chunk);
+        });
+
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             LOGGER.info("CoreServerMod: Server started, registering tick handlers");
             registerTickHandlers(server);
