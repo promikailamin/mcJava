@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pro.coreservermod.handler.AnimalBreedingHandler;
 import pro.coreservermod.handler.BabyGrowthHandler;
+import pro.coreservermod.handler.BadVillagerHandler;
 import pro.coreservermod.handler.ChickenEggHandler;
 import pro.coreservermod.handler.ChickenSpawnHandler;
 import pro.coreservermod.handler.CropGrowthHandler;
@@ -97,6 +98,7 @@ public class CoreServerMod implements DedicatedServerModInitializer {
                 SugarCaneHandler.tick(level);
                 SaplingHandler.tick(level);
                 IronGolemHandler.tick(level);
+                BadVillagerHandler.tick(level);
                 CropGrowthHandler.tick(level);
                 AnimalBreedingHandler.tick(level);
                 BabyGrowthHandler.tick(level);
@@ -111,6 +113,7 @@ public class CoreServerMod implements DedicatedServerModInitializer {
         SugarCaneHandler.register(server);
         SaplingHandler.register(server);
         IronGolemHandler.register(server);
+        BadVillagerHandler.register(server);
         CropGrowthHandler.register(server);
         AnimalBreedingHandler.register(server);
         BabyGrowthHandler.register(server);
@@ -124,6 +127,7 @@ public class CoreServerMod implements DedicatedServerModInitializer {
         SugarCaneHandler.cleanup();
         SaplingHandler.cleanup();
         IronGolemHandler.cleanup();
+        BadVillagerHandler.cleanup();
         CropGrowthHandler.cleanup();
         AnimalBreedingHandler.cleanup();
         BabyGrowthHandler.cleanup();

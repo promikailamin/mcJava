@@ -14,7 +14,7 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
 - Requires valid environmental and space conditions
 
 ### 3. Iron Block Villager
-- Every 10 seconds the mod checks all villagers for one standing on top of an iron block
+- The mod checks all villagers every tick for one standing on top of an iron block
 - Matching villagers receive the `CreateVillager` tag and the visible name tag `CreateVillager` in bold gold text
 - When a villager becomes a CreateVillager, conversion sounds and particles play and a message is broadcast in chat
 - Tagged villagers attempt to spawn one iron golem every 5 seconds when a valid spawn position exists
@@ -24,28 +24,37 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
 - When a tagged villager is no longer standing on an iron block, its tag, name tag, and golem-spawning power are removed
 - Other villagers retain vanilla behavior
 
-### 4. Accelerated Crop Growth
+### 4. Bad Villager
+- The mod checks all villagers every tick for one standing on top of a redstone block
+- Matching villagers receive the `BadVillager` tag and the visible name tag `BadVillager` in bold dark red text
+- When a villager becomes a BadVillager, conversion sounds and particles play and a message is broadcast in chat
+- A BadVillager is invincible and takes no damage from any source while it remains on the redstone block
+- Hitting a BadVillager gives the attacker a random-level Bad Omen effect lasting 20 minutes, which can start a raid
+- When a BadVillager is no longer standing on a redstone block, its tag, name tag, and invincibility are removed
+- Other villagers retain vanilla behavior
+
+### 5. Accelerated Crop Growth
 - Applicable vanilla crops and plants grow to maturity within approximately 15 seconds
 - Preserves necessary soil, light, water, and plant-specific requirements
 
-### 5. Animal Breeding
+### 6. Animal Breeding
 - Removes breeding cooldown for supported breedable vanilla animals
 - Allows repeated breeding whenever normal eligibility conditions are met
 - Baby animals mature within approximately 15 seconds or instantly when fed once (configurable)
 
-### 6. Sheep Wool Regrowth
+### 7. Sheep Wool Regrowth
 - Sheep regrow wool and become shearable approximately every 5 seconds
 - Preserves normal shearing drops and prevents duplicate drops
 
-### 7. Villager Emerald Drops
+### 8. Villager Emerald Drops
 - Villagers have a 40% chance to drop one emerald on successful trade
 - Evaluates chance once per trade event and prevents duplicate rewards
 
-### 8. Guaranteed Chicken from Eggs
+### 9. Guaranteed Chicken from Eggs
 - Every player-thrown chicken egg spawns exactly one chicken
 - Bypasses vanilla random hatch chance without duplicate spawning
 
-### 9. Chicken Egg Production
+### 10. Chicken Egg Production
 - Adult chickens produce one egg approximately every 20 seconds regardless of location or movement
 - Baby chickens do not lay eggs
 

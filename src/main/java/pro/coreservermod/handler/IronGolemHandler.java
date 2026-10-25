@@ -24,7 +24,6 @@ public class IronGolemHandler {
     public static final String CREATE_VILLAGER_TAG = "CreateVillager";
     private static final Component CREATE_VILLAGER_NAME = Component.literal(CREATE_VILLAGER_TAG)
             .withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD);
-    private static final int VILLAGER_CHECK_INTERVAL_TICKS = 20 * 10;
     private static final int GOLEM_SEARCH_RADIUS = 16;
 
     public static void register(MinecraftServer server) {
@@ -36,9 +35,7 @@ public class IronGolemHandler {
 
         long gameTime = world.getGameTime();
 
-        if (gameTime % VILLAGER_CHECK_INTERVAL_TICKS == 0) {
-            updateCreateVillagers(world);
-        }
+        updateCreateVillagers(world);
 
         int intervalTicks = 20 * CoreServerMod.CONFIG.iron_golem_spawn_interval_seconds;
         if (gameTime % intervalTicks == 0) {
