@@ -19,6 +19,7 @@ import pro.coreservermod.handler.IronGolemHandler;
 import pro.coreservermod.handler.SaplingHandler;
 import pro.coreservermod.handler.SheepWoolHandler;
 import pro.coreservermod.handler.SugarCaneHandler;
+import pro.coreservermod.handler.TheTraderHandler;
 import pro.coreservermod.handler.VillagerEmeraldHandler;
 
 import java.io.IOException;
@@ -99,6 +100,7 @@ public class CoreServerMod implements DedicatedServerModInitializer {
                 SaplingHandler.tick(level);
                 IronGolemHandler.tick(level);
                 BadVillagerHandler.tick(level);
+                TheTraderHandler.tick(level);
                 CropGrowthHandler.tick(level);
                 AnimalBreedingHandler.tick(level);
                 BabyGrowthHandler.tick(level);
@@ -114,6 +116,7 @@ public class CoreServerMod implements DedicatedServerModInitializer {
         SaplingHandler.register(server);
         IronGolemHandler.register(server);
         BadVillagerHandler.register(server);
+        TheTraderHandler.register(server);
         CropGrowthHandler.register(server);
         AnimalBreedingHandler.register(server);
         BabyGrowthHandler.register(server);
@@ -128,6 +131,7 @@ public class CoreServerMod implements DedicatedServerModInitializer {
         SaplingHandler.cleanup();
         IronGolemHandler.cleanup();
         BadVillagerHandler.cleanup();
+        TheTraderHandler.cleanup();
         CropGrowthHandler.cleanup();
         AnimalBreedingHandler.cleanup();
         BabyGrowthHandler.cleanup();

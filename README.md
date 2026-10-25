@@ -58,6 +58,22 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
 - Adult chickens produce one egg approximately every 20 seconds regardless of location or movement
 - Baby chickens do not lay eggs
 
+### 11. TheTrader Villager
+- The mod checks all villagers every tick for one standing on top of an emerald block
+- A villager named `TheTrader` with a name tag also becomes a TheTrader
+- Matching villagers receive the `TheTrader` tag and, when created with an emerald block, the visible name tag `TheTrader` in bold green text
+- When a villager becomes a TheTrader, conversion sounds and particles play and a message is broadcast in chat
+- A TheTrader picks up nearby dropped items and instantly drops emeralds using these trades:
+  - 8 sticks for 1 emerald
+  - 4 planks of any wood type for 1 emerald
+  - 1 log of any wood type for 1 emerald
+  - 1 iron ingot for 1 emerald
+  - 1 diamond for 9 emeralds
+- Emeralds are never picked up or consumed by a TheTrader
+- Leftover items that do not complete a trade remain on the ground
+- When a TheTrader created with an emerald block is no longer standing on it, its tag and name tag are removed
+- Other villagers retain vanilla behavior
+
 ## Installation
 
 1. Install Fabric Loader 0.19.5+ for Minecraft 26.2 (requires Java 25)
