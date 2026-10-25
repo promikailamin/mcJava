@@ -48,7 +48,7 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
 
 ## Installation
 
-1. Install Fabric Loader 0.20.1+ for Minecraft 26.2 (requires Java 25)
+1. Install Fabric Loader 0.19.5+ for Minecraft 26.2 (requires Java 25)
 2. Install Fabric API 0.161.0+26.2
 3. Place `CoreServerMod-1.0.0.jar` in your server's `mods` folder
 4. Start the server - a default configuration file will be generated at `config/coreservermod.json`
@@ -127,7 +127,7 @@ A test server setup is included in the `test-server/` directory with scripts:
 ## Compatibility
 
 - Minecraft: 26.2
-- Fabric Loader: 0.20.1+
+- Fabric Loader: 0.19.5+
 - Fabric API: 0.161.0+26.2
 - Java: 25+
 
