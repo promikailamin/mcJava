@@ -15,8 +15,10 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
 
 ### 3. Iron Block Villager
 - Every 10 seconds the mod checks all villagers for one standing on top of an iron block
-- Matching villagers receive the `CreateVillager` tag and the visible name tag `CreateVillager`
+- Matching villagers receive the `CreateVillager` tag and the visible name tag `CreateVillager` in bold gold text
+- When a villager becomes a CreateVillager, conversion sounds and particles play and a message is broadcast in chat
 - Tagged villagers attempt to spawn one iron golem every 5 seconds when a valid spawn position exists
+- Each iron golem spawn plays its own sounds and particles without sending another chat message
 - Iron golems only spawn on top of cobblestone blocks; water or flowing water directly above cobblestone is ignored, making that position valid for spawning
 - Does not require beds, village membership, gossip, panic, nearby mobs, professions, or other vanilla golem eligibility checks
 - When a tagged villager is no longer standing on an iron block, its tag, name tag, and golem-spawning power are removed

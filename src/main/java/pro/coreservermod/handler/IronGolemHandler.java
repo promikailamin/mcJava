@@ -1,9 +1,13 @@
 package pro.coreservermod.handler;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.animal.golem.IronGolem;
@@ -18,7 +22,8 @@ import java.util.List;
 
 public class IronGolemHandler {
     public static final String CREATE_VILLAGER_TAG = "CreateVillager";
-    private static final Component CREATE_VILLAGER_NAME = Component.literal(CREATE_VILLAGER_TAG);
+    private static final Component CREATE_VILLAGER_NAME = Component.literal(CREATE_VILLAGER_TAG)
+            .withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD);
     private static final int VILLAGER_CHECK_INTERVAL_TICKS = 20 * 10;
     private static final int GOLEM_SEARCH_RADIUS = 16;
 
@@ -49,6 +54,8 @@ public class IronGolemHandler {
             if (onIronBlock) {
                 if (!hasTag) {
                     villager.addTag(CREATE_VILLAGER_TAG);
+                    playConversionEffects(world, villager);
+                    broadcastConversionMessage(world);
                 }
                 if (!CREATE_VILLAGER_NAME.equals(villager.getCustomName())) {
                     villager.setCustomName(CREATE_VILLAGER_NAME);
@@ -62,6 +69,31 @@ public class IronGolemHandler {
                 }
             }
         }
+    }
+
+    private static void playConversionEffects(ServerLevel world, Villager villager) {
+        double x = villager.getX();
+        double y = villager.getY();
+        double z = villager.getZ();
+
+        world.playSound(null, x, y, z, SoundEvents.VILLAGER_CELEBRATE, SoundSource.NEUTRAL, 1.0F, 1.0F);
+        world.playSound(null, x, y, z, SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.8F, 1.4F);
+
+        world.sendParticles(ParticleTypes.HAPPY_VILLAGER, x, y + 1.0, z, 30, 0.6, 0.8, 0.6, 0.1);
+        world.sendParticles(ParticleTypes.ENCHANT, x, y + 1.0, z, 40, 0.8, 1.0, 0.8, 0.4);
+        world.sendParticles(ParticleTypes.GLOW, x, y + 1.0, z, 15, 0.5, 0.8, 0.5, 0.05);
+    }
+
+    private static void broadcastConversionMessage(ServerLevel world) {
+        MinecraftServer server = world.getServer();
+        if (server == null) return;
+
+        Component message = Component.literal("A villager has become a ")
+                .withStyle(ChatFormatting.YELLOW)
+                .append(Component.literal(CREATE_VILLAGER_TAG).withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD))
+                .append(Component.literal("!").withStyle(ChatFormatting.YELLOW));
+
+        server.getPlayerList().broadcastSystemMessage(message, false);
     }
 
     private static void spawnGolemsForCreateVillagers(ServerLevel world) {
@@ -124,7 +156,7 @@ public class IronGolemHandler {
         return state.isAir() || state.is(Blocks.WATER);
     }
 
-    private static void spawnGolem(ServerLevel world, BlockPos villagerPos) {
+    private static boolean spawnGolem(ServerLevel world, BlockPos villagerPos) {
         for (int x = -GOLEM_SEARCH_RADIUS; x <= GOLEM_SEARCH_RADIUS; x += 4) {
             for (int z = -GOLEM_SEARCH_RADIUS; z <= GOLEM_SEARCH_RADIUS; z += 4) {
                 for (int y = -4; y <= 4; y++) {
@@ -135,12 +167,27 @@ public class IronGolemHandler {
                             golem.snapTo(Vec3.atCenterOf(spawnPos), 0.0F, 0.0F);
                             golem.setPersistenceRequired();
                             world.addFreshEntity(golem);
-                            return;
+                            playGolemSpawnEffects(world, golem);
+                            return true;
                         }
                     }
                 }
             }
         }
+        return false;
+    }
+
+    private static void playGolemSpawnEffects(ServerLevel world, IronGolem golem) {
+        double x = golem.getX();
+        double y = golem.getY();
+        double z = golem.getZ();
+
+        world.playSound(null, x, y, z, SoundEvents.IRON_GOLEM_REPAIR, SoundSource.NEUTRAL, 1.0F, 0.9F);
+        world.playSound(null, x, y, z, SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 0.6F, 1.2F);
+
+        world.sendParticles(ParticleTypes.CLOUD, x, y + 1.0, z, 25, 0.7, 0.8, 0.7, 0.08);
+        world.sendParticles(ParticleTypes.CRIT, x, y + 1.0, z, 20, 0.6, 0.8, 0.6, 0.2);
+        world.sendParticles(ParticleTypes.ELECTRIC_SPARK, x, y + 1.0, z, 15, 0.5, 0.7, 0.5, 0.1);
     }
 
     public static void cleanup() {
