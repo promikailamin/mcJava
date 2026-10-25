@@ -19,7 +19,7 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
 - When a villager becomes a CreateVillager, conversion sounds and particles play and a message is broadcast in chat
 - Tagged villagers attempt to spawn one iron golem every 5 seconds when a valid spawn position exists
 - Each iron golem spawn plays its own sounds and particles without sending another chat message
-- Iron golems only spawn on top of cobblestone blocks; water or flowing water directly above cobblestone is ignored, making that position valid for spawning
+- Iron golems only spawn on top of cobblestone, mud block, or hopper blocks; water or flowing water directly above a valid block is ignored, making that position valid for spawning
 - Does not require beds, village membership, gossip, panic, nearby mobs, professions, or other vanilla golem eligibility checks
 - When a tagged villager is no longer standing on an iron block, its tag, name tag, and golem-spawning power are removed
 - Other villagers retain vanilla behavior
@@ -74,6 +74,16 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
 - When a TheTrader created with an emerald block is no longer standing on it, its tag and name tag are removed
 - Other villagers retain vanilla behavior
 
+### 12. TheDestroyer Villager
+- The mod checks all villagers every tick for one standing on top of a TNT block
+- Matching villagers receive the `TheDestroyer` tag and the visible name tag `TheDestroyer` in bold red text
+- When a villager becomes a TheDestroyer, conversion sounds and particles play and a message is broadcast in chat
+- A TheDestroyer attempts to spawn one creeper every 5 seconds when a valid spawn position exists
+- Creepers only spawn on top of cobblestone, mud block, or hopper blocks
+- Each creeper spawn plays its own sounds and particles
+- When a TheDestroyer is no longer standing on a TNT block, its tag, name tag, and creeper-spawning power are removed
+- Other villagers retain vanilla behavior
+
 ## Installation
 
 1. Install Fabric Loader 0.19.5+ for Minecraft 26.2 (requires Java 25)
@@ -101,7 +111,10 @@ The mod generates a configuration file at `config/coreservermod.json` on first l
   "villager_emerald_drop_enabled": true,
   "villager_emerald_drop_chance": 0.4,
   "guaranteed_chicken_from_egg": true,
-  "chicken_egg_interval_seconds": 20
+  "chicken_egg_interval_seconds": 20,
+  "destroyer_creeper_spawn_enabled": true,
+  "destroyer_creeper_spawn_interval_seconds": 5,
+  "max_automatic_creepers_per_area": 10
 }
 ```
 
@@ -124,6 +137,9 @@ The mod generates a configuration file at `config/coreservermod.json` on first l
 | `villager_emerald_drop_chance` | `0.4` | Chance (0.0-1.0) for emerald drop per trade |
 | `guaranteed_chicken_from_egg` | `true` | Guarantee chicken spawn from thrown eggs |
 | `chicken_egg_interval_seconds` | `20` | Interval for chicken egg laying (seconds) |
+| `destroyer_creeper_spawn_enabled` | `true` | Enable creeper spawning from TNT block villagers |
+| `destroyer_creeper_spawn_interval_seconds` | `5` | Interval between creeper spawn attempts (seconds) |
+| `max_automatic_creepers_per_area` | `10` | Maximum automatic creepers per area |
 
 ## Building from Source
 

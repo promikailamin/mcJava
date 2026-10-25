@@ -137,7 +137,7 @@ public class IronGolemHandler {
 
     private static boolean isValidSpawnPosition(ServerLevel world, BlockPos pos) {
         BlockState below = world.getBlockState(pos.below());
-        if (!below.is(Blocks.COBBLESTONE)) return false;
+        if (!isValidGolemBase(below)) return false;
 
         BlockState state = world.getBlockState(pos);
         BlockState above = world.getBlockState(pos.above());
@@ -147,6 +147,10 @@ public class IronGolemHandler {
         AABB box = EntityTypes.IRON_GOLEM.getDimensions()
                 .makeBoundingBox(Vec3.atCenterOf(pos));
         return world.noCollision(box);
+    }
+
+    private static boolean isValidGolemBase(BlockState state) {
+        return state.is(Blocks.COBBLESTONE) || state.is(Blocks.MUD) || state.is(Blocks.HOPPER);
     }
 
     private static boolean isAirOrWater(BlockState state) {
