@@ -1,7 +1,6 @@
 package pro.coreservermod.handler;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -108,18 +107,21 @@ public class IronGolemHandler {
     }
 
     private static boolean isValidSpawnPosition(ServerLevel world, BlockPos pos) {
+        BlockState below = world.getBlockState(pos.below());
+        if (!below.is(Blocks.COBBLESTONE)) return false;
+
         BlockState state = world.getBlockState(pos);
         BlockState above = world.getBlockState(pos.above());
-        BlockState below = world.getBlockState(pos.below());
 
-        if (!state.isAir() || !above.isAir()) return false;
-        if (!below.isFaceSturdy(world, pos.below(), Direction.UP)) return false;
-
-        if (!state.getFluidState().isEmpty() || !above.getFluidState().isEmpty()) return false;
+        if (!isAirOrWater(state) || !isAirOrWater(above)) return false;
 
         AABB box = EntityTypes.IRON_GOLEM.getDimensions()
                 .makeBoundingBox(Vec3.atCenterOf(pos));
         return world.noCollision(box);
+    }
+
+    private static boolean isAirOrWater(BlockState state) {
+        return state.isAir() || state.is(Blocks.WATER);
     }
 
     private static void spawnGolem(ServerLevel world, BlockPos villagerPos) {
