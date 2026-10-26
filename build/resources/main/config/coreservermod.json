@@ -13,5 +13,7 @@
   "villager_emerald_drop_enabled": true,
   "villager_emerald_drop_chance": 0.4,
   "guaranteed_chicken_from_egg": true,
-  "chicken_egg_interval_seconds": 20
+  "chicken_egg_interval_seconds": 20,
+  "create_flowing_water_washing_enabled": true,
+  "create_flowing_water_washing_interval_ticks": 10
 }
