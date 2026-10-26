@@ -1,452 +1,231 @@
 [0m
 > build · deepseek-v4.1-flash-free
 [0m
-[0m$ [0mgit status && git branch --show-current && git log --oneline -5 && ls
-On branch main
-Your branch is up to date with 'origin/main'.
-
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-	modified:   opencode-output.log
-
-no changes added to commit (use "git add" and/or "git commit -a")
-main
+[0m$ [0mgit log --oneline -5 && echo "---" && ls -la && echo "---" && find . -maxdepth 2 -type f | head -50
+61a2e72 Update build artifact [skip ci]
+3e7dd72 Work on issue #67
+747e4a7 Add config fixer for missing options on startup (#67)
 e2a7e04 Update build artifact [skip ci]
 e80a7d3 Work on issue #66
-574c173 Remove trader, destroyer, and slime summoner villagers (#66)
-f291f02 Update build artifact [skip ci]
-4e95665 Work on issue #65
-README.md
-build
-build.gradle
-build.sh
-dist
-gradle
-gradle.properties
-gradlew
-gradlew.bat
-issue-query.txt
-opencode-output.log
-opencode-output.txt
-settings.gradle
-src
-start-test-server.sh
-stop-test-server.sh
-test-server
-[0m
-[0m$ [0mfind . -type f -not -path './.git/*' | head -100
+---
+total 272
+drwxr-xr-x 10 runner runner   4096 Oct 26 06:57 .
+drwxr-xr-x  3 runner runner   4096 Oct 26 06:57 ..
+drwxr-xr-x  7 runner runner   4096 Oct 26 06:57 .git
+drwxr-xr-x  3 runner runner   4096 Oct 26 06:57 .github
+drwxr-xr-x  8 runner runner   4096 Oct 26 06:57 .gradle
+-rw-r--r--  1 runner runner   8756 Oct 26 06:57 README.md
+drwxr-xr-x  9 runner runner   4096 Oct 26 06:57 build
+-rw-r--r--  1 runner runner   3099 Oct 26 06:57 build.gradle
+-rw-r--r--  1 runner runner   1012 Oct 26 06:57 build.sh
+drwxr-xr-x  2 runner runner   4096 Oct 26 06:57 dist
+drwxr-xr-x  3 runner runner   4096 Oct 26 06:57 gradle
+-rw-r--r--  1 runner runner    352 Oct 26 06:57 gradle.properties
+-rwxr-xr-x  1 runner runner   8656 Oct 26 06:57 gradlew
+-rw-r--r--  1 runner runner   4888 Oct 26 06:57 gradlew.bat
+-rw-r--r--  1 runner runner    760 Oct 26 06:57 issue-query.txt
+-rw-r--r--  1 runner runner     46 Oct 26 06:58 opencode-output.log
+-rw-r--r--  1 runner runner 166025 Oct 26 06:57 opencode-output.txt
+-rw-r--r--  1 runner runner    236 Oct 26 06:57 settings.gradle
+drwxr-xr-x  3 runner runner   4096 Oct 26 06:57 src
+-rw-r--r--  1 runner runner   4464 Oct 26 06:57 start-test-server.sh
+-rwxr-xr-x  1 runner runner   1368 Oct 26 06:57 stop-test-server.sh
+drwxr-xr-x  9 runner runner   4096 Oct 26 06:57 test-server
+---
 ./build.gradle
 ./opencode-output.txt
-./build/processIncludeJars/fabric-mixin-compile-extensions-0.6.0.jar
-./build/classes/java/main/CoreServerMod-refmap.json
-./build/classes/java/main/pro/codeservermod/CoreServerMod.class
-./build/classes/java/main/pro/codeservermod/handler/AnimalBreedingHandler.class
-./build/classes/java/main/pro/codeservermod/handler/SaplingHandler.class
-./build/classes/java/main/pro/codeservermod/handler/SheepWoolHandler.class
-./build/classes/java/main/pro/codeservermod/handler/VillagerEmeraldHandler.class
-./build/classes/java/main/pro/codeservermod/handler/IronGolemHandler.class
-./build/classes/java/main/pro/codeservermod/handler/SugarCaneHandler.class
-./build/classes/java/main/pro/codeservermod/handler/ChickenSpawnHandler.class
-./build/classes/java/main/pro/codeservermod/handler/CropGrowthHandler.class
-./build/classes/java/main/pro/codeservermod/handler/ChickenEggHandler.class
-./build/classes/java/main/pro/codeservermod/handler/BabyGrowthHandler.class
-./build/classes/java/main/pro/codeservermod/Config.class
-./build/classes/java/main/pro/codeservermod/mixin/ChickenEntityMixin.class
-./build/classes/java/main/pro/codeservermod/mixin/SugarCaneBlockMixin.class
-./build/classes/java/main/pro/codeservermod/mixin/SheepShearedMixin.class
-./build/classes/java/main/pro/codeservermod/mixin/ThrownEggEntityMixin.class
-./build/classes/java/main/pro/codeservermod/mixin/VillagerWakeMixin.class
-./build/classes/java/main/pro/codeservermod/mixin/SheepEntityMixin.class
-./build/classes/java/main/pro/codeservermod/mixin/VillagerTradeMixin.class
-./build/classes/java/main/pro/codeservermod/mixin/CropBlockMixin.class
-./build/classes/java/main/pro/codeservermod/mixin/SaplingGeneratorMixin.class
-./build/classes/java/main/pro/codeservermod/mixin/AnimalEntityMixin.class
-./build/reports/problems/problems-report.html
-./build/devlibs/CoreServerMod-1.0.0-dev.jar
-./build/tmp/jar/MANIFEST.MF
-./build/tmp/compileJava/previous-compilation-data.bin
-./build/tmp/remapJar/MANIFEST.MF
-./build/loom-cache/mixin-map-net.fabricmc.yarn.1_21_4.1.21.4+build.1-v2.main.tiny
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-item-api-v1-11.3.0+ee91fa1f04.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-command-api-v1-1.2.62+f71b366f04.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-screen-handler-api-v1-1.3.116+7feeb73304.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-loot-api-v2-3.0.38+3f89f5a504.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-screen-api-v1-2.0.38+7feeb73304.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-api-lookup-api-v1-1.6.86+b1caf1e904.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-lifecycle-events-v1-2.5.4+bf2a60eb04.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-entity-events-v1-2.0.14+da99546b04.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-game-rule-api-v1-1.0.63+7d48d43904.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-blockrenderlayer-v1-2.0.8+7feeb73304.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-biome-api-v1-15.0.6+b1c29d8e04.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-registry-sync-v0-6.1.9+360374ac04.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-key-binding-api-v1-1.0.57+7d48d43904.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-sound-api-v1-1.0.32+7feeb73304.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-renderer-indigo-2.0.3+50f0feb204.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-particles-v1-4.0.14+7feeb73304.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-data-generation-api-v1-22.2.12+60b6f1b704.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-transfer-api-v1-5.4.9+efa825c904.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-commands-v0-0.2.79+df3654b304.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-item-group-api-v1-4.2.2+fcb9601404.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-client-tags-api-v1-1.1.29+20ea1e2304.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-loot-api-v3-1.0.26+203e6b2304.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-tag-api-v1-1.0.7+7d48d43904.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-crash-report-info-v1-0.3.6+7feeb73304.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-resource-loader-v0-3.1.1+360374ac04.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-gametest-api-v1-2.0.26+7feeb73304.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-command-api-v2-2.2.41+e496eb1504.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-keybindings-v0-0.2.55+df3654b304.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-block-api-v1-1.0.31+7feeb73304.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-networking-api-v1-4.3.10+8998135104.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-events-interaction-v0-4.0.3+a4eebcf004.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-api-base-0.4.54+b47eab6b04.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-block-view-api-v2-1.0.19+7feeb73304.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-convention-tags-v2-2.13.0+360374ac04.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-transitive-access-wideners-v1-6.3.2+56e78b9b04.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-model-loading-api-v1-4.3.0+ae23723504.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-message-api-v1-6.0.25+7feeb73304.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-rendering-v1-10.2.1+0d31b09f04.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-convention-tags-v1-2.1.17+7f945d5b04.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-content-registries-v0-9.1.19+25d1a67604.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-rendering-fluids-v1-3.1.19+7feeb73304.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-object-builder-api-v1-18.0.13+7d48d43904.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-rendering-data-attachment-v1-0.3.57+73761d2e04.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-resource-conditions-api-v1-5.0.13+203e6b2304.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-recipe-api-v1-8.1.0+640e77ae04.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-data-attachment-api-v1-1.6.0+4e7c604904.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-api-0.118.0+1.21.4.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-renderer-api-v1-5.0.3+50f0feb204.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-client-gametest-api-v1-4.1.1+6816ccd404.jar
-./build/loom-cache/remapped_working/net_fabricmc_yarn_1_21_4_1_21_4_build_1_v2.net.fabricmc.fabric-api-fabric-dimensions-v1-4.0.10+7feeb73304.jar
-./build/libs/CoreServerMod-1.0.0.jar
-./build/resources/main/fabric.mod.json
-./build/resources/main/config/coreservermod.json
-./build/resources/main/coreservermod.mixins.json
 ./build.sh
 ./dist/CoreServerMod-1.0.0.jar
 ./gradlew
-./.gradle/file-system.probe
-./.gradle/8.11.1/fileHashes/fileHashes.lock
-./.gradle/8.11.1/fileHashes/fileHashes.bin
-./.gradle/8.11.1/fileHashes/resourceHashesCache.bin
-./.gradle/8.11.1/checksums/md5-checksums.bin
-./.gradle/8.11.1/checksums/sha1-checksums.bin
-./.gradle/8.11.1/checksums/checksums.lock
-./.gradle/8.11.1/executionHistory/executionHistory.lock
-./.gradle/8.11.1/executionHistory/executionHistory.bin
-./.gradle/8.11.1/gc.properties
-./.gradle/8.11.1/fileChanges/last-build.bin
+./.git/config.worktree
+./.git/opencode
+./.git/FETCH_HEAD
+./.git/config
+./.git/HEAD
+./.git/index
+./.git/description
+./start-test-server.sh
+./stop-test-server.sh
+./opencode-output.log
+./test-server/ops.json
+./test-server/server.properties
+./test-server/banned-players.json
+./test-server/whitelist.json
+./test-server/usercache.json
+./test-server/eula.txt
+./test-server/banned-ips.json
+./test-server/fabricloader.log
+./test-server/fabric-server-mc1.21.4-loader0.16.9-launcher1.0.1.jar
+./issue-query.txt
+./settings.gradle
+./README.md
+./gradlew.bat
+./gradle.properties
 [0m
-[0m$ [0mfind src -type f | sort
-src/main/java/pro/coreservermod/Config.java
+[0m$ [0mfind src -type f | head -100 && echo "---" && grep -ri "golem" src --include=*.java -l
+src/main/resources/fabric.mod.json
+src/main/resources/config/coreservermod.json
+src/main/resources/coreservermod.mixins.json
+src/main/resources/data/coreservermod/recipe/slime_ball_from_sugar_cane_snowball_pressing.json
+src/main/resources/data/coreservermod/recipe/emerald_from_copper_iron_wheat_seeds_mixing.json
+src/main/resources/data/coreservermod/recipe/slime_ball_from_sugar_cane_snowball_mixing.json
+src/main/resources/data/coreservermod/recipe/emerald_from_copper_iron_wheat_seeds_pressing.json
 src/main/java/pro/coreservermod/CoreServerMod.java
 src/main/java/pro/coreservermod/handler/AnimalBreedingHandler.java
-src/main/java/pro/coreservermod/handler/BabyGrowthHandler.java
-src/main/java/pro/coreservermod/handler/BadVillagerHandler.java
-src/main/java/pro/coreservermod/handler/ChickenEggHandler.java
 src/main/java/pro/coreservermod/handler/ChickenSpawnHandler.java
-src/main/java/pro/coreservermod/handler/CreateFlowingWaterWashingHandler.java
-src/main/java/pro/coreservermod/handler/CropGrowthHandler.java
-src/main/java/pro/coreservermod/handler/IronGolemHandler.java
-src/main/java/pro/coreservermod/handler/SaplingHandler.java
-src/main/java/pro/coreservermod/handler/SheepWoolHandler.java
-src/main/java/pro/coreservermod/handler/SpawnerHologram.java
+src/main/java/pro/coreservermod/handler/BadVillagerHandler.java
 src/main/java/pro/coreservermod/handler/SpawnerSupport.java
-src/main/java/pro/coreservermod/handler/SugarCaneHandler.java
+src/main/java/pro/coreservermod/handler/IronGolemHandler.java
+src/main/java/pro/coreservermod/handler/BabyGrowthHandler.java
+src/main/java/pro/coreservermod/handler/CropGrowthHandler.java
+src/main/java/pro/coreservermod/handler/SpawnerHologram.java
+src/main/java/pro/coreservermod/handler/SaplingHandler.java
+src/main/java/pro/coreservermod/handler/ChickenEggHandler.java
+src/main/java/pro/coreservermod/handler/CreateFlowingWaterWashingHandler.java
 src/main/java/pro/coreservermod/handler/VillagerEmeraldHandler.java
+src/main/java/pro/coreservermod/handler/SheepWoolHandler.java
+src/main/java/pro/coreservermod/handler/SugarCaneHandler.java
 src/main/java/pro/coreservermod/mixin/AnimalEntityMixin.java
-src/main/java/pro/coreservermod/mixin/BlockPlacementMixin.java
-src/main/java/pro/coreservermod/mixin/ChickenEntityMixin.java
 src/main/java/pro/coreservermod/mixin/DisplayAccessor.java
 src/main/java/pro/coreservermod/mixin/SaplingBlockAccessor.java
 src/main/java/pro/coreservermod/mixin/SheepShearedMixin.java
-src/main/java/pro/coreservermod/mixin/SugarCaneBlockMixin.java
 src/main/java/pro/coreservermod/mixin/TextDisplayAccessor.java
 src/main/java/pro/coreservermod/mixin/ThrownEggEntityMixin.java
+src/main/java/pro/coreservermod/mixin/BlockPlacementMixin.java
+src/main/java/pro/coreservermod/mixin/ChickenEntityMixin.java
+src/main/java/pro/coreservermod/mixin/SugarCaneBlockMixin.java
 src/main/java/pro/coreservermod/mixin/VillagerTradeMixin.java
-src/main/resources/config/coreservermod.json
-src/main/resources/coreservermod.mixins.json
-src/main/resources/data/coreservermod/recipe/emerald_from_copper_iron_wheat_seeds_mixing.json
-src/main/resources/data/coreservermod/recipe/emerald_from_copper_iron_wheat_seeds_pressing.json
-src/main/resources/data/coreservermod/recipe/slime_ball_from_sugar_cane_snowball_mixing.json
-src/main/resources/data/coreservermod/recipe/slime_ball_from_sugar_cane_snowball_pressing.json
-src/main/resources/fabric.mod.json
+src/main/java/pro/coreservermod/ConfigFixer.java
+src/main/java/pro/coreservermod/Config.java
+---
+src/main/java/pro/coreservermod/CoreServerMod.java
+src/main/java/pro/coreservermod/handler/IronGolemHandler.java
+src/main/java/pro/coreservermod/Config.java
 [0m
-[0m$ [0mcat src/main/java/pro/codeservermod/Config.java; echo '---CORE---'; cat src/main/java/pro/codeservermod/CoreServerMod.java; echo '---CONFIGRES---'; cat src/main/resources/config/coreservermod.json
-cat: src/main/java/pro/codeservermod/Config.java: No such file or directory
----CORE---
----CONFIGRES---
+[0m→ [0mRead src/main/java/pro/coreservermod/handler/IronGolemHandler.java
+[0m
+[0m$ [0mgrep -rin "lava\|water\|fluid" src/main/java src/main/resources | head -100
+src/main/java/pro/coreservermod/CoreServerMod.java:17:import pro.coreservermod.handler.CreateFlowingWaterWashingHandler;
+src/main/java/pro/coreservermod/CoreServerMod.java:118:                    CreateFlowingWaterWashingHandler.tick(level);
+src/main/java/pro/coreservermod/CoreServerMod.java:151:            CreateFlowingWaterWashingHandler.cleanup();
+src/main/java/pro/coreservermod/handler/SpawnerSupport.java:68:            if (!isAirOrWater(state)) return false;
+src/main/java/pro/coreservermod/handler/SpawnerSupport.java:77:    public static boolean isAirOrWater(BlockState state) {
+src/main/java/pro/coreservermod/handler/SpawnerSupport.java:78:        return state.isAir() || state.is(Blocks.WATER);
+src/main/java/pro/coreservermod/handler/CreateFlowingWaterWashingHandler.java:7:import net.minecraft.tags.FluidTags;
+src/main/java/pro/coreservermod/handler/CreateFlowingWaterWashingHandler.java:12:import net.minecraft.world.level.material.FluidState;
+src/main/java/pro/coreservermod/handler/CreateFlowingWaterWashingHandler.java:25:public class CreateFlowingWaterWashingHandler {
+src/main/java/pro/coreservermod/handler/CreateFlowingWaterWashingHandler.java:29:        if (!CoreServerMod.CONFIG.create_flowing_water_washing_enabled) {
+src/main/java/pro/coreservermod/handler/CreateFlowingWaterWashingHandler.java:40:        int intervalTicks = Math.max(1, CoreServerMod.CONFIG.create_flowing_water_washing_interval_ticks);
+src/main/java/pro/coreservermod/handler/CreateFlowingWaterWashingHandler.java:48:            if (!isInFlowingWater(world, item)
+src/main/java/pro/coreservermod/handler/CreateFlowingWaterWashingHandler.java:94:    private static boolean isInFlowingWater(ServerLevel world, ItemEntity item) {
+src/main/java/pro/coreservermod/handler/CreateFlowingWaterWashingHandler.java:96:        if (isFlowingWater(world.getFluidState(pos)) || isFlowingWater(world.getFluidState(pos.below()))) {
+src/main/java/pro/coreservermod/handler/CreateFlowingWaterWashingHandler.java:111:                    if (isFlowingWater(world.getFluidState(new BlockPos(x, y, z)))) {
+src/main/java/pro/coreservermod/handler/CreateFlowingWaterWashingHandler.java:121:    private static boolean isFlowingWater(FluidState state) {
+src/main/java/pro/coreservermod/handler/CreateFlowingWaterWashingHandler.java:122:        return !state.isEmpty() && state.is(FluidTags.WATER) && !state.isSource();
+src/main/java/pro/coreservermod/Config.java:24:    public boolean create_flowing_water_washing_enabled = true;
+src/main/java/pro/coreservermod/Config.java:25:    public int create_flowing_water_washing_interval_ticks = 10;
+src/main/java/pro/coreservermod/Config.java:56:        config.create_flowing_water_washing_enabled = getBoolean(obj, "create_flowing_water_washing_enabled", true);
+src/main/java/pro/coreservermod/Config.java:57:        config.create_flowing_water_washing_interval_ticks = clampInt(
+src/main/java/pro/coreservermod/Config.java:58:                getInt(obj, "create_flowing_water_washing_interval_ticks", 10), 1, 1200);
+src/main/resources/config/coreservermod.json:17:  "create_flowing_water_washing_enabled": true,
+src/main/resources/config/coreservermod.json:18:  "create_flowing_water_washing_interval_ticks": 10
+[0m
+[0m→ [0mRead src/main/java/pro/coreservermod/handler/SpawnerSupport.java
+[0m
+[0m$ [0mgrep -rn "isAirOrWater\|hasClearSpace\|isValidGolemBase\|isValidSpawnPosition" src/main/java
+src/main/java/pro/coreservermod/handler/SpawnerSupport.java:55:    public static boolean hasClearSpace(ServerLevel world, BlockPos pos, AABB box) {
+src/main/java/pro/coreservermod/handler/SpawnerSupport.java:68:            if (!isAirOrWater(state)) return false;
+src/main/java/pro/coreservermod/handler/SpawnerSupport.java:77:    public static boolean isAirOrWater(BlockState state) {
+src/main/java/pro/coreservermod/handler/IronGolemHandler.java:88:        if (cached != null && !isValidSpawnPosition(world, cached)) {
+src/main/java/pro/coreservermod/handler/IronGolemHandler.java:96:                    pos -> !pos.equals(villager.blockPosition()) && isValidSpawnPosition(world, pos));
+src/main/java/pro/coreservermod/handler/IronGolemHandler.java:201:        if (!isValidSpawnPosition(world, pos)) return false;
+src/main/java/pro/coreservermod/handler/IronGolemHandler.java:205:    private static boolean isValidSpawnPosition(ServerLevel world, BlockPos pos) {
+src/main/java/pro/coreservermod/handler/IronGolemHandler.java:209:        if (!isValidGolemBase(below)) return false;
+src/main/java/pro/coreservermod/handler/IronGolemHandler.java:211:        return SpawnerSupport.hasClearSpace(world, pos, golemBox(pos));
+src/main/java/pro/coreservermod/handler/IronGolemHandler.java:219:    private static boolean isValidGolemBase(BlockState state) {
+[0m
+[0m$ [0mgrep -n "iron_golem" -A2 -B2 src/main/java/pro/coreservermod/Config.java src/main/resources/config/coreservermod.json && cat issue-query.txt && cat src/main/resources/fabric.mod.json | head -40
+src/main/java/pro/coreservermod/Config.java-11-    public int sapling_growth_time_seconds = 15;
+src/main/java/pro/coreservermod/Config.java-12-    public int crop_growth_time_seconds = 15;
+src/main/java/pro/coreservermod/Config.java:13:    public boolean iron_golem_spawn_enabled = true;
+src/main/java/pro/coreservermod/Config.java:14:    public int iron_golem_spawn_interval_seconds = 5;
+src/main/java/pro/coreservermod/Config.java-15-    public int max_automatic_golems_per_area = 10;
+src/main/java/pro/coreservermod/Config.java-16-    public boolean animal_breeding_cooldown_disabled = true;
+--
+src/main/java/pro/coreservermod/Config.java-43-        config.sapling_growth_time_seconds = clampInt(getInt(obj, "sapling_growth_time_seconds", 15), 1, 3600);
+src/main/java/pro/coreservermod/Config.java-44-        config.crop_growth_time_seconds = clampInt(getInt(obj, "crop_growth_time_seconds", 15), 1, 3600);
+src/main/java/pro/coreservermod/Config.java:45:        config.iron_golem_spawn_enabled = getBoolean(obj, "iron_golem_spawn_enabled", true);
+src/main/java/pro/coreservermod/Config.java:46:        config.iron_golem_spawn_interval_seconds = clampInt(getInt(obj, "iron_golem_spawn_interval_seconds", 5), 1, 3600);
+src/main/java/pro/coreservermod/Config.java-47-        config.max_automatic_golems_per_area = clampInt(getInt(obj, "max_automatic_golems_per_area", 10), 0, 100);
+src/main/java/pro/coreservermod/Config.java-48-        config.animal_breeding_cooldown_disabled = getBoolean(obj, "animal_breeding_cooldown_disabled", true);
+--
+src/main/resources/config/coreservermod.json-4-  "sapling_growth_time_seconds": 15,
+src/main/resources/config/coreservermod.json-5-  "crop_growth_time_seconds": 15,
+src/main/resources/config/coreservermod.json:6:  "iron_golem_spawn_enabled": true,
+src/main/resources/config/coreservermod.json:7:  "iron_golem_spawn_interval_seconds": 5,
+src/main/resources/config/coreservermod.json-8-  "max_automatic_golems_per_area": 10,
+src/main/resources/config/coreservermod.json-9-  "animal_breeding_cooldown_disabled": true,
+A new GitHub issue has been opened.
+
+Issue number: 54
+
+Issue URL:
+https://github.com/promikailamin/mcJava/issues/54
+
+Title:
+Make build workflow
+
+Description:
+make build.yml for build the mod and test.yml (test.yml runs from worflow dispatch with last build.yml action artifacts if no artifacts founds cancel test.yml action) and then push it to git repo
+
+Inspect the repository and implement the requested change.
+
+You are a github agent that running on a GitHub action runner. You have complete access to this repo so do what you need to do for fux this problem.
+After your task complete you should push you chnages to git repo or those fixes can be vanished.
+Try your best for fixing the problem.
+Do not ask questions; make reasonable decisions and proceed.
 {
-  "sugar_cane_soul_sand_enabled": true,
-  "sugar_cane_growth_interval_seconds": 1,
-  "sapling_growth_time_seconds": 15,
-  "crop_growth_time_seconds": 15,
-  "iron_golem_spawn_enabled": true,
-  "iron_golem_spawn_interval_seconds": 5,
-  "max_automatic_golems_per_area": 10,
-  "animal_breeding_cooldown_disabled": true,
-  "baby_growth_time_seconds": 15,
-  "instant_growth_when_fed": true,
-  "sheep_wool_regrowth_seconds": 5,
-  "villager_emerald_drop_enabled": true,
-  "villager_emerald_drop_chance": 0.4,
-  "guaranteed_chicken_from_egg": true,
-  "chicken_egg_interval_seconds": 20,
-  "create_flowing_water_washing_enabled": true,
-  "create_flowing_water_washing_interval_ticks": 10
-}cat: src/main/java/pro/codeservermod/CoreServerMod.java: No such file or directory
-[0m
-[0m$ [0mcat src/main/java/pro/coreservermod/Config.java; echo '---CORE---'; cat src/main/java/pro/coreservermod/CoreServerMod.java
-package pro.coreservermod;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-public class Config {
-    public boolean sugar_cane_soul_sand_enabled = true;
-    public int sugar_cane_growth_interval_seconds = 1;
-    public int sapling_growth_time_seconds = 15;
-    public int crop_growth_time_seconds = 15;
-    public boolean iron_golem_spawn_enabled = true;
-    public int iron_golem_spawn_interval_seconds = 5;
-    public int max_automatic_golems_per_area = 10;
-    public boolean animal_breeding_cooldown_disabled = true;
-    public int baby_growth_time_seconds = 15;
-    public boolean instant_growth_when_fed = true;
-    public int sheep_wool_regrowth_seconds = 5;
-    public boolean villager_emerald_drop_enabled = true;
-    public double villager_emerald_drop_chance = 0.4;
-    public boolean guaranteed_chicken_from_egg = true;
-    public int chicken_egg_interval_seconds = 20;
-    public boolean create_flowing_water_washing_enabled = true;
-    public int create_flowing_water_washing_interval_ticks = 10;
-
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-
-    public static Config getDefaults() {
-        return new Config();
+  "schemaVersion": 1,
+  "id": "coreservermod",
+  "version": "1.0.0",
+  "name": "CoreServerMod",
+  "description": "Minecraft Fabric Server Enhancement Mod - Accelerates crop/tree growth, automates mob behaviors, reduces waiting times",
+  "authors": ["promikailamin"],
+  "contact": {
+    "homepage": "https://github.com/promikailamin/mcJava",
+    "issues": "https://github.com/promikailamin/mcJava/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/coreservermod/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "server": [
+      "pro.coreservermod.CoreServerMod"
+    ]
+  },
+  "mixins": [
+    "coreservermod.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "~26.2",
+    "java": ">=25",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "create": ">=6.0.9"
+  },
+  "custom": {
+    "modmenu": {
+      "badges": ["server"],
+      "links": {
+        "issues": "https://github.com/promikailamin/mcJava/issues"
+      }
     }
-
-    public static String getDefaultJson() {
-        return GSON.toJson(getDefaults());
-    }
-
-    public static Config fromJson(String json) {
-        JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
-        Config config = new Config();
-
-        config.sugar_cane_soul_sand_enabled = getBoolean(obj, "sugar_cane_soul_sand_enabled", true);
-        config.sugar_cane_growth_interval_seconds = clampInt(getInt(obj, "sugar_cane_growth_interval_seconds", 1), 1, 3600);
-        config.sapling_growth_time_seconds = clampInt(getInt(obj, "sapling_growth_time_seconds", 15), 1, 3600);
-        config.crop_growth_time_seconds = clampInt(getInt(obj, "crop_growth_time_seconds", 15), 1, 3600);
-        config.iron_golem_spawn_enabled = getBoolean(obj, "iron_golem_spawn_enabled", true);
-        config.iron_golem_spawn_interval_seconds = clampInt(getInt(obj, "iron_golem_spawn_interval_seconds", 5), 1, 3600);
-        config.max_automatic_golems_per_area = clampInt(getInt(obj, "max_automatic_golems_per_area", 10), 0, 100);
-        config.animal_breeding_cooldown_disabled = getBoolean(obj, "animal_breeding_cooldown_disabled", true);
-        config.baby_growth_time_seconds = clampInt(getInt(obj, "baby_growth_time_seconds", 15), 1, 3600);
-        config.instant_growth_when_fed = getBoolean(obj, "instant_growth_when_fed", true);
-        config.sheep_wool_regrowth_seconds = clampInt(getInt(obj, "sheep_wool_regrowth_seconds", 5), 1, 3600);
-        config.villager_emerald_drop_enabled = getBoolean(obj, "villager_emerald_drop_enabled", true);
-        config.villager_emerald_drop_chance = clampDouble(getDouble(obj, "villager_emerald_drop_chance", 0.4), 0.0, 1.0);
-        config.guaranteed_chicken_from_egg = getBoolean(obj, "guaranteed_chicken_from_egg", true);
-        config.chicken_egg_interval_seconds = clampInt(getInt(obj, "chicken_egg_interval_seconds", 20), 1, 3600);
-        config.create_flowing_water_washing_enabled = getBoolean(obj, "create_flowing_water_washing_enabled", true);
-        config.create_flowing_water_washing_interval_ticks = clampInt(
-                getInt(obj, "create_flowing_water_washing_interval_ticks", 10), 1, 1200);
-
-        return config;
-    }
-
-    private static boolean getBoolean(JsonObject obj, String key, boolean defaultValue) {
-        return obj.has(key) && !obj.get(key).isJsonNull() ? obj.get(key).getAsBoolean() : defaultValue;
-    }
-
-    private static int getInt(JsonObject obj, String key, int defaultValue) {
-        return obj.has(key) && !obj.get(key).isJsonNull() ? obj.get(key).getAsInt() : defaultValue;
-    }
-
-    private static double getDouble(JsonObject obj, String key, double defaultValue) {
-        return obj.has(key) && !obj.get(key).isJsonNull() ? obj.get(key).getAsDouble() : defaultValue;
-    }
-
-    private static int clampInt(int value, int min, int max) {
-        return Math.max(min, Math.min(max, value));
-    }
-
-    private static double clampDouble(double value, double min, double max) {
-        return Math.max(min, Math.min(max, value));
-    }
-
-    public String toJson() {
-        return GSON.toJson(this);
-    }
-
-    public void save() {
-        try {
-            java.nio.file.Files.writeString(CoreServerMod.CONFIG_PATH, toJson());
-        } catch (Exception e) {
-            CoreServerMod.LOGGER.error("Failed to save configuration", e);
-        }
-    }
-}
----CORE---
-package pro.coreservermod;
-
-import net.fabricmc.api.DedicatedServerModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import pro.coreservermod.handler.AnimalBreedingHandler;
-import pro.coreservermod.handler.BabyGrowthHandler;
-import pro.coreservermod.handler.BadVillagerHandler;
-import pro.coreservermod.handler.ChickenEggHandler;
-import pro.coreservermod.handler.ChickenSpawnHandler;
-import pro.coreservermod.handler.CreateFlowingWaterWashingHandler;
-import pro.coreservermod.handler.CropGrowthHandler;
-import pro.coreservermod.handler.IronGolemHandler;
-import pro.coreservermod.handler.SaplingHandler;
-import pro.coreservermod.handler.SheepWoolHandler;
-import pro.coreservermod.handler.SugarCaneHandler;
-import pro.coreservermod.handler.VillagerEmeraldHandler;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-public class CoreServerMod implements DedicatedServerModInitializer {
-    public static final String MOD_ID = "coreservermod";
-    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-
-    public static Config CONFIG;
-    public static Path CONFIG_PATH;
-
-    private static boolean createLoaded;
-
-    @Override
-    public void onInitializeServer() {
-        LOGGER.info("Initializing CoreServerMod...");
-
-        CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("coreservermod.json");
-        loadConfig();
-
-        createLoaded = FabricLoader.getInstance().isModLoaded("create");
-        if (createLoaded) {
-            LOGGER.info("Create detected, enabling Create Fly integration");
-        }
-
-        registerEventHandlers();
-
-        LOGGER.info("CoreServerMod initialized successfully!");
-    }
-
-    private void loadConfig() {
-        try {
-            if (!Files.exists(CONFIG_PATH)) {
-                saveDefaultConfig();
-            }
-            String json = Files.readString(CONFIG_PATH);
-            CONFIG = Config.fromJson(json);
-            LOGGER.info("Configuration loaded from {}", CONFIG_PATH);
-        } catch (Exception e) {
-            LOGGER.error("Failed to load configuration, using defaults", e);
-            CONFIG = Config.getDefaults();
-        }
-    }
-
-    private void saveDefaultConfig() {
-        try {
-            Files.createDirectories(CONFIG_PATH.getParent());
-            Files.writeString(CONFIG_PATH, Config.getDefaultJson());
-            LOGGER.info("Created default configuration at {}", CONFIG_PATH);
-        } catch (IOException e) {
-            LOGGER.error("Failed to create default configuration", e);
-        }
-    }
-
-    private void registerEventHandlers() {
-        ServerChunkEvents.CHUNK_LOAD.register((world, chunk, generated) -> {
-            SugarCaneHandler.scanChunk(world, chunk);
-            SaplingHandler.scanChunk(world, chunk);
-            CropGrowthHandler.scanChunk(world, chunk);
-        });
-
-        ServerChunkEvents.CHUNK_UNLOAD.register((world, chunk) -> {
-            SugarCaneHandler.untrackChunk(world, chunk);
-            SaplingHandler.untrackChunk(world, chunk);
-            CropGrowthHandler.untrackChunk(world, chunk);
-        });
-
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-            LOGGER.info("CoreServerMod: Server started, registering tick handlers");
-            registerTickHandlers(server);
-        });
-
-        ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
-            LOGGER.info("CoreServerMod: Server stopping, cleaning up");
-            cleanup();
-        });
-
-        ServerTickEvents.END_SERVER_TICK.register(server -> {
-            if (CONFIG == null) return;
-
-            for (ServerLevel level : server.getAllLevels()) {
-                SugarCaneHandler.tick(level);
-                SaplingHandler.tick(level);
-                IronGolemHandler.tick(level);
-                BadVillagerHandler.tick(level);
-                CropGrowthHandler.tick(level);
-                AnimalBreedingHandler.tick(level);
-                BabyGrowthHandler.tick(level);
-                SheepWoolHandler.tick(level);
-                VillagerEmeraldHandler.tick(level);
-                ChickenEggHandler.tick(level);
-                if (createLoaded) {
-                    CreateFlowingWaterWashingHandler.tick(level);
-                }
-            }
-        });
-    }
-
-    private void registerTickHandlers(MinecraftServer server) {
-        SugarCaneHandler.register(server);
-        SaplingHandler.register(server);
-        IronGolemHandler.register(server);
-        BadVillagerHandler.register(server);
-        CropGrowthHandler.register(server);
-        AnimalBreedingHandler.register(server);
-        BabyGrowthHandler.register(server);
-        SheepWoolHandler.register(server);
-        VillagerEmeraldHandler.register(server);
-        ChickenEggHandler.register(server);
-        ChickenSpawnHandler.register(server);
-    }
-
-    private void cleanup() {
-        SugarCaneHandler.cleanup();
-        SaplingHandler.cleanup();
-        IronGolemHandler.cleanup();
-        BadVillagerHandler.cleanup();
-        CropGrowthHandler.cleanup();
-        AnimalBreedingHandler.cleanup();
-        BabyGrowthHandler.cleanup();
-        SheepWoolHandler.cleanup();
-        VillagerEmeraldHandler.cleanup();
-        ChickenEggHandler.cleanup();
-        ChickenSpawnHandler.cleanup();
-        if (createLoaded) {
-            CreateFlowingWaterWashingHandler.cleanup();
-        }
-    }
+  }
 }
 [0m
-[0m$ [0mcat build.gradle; echo '---README---'; cat README.md; echo '---FABRICMOD---'; cat src/main/resources/fabric.mod.json
+[0m$ [0mcat build.gradle && echo "---properties---" && cat gradle.properties && echo "---build.sh---" && cat build.sh
 plugins {
     id "net.fabricmc.fabric-loom" version "1.19.3"
     id "java"
@@ -553,547 +332,26 @@ tasks.register("generateConfig") {
 tasks.named("processResources") {
     dependsOn("generateConfig")
 }
----README---
-# CoreServerMod
-
-A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates various game mechanics to reduce waiting times and automate repetitive tasks.
-
-## Features
-
-### 1. Sugar Cane on Soul Sand
-- Allows sugar cane placement on soul sand
-- Grows by one block approximately every second when planted on soul sand
-- Preserves vanilla growth behavior on other valid substrates
-
-### 2. Accelerated Tree Growth
-- All vanilla saplings and propagules grow into their correct trees within approximately 15 seconds
-- Requires valid environmental and space conditions
-
-### 3. Iron Block Villager
-- The mod checks all villagers every tick for one standing on top of an iron block
-- Matching villagers receive the `CreateVillager` tag and a floating two-line hologram showing the name and spawn countdown
-- When a villager becomes a CreateVillager, conversion sounds and particles play and a message is broadcast in chat
-- Tagged villagers attempt to spawn one iron golem every 5 seconds when a valid spawn position exists
-- Spawn areas are searched up to 16 blocks horizontally and 4 vertically; chat messages announce immediately when an area is found or lost
-- Iron golems only spawn on top of cobblestone, mud block, or hopper blocks
-- A spawn position must be air or water with no buttons, trapdoors, slabs, or other non-air blocks in the mob's space; water above a valid base is allowed
-- Does not require beds, village membership, gossip, panic, nearby mobs, professions, or other vanilla golem eligibility checks
-- When a tagged villager is no longer standing on an iron block, its tag, hologram, and golem-spawning power are removed
-- Other villagers retain vanilla behavior
-
-### 4. Bad Villager
-- The mod checks all villagers every tick for one standing on top of a redstone block
-- Matching villagers receive the `BadVillager` tag and the visible name tag `BadVillager` in bold dark red text
-- When a villager becomes a BadVillager, conversion sounds and particles play and a message is broadcast in chat
-- A BadVillager is invincible and takes no damage from any source while it remains on the redstone block
-- Hitting a BadVillager gives the attacker a random-level Bad Omen effect lasting 20 minutes, which can start a raid
-- When a BadVillager is no longer standing on a redstone block, its tag, name tag, and invincibility are removed
-- Other villagers retain vanilla behavior
-
-### 5. Accelerated Crop Growth
-- Applicable vanilla crops and plants grow to maturity within approximately 15 seconds
-- Preserves necessary soil, light, water, and plant-specific requirements
-
-### 6. Animal Breeding
-- Removes breeding cooldown for supported breedable vanilla animals
-- Allows repeated breeding whenever normal eligibility conditions are met
-- Baby animals mature within approximately 15 seconds or instantly when fed once (configurable)
-
-### 7. Sheep Wool Regrowth
-- Sheep regrow wool and become shearable approximately every 5 seconds
-- Preserves normal shearing drops and prevents duplicate drops
-
-### 8. Villager Emerald Drops
-- Villagers have a 40% chance to drop one emerald on successful trade
-- Evaluates chance once per trade event and prevents duplicate rewards
-
-### 9. Guaranteed Chicken from Eggs
-- Every player-thrown chicken egg spawns exactly one chicken
-- Bypasses vanilla random hatch chance without duplicate spawning
-
-### 10. Chicken Egg Production
-- Adult chickens produce one egg approximately every 20 seconds regardless of location or movement
-- Baby chickens do not lay eggs
-
-### 11. Create Fly Integration (Optional)
-- When [Create Fly](https://modrinth.com/mod/create-fly) is installed, the mod automatically enables Create recipe and washing integration
-- Adds two Mechanical Press (Compacting) recipes and two Mechanical Mixer (Mixing) recipes:
-  - 1 copper ingot + 1 iron ingot + 1 wheat seeds -> 1 emerald
-  - 1 sugar cane + 1 snowball -> 1 slime ball
-- Dropped items in flowing water are washed using Create's existing Splashing recipes
-- This includes gravel -> flint, ice -> packed ice, and every other item that Create can wash with a fan and water
-- Flowing-water washing is faster than fan washing and does not require a fan, leaves, or a water source block
-- Only flowing water works; still source blocks are ignored
-- The integration is optional - CoreServerMod still loads and works normally without Create Fly
-
-## Installation
-
-1. Install Fabric Loader 0.19.5+ for Minecraft 26.2 (requires Java 25)
-2. Install Fabric API 0.161.0+26.2
-3. Optionally install Create Fly 6.0.9+ for 26.2 to enable the Create recipes and flowing-water washing
-4. Place `CoreServerMod-1.0.0.jar` in your server's `mods` folder
-5. Start the server - a default configuration file will be generated at `config/coreservermod.json`
-
-## Configuration
-
-The mod generates a configuration file at `config/coreservermod.json` on first launch. All features can be toggled and intervals adjusted:
-
-```json
-{
-  "sugar_cane_soul_sand_enabled": true,
-  "sugar_cane_growth_interval_seconds": 1,
-  "sapling_growth_time_seconds": 15,
-  "crop_growth_time_seconds": 15,
-  "iron_golem_spawn_enabled": true,
-  "iron_golem_spawn_interval_seconds": 5,
-  "max_automatic_golems_per_area": 10,
-  "animal_breeding_cooldown_disabled": true,
-  "baby_growth_time_seconds": 15,
-  "instant_growth_when_fed": true,
-  "sheep_wool_regrowth_seconds": 5,
-  "villager_emerald_drop_enabled": true,
-  "villager_emerald_drop_chance": 0.4,
-  "guaranteed_chicken_from_egg": true,
-  "chicken_egg_interval_seconds": 20,
-  "create_flowing_water_washing_enabled": true,
-  "create_flowing_water_washing_interval_ticks": 10
-}
-```
-
-### Configuration Options
-
-| Option | Default | Description |
-|--------|---------|-------------|
-| `sugar_cane_soul_sand_enabled` | `true` | Enable sugar cane placement/growth on soul sand |
-| `sugar_cane_growth_interval_seconds` | `1` | Growth interval for sugar cane on soul sand (seconds) |
-| `sapling_growth_time_seconds` | `15` | Time for saplings to grow into trees (seconds) |
-| `crop_growth_time_seconds` | `15` | Time for crops to reach maturity (seconds) |
-| `iron_golem_spawn_enabled` | `true` | Enable iron golem spawning from iron block villagers |
-| `iron_golem_spawn_interval_seconds` | `5` | Interval between golem spawn attempts (seconds) |
-| `max_automatic_golems_per_area` | `10` | Maximum automatic golems per village area |
-| `animal_breeding_cooldown_disabled` | `true` | Remove animal breeding cooldown |
-| `baby_growth_time_seconds` | `15` | Time for baby animals to mature (seconds) |
-| `instant_growth_when_fed` | `true` | Instantly grow baby animals when fed breeding item |
-| `sheep_wool_regrowth_seconds` | `5` | Time for sheep to regrow wool (seconds) |
-| `villager_emerald_drop_enabled` | `true` | Enable emerald drops from villager trades |
-| `villager_emerald_drop_chance` | `0.4` | Chance (0.0-1.0) for emerald drop per trade |
-| `guaranteed_chicken_from_egg` | `true` | Guarantee chicken spawn from thrown eggs |
-| `chicken_egg_interval_seconds` | `20` | Interval for chicken egg laying (seconds) |
-| `create_flowing_water_washing_enabled` | `true` | Enable Create Splashing recipes in flowing water when Create Fly is installed |
-| `create_flowing_water_washing_interval_ticks` | `10` | Ticks an item must stay in flowing water before it is washed (lower is faster) |
-
-## Building from Source
-
-Requirements:
-- Java 25+
-- Gradle 9.8.1+ (the included wrapper downloads the correct version)
-
-```bash
-./gradlew build
-```
-
-The compiled JAR will be in `build/libs/` and `dist/`.
-
-## Continuous Integration
-
-The GitHub Actions workflows live in `.github/workflows/`:
-
-- **Build** (`build.yml`) runs on pushes to `main`, pull requests, and manual dispatch. It builds the mod, uploads the JAR as the `coreservermod-build` artifact, and publishes the JAR to `dist/` and `test-server/mods/` on `main`.
-- **Test** (`test.yml`) is started manually with workflow dispatch. It downloads the artifact from the latest successful Build run and boots the test server with it. If no build artifact is available, the Test run cancels itself.
-
-## Test Server
-
-A test server setup is included in the `test-server/` directory with scripts:
-
-- `build.sh` - Build the mod and copy to test server
-- `start-test-server.sh` - Start the test server
-- `stop-test-server.sh` - Stop the test server
-
-## Compatibility
-
-- Minecraft: 26.2
-- Fabric Loader: 0.19.5+
-- Fabric API: 0.161.0+26.2
-- Java: 25+
-- Create Fly: 6.0.9+ for 26.2 (optional, enables recipes and flowing-water washing)
-
-## License
-
-MIT License
-
-## Issues
-
-Report issues at: https://github.com/promikailamin/mcJava/issues---FABRICMOD---
-{
-  "schemaVersion": 1,
-  "id": "coreservermod",
-  "version": "1.0.0",
-  "name": "CoreServerMod",
-  "description": "Minecraft Fabric Server Enhancement Mod - Accelerates crop/tree growth, automates mob behaviors, reduces waiting times",
-  "authors": ["promikailamin"],
-  "contact": {
-    "homepage": "https://github.com/promikailamin/mcJava",
-    "issues": "https://github.com/promikailamin/mcJava/issues"
-  },
-  "license": "MIT",
-  "icon": "assets/coreservermod/icon.png",
-  "environment": "server",
-  "entrypoints": {
-    "server": [
-      "pro.coreservermod.CoreServerMod"
-    ]
-  },
-  "mixins": [
-    "coreservermod.mixins.json"
-  ],
-  "depends": {
-    "fabricloader": ">=0.19.5",
-    "minecraft": "~26.2",
-    "java": ">=25",
-    "fabric-api": "*"
-  },
-  "suggests": {
-    "create": ">=6.0.9"
-  },
-  "custom": {
-    "modmenu": {
-      "badges": ["server"],
-      "links": {
-        "issues": "https://github.com/promikailamin/mcJava/issues"
-      }
-    }
-  }
-}
-[0m
-[0m← [0mWrite src/main/java/pro/coreservermod/ConfigFixer.java
-Wrote file successfully.
-[0m
-[0m← [0mEdit src/main/java/pro/coreservermod/CoreServerMod.java
-Index: /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/CoreServerMod.java
-===================================================================
---- /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/CoreServerMod.java
-+++ /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/CoreServerMod.java
-@@ -56,8 +56,9 @@
- try {
-     if (!Files.exists(CONFIG_PATH)) {
-         saveDefaultConfig();
-     }
-+    ConfigFixer.fix(CONFIG_PATH);
-     String json = Files.readString(CONFIG_PATH);
-     CONFIG = Config.fromJson(json);
-     LOGGER.info("Configuration loaded from {}", CONFIG_PATH);
- } catch (Exception e) {
-
-[0m
-[0m← [0mEdit README.md
-Index: /home/runner/work/mcJava/mcJava/README.md
-===================================================================
---- /home/runner/work/mcJava/mcJava/README.md
-+++ /home/runner/work/mcJava/mcJava/README.md
-@@ -79,9 +79,9 @@
- 5. Start the server - a default configuration file will be generated at `config/coreservermod.json`
- 
- ## Configuration
- 
--The mod generates a configuration file at `config/coreservermod.json` on first launch. All features can be toggled and intervals adjusted:
-+The mod generates a configuration file at `config/coreservermod.json` on first launch. On startup, any options added by a newer version are written into an existing config file with their default values; existing values are left unchanged. All features can be toggled and intervals adjusted:
- 
- ```json
- {
-   "sugar_cane_soul_sand_enabled": true,
-
-[0m
-[0m$ [0m./gradlew compileJava --console=plain
-Fetching distribution.
-Downloading https://services.gradle.org/distributions/gradle-9.8.1-bin.zip
-..............10%..............20%...............30%..............40%...............50%..............60%...............70%..............80%...............90%..............100%
-
-Welcome to Gradle 9.8.1!
-
-Here are the highlights of this release:
- - Java 27 support
- - Maven mirror settings reuse
- - Linked problem locations in build output
-
-For more details see https://docs.gradle.org/9.8.1/release-notes.html
-
-Starting a Gradle Daemon (subsequent builds will be faster)
-
-[Incubating] Problems report is available at: file:///home/runner/work/mcJava/mcJava/build/reports/problems/problems-report.html
-
-FAILURE: Build failed with an exception.
-
-* What went wrong:
-A problem occurred configuring root project 'CoreServerMod'.
-> Could not resolve all artifacts for configuration 'classpath'.
-   > Could not resolve net.fabricmc:fabric-loom:1.19.3.
-     Required by:
-         buildscript of root project 'CoreServerMod' > net.fabricmc.fabric-loom:net.fabricmc.fabric-loom.gradle.plugin:1.19.3
-      > Dependency requires at least JVM runtime version 25. This build uses a Java 17 JVM.
-
-* Try:
-> Run this build using a Java 25 or newer JVM.
-> Run with --stacktrace option to get the stack trace.
-> Run with --info or --debug option to get more log output.
-> Run with --scan to get full insights from a Build Scan (powered by Develocity).
-> Get more help at https://help.gradle.org.
-
-BUILD FAILED in 8s
-[0m
-[0m$ [0mls /usr/lib/jvm 2>/dev/null; which java; java -version; ls ~/.gradle/jdks 2>/dev/null; ls /opt 2>/dev/null
-temurin-11-jdk-amd64
-temurin-17-jdk-amd64
-temurin-21-jdk-amd64
-temurin-25-jdk-amd64
-temurin-8-jdk-amd64
-/usr/bin/java
-openjdk version "17.0.20.1" 2026-08-18
-OpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)
-OpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)
-actionarchivecache
-az
-containerd
-google
-hca
-hostedtoolcache
-microsoft
-pipx
-pipx_bin
-post-generation
-primer
-runner-cache
-[0m
-[0m$ [0mJAVA_HOME=/usr/lib/jvm/temurin-25-jdk-amd64 ./gradlew compileJava --console=plain
-Starting a Gradle Daemon, 1 incompatible Daemon could not be reused, use --status for details
-
-> Configure project :
-Fabric Loom: 1.19.3
-
-> Task :compileJava
-
-[Incubating] Problems report is available at: file:///home/runner/work/mcJava/mcJava/build/reports/problems/problems-report.html
-
-Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
-
-You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-
-For more on this, please refer to https://docs.gradle.org/9.8.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-
-BUILD SUCCESSFUL in 46s
-1 actionable task: 1 executed
-Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.1/userguide/configuration_cache_enabling.html
-[0m
-[0m$ [0mfind ~/.gradle/caches -name 'gson-*.jar' -o -name 'slf4j-api-*.jar' | head -20
-/home/runner/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.14.0/efc0e34ede4e3204eaefb84a00e55e8c86634382/gson-2.14.0.jar
-/home/runner/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/2.0.17/d9e58ac9c7779ba3bf8142aff6c830617a7fe60f/slf4j-api-2.0.17.jar
-[0m
-[0m$ [0mgit diff --stat && git status --short
-.gradle/9.8.1/checksums/checksums.lock             |  Bin 17 -> 17 bytes
- .gradle/9.8.1/checksums/md5-checksums.bin          |  Bin 23497 -> 31947 bytes
- .gradle/9.8.1/checksums/sha1-checksums.bin         |  Bin 32375 -> 82589 bytes
- .../9.8.1/executionHistory/executionHistory.bin    |  Bin 20684 -> 73325 bytes
- .../9.8.1/executionHistory/executionHistory.lock   |  Bin 17 -> 17 bytes
- .gradle/9.8.1/fileHashes/fileHashes.bin            |  Bin 18697 -> 21497 bytes
- .gradle/9.8.1/fileHashes/fileHashes.lock           |  Bin 17 -> 17 bytes
- .gradle/buildOutputCleanup/buildOutputCleanup.lock |  Bin 17 -> 17 bytes
- .gradle/buildOutputCleanup/cache.properties        |    4 +-
- .gradle/buildOutputCleanup/outputFiles.bin         |  Bin 19325 -> 18875 bytes
- .gradle/file-system.probe                          |  Bin 8 -> 0 bytes
- README.md                                          |    2 +-
- build/classes/java/main/CoreServerMod-refmap.json  |   72 -
- .../java/main/pro/codeservermod/Config.class       |  Bin 4328 -> 0 bytes
- .../main/pro/codeservermod/CoreServerMod.class     |  Bin 6429 -> 0 bytes
- .../handler/AnimalBreedingHandler.class            |  Bin 2966 -> 0 bytes
- .../codeservermod/handler/BabyGrowthHandler.class  |  Bin 3964 -> 0 bytes
- .../codeservermod/handler/ChickenEggHandler.class  |  Bin 3424 -> 0 bytes
- .../handler/ChickenSpawnHandler.class              |  Bin 1603 -> 0 bytes
- .../codeservermod/handler/CropGrowthHandler.class  |  Bin 3178 -> 0 bytes
- .../codeservermod/handler/IronGolemHandler.class   |  Bin 5654 -> 0 bytes
- .../pro/codeservermod/handler/SaplingHandler.class |  Bin 2651 -> 0 bytes
- .../codeservermod/handler/SheepWoolHandler.class   |  Bin 2935 -> 0 bytes
- .../codeservermod/handler/SugarCaneHandler.class   |  Bin 3002 -> 0 bytes
- .../handler/VillagerEmeraldHandler.class           |  Bin 4748 -> 0 bytes
- .../codeservermod/mixin/AnimalEntityMixin.class    |  Bin 2232 -> 0 bytes
- .../codeservermod/mixin/ChickenEntityMixin.class   |  Bin 1617 -> 0 bytes
- .../pro/codeservermod/mixin/CropBlockMixin.class   |  Bin 2068 -> 0 bytes
- .../mixin/SaplingGeneratorMixin.class              |  Bin 2668 -> 0 bytes
- .../pro/codeservermod/mixin/SheepEntityMixin.class |  Bin 1600 -> 0 bytes
- .../codeservermod/mixin/SheepShearedMixin.class    |  Bin 1527 -> 0 bytes
- .../codeservermod/mixin/SugarCaneBlockMixin.class  |  Bin 3555 -> 0 bytes
- .../codeservermod/mixin/ThrownEggEntityMixin.class |  Bin 1887 -> 0 bytes
- .../codeservermod/mixin/VillagerTradeMixin.class   |  Bin 1603 -> 0 bytes
- .../codeservermod/mixin/VillagerWakeMixin.class    |  Bin 1914 -> 0 bytes
- build/reports/problems/problems-report.html        |   17 +-
- .../tmp/compileJava/previous-compilation-data.bin  |  Bin 171609 -> 222430 bytes
- opencode-output.log                                | 2308 +++++++-------------
- src/main/java/pro/coreservermod/CoreServerMod.java |    1 +
- 39 files changed, 752 insertions(+), 1652 deletions(-)
- M .gradle/9.8.1/checksums/checksums.lock
- M .gradle/9.8.1/checksums/md5-checksums.bin
- M .gradle/9.8.1/checksums/sha1-checksums.bin
- M .gradle/9.8.1/executionHistory/executionHistory.bin
- M .gradle/9.8.1/executionHistory/executionHistory.lock
- M .gradle/9.8.1/fileHashes/fileHashes.bin
- M .gradle/9.8.1/fileHashes/fileHashes.lock
- M .gradle/buildOutputCleanup/buildOutputCleanup.lock
- M .gradle/buildOutputCleanup/cache.properties
- M .gradle/buildOutputCleanup/outputFiles.bin
- D .gradle/file-system.probe
- M README.md
- D build/classes/java/main/CoreServerMod-refmap.json
- D build/classes/java/main/pro/codeservermod/Config.class
- D build/classes/java/main/pro/codeservermod/CoreServerMod.class
- D build/classes/java/main/pro/codeservermod/handler/AnimalBreedingHandler.class
- D build/classes/java/main/pro/codeservermod/handler/BabyGrowthHandler.class
- D build/classes/java/main/pro/codeservermod/handler/ChickenEggHandler.class
- D build/classes/java/main/pro/codeservermod/handler/ChickenSpawnHandler.class
- D build/classes/java/main/pro/codeservermod/handler/CropGrowthHandler.class
- D build/classes/java/main/pro/codeservermod/handler/IronGolemHandler.class
- D build/classes/java/main/pro/codeservermod/handler/SaplingHandler.class
- D build/classes/java/main/pro/codeservermod/handler/SheepWoolHandler.class
- D build/classes/java/main/pro/codeservermod/handler/SugarCaneHandler.class
- D build/classes/java/main/pro/codeservermod/handler/VillagerEmeraldHandler.class
- D build/classes/java/main/pro/codeservermod/mixin/AnimalEntityMixin.class
- D build/classes/java/main/pro/codeservermod/mixin/ChickenEntityMixin.class
- D build/classes/java/main/pro/codeservermod/mixin/CropBlockMixin.class
- D build/classes/java/main/pro/codeservermod/mixin/SaplingGeneratorMixin.class
- D build/classes/java/main/pro/codeservermod/mixin/SheepEntityMixin.class
- D build/classes/java/main/pro/codeservermod/mixin/SheepShearedMixin.class
- D build/classes/java/main/pro/codeservermod/mixin/SugarCaneBlockMixin.class
- D build/classes/java/main/pro/codeservermod/mixin/ThrownEggEntityMixin.class
- D build/classes/java/main/pro/codeservermod/mixin/VillagerTradeMixin.class
- D build/classes/java/main/pro/codeservermod/mixin/VillagerWakeMixin.class
- M build/reports/problems/problems-report.html
- M build/tmp/compileJava/previous-compilation-data.bin
- M opencode-output.log
- M src/main/java/pro/coreservermod/CoreServerMod.java
-?? .gradle/9.8.1/fileHashes/resourceHashesCache.bin
-?? .gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-merged-a8e9c7b123/
-?? build/classes/java/main/pro/coreservermod/
-?? src/main/java/pro/coreservermod/ConfigFixer.java
-[0m
-[0m$ [0mgit ls-files build | head -20; echo '---gitignore---'; cat .gitignore 2>/dev/null; echo '---workflows---'; find .github -type f -maxdepth 3 | sort
-build/classes/java/main/CoreServerMod-refmap.json
-build/classes/java/main/pro/codeservermod/Config.class
-build/classes/java/main/pro/codeservermod/CoreServerMod.class
-build/classes/java/main/pro/codeservermod/handler/AnimalBreedingHandler.class
-build/classes/java/main/pro/codeservermod/handler/BabyGrowthHandler.class
-build/classes/java/main/pro/codeservermod/handler/ChickenEggHandler.class
-build/classes/java/main/pro/codeservermod/handler/ChickenSpawnHandler.class
-build/classes/java/main/pro/codeservermod/handler/CropGrowthHandler.class
-build/classes/java/main/pro/codeservermod/handler/IronGolemHandler.class
-build/classes/java/main/pro/codeservermod/handler/SaplingHandler.class
-build/classes/java/main/pro/codeservermod/handler/SheepWoolHandler.class
-build/classes/java/main/pro/codeservermod/handler/SugarCaneHandler.class
-build/classes/java/main/pro/codeservermod/handler/VillagerEmeraldHandler.class
-build/classes/java/main/pro/codeservermod/mixin/AnimalEntityMixin.class
-build/classes/java/main/pro/codeservermod/mixin/ChickenEntityMixin.class
-build/classes/java/main/pro/codeservermod/mixin/CropBlockMixin.class
-build/classes/java/main/pro/codeservermod/mixin/SaplingGeneratorMixin.class
-build/classes/java/main/pro/codeservermod/mixin/SheepEntityMixin.class
-build/classes/java/main/pro/codeservermod/mixin/SheepShearedMixin.class
-build/classes/java/main/pro/codeservermod/mixin/SugarCaneBlockMixin.class
----gitignore---
----workflows---
-.github/workflows/build.yml
-.github/workflows/opencode.yml
-.github/workflows/test.yml
-[0m
-[0m$ [0mcat .github/workflows/build.yml; echo '---'; cat build.sh; echo '---'; cat .github/workflows/opencode.yml | head -80
-name: Build
-
-on:
-    push:
-        branches: [main]
-    pull_request:
-    workflow_dispatch:
-
-permissions:
-    contents: write
-
-concurrency:
-    group: build-${{ github.ref }}
-    cancel-in-progress: true
-
-jobs:
-    build:
-        name: Build mod
-        runs-on: ubuntu-latest
-        timeout-minutes: 30
-
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0
-
-            - name: Set up Java 25
-              uses: actions/setup-java@v4
-              with:
-                  distribution: temurin
-                  java-version: "25"
-
-            - name: Set up Gradle
-              uses: gradle/actions/setup-gradle@v4
-
-            - name: Build mod
-              run: |
-                  set -euo pipefail
-                  chmod +x ./gradlew ./build.sh
-                  ./build.sh
-
-            - name: Prepare artifact
-              run: |
-                  set -euo pipefail
-                  mkdir -p build-artifact
-                  jar="$(find build/libs -maxdepth 1 -type f \
-                      -name 'CoreServerMod-*.jar' \
-                      ! -name '*-dev.jar' ! -name '*-sources.jar' \
-                      -print -quit)"
-                  if [ -z "$jar" ] || [ ! -f "$jar" ]; then
-                      echo "::error::Built JAR was not found in build/libs."
-                      exit 1
-                  fi
-                  cp "$jar" build-artifact/
-                  echo "Built artifact: $jar"
-
-            - name: Upload build artifact
-              uses: actions/upload-artifact@v4
-              with:
-                  name: coreservermod-build
-                  path: build-artifact/*.jar
-                  if-no-files-found: error
-                  retention-days: 30
-
-            - name: Publish built JAR to repository
-              if: >-
-                  (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
-                  github.ref == 'refs/heads/main'
-              run: |
-                  set -euo pipefail
-
-                  jar="$(find build/libs -maxdepth 1 -type f \
-                      -name 'CoreServerMod-*.jar' \
-                      ! -name '*-dev.jar' ! -name '*-sources.jar' \
-                      -print -quit)"
-                  mkdir -p dist test-server/mods
-                  cp "$jar" dist/
-                  cp "$jar" test-server/mods/
-
-                  git config user.name "github-actions[bot]"
-                  git config user.email \
-                      "41898282+github-actions[bot]@users.noreply.github.com"
-
-                  git add dist test-server/mods
-
-                  if git diff --cached --quiet; then
-                      echo "No artifact changes to commit."
-                      exit 0
-                  fi
-
-                  git commit -m "Update build artifact [skip ci]"
-                  git push origin "HEAD:${GITHUB_REF_NAME}"
----
+---properties---
+# CoreServerMod Gradle Properties
+
+# Fabric Loom version
+loom_version = 1.19.3
+
+# Minecraft version and Java runtime
+minecraft_version = 26.2
+loader_version = 0.19.5
+fabric_api_version = 0.161.0+26.2
+
+# Java version
+java_version = 25
+
+# Mod properties
+mod_id = coreservermod
+mod_name = CoreServerMod
+mod_version = 1.0.0
+maven_group = pro.coreservermod
+---build.sh---
 #!/bin/bash
 # CoreServerMod Build Script
 # Builds the Fabric mod JAR
@@ -1134,321 +392,1330 @@ else
     exit 1
 fi
 
-echo "=== Build Complete ==="---
-name: Issue to OpenCode
-
-on:
-  issues:
-    types: [opened]
-
-permissions: write-all
-
-concurrency:
-  group: issue-opencode-${{ github.event.issue.number }}
-  cancel-in-progress: false
-
-jobs:
-  opencode:
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        shell: bash
-        working-directory: ${{ github.workspace }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.repository.default_branch }}
-          token: ${{ secrets.PAT_TOKEN }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Install OpenCode
-        run: npm install -g opencode-ai@latest
-
-      - name: Configure OpenCode
-        run: |
-          set -euo pipefail
-
-          mkdir -p "$HOME/.config/opencode"
-
-          cat > "$HOME/.config/opencode/opencode.jsonc" <<'JSON'
-          {
-            "$schema": "https://opencode.ai/config.json",
-            "permission": "allow",
-            "model": "opencode/deepseek-v4.1-flash-free"
-          }
-          JSON
-
-      - name: Run OpenCode
-        id: opencode
-        env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
-          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-          EVENT_NAME: ${{ github.event_name }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-          ISSUE_TITLE: ${{ github.event.issue.title }}
-          ISSUE_BODY: ${{ github.event.issue.body }}
-          ISSUE_URL: ${{ github.event.issue.html_url }}
-          REPOSITORY: ${{ github.repository }}
-          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
-        run: |
-          set -euo pipefail
-
-          prompt="$(cat <<EOF
-          A new GitHub issue has been opened.
-
-          Repository: ${REPOSITORY}
-          Issue number: ${ISSUE_NUMBER}
-          Issue URL: ${ISSUE_URL}
-
-          Title:
-          ${ISSUE_TITLE:-"(No title)"}
-
-          Description:
-          ${ISSUE_BODY:-"(No description)"}
+echo "=== Build Complete ==="
 [0m
-[0m$ [0mmkdir -p /tmp/configfixertest && cat > /tmp/configfixertest/TestConfigFixer.java <<'EOF'
-import pro.coreservermod.ConfigFixer;
-import java.nio.file.*;
-
-public class TestConfigFixer {
-    public static void main(String[] args) throws Exception {
-        Path p = Files.createTempFile("coreservermod", ".json");
-        String original = "{\n  \"sugar_cane_soul_sand_enabled\": false,\n  \"sapling_growth_time_seconds\": 42,\n  \"custom_legacy_key\": \"keep-me\"\n}";
-        Files.writeString(p, original);
-
-        if (!ConfigFixer.fix(p)) throw new AssertionError("expected fix to report a change");
-        String fixed = Files.readString(p);
-        if (!fixed.contains("\"sugar_cane_soul_sand_enabled\": false")) throw new AssertionError("existing boolean changed");
-        if (!fixed.contains("\"sapling_growth_time_seconds\": 42")) throw new AssertionError("existing int changed");
-        if (!fixed.contains("\"custom_legacy_key\": \"keep-me\"")) throw new AssertionError("unknown legacy key lost");
-        if (!fixed.contains("\"crop_growth_time_seconds\": 15")) throw new AssertionError("missing new key not added");
-        if (!fixed.contains("\"create_flowing_water_washing_interval_ticks\": 10")) throw new AssertionError("last default key not added");
-
-        if (ConfigFixer.fix(p)) throw new AssertionError("second fix should be a no-op");
-
-        String invalid = "{ not valid json";
-        Files.writeString(p, invalid);
-        ConfigFixer.fix(p);
-        if (!Files.readString(p).equals(invalid)) throw new AssertionError("invalid JSON was overwritten");
-
-        System.out.println("ConfigFixer tests passed");
-        Files.deleteIfExists(p);
-    }
-}
-EOF
-GSON=$(find ~/.gradle/caches -name 'gson-2.14.0.jar' | head -1)
-SLF4J=$(find ~/.gradle/caches -name 'slf4j-api-2.0.17.jar' | head -1)
-CP="build/classes/java/main:$GSON:$SLF4J"
-/usr/lib/jvm/temurin-25-jdk-amd64/bin/javac -cp "$CP" -d /tmp/configfixertest /tmp/configfixertest/TestConfigFixer.java && /usr/lib/jvm/temurin-25-jdk-amd64/bin/java -cp "/tmp/configfixertest:$CP" TestConfigFixer
-Exception in thread "main" java.lang.NoClassDefFoundError: net/fabricmc/api/DedicatedServerModInitializer
-	at java.base/java.lang.ClassLoader.defineClass1(Native Method)
-	at java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:962)
-	at java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:144)
-	at java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:776)
-	at java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:691)
-	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:620)
-	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:578)
-	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490)
-	at pro.coreservermod.ConfigFixer.fix(ConfigFixer.java:36)
-	at TestConfigFixer.main(TestConfigFixer.java:10)
-Caused by: java.lang.ClassNotFoundException: net.fabricmc.api.DedicatedServerModInitializer
-	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:580)
-	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490)
-	... 10 more
+[0m$ [0mgrep -in "golem\|lava\|water" README.md
+20:- Tagged villagers attempt to spawn one iron golem every 5 seconds when a valid spawn position exists
+22:- Iron golems only spawn on top of cobblestone, mud block, or hopper blocks
+23:- A spawn position must be air or water with no buttons, trapdoors, slabs, or other non-air blocks in the mob's space; water above a valid base is allowed
+24:- Does not require beds, village membership, gossip, panic, nearby mobs, professions, or other vanilla golem eligibility checks
+25:- When a tagged villager is no longer standing on an iron block, its tag, hologram, and golem-spawning power are removed
+39:- Preserves necessary soil, light, water, and plant-specific requirements
+67:- Dropped items in flowing water are washed using Create's existing Splashing recipes
+68:- This includes gravel -> flint, ice -> packed ice, and every other item that Create can wash with a fan and water
+69:- Flowing-water washing is faster than fan washing and does not require a fan, leaves, or a water source block
+70:- Only flowing water works; still source blocks are ignored
+77:3. Optionally install Create Fly 6.0.9+ for 26.2 to enable the Create recipes and flowing-water washing
+91:  "iron_golem_spawn_enabled": true,
+92:  "iron_golem_spawn_interval_seconds": 5,
+93:  "max_automatic_golems_per_area": 10,
+102:  "create_flowing_water_washing_enabled": true,
+103:  "create_flowing_water_washing_interval_ticks": 10
+115:| `iron_golem_spawn_enabled` | `true` | Enable iron golem spawning from iron block villagers |
+116:| `iron_golem_spawn_interval_seconds` | `5` | Interval between golem spawn attempts (seconds) |
+117:| `max_automatic_golems_per_area` | `10` | Maximum automatic golems per village area |
+126:| `create_flowing_water_washing_enabled` | `true` | Enable Create Splashing recipes in flowing water when Create Fly is installed |
+127:| `create_flowing_water_washing_interval_ticks` | `10` | Ticks an item must stay in flowing water before it is washed (lower is faster) |
+162:- Create Fly: 6.0.9+ for 26.2 (optional, enables recipes and flowing-water washing)
 [0m
-[0m$ [0mfind ~/.gradle/caches -name 'fabric-loader-*.jar' | head -10
-/home/runner/.gradle/caches/modules-2/files-2.1/net.fabricmc/fabric-loader/0.19.5/ff9e65cffca4a67f31523e1807fe0855940fcbfa/fabric-loader-0.19.5.jar
-[0m
-[0m$ [0mGSON=$(find ~/.gradle/caches -name 'gson-2.14.0.jar' | head -1)
-SLF4J=$(find ~/.gradle/caches -name 'slf4j-api-2.0.17.jar' | head -1)
-LOADER=$(find ~/.gradle/caches -name 'fabric-loader-0.19.5.jar' | head -1)
-CP="build/classes/java/main:$GSON:$SLF4J:$LOADER"
-/usr/lib/jvm/temurin-25-jdk-amd64/bin/java -cp "/tmp/configfixertest:$CP" TestConfigFixer
-SLF4J(W): No SLF4J providers were found.
-SLF4J(W): Defaulting to no-operation (NOP) logger implementation
-SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
-ConfigFixer tests passed
-[0m
-[0m$ [0mJAVA_HOME=/usr/lib/jvm/temurin-25-jdk-amd64 ./gradlew build --console=plain
-> Configure project :
-Fabric Loom: 1.19.3
-
-> Task :compileJava UP-TO-DATE
-> Task :generateConfig
-> Task :processResources
-> Task :classes
-> Task :processIncludeJars
-> Task :compileTestJava NO-SOURCE
-> Task :jar
-> Task :processTestResources NO-SOURCE
-> Task :assemble
-> Task :testClasses UP-TO-DATE
-> Task :test NO-SOURCE
-> Task :validateAccessWidener NO-SOURCE
-> Task :check UP-TO-DATE
-> Task :build
-
-[Incubating] Problems report is available at: file:///home/runner/work/mcJava/mcJava/build/reports/problems/problems-report.html
-
-Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
-
-You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
-
-For more on this, please refer to https://docs.gradle.org/9.8.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
-
-BUILD SUCCESSFUL in 1s
-5 actionable tasks: 4 executed, 1 up-to-date
-Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.1/userguide/configuration_cache_enabling.html
-[0m
-[0m$ [0mgit diff -- README.md src/main/java/pro/coreservermod/CoreServerMod.java && git diff --no-index /dev/null src/main/java/pro/coreservermod/ConfigFixer.java | head -100
-diff --git a/README.md b/README.md
-index 4f243fb..26f0fe2 100644
---- a/README.md
-+++ b/README.md
-@@ -80,7 +80,7 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
+[0m← [0mEdit src/main/java/pro/coreservermod/handler/SpawnerSupport.java
+Index: /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/handler/SpawnerSupport.java
+===================================================================
+--- /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/handler/SpawnerSupport.java
++++ /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/handler/SpawnerSupport.java
+@@ -64,9 +64,9 @@
+     int maxZ = (int) Math.ceil(box.maxZ) - 1;
  
- ## Configuration
+     for (BlockPos check : BlockPos.betweenClosed(minX, minY, minZ, maxX, maxY, maxZ)) {
+         BlockState state = world.getBlockState(check);
+-        if (!isAirOrWater(state)) return false;
++        if (!isAirOrLiquid(state)) return false;
+     }
+     return true;
+ }
  
+
+[0m
+[0m← [0mEdit src/main/java/pro/coreservermod/handler/SpawnerSupport.java
+Index: /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/handler/SpawnerSupport.java
+===================================================================
+--- /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/handler/SpawnerSupport.java
++++ /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/handler/SpawnerSupport.java
+@@ -73,8 +73,8 @@
+     public static boolean hasNoEntity(ServerLevel world, AABB box) {
+         return world.getEntitiesOfClass(Entity.class, box, Entity::isAlive).isEmpty();
+     }
+ 
+-    public static boolean isAirOrWater(BlockState state) {
+-        return state.isAir() || state.is(Blocks.WATER);
++    public static boolean isAirOrLiquid(BlockState state) {
++        return state.isAir() || state.is(Blocks.WATER) || state.is(Blocks.LAVA);
+     }
+ }
+
+[0m
+[0m$ [0msed -n '18,27p' README.md
+- Matching villagers receive the `CreateVillager` tag and a floating two-line hologram showing the name and spawn countdown
+- When a villager becomes a CreateVillager, conversion sounds and particles play and a message is broadcast in chat
+- Tagged villagers attempt to spawn one iron golem every 5 seconds when a valid spawn position exists
+- Spawn areas are searched up to 16 blocks horizontally and 4 vertically; chat messages announce immediately when an area is found or lost
+- Iron golems only spawn on top of cobblestone, mud block, or hopper blocks
+- A spawn position must be air or water with no buttons, trapdoors, slabs, or other non-air blocks in the mob's space; water above a valid base is allowed
+- Does not require beds, village membership, gossip, panic, nearby mobs, professions, or other vanilla golem eligibility checks
+- When a tagged villager is no longer standing on an iron block, its tag, hologram, and golem-spawning power are removed
+- Other villagers retain vanilla behavior
+[0m
+[0m← [0mEdit README.md
+Index: /home/runner/work/mcJava/mcJava/README.md
+===================================================================
+--- /home/runner/work/mcJava/mcJava/README.md
++++ /home/runner/work/mcJava/mcJava/README.md
+@@ -19,9 +19,9 @@
+ - When a villager becomes a CreateVillager, conversion sounds and particles play and a message is broadcast in chat
+ - Tagged villagers attempt to spawn one iron golem every 5 seconds when a valid spawn position exists
+ - Spawn areas are searched up to 16 blocks horizontally and 4 vertically; chat messages announce immediately when an area is found or lost
+ - Iron golems only spawn on top of cobblestone, mud block, or hopper blocks
+-- A spawn position must be air or water with no buttons, trapdoors, slabs, or other non-air blocks in the mob's space; water above a valid base is allowed
++- A spawn position must be air, water, or lava (including flowing water/lava) with no buttons, trapdoors, slabs, or other non-air blocks in the mob's space; water or lava above a valid base is allowed
+ - Does not require beds, village membership, gossip, panic, nearby mobs, professions, or other vanilla golem eligibility checks
+ - When a tagged villager is no longer standing on an iron block, its tag, hologram, and golem-spawning power are removed
+ - Other villagers retain vanilla behavior
+ 
+
+[0m
+[0m$ [0m./gradlew compileJava --offline -q 2>&1 | tail -40
+Fetching distribution.
+Downloading https://services.gradle.org/distributions/gradle-9.8.1-bin.zip
+..............10%..............20%...............30%..............40%...............50%..............60%...............70%..............80%...............90%..............100%
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Build file '/home/runner/work/mcJava/mcJava/build.gradle' line: 2
+
+* What went wrong:
+Plugin [id: 'net.fabricmc.fabric-loom', version: '1.19.3'] was not found in any of the following sources:
+
+- Gradle Core Plugins (plugin is not in 'org.gradle' namespace)
+- Included Builds (No included builds contain this plugin)
+- Plugin Repositories (could not resolve plugin artifact 'net.fabricmc.fabric-loom:net.fabricmc.fabric-loom.gradle.plugin:1.19.3')
+  Searched in the following repositories:
+    Fabric(https://maven.fabricmc.net/)
+    MavenRepo
+    Gradle Central Plugin Repository
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 6s
+[0m
+[0m$ [0m./gradlew compileJava -q 2>&1 | tail -60
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+A problem occurred configuring root project 'CoreServerMod'.
+> Could not resolve all artifacts for configuration 'classpath'.
+   > Could not resolve net.fabricmc:fabric-loom:1.19.3.
+     Required by:
+         buildscript of root project 'CoreServerMod' > net.fabricmc.fabric-loom:net.fabricmc.fabric-loom.gradle.plugin:1.19.3
+      > Dependency requires at least JVM runtime version 25. This build uses a Java 17 JVM.
+
+* Try:
+> Run this build using a Java 25 or newer JVM.
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1s
+[0m
+[0m$ [0mls /usr/lib/jvm 2>/dev/null; which java; java -version 2>&1; ls ~/.gradle/jdks 2>/dev/null; find / -maxdepth 4 -name "javac" -type f 2>/dev/null | head
+temurin-11-jdk-amd64
+temurin-17-jdk-amd64
+temurin-21-jdk-amd64
+temurin-25-jdk-amd64
+temurin-8-jdk-amd64
+/usr/bin/java
+openjdk version "17.0.20.1" 2026-08-18
+OpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)
+OpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)
+[0m
+[0m$ [0mJAVA_HOME=/usr/lib/jvm/temurin-25-jdk-amd64 ./gradlew compileJava -q 2>&1 | tail -60
+(no output)
+[0m
+[0m$ [0mJAVA_HOME=/usr/lib/jvm/temurin-25-jdk-amd64 ./gradlew build -x test -q 2>&1 | tail -60 && echo "BUILD_EXIT=${PIPESTATUS[0]}"
+BUILD_EXIT=0
+[0m
+[0m$ [0mgit status --short && echo "---diff---" && git diff --stat && git diff
+...output truncated...
+
+Full output saved to: /home/runner/.local/share/opencode/tool-output/tool_1770201c7001ztRH3nWYbXzABD
+
++
++Inspect the repository and implement the requested change.
++
++You are a github agent that running on a GitHub action runner. You have complete access to this repo so do what you need to do for fux this problem.
++After your task complete you should push you chnages to git repo or those fixes can be vanished.
++Try your best for fixing the problem.
++Do not ask questions; make reasonable decisions and proceed.
++{
++  "schemaVersion": 1,
++  "id": "coreservermod",
++  "version": "1.0.0",
++  "name": "CoreServerMod",
++  "description": "Minecraft Fabric Server Enhancement Mod - Accelerates crop/tree growth, automates mob behaviors, reduces waiting times",
++  "authors": ["promikailamin"],
++  "contact": {
++    "homepage": "https://github.com/promikailamin/mcJava",
++    "issues": "https://github.com/promikailamin/mcJava/issues"
++  },
++  "license": "MIT",
++  "icon": "assets/coreservermod/icon.png",
++  "environment": "server",
++  "entrypoints": {
++    "server": [
++      "pro.coreservermod.CoreServerMod"
++    ]
++  },
++  "mixins": [
++    "coreservermod.mixins.json"
++  ],
++  "depends": {
++    "fabricloader": ">=0.19.5",
++    "minecraft": "~26.2",
++    "java": ">=25",
++    "fabric-api": "*"
++  },
++  "suggests": {
++    "create": ">=6.0.9"
++  },
++  "custom": {
++    "modmenu": {
++      "badges": ["server"],
++      "links": {
++        "issues": "https://github.com/promikailamin/mcJava/issues"
++      }
+     }
++  }
+ }
+ [0m
+-[0m$ [0mcat build.gradle; echo '---README---'; cat README.md; echo '---FABRICMOD---'; cat src/main/resources/fabric.mod.json
++[0m$ [0mcat build.gradle && echo "---properties---" && cat gradle.properties && echo "---build.sh---" && cat build.sh
+ plugins {
+     id "net.fabricmc.fabric-loom" version "1.19.3"
+     id "java"
+@@ -553,24 +332,129 @@ tasks.register("generateConfig") {
+ tasks.named("processResources") {
+     dependsOn("generateConfig")
+ }
+----README---
+-# CoreServerMod
++---properties---
++# CoreServerMod Gradle Properties
++
++# Fabric Loom version
++loom_version = 1.19.3
++
++# Minecraft version and Java runtime
++minecraft_version = 26.2
++loader_version = 0.19.5
++fabric_api_version = 0.161.0+26.2
++
++# Java version
++java_version = 25
++
++# Mod properties
++mod_id = coreservermod
++mod_name = CoreServerMod
++mod_version = 1.0.0
++maven_group = pro.coreservermod
++---build.sh---
++#!/bin/bash
++# CoreServerMod Build Script
++# Builds the Fabric mod JAR
++
++set -euo pipefail
++
++SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
++cd "$SCRIPT_DIR"
+ 
+-A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates various game mechanics to reduce waiting times and automate repetitive tasks.
++echo "=== CoreServerMod Build Script ==="
++echo "Working directory: $SCRIPT_DIR"
+ 
+-## Features
++# Check for Gradle wrapper
++if [ ! -f "./gradlew" ]; then
++    echo "Generating Gradle wrapper..."
++    gradle wrapper --gradle-version 9.8.1
++fi
++
++# Make gradlew executable
++chmod +x ./gradlew
++
++# Build the mod
++echo "Building CoreServerMod..."
++./gradlew clean build -x test
++
++# Check if build was successful
++JAR_PATH=$(find build/libs -name "CoreServerMod-*.jar" | head -1)
++if [ -n "$JAR_PATH" ] && [ -f "$JAR_PATH" ]; then
++    echo "Build successful! JAR: $JAR_PATH"
++    
++    # Copy to distribution and test server mods directories
++    mkdir -p dist test-server/mods
++    cp "$JAR_PATH" dist/
++    cp "$JAR_PATH" test-server/mods/
++    echo "Copied JAR to dist/ and test-server/mods/"
++else
++    echo "Build failed! JAR not found."
++    exit 1
++fi
+ 
+-### 1. Sugar Cane on Soul Sand
+-- Allows sugar cane placement on soul sand
+-- Grows by one block approximately every second when planted on soul sand
+-- Preserves vanilla growth behavior on other valid substrates
++echo "=== Build Complete ==="
++[0m
++[0m$ [0mgrep -in "golem\|lava\|water" README.md
++20:- Tagged villagers attempt to spawn one iron golem every 5 seconds when a valid spawn position exists
++22:- Iron golems only spawn on top of cobblestone, mud block, or hopper blocks
++23:- A spawn position must be air or water with no buttons, trapdoors, slabs, or other non-air blocks in the mob's space; water above a valid base is allowed
++24:- Does not require beds, village membership, gossip, panic, nearby mobs, professions, or other vanilla golem eligibility checks
++25:- When a tagged villager is no longer standing on an iron block, its tag, hologram, and golem-spawning power are removed
++39:- Preserves necessary soil, light, water, and plant-specific requirements
++67:- Dropped items in flowing water are washed using Create's existing Splashing recipes
++68:- This includes gravel -> flint, ice -> packed ice, and every other item that Create can wash with a fan and water
++69:- Flowing-water washing is faster than fan washing and does not require a fan, leaves, or a water source block
++70:- Only flowing water works; still source blocks are ignored
++77:3. Optionally install Create Fly 6.0.9+ for 26.2 to enable the Create recipes and flowing-water washing
++91:  "iron_golem_spawn_enabled": true,
++92:  "iron_golem_spawn_interval_seconds": 5,
++93:  "max_automatic_golems_per_area": 10,
++102:  "create_flowing_water_washing_enabled": true,
++103:  "create_flowing_water_washing_interval_ticks": 10
++115:| `iron_golem_spawn_enabled` | `true` | Enable iron golem spawning from iron block villagers |
++116:| `iron_golem_spawn_interval_seconds` | `5` | Interval between golem spawn attempts (seconds) |
++117:| `max_automatic_golems_per_area` | `10` | Maximum automatic golems per village area |
++126:| `create_flowing_water_washing_enabled` | `true` | Enable Create Splashing recipes in flowing water when Create Fly is installed |
++127:| `create_flowing_water_washing_interval_ticks` | `10` | Ticks an item must stay in flowing water before it is washed (lower is faster) |
++162:- Create Fly: 6.0.9+ for 26.2 (optional, enables recipes and flowing-water washing)
++[0m
++[0m← [0mEdit src/main/java/pro/coreservermod/handler/SpawnerSupport.java
++Index: /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/handler/SpawnerSupport.java
++===================================================================
++--- /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/handler/SpawnerSupport.java
+++++ /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/handler/SpawnerSupport.java
++@@ -64,9 +64,9 @@
++     int maxZ = (int) Math.ceil(box.maxZ) - 1;
++ 
++     for (BlockPos check : BlockPos.betweenClosed(minX, minY, minZ, maxX, maxY, maxZ)) {
++         BlockState state = world.getBlockState(check);
++-        if (!isAirOrWater(state)) return false;
+++        if (!isAirOrLiquid(state)) return false;
++     }
++     return true;
++ }
++ 
+ 
+-### 2. Accelerated Tree Growth
+-- All vanilla saplings and propagules grow into their correct trees within approximately 15 seconds
+-- Requires valid environmental and space conditions
++[0m
++[0m← [0mEdit src/main/java/pro/coreservermod/handler/SpawnerSupport.java
++Index: /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/handler/SpawnerSupport.java
++===================================================================
++--- /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/handler/SpawnerSupport.java
+++++ /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/handler/SpawnerSupport.java
++@@ -73,8 +73,8 @@
++     public static boolean hasNoEntity(ServerLevel world, AABB box) {
++         return world.getEntitiesOfClass(Entity.class, box, Entity::isAlive).isEmpty();
++     }
++ 
++-    public static boolean isAirOrWater(BlockState state) {
++-        return state.isAir() || state.is(Blocks.WATER);
+++    public static boolean isAirOrLiquid(BlockState state) {
+++        return state.isAir() || state.is(Blocks.WATER) || state.is(Blocks.LAVA);
++     }
++ }
+ 
+-### 3. Iron Block Villager
+-- The mod checks all villagers every tick for one standing on top of an iron block
++[0m
++[0m$ [0msed -n '18,27p' README.md
+ - Matching villagers receive the `CreateVillager` tag and a floating two-line hologram showing the name and spawn countdown
+ - When a villager becomes a CreateVillager, conversion sounds and particles play and a message is broadcast in chat
+ - Tagged villagers attempt to spawn one iron golem every 5 seconds when a valid spawn position exists
+@@ -580,247 +464,55 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
+ - Does not require beds, village membership, gossip, panic, nearby mobs, professions, or other vanilla golem eligibility checks
+ - When a tagged villager is no longer standing on an iron block, its tag, hologram, and golem-spawning power are removed
+ - Other villagers retain vanilla behavior
+-
+-### 4. Bad Villager
+-- The mod checks all villagers every tick for one standing on top of a redstone block
+-- Matching villagers receive the `BadVillager` tag and the visible name tag `BadVillager` in bold dark red text
+-- When a villager becomes a BadVillager, conversion sounds and particles play and a message is broadcast in chat
+-- A BadVillager is invincible and takes no damage from any source while it remains on the redstone block
+-- Hitting a BadVillager gives the attacker a random-level Bad Omen effect lasting 20 minutes, which can start a raid
+-- When a BadVillager is no longer standing on a redstone block, its tag, name tag, and invincibility are removed
+-- Other villagers retain vanilla behavior
+-
+-### 5. Accelerated Crop Growth
+-- Applicable vanilla crops and plants grow to maturity within approximately 15 seconds
+-- Preserves necessary soil, light, water, and plant-specific requirements
+-
+-### 6. Animal Breeding
+-- Removes breeding cooldown for supported breedable vanilla animals
+-- Allows repeated breeding whenever normal eligibility conditions are met
+-- Baby animals mature within approximately 15 seconds or instantly when fed once (configurable)
+-
+-### 7. Sheep Wool Regrowth
+-- Sheep regrow wool and become shearable approximately every 5 seconds
+-- Preserves normal shearing drops and prevents duplicate drops
+-
+-### 8. Villager Emerald Drops
+-- Villagers have a 40% chance to drop one emerald on successful trade
+-- Evaluates chance once per trade event and prevents duplicate rewards
+-
+-### 9. Guaranteed Chicken from Eggs
+-- Every player-thrown chicken egg spawns exactly one chicken
+-- Bypasses vanilla random hatch chance without duplicate spawning
+-
+-### 10. Chicken Egg Production
+-- Adult chickens produce one egg approximately every 20 seconds regardless of location or movement
+-- Baby chickens do not lay eggs
+-
+-### 11. Create Fly Integration (Optional)
+-- When [Create Fly](https://modrinth.com/mod/create-fly) is installed, the mod automatically enables Create recipe and washing integration
+-- Adds two Mechanical Press (Compacting) recipes and two Mechanical Mixer (Mixing) recipes:
+-  - 1 copper ingot + 1 iron ingot + 1 wheat seeds -> 1 emerald
+-  - 1 sugar cane + 1 snowball -> 1 slime ball
+-- Dropped items in flowing water are washed using Create's existing Splashing recipes
+-- This includes gravel -> flint, ice -> packed ice, and every other item that Create can wash with a fan and water
+-- Flowing-water washing is faster than fan washing and does not require a fan, leaves, or a water source block
+-- Only flowing water works; still source blocks are ignored
+-- The integration is optional - CoreServerMod still loads and works normally without Create Fly
+-
+-## Installation
+-
+-1. Install Fabric Loader 0.19.5+ for Minecraft 26.2 (requires Java 25)
+-2. Install Fabric API 0.161.0+26.2
+-3. Optionally install Create Fly 6.0.9+ for 26.2 to enable the Create recipes and flowing-water washing
+-4. Place `CoreServerMod-1.0.0.jar` in your server's `mods` folder
+-5. Start the server - a default configuration file will be generated at `config/coreservermod.json`
+-
+-## Configuration
+-
 -The mod generates a configuration file at `config/coreservermod.json` on first launch. All features can be toggled and intervals adjusted:
-+The mod generates a configuration file at `config/coreservermod.json` on first launch. On startup, any options added by a newer version are written into an existing config file with their default values; existing values are left unchanged. All features can be toggled and intervals adjusted:
+-
+-```json
+-{
+-  "sugar_cane_soul_sand_enabled": true,
+-  "sugar_cane_growth_interval_seconds": 1,
+-  "sapling_growth_time_seconds": 15,
+-  "crop_growth_time_seconds": 15,
+-  "iron_golem_spawn_enabled": true,
+-  "iron_golem_spawn_interval_seconds": 5,
+-  "max_automatic_golems_per_area": 10,
+-  "animal_breeding_cooldown_disabled": true,
+-  "baby_growth_time_seconds": 15,
+-  "instant_growth_when_fed": true,
+-  "sheep_wool_regrowth_seconds": 5,
+-  "villager_emerald_drop_enabled": true,
+-  "villager_emerald_drop_chance": 0.4,
+-  "guaranteed_chicken_from_egg": true,
+-  "chicken_egg_interval_seconds": 20,
+-  "create_flowing_water_washing_enabled": true,
+-  "create_flowing_water_washing_interval_ticks": 10
+-}
+-```
+-
+-### Configuration Options
+-
+-| Option | Default | Description |
+-|--------|---------|-------------|
+-| `sugar_cane_soul_sand_enabled` | `true` | Enable sugar cane placement/growth on soul sand |
+-| `sugar_cane_growth_interval_seconds` | `1` | Growth interval for sugar cane on soul sand (seconds) |
+-| `sapling_growth_time_seconds` | `15` | Time for saplings to grow into trees (seconds) |
+-| `crop_growth_time_seconds` | `15` | Time for crops to reach maturity (seconds) |
+-| `iron_golem_spawn_enabled` | `true` | Enable iron golem spawning from iron block villagers |
+-| `iron_golem_spawn_interval_seconds` | `5` | Interval between golem spawn attempts (seconds) |
+-| `max_automatic_golems_per_area` | `10` | Maximum automatic golems per village area |
+-| `animal_breeding_cooldown_disabled` | `true` | Remove animal breeding cooldown |
+-| `baby_growth_time_seconds` | `15` | Time for baby animals to mature (seconds) |
+-| `instant_growth_when_fed` | `true` | Instantly grow baby animals when fed breeding item |
+-| `sheep_wool_regrowth_seconds` | `5` | Time for sheep to regrow wool (seconds) |
+-| `villager_emerald_drop_enabled` | `true` | Enable emerald drops from villager trades |
+-| `villager_emerald_drop_chance` | `0.4` | Chance (0.0-1.0) for emerald drop per trade |
+-| `guaranteed_chicken_from_egg` | `true` | Guarantee chicken spawn from thrown eggs |
+-| `chicken_egg_interval_seconds` | `20` | Interval for chicken egg laying (seconds) |
+-| `create_flowing_water_washing_enabled` | `true` | Enable Create Splashing recipes in flowing water when Create Fly is installed |
+-| `create_flowing_water_washing_interval_ticks` | `10` | Ticks an item must stay in flowing water before it is washed (lower is faster) |
+-
+-## Building from Source
+-
+-Requirements:
+-- Java 25+
+-- Gradle 9.8.1+ (the included wrapper downloads the correct version)
+-
+-```bash
+-./gradlew build
+-```
+-
+-The compiled JAR will be in `build/libs/` and `dist/`.
+-
+-## Continuous Integration
+-
+-The GitHub Actions workflows live in `.github/workflows/`:
+-
+-- **Build** (`build.yml`) runs on pushes to `main`, pull requests, and manual dispatch. It builds the mod, uploads the JAR as the `coreservermod-build` artifact, and publishes the JAR to `dist/` and `test-server/mods/` on `main`.
+-- **Test** (`test.yml`) is started manually with workflow dispatch. It downloads the artifact from the latest successful Build run and boots the test server with it. If no build artifact is available, the Test run cancels itself.
+-
+-## Test Server
+-
+-A test server setup is included in the `test-server/` directory with scripts:
+-
+-- `build.sh` - Build the mod and copy to test server
+-- `start-test-server.sh` - Start the test server
+-- `stop-test-server.sh` - Stop the test server
+-
+-## Compatibility
+-
+-- Minecraft: 26.2
+-- Fabric Loader: 0.19.5+
+-- Fabric API: 0.161.0+26.2
+-- Java: 25+
+-- Create Fly: 6.0.9+ for 26.2 (optional, enables recipes and flowing-water washing)
+-
+-## License
+-
+-MIT License
+-
+-## Issues
+-
+-Report issues at: https://github.com/promikailamin/mcJava/issues---FABRICMOD---
+-{
+-  "schemaVersion": 1,
+-  "id": "coreservermod",
+-  "version": "1.0.0",
+-  "name": "CoreServerMod",
+-  "description": "Minecraft Fabric Server Enhancement Mod - Accelerates crop/tree growth, automates mob behaviors, reduces waiting times",
+-  "authors": ["promikailamin"],
+-  "contact": {
+-    "homepage": "https://github.com/promikailamin/mcJava",
+-    "issues": "https://github.com/promikailamin/mcJava/issues"
+-  },
+-  "license": "MIT",
+-  "icon": "assets/coreservermod/icon.png",
+-  "environment": "server",
+-  "entrypoints": {
+-    "server": [
+-      "pro.coreservermod.CoreServerMod"
+-    ]
+-  },
+-  "mixins": [
+-    "coreservermod.mixins.json"
+-  ],
+-  "depends": {
+-    "fabricloader": ">=0.19.5",
+-    "minecraft": "~26.2",
+-    "java": ">=25",
+-    "fabric-api": "*"
+-  },
+-  "suggests": {
+-    "create": ">=6.0.9"
+-  },
+-  "custom": {
+-    "modmenu": {
+-      "badges": ["server"],
+-      "links": {
+-        "issues": "https://github.com/promikailamin/mcJava/issues"
+-      }
+-    }
+-  }
+-}
+-[0m
+-[0m← [0mWrite src/main/java/pro/coreservermod/ConfigFixer.java
+-Wrote file successfully.
+-[0m
+-[0m← [0mEdit src/main/java/pro/coreservermod/CoreServerMod.java
+-Index: /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/CoreServerMod.java
+-===================================================================
+---- /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/CoreServerMod.java
+-+++ /home/runner/work/mcJava/mcJava/src/main/java/pro/coreservermod/CoreServerMod.java
+-@@ -56,8 +56,9 @@
+- try {
+-     if (!Files.exists(CONFIG_PATH)) {
+-         saveDefaultConfig();
+-     }
+-+    ConfigFixer.fix(CONFIG_PATH);
+-     String json = Files.readString(CONFIG_PATH);
+-     CONFIG = Config.fromJson(json);
+-     LOGGER.info("Configuration loaded from {}", CONFIG_PATH);
+- } catch (Exception e) {
+-
+ [0m
+ [0m← [0mEdit README.md
+ Index: /home/runner/work/mcJava/mcJava/README.md
+ ===================================================================
+ --- /home/runner/work/mcJava/mcJava/README.md
+ +++ /home/runner/work/mcJava/mcJava/README.md
+-@@ -79,9 +79,9 @@
+- 5. Start the server - a default configuration file will be generated at `config/coreservermod.json`
+- 
+- ## Configuration
+- 
+--The mod generates a configuration file at `config/coreservermod.json` on first launch. All features can be toggled and intervals adjusted:
+-+The mod generates a configuration file at `config/coreservermod.json` on first launch. On startup, any options added by a newer version are written into an existing config file with their default values; existing values are left unchanged. All features can be toggled and intervals adjusted:
++@@ -19,9 +19,9 @@
++ - When a villager becomes a CreateVillager, conversion sounds and particles play and a message is broadcast in chat
++ - Tagged villagers attempt to spawn one iron golem every 5 seconds when a valid spawn position exists
++ - Spawn areas are searched up to 16 blocks horizontally and 4 vertically; chat messages announce immediately when an area is found or lost
++ - Iron golems only spawn on top of cobblestone, mud block, or hopper blocks
++-- A spawn position must be air or water with no buttons, trapdoors, slabs, or other non-air blocks in the mob's space; water above a valid base is allowed
+++- A spawn position must be air, water, or lava (including flowing water/lava) with no buttons, trapdoors, slabs, or other non-air blocks in the mob's space; water or lava above a valid base is allowed
++ - Does not require beds, village membership, gossip, panic, nearby mobs, professions, or other vanilla golem eligibility checks
++ - When a tagged villager is no longer standing on an iron block, its tag, hologram, and golem-spawning power are removed
++ - Other villagers retain vanilla behavior
+  
+- ```json
+- {
+-   "sugar_cane_soul_sand_enabled": true,
  
- ```json
- {
-diff --git a/src/main/java/pro/coreservermod/CoreServerMod.java b/src/main/java/pro/coreservermod/CoreServerMod.java
-index 3e3d87c..b10a9be 100644
---- a/src/main/java/pro/coreservermod/CoreServerMod.java
-+++ b/src/main/java/pro/coreservermod/CoreServerMod.java
-@@ -57,6 +57,7 @@ public class CoreServerMod implements DedicatedServerModInitializer {
-             if (!Files.exists(CONFIG_PATH)) {
-                 saveDefaultConfig();
-             }
-+            ConfigFixer.fix(CONFIG_PATH);
-             String json = Files.readString(CONFIG_PATH);
-             CONFIG = Config.fromJson(json);
-             LOGGER.info("Configuration loaded from {}", CONFIG_PATH);
-diff --git a/src/main/java/pro/coreservermod/ConfigFixer.java b/src/main/java/pro/coreservermod/ConfigFixer.java
-new file mode 100644
-index 0000000..2cf419b
---- /dev/null
-+++ b/src/main/java/pro/coreservermod/ConfigFixer.java
-@@ -0,0 +1,63 @@
-+package pro.coreservermod;
-+
-+import com.google.gson.Gson;
-+import com.google.gson.GsonBuilder;
-+import com.google.gson.JsonElement;
-+import com.google.gson.JsonObject;
-+import com.google.gson.JsonParser;
-+
-+import java.nio.file.Files;
-+import java.nio.file.Path;
-+import java.util.Map;
-+
-+public final class ConfigFixer {
-+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-+
-+    private ConfigFixer() {
-+    }
-+
-+    public static boolean fix(Path configPath) {
-+        if (!Files.exists(configPath)) {
-+            return false;
-+        }
-+
-+        try {
-+            JsonElement parsed = JsonParser.parseString(Files.readString(configPath));
-+            if (!parsed.isJsonObject()) {
-+                CoreServerMod.LOGGER.warn("Configuration at {} is not a JSON object, skipping config fix", configPath);
-+                return false;
-+            }
-+
-+            JsonObject existing = parsed.getAsJsonObject();
-+            JsonObject defaults = JsonParser.parseString(Config.getDefaultJson()).getAsJsonObject();
-+
-+            if (addMissingValues(existing, defaults)) {
-+                Files.writeString(configPath, GSON.toJson(existing));
-+                CoreServerMod.LOGGER.info("Added missing configuration values to {}", configPath);
-+                return true;
-+            }
-+        } catch (Exception e) {
-+            CoreServerMod.LOGGER.warn("Failed to check configuration for missing values", e);
-+        }
-+
-+        return false;
-+    }
-+
-+    private static boolean addMissingValues(JsonObject target, JsonObject defaults) {
-+        boolean changed = false;
-+
-+        for (Map.Entry<String, JsonElement> entry : defaults.entrySet()) {
-+            String key = entry.getKey();
-+            JsonElement defaultValue = entry.getValue();
-+
-+            if (!target.has(key)) {
-+                target.add(key, defaultValue.deepCopy());
-+                changed = true;
-+            } else if (target.get(key).isJsonObject() && defaultValue.isJsonObject()) {
-+                changed |= addMissingValues(target.getAsJsonObject(key), defaultValue.getAsJsonObject());
-+            }
-+        }
-+
-+        return changed;
-+    }
-+}
+ [0m
+-[0m$ [0m./gradlew compileJava --console=plain
++[0m$ [0m./gradlew compileJava --offline -q 2>&1 | tail -40
+ Fetching distribution.
+ Downloading https://services.gradle.org/distributions/gradle-9.8.1-bin.zip
+ ..............10%..............20%...............30%..............40%...............50%..............60%...............70%..............80%...............90%..............100%
+ 
+-Welcome to Gradle 9.8.1!
++FAILURE: Build failed with an exception.
+ 
+-Here are the highlights of this release:
+- - Java 27 support
+- - Maven mirror settings reuse
+- - Linked problem locations in build output
++* Where:
++Build file '/home/runner/work/mcJava/mcJava/build.gradle' line: 2
+ 
+-For more details see https://docs.gradle.org/9.8.1/release-notes.html
++* What went wrong:
++Plugin [id: 'net.fabricmc.fabric-loom', version: '1.19.3'] was not found in any of the following sources:
+ 
+-Starting a Gradle Daemon (subsequent builds will be faster)
++- Gradle Core Plugins (plugin is not in 'org.gradle' namespace)
++- Included Builds (No included builds contain this plugin)
++- Plugin Repositories (could not resolve plugin artifact 'net.fabricmc.fabric-loom:net.fabricmc.fabric-loom.gradle.plugin:1.19.3')
++  Searched in the following repositories:
++    Fabric(https://maven.fabricmc.net/)
++    MavenRepo
++    Gradle Central Plugin Repository
+ 
+-[Incubating] Problems report is available at: file:///home/runner/work/mcJava/mcJava/build/reports/problems/problems-report.html
++* Try:
++> Run with --stacktrace option to get the stack trace.
++> Run with --info or --debug option to get more log output.
++> Run with --scan to get full insights from a Build Scan (powered by Develocity).
++> Get more help at https://help.gradle.org.
+ 
++BUILD FAILED in 6s
++[0m
++[0m$ [0m./gradlew compileJava -q 2>&1 | tail -60
+ FAILURE: Build failed with an exception.
+ 
+ * What went wrong:
+@@ -838,9 +530,9 @@ A problem occurred configuring root project 'CoreServerMod'.
+ > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+ > Get more help at https://help.gradle.org.
+ 
+-BUILD FAILED in 8s
++BUILD FAILED in 1s
+ [0m
+-[0m$ [0mls /usr/lib/jvm 2>/dev/null; which java; java -version; ls ~/.gradle/jdks 2>/dev/null; ls /opt 2>/dev/null
++[0m$ [0mls /usr/lib/jvm 2>/dev/null; which java; java -version 2>&1; ls ~/.gradle/jdks 2>/dev/null; find / -maxdepth 4 -name "javac" -type f 2>/dev/null | head
+ temurin-11-jdk-amd64
+ temurin-17-jdk-amd64
+ temurin-21-jdk-amd64
+@@ -850,605 +542,10 @@ temurin-8-jdk-amd64
+ openjdk version "17.0.20.1" 2026-08-18
+ OpenJDK Runtime Environment Temurin-17.0.20.1+1 (build 17.0.20.1+1)
+ OpenJDK 64-Bit Server VM Temurin-17.0.20.1+1 (build 17.0.20.1+1, mixed mode, sharing)
+-actionarchivecache
+-az
+-containerd
+-google
+-hca
+-hostedtoolcache
+-microsoft
+-pipx
+-pipx_bin
+-post-generation
+-primer
+-runner-cache
+-[0m
+-[0m$ [0mJAVA_HOME=/usr/lib/jvm/temurin-25-jdk-amd64 ./gradlew compileJava --console=plain
+-Starting a Gradle Daemon, 1 incompatible Daemon could not be reused, use --status for details
+-
+-> Configure project :
+-Fabric Loom: 1.19.3
+-
+-> Task :compileJava
+-
+-[Incubating] Problems report is available at: file:///home/runner/work/mcJava/mcJava/build/reports/problems/problems-report.html
+-
+-Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+-
+-You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+-
+-For more on this, please refer to https://docs.gradle.org/9.8.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+-
+-BUILD SUCCESSFUL in 46s
+-1 actionable task: 1 executed
+-Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.1/userguide/configuration_cache_enabling.html
+ [0m
+-[0m$ [0mfind ~/.gradle/caches -name 'gson-*.jar' -o -name 'slf4j-api-*.jar' | head -20
+-/home/runner/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.14.0/efc0e34ede4e3204eaefb84a00e55e8c86634382/gson-2.14.0.jar
+-/home/runner/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/2.0.17/d9e58ac9c7779ba3bf8142aff6c830617a7fe60f/slf4j-api-2.0.17.jar
++[0m$ [0mJAVA_HOME=/usr/lib/jvm/temurin-25-jdk-amd64 ./gradlew compileJava -q 2>&1 | tail -60
++(no output)
+ [0m
+-[0m$ [0mgit diff --stat && git status --short
+-.gradle/9.8.1/checksums/checksums.lock             |  Bin 17 -> 17 bytes
+- .gradle/9.8.1/checksums/md5-checksums.bin          |  Bin 23497 -> 31947 bytes
+- .gradle/9.8.1/checksums/sha1-checksums.bin         |  Bin 32375 -> 82589 bytes
+- .../9.8.1/executionHistory/executionHistory.bin    |  Bin 20684 -> 73325 bytes
+- .../9.8.1/executionHistory/executionHistory.lock   |  Bin 17 -> 17 bytes
+- .gradle/9.8.1/fileHashes/fileHashes.bin            |  Bin 18697 -> 21497 bytes
+- .gradle/9.8.1/fileHashes/fileHashes.lock           |  Bin 17 -> 17 bytes
+- .gradle/buildOutputCleanup/buildOutputCleanup.lock |  Bin 17 -> 17 bytes
+- .gradle/buildOutputCleanup/cache.properties        |    4 +-
+- .gradle/buildOutputCleanup/outputFiles.bin         |  Bin 19325 -> 18875 bytes
+- .gradle/file-system.probe                          |  Bin 8 -> 0 bytes
+- README.md                                          |    2 +-
+- build/classes/java/main/CoreServerMod-refmap.json  |   72 -
+- .../java/main/pro/codeservermod/Config.class       |  Bin 4328 -> 0 bytes
+- .../main/pro/codeservermod/CoreServerMod.class     |  Bin 6429 -> 0 bytes
+- .../handler/AnimalBreedingHandler.class            |  Bin 2966 -> 0 bytes
+- .../codeservermod/handler/BabyGrowthHandler.class  |  Bin 3964 -> 0 bytes
+- .../codeservermod/handler/ChickenEggHandler.class  |  Bin 3424 -> 0 bytes
+- .../handler/ChickenSpawnHandler.class              |  Bin 1603 -> 0 bytes
+- .../codeservermod/handler/CropGrowthHandler.class  |  Bin 3178 -> 0 bytes
+- .../codeservermod/handler/IronGolemHandler.class   |  Bin 5654 -> 0 bytes
+- .../pro/codeservermod/handler/SaplingHandler.class |  Bin 2651 -> 0 bytes
+- .../codeservermod/handler/SheepWoolHandler.class   |  Bin 2935 -> 0 bytes
+- .../codeservermod/handler/SugarCaneHandler.class   |  Bin 3002 -> 0 bytes
+- .../handler/VillagerEmeraldHandler.class           |  Bin 4748 -> 0 bytes
+- .../codeservermod/mixin/AnimalEntityMixin.class    |  Bin 2232 -> 0 bytes
+- .../codeservermod/mixin/ChickenEntityMixin.class   |  Bin 1617 -> 0 bytes
+- .../pro/codeservermod/mixin/CropBlockMixin.class   |  Bin 2068 -> 0 bytes
+- .../mixin/SaplingGeneratorMixin.class              |  Bin 2668 -> 0 bytes
+- .../pro/codeservermod/mixin/SheepEntityMixin.class |  Bin 1600 -> 0 bytes
+- .../codeservermod/mixin/SheepShearedMixin.class    |  Bin 1527 -> 0 bytes
+- .../codeservermod/mixin/SugarCaneBlockMixin.class  |  Bin 3555 -> 0 bytes
+- .../codeservermod/mixin/ThrownEggEntityMixin.class |  Bin 1887 -> 0 bytes
+- .../codeservermod/mixin/VillagerTradeMixin.class   |  Bin 1603 -> 0 bytes
+- .../codeservermod/mixin/VillagerWakeMixin.class    |  Bin 1914 -> 0 bytes
+- build/reports/problems/problems-report.html        |   17 +-
+- .../tmp/compileJava/previous-compilation-data.bin  |  Bin 171609 -> 222430 bytes
+- opencode-output.log                                | 2308 +++++++-------------
+- src/main/java/pro/coreservermod/CoreServerMod.java |    1 +
+- 39 files changed, 752 insertions(+), 1652 deletions(-)
+- M .gradle/9.8.1/checksums/checksums.lock
+- M .gradle/9.8.1/checksums/md5-checksums.bin
+- M .gradle/9.8.1/checksums/sha1-checksums.bin
+- M .gradle/9.8.1/executionHistory/executionHistory.bin
+- M .gradle/9.8.1/executionHistory/executionHistory.lock
+- M .gradle/9.8.1/fileHashes/fileHashes.bin
+- M .gradle/9.8.1/fileHashes/fileHashes.lock
+- M .gradle/buildOutputCleanup/buildOutputCleanup.lock
+- M .gradle/buildOutputCleanup/cache.properties
+- M .gradle/buildOutputCleanup/outputFiles.bin
+- D .gradle/file-system.probe
+- M README.md
+- D build/classes/java/main/CoreServerMod-refmap.json
+- D build/classes/java/main/pro/codeservermod/Config.class
+- D build/classes/java/main/pro/codeservermod/CoreServerMod.class
+- D build/classes/java/main/pro/codeservermod/handler/AnimalBreedingHandler.class
+- D build/classes/java/main/pro/codeservermod/handler/BabyGrowthHandler.class
+- D build/classes/java/main/pro/codeservermod/handler/ChickenEggHandler.class
+- D build/classes/java/main/pro/codeservermod/handler/ChickenSpawnHandler.class
+- D build/classes/java/main/pro/codeservermod/handler/CropGrowthHandler.class
+- D build/classes/java/main/pro/codeservermod/handler/IronGolemHandler.class
+- D build/classes/java/main/pro/codeservermod/handler/SaplingHandler.class
+- D build/classes/java/main/pro/codeservermod/handler/SheepWoolHandler.class
+- D build/classes/java/main/pro/codeservermod/handler/SugarCaneHandler.class
+- D build/classes/java/main/pro/codeservermod/handler/VillagerEmeraldHandler.class
+- D build/classes/java/main/pro/codeservermod/mixin/AnimalEntityMixin.class
+- D build/classes/java/main/pro/codeservermod/mixin/ChickenEntityMixin.class
+- D build/classes/java/main/pro/codeservermod/mixin/CropBlockMixin.class
+- D build/classes/java/main/pro/codeservermod/mixin/SaplingGeneratorMixin.class
+- D build/classes/java/main/pro/codeservermod/mixin/SheepEntityMixin.class
+- D build/classes/java/main/pro/codeservermod/mixin/SheepShearedMixin.class
+- D build/classes/java/main/pro/codeservermod/mixin/SugarCaneBlockMixin.class
+- D build/classes/java/main/pro/codeservermod/mixin/ThrownEggEntityMixin.class
+- D build/classes/java/main/pro/codeservermod/mixin/VillagerTradeMixin.class
+- D build/classes/java/main/pro/codeservermod/mixin/VillagerWakeMixin.class
+- M build/reports/problems/problems-report.html
+- M build/tmp/compileJava/previous-compilation-data.bin
+- M opencode-output.log
+- M src/main/java/pro/coreservermod/CoreServerMod.java
+-?? .gradle/9.8.1/fileHashes/resourceHashesCache.bin
+-?? .gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-merged-a8e9c7b123/
+-?? build/classes/java/main/pro/coreservermod/
+-?? src/main/java/pro/coreservermod/ConfigFixer.java
++[0m$ [0mJAVA_HOME=/usr/lib/jvm/temurin-25-jdk-amd64 ./gradlew build -x test -q 2>&1 | tail -60 && echo "BUILD_EXIT=${PIPESTATUS[0]}"
++BUILD_EXIT=0
+ [0m
+-[0m$ [0mgit ls-files build | head -20; echo '---gitignore---'; cat .gitignore 2>/dev/null; echo '---workflows---'; find .github -type f -maxdepth 3 | sort
+-build/classes/java/main/CoreServerMod-refmap.json
+-build/classes/java/main/pro/codeservermod/Config.class
+-build/classes/java/main/pro/codeservermod/CoreServerMod.class
+-build/classes/java/main/pro/codeservermod/handler/AnimalBreedingHandler.class
+-build/classes/java/main/pro/codeservermod/handler/BabyGrowthHandler.class
+-build/classes/java/main/pro/codeservermod/handler/ChickenEggHandler.class
+-build/classes/java/main/pro/codeservermod/handler/ChickenSpawnHandler.class
+-build/classes/java/main/pro/codeservermod/handler/CropGrowthHandler.class
+-build/classes/java/main/pro/codeservermod/handler/IronGolemHandler.class
+-build/classes/java/main/pro/codeservermod/handler/SaplingHandler.class
+-build/classes/java/main/pro/codeservermod/handler/SheepWoolHandler.class
+-build/classes/java/main/pro/codeservermod/handler/SugarCaneHandler.class
+-build/classes/java/main/pro/codeservermod/handler/VillagerEmeraldHandler.class
+-build/classes/java/main/pro/codeservermod/mixin/AnimalEntityMixin.class
+-build/classes/java/main/pro/codeservermod/mixin/ChickenEntityMixin.class
+-build/classes/java/main/pro/codeservermod/mixin/CropBlockMixin.class
+-build/classes/java/main/pro/codeservermod/mixin/SaplingGeneratorMixin.class
+-build/classes/java/main/pro/codeservermod/mixin/SheepEntityMixin.class
+-build/classes/java/main/pro/codeservermod/mixin/SheepShearedMixin.class
+-build/classes/java/main/pro/codeservermod/mixin/SugarCaneBlockMixin.class
+----gitignore---
+----workflows---
+-.github/workflows/build.yml
+-.github/workflows/opencode.yml
+-.github/workflows/test.yml
+-[0m
+-[0m$ [0mcat .github/workflows/build.yml; echo '---'; cat build.sh; echo '---'; cat .github/workflows/opencode.yml | head -80
+-name: Build
+-
+-on:
+-    push:
+-        branches: [main]
+-    pull_request:
+-    workflow_dispatch:
+-
+-permissions:
+-    contents: write
+-
+-concurrency:
+-    group: build-${{ github.ref }}
+-    cancel-in-progress: true
+-
+-jobs:
+-    build:
+-        name: Build mod
+-        runs-on: ubuntu-latest
+-        timeout-minutes: 30
+-
+-        steps:
+-            - name: Checkout repository
+-              uses: actions/checkout@v4
+-              with:
+-                  fetch-depth: 0
+-
+-            - name: Set up Java 25
+-              uses: actions/setup-java@v4
+-              with:
+-                  distribution: temurin
+-                  java-version: "25"
+-
+-            - name: Set up Gradle
+-              uses: gradle/actions/setup-gradle@v4
+-
+-            - name: Build mod
+-              run: |
+-                  set -euo pipefail
+-                  chmod +x ./gradlew ./build.sh
+-                  ./build.sh
+-
+-            - name: Prepare artifact
+-              run: |
+-                  set -euo pipefail
+-                  mkdir -p build-artifact
+-                  jar="$(find build/libs -maxdepth 1 -type f \
+-                      -name 'CoreServerMod-*.jar' \
+-                      ! -name '*-dev.jar' ! -name '*-sources.jar' \
+-                      -print -quit)"
+-                  if [ -z "$jar" ] || [ ! -f "$jar" ]; then
+-                      echo "::error::Built JAR was not found in build/libs."
+-                      exit 1
+-                  fi
+-                  cp "$jar" build-artifact/
+-                  echo "Built artifact: $jar"
+-
+-            - name: Upload build artifact
+-              uses: actions/upload-artifact@v4
+-              with:
+-                  name: coreservermod-build
+-                  path: build-artifact/*.jar
+-                  if-no-files-found: error
+-                  retention-days: 30
+-
+-            - name: Publish built JAR to repository
+-              if: >-
+-                  (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+-                  github.ref == 'refs/heads/main'
+-              run: |
+-                  set -euo pipefail
+-
+-                  jar="$(find build/libs -maxdepth 1 -type f \
+-                      -name 'CoreServerMod-*.jar' \
+-                      ! -name '*-dev.jar' ! -name '*-sources.jar' \
+-                      -print -quit)"
+-                  mkdir -p dist test-server/mods
+-                  cp "$jar" dist/
+-                  cp "$jar" test-server/mods/
+-
+-                  git config user.name "github-actions[bot]"
+-                  git config user.email \
+-                      "41898282+github-actions[bot]@users.noreply.github.com"
+-
+-                  git add dist test-server/mods
+-
+-                  if git diff --cached --quiet; then
+-                      echo "No artifact changes to commit."
+-                      exit 0
+-                  fi
+-
+-                  git commit -m "Update build artifact [skip ci]"
+-                  git push origin "HEAD:${GITHUB_REF_NAME}"
+----
+-#!/bin/bash
+-# CoreServerMod Build Script
+-# Builds the Fabric mod JAR
+-
+-set -euo pipefail
+-
+-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+-cd "$SCRIPT_DIR"
+-
+-echo "=== CoreServerMod Build Script ==="
+-echo "Working directory: $SCRIPT_DIR"
+-
+-# Check for Gradle wrapper
+-if [ ! -f "./gradlew" ]; then
+-    echo "Generating Gradle wrapper..."
+-    gradle wrapper --gradle-version 9.8.1
+-fi
+-
+-# Make gradlew executable
+-chmod +x ./gradlew
+-
+-# Build the mod
+-echo "Building CoreServerMod..."
+-./gradlew clean build -x test
+-
+-# Check if build was successful
+-JAR_PATH=$(find build/libs -name "CoreServerMod-*.jar" | head -1)
+-if [ -n "$JAR_PATH" ] && [ -f "$JAR_PATH" ]; then
+-    echo "Build successful! JAR: $JAR_PATH"
+-    
+-    # Copy to distribution and test server mods directories
+-    mkdir -p dist test-server/mods
+-    cp "$JAR_PATH" dist/
+-    cp "$JAR_PATH" test-server/mods/
+-    echo "Copied JAR to dist/ and test-server/mods/"
+-else
+-    echo "Build failed! JAR not found."
+-    exit 1
+-fi
+-
+-echo "=== Build Complete ==="---
+-name: Issue to OpenCode
+-
+-on:
+-  issues:
+-    types: [opened]
+-
+-permissions: write-all
+-
+-concurrency:
+-  group: issue-opencode-${{ github.event.issue.number }}
+-  cancel-in-progress: false
+-
+-jobs:
+-  opencode:
+-    runs-on: ubuntu-latest
+-
+-    defaults:
+-      run:
+-        shell: bash
+-        working-directory: ${{ github.workspace }}
+-
+-    steps:
+-      - name: Checkout repository
+-        uses: actions/checkout@v4
+-        with:
+-          fetch-depth: 0
+-          ref: ${{ github.event.repository.default_branch }}
+-          token: ${{ secrets.PAT_TOKEN }}
+-
+-      - name: Setup Node.js
+-        uses: actions/setup-node@v4
+-        with:
+-          node-version: 22
+-
+-      - name: Install OpenCode
+-        run: npm install -g opencode-ai@latest
+-
+-      - name: Configure OpenCode
+-        run: |
+-          set -euo pipefail
+-
+-          mkdir -p "$HOME/.config/opencode"
+-
+-          cat > "$HOME/.config/opencode/opencode.jsonc" <<'JSON'
+-          {
+-            "$schema": "https://opencode.ai/config.json",
+-            "permission": "allow",
+-            "model": "opencode/deepseek-v4.1-flash-free"
+-          }
+-          JSON
+-
+-      - name: Run OpenCode
+-        id: opencode
+-        env:
+-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+-          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+-          EVENT_NAME: ${{ github.event_name }}
+-          ISSUE_NUMBER: ${{ github.event.issue.number }}
+-          ISSUE_TITLE: ${{ github.event.issue.title }}
+-          ISSUE_BODY: ${{ github.event.issue.body }}
+-          ISSUE_URL: ${{ github.event.issue.html_url }}
+-          REPOSITORY: ${{ github.repository }}
+-          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+-        run: |
+-          set -euo pipefail
+-
+-          prompt="$(cat <<EOF
+-          A new GitHub issue has been opened.
+-
+-          Repository: ${REPOSITORY}
+-          Issue number: ${ISSUE_NUMBER}
+-          Issue URL: ${ISSUE_URL}
+-
+-          Title:
+-          ${ISSUE_TITLE:-"(No title)"}
+-
+-          Description:
+-          ${ISSUE_BODY:-"(No description)"}
+-[0m
+-[0m$ [0mmkdir -p /tmp/configfixertest && cat > /tmp/configfixertest/TestConfigFixer.java <<'EOF'
+-import pro.coreservermod.ConfigFixer;
+-import java.nio.file.*;
+-
+-public class TestConfigFixer {
+-    public static void main(String[] args) throws Exception {
+-        Path p = Files.createTempFile("coreservermod", ".json");
+-        String original = "{\n  \"sugar_cane_soul_sand_enabled\": false,\n  \"sapling_growth_time_seconds\": 42,\n  \"custom_legacy_key\": \"keep-me\"\n}";
+-        Files.writeString(p, original);
+-
+-        if (!ConfigFixer.fix(p)) throw new AssertionError("expected fix to report a change");
+-        String fixed = Files.readString(p);
+-        if (!fixed.contains("\"sugar_cane_soul_sand_enabled\": false")) throw new AssertionError("existing boolean changed");
+-        if (!fixed.contains("\"sapling_growth_time_seconds\": 42")) throw new AssertionError("existing int changed");
+-        if (!fixed.contains("\"custom_legacy_key\": \"keep-me\"")) throw new AssertionError("unknown legacy key lost");
+-        if (!fixed.contains("\"crop_growth_time_seconds\": 15")) throw new AssertionError("missing new key not added");
+-        if (!fixed.contains("\"create_flowing_water_washing_interval_ticks\": 10")) throw new AssertionError("last default key not added");
+-
+-        if (ConfigFixer.fix(p)) throw new AssertionError("second fix should be a no-op");
+-
+-        String invalid = "{ not valid json";
+-        Files.writeString(p, invalid);
+-        ConfigFixer.fix(p);
+-        if (!Files.readString(p).equals(invalid)) throw new AssertionError("invalid JSON was overwritten");
+-
+-        System.out.println("ConfigFixer tests passed");
+-        Files.deleteIfExists(p);
+-    }
+-}
+-EOF
+-GSON=$(find ~/.gradle/caches -name 'gson-2.14.0.jar' | head -1)
+-SLF4J=$(find ~/.gradle/caches -name 'slf4j-api-2.0.17.jar' | head -1)
+-CP="build/classes/java/main:$GSON:$SLF4J"
+-/usr/lib/jvm/temurin-25-jdk-amd64/bin/javac -cp "$CP" -d /tmp/configfixertest /tmp/configfixertest/TestConfigFixer.java && /usr/lib/jvm/temurin-25-jdk-amd64/bin/java -cp "/tmp/configfixertest:$CP" TestConfigFixer
+-Exception in thread "main" java.lang.NoClassDefFoundError: net/fabricmc/api/DedicatedServerModInitializer
+-	at java.base/java.lang.ClassLoader.defineClass1(Native Method)
+-	at java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:962)
+-	at java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:144)
+-	at java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:776)
+-	at java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:691)
+-	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:620)
+-	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:578)
+-	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490)
+-	at pro.coreservermod.ConfigFixer.fix(ConfigFixer.java:36)
+-	at TestConfigFixer.main(TestConfigFixer.java:10)
+-Caused by: java.lang.ClassNotFoundException: net.fabricmc.api.DedicatedServerModInitializer
+-	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:580)
+-	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490)
+-	... 10 more
+-[0m
+-[0m$ [0mfind ~/.gradle/caches -name 'fabric-loader-*.jar' | head -10
+-/home/runner/.gradle/caches/modules-2/files-2.1/net.fabricmc/fabric-loader/0.19.5/ff9e65cffca4a67f31523e1807fe0855940fcbfa/fabric-loader-0.19.5.jar
+-[0m
+-[0m$ [0mGSON=$(find ~/.gradle/caches -name 'gson-2.14.0.jar' | head -1)
+-SLF4J=$(find ~/.gradle/caches -name 'slf4j-api-2.0.17.jar' | head -1)
+-LOADER=$(find ~/.gradle/caches -name 'fabric-loader-0.19.5.jar' | head -1)
+-CP="build/classes/java/main:$GSON:$SLF4J:$LOADER"
+-/usr/lib/jvm/temurin-25-jdk-amd64/bin/java -cp "/tmp/configfixertest:$CP" TestConfigFixer
+-SLF4J(W): No SLF4J providers were found.
+-SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+-SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+-ConfigFixer tests passed
+-[0m
+-[0m$ [0mJAVA_HOME=/usr/lib/jvm/temurin-25-jdk-amd64 ./gradlew build --console=plain
+-> Configure project :
+-Fabric Loom: 1.19.3
+-
+-> Task :compileJava UP-TO-DATE
+-> Task :generateConfig
+-> Task :processResources
+-> Task :classes
+-> Task :processIncludeJars
+-> Task :compileTestJava NO-SOURCE
+-> Task :jar
+-> Task :processTestResources NO-SOURCE
+-> Task :assemble
+-> Task :testClasses UP-TO-DATE
+-> Task :test NO-SOURCE
+-> Task :validateAccessWidener NO-SOURCE
+-> Task :check UP-TO-DATE
+-> Task :build
+-
+-[Incubating] Problems report is available at: file:///home/runner/work/mcJava/mcJava/build/reports/problems/problems-report.html
+-
+-Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+-
+-You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+-
+-For more on this, please refer to https://docs.gradle.org/9.8.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+-
+-BUILD SUCCESSFUL in 1s
+-5 actionable tasks: 4 executed, 1 up-to-date
+-Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.8.1/userguide/configuration_cache_enabling.html
+-[0m
+-[0m$ [0mgit diff -- README.md src/main/java/pro/coreservermod/CoreServerMod.java && git diff --no-index /dev/null src/main/java/pro/coreservermod/ConfigFixer.java | head -100
+-diff --git a/README.md b/README.md
+-index 4f243fb..26f0fe2 100644
+---- a/README.md
+-+++ b/README.md
+-@@ -80,7 +80,7 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
+- 
+- ## Configuration
+- 
+--The mod generates a configuration file at `config/coreservermod.json` on first launch. All features can be toggled and intervals adjusted:
+-+The mod generates a configuration file at `config/coreservermod.json` on first launch. On startup, any options added by a newer version are written into an existing config file with their default values; existing values are left unchanged. All features can be toggled and intervals adjusted:
+- 
+- ```json
+- {
+-diff --git a/src/main/java/pro/coreservermod/CoreServerMod.java b/src/main/java/pro/coreservermod/CoreServerMod.java
+-index 3e3d87c..b10a9be 100644
+---- a/src/main/java/pro/coreservermod/CoreServerMod.java
+-+++ b/src/main/java/pro/coreservermod/CoreServerMod.java
+-@@ -57,6 +57,7 @@ public class CoreServerMod implements DedicatedServerModInitializer {
+-             if (!Files.exists(CONFIG_PATH)) {
+-                 saveDefaultConfig();
+-             }
+-+            ConfigFixer.fix(CONFIG_PATH);
+-             String json = Files.readString(CONFIG_PATH);
+-             CONFIG = Config.fromJson(json);
+-             LOGGER.info("Configuration loaded from {}", CONFIG_PATH);
+-diff --git a/src/main/java/pro/coreservermod/ConfigFixer.java b/src/main/java/pro/coreservermod/ConfigFixer.java
+-new file mode 100644
+-index 0000000..2cf419b
+---- /dev/null
+-+++ b/src/main/java/pro/coreservermod/ConfigFixer.java
+-@@ -0,0 +1,63 @@
+-+package pro.coreservermod;
+-+
+-+import com.google.gson.Gson;
+-+import com.google.gson.GsonBuilder;
+-+import com.google.gson.JsonElement;
+-+import com.google.gson.JsonObject;
+-+import com.google.gson.JsonParser;
+-+
+-+import java.nio.file.Files;
+-+import java.nio.file.Path;
+-+import java.util.Map;
+-+
+-+public final class ConfigFixer {
+-+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+-+
+-+    private ConfigFixer() {
+-+    }
+-+
+-+    public static boolean fix(Path configPath) {
+-+        if (!Files.exists(configPath)) {
+-+            return false;
+-+        }
+-+
+-+        try {
+-+            JsonElement parsed = JsonParser.parseString(Files.readString(configPath));
+-+            if (!parsed.isJsonObject()) {
+-+                CoreServerMod.LOGGER.warn("Configuration at {} is not a JSON object, skipping config fix", configPath);
+-+                return false;
+-+            }
+-+
+-+            JsonObject existing = parsed.getAsJsonObject();
+-+            JsonObject defaults = JsonParser.parseString(Config.getDefaultJson()).getAsJsonObject();
+-+
+-+            if (addMissingValues(existing, defaults)) {
+-+                Files.writeString(configPath, GSON.toJson(existing));
+-+                CoreServerMod.LOGGER.info("Added missing configuration values to {}", configPath);
+-+                return true;
+-+            }
+-+        } catch (Exception e) {
+-+            CoreServerMod.LOGGER.warn("Failed to check configuration for missing values", e);
+-+        }
+-+
+-+        return false;
+-+    }
+-+
+-+    private static boolean addMissingValues(JsonObject target, JsonObject defaults) {
+-+        boolean changed = false;
+-+
+-+        for (Map.Entry<String, JsonElement> entry : defaults.entrySet()) {
+-+            String key = entry.getKey();
+-+            JsonElement defaultValue = entry.getValue();
+-+
+-+            if (!target.has(key)) {
+-+                target.add(key, defaultValue.deepCopy());
+-+                changed = true;
+-+            } else if (target.get(key).isJsonObject() && defaultValue.isJsonObject()) {
+-+                changed |= addMissingValues(target.getAsJsonObject(key), defaultValue.getAsJsonObject());
+-+            }
+-+        }
+-+
+-+        return changed;
+-+    }
+-+}
+-[0m
+-[0m$ [0mgit add README.md src/main/java/pro/coreservermod/ConfigFixer.java src/main/java/pro/coreservermod/CoreServerMod.java && git commit -m "Add config fixer for missing options on startup (#67)" && git push origin main
+-Author identity unknown
+-
+-*** Please tell me who you are.
+-
+-Run
+-
+-  git config --global user.email "you@example.com"
+-  git config --global user.name "Your Name"
+-
+-to set your account's default identity.
+-Omit --global to set the identity only in this repository.
+-
+-fatal: unable to auto-detect email address (got 'runner@runnervmtai0g.(none)')
+-[0m
+-[0m$ [0mgit log -5 --format='%an <%ae>'
+-github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+-github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+-github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+-github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+-github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+-[0m
+-[0m$ [0mgit -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m "Add config fixer for missing options on startup (#67)" && git push origin main
+-[main 747e4a7] Add config fixer for missing options on startup (#67)
+- 3 files changed, 65 insertions(+), 1 deletion(-)
+- create mode 100644 src/main/java/pro/coreservermod/ConfigFixer.java
+-To https://github.com/promikailamin/mcJava
+-   e2a7e04..747e4a7  main -> main
+-[0m
+-[0m$ [0mgh issue comment 67 --repo promikailamin/mcJava --body "Implemented a config fixer.
+-
+-- Added \`ConfigFixer\` which runs on server startup after the config is loaded/created.
+-- It compares the existing \`config/coreservermod.json\` against the current defaults and adds only missing keys with their default values.
+-- Existing values, including unknown/legacy keys, are left unchanged.
+-- The file is only rewritten when missing options are actually added; invalid JSON is left untouched.
+-- The check is idempotent, so subsequent startups make no changes.
+-
+-Validation: \`./gradlew build\` passed with Java 25, and a standalone test verified that existing values and legacy keys are preserved while missing defaults are added."
+-https://github.com/promikailamin/mcJava/issues/67#issuecomment-6405351633
+-[0m
+-Implemented and pushed the config fixer.
+-
+-- Added `ConfigFixer` to merge missing default options into an existing config while preserving current and legacy values.
+-- Runs automatically during server config loading; only rewrites the file when changes are needed.
+-- Verified with `./gradlew build` on Java 25 and a standalone behavior test.
+-- Commit: `747e4a7`
+-- Issue comment: https://github.com/promikailamin/mcJava/issues/67#issuecomment-6405351633
+diff --git a/src/main/java/pro/coreservermod/handler/SpawnerSupport.java b/src/main/java/pro/coreservermod/handler/SpawnerSupport.java
+index 76eeb6d..b27c28c 100644
+--- a/src/main/java/pro/coreservermod/handler/SpawnerSupport.java
++++ b/src/main/java/pro/coreservermod/handler/SpawnerSupport.java
+@@ -65,7 +65,7 @@ public final class SpawnerSupport {
+ 
+         for (BlockPos check : BlockPos.betweenClosed(minX, minY, minZ, maxX, maxY, maxZ)) {
+             BlockState state = world.getBlockState(check);
+-            if (!isAirOrWater(state)) return false;
++            if (!isAirOrLiquid(state)) return false;
+         }
+         return true;
+     }
+@@ -74,7 +74,7 @@ public final class SpawnerSupport {
+         return world.getEntitiesOfClass(Entity.class, box, Entity::isAlive).isEmpty();
+     }
+ 
+-    public static boolean isAirOrWater(BlockState state) {
+-        return state.isAir() || state.is(Blocks.WATER);
++    public static boolean isAirOrLiquid(BlockState state) {
++        return state.isAir() || state.is(Blocks.WATER) || state.is(Blocks.LAVA);
+     }
+ }
 [0m
-[0m$ [0mgit add README.md src/main/java/pro/coreservermod/ConfigFixer.java src/main/java/pro/coreservermod/CoreServerMod.java && git commit -m "Add config fixer for missing options on startup (#67)" && git push origin main
-Author identity unknown
-
-*** Please tell me who you are.
-
-Run
-
-  git config --global user.email "you@example.com"
-  git config --global user.name "Your Name"
-
-to set your account's default identity.
-Omit --global to set the identity only in this repository.
-
-fatal: unable to auto-detect email address (got 'runner@runnervmtai0g.(none)')
+[0m$ [0mgit status --short -- README.md src/main/java dist test-server/mods | cat && echo "---all tracked modified---" && git status --short | grep -v '^??' | head -80
+M README.md
+ M src/main/java/pro/coreservermod/handler/SpawnerSupport.java
+---all tracked modified---
+ M .gradle/9.8.1/checksums/checksums.lock
+ M .gradle/9.8.1/checksums/md5-checksums.bin
+ M .gradle/9.8.1/checksums/sha1-checksums.bin
+ M .gradle/9.8.1/executionHistory/executionHistory.bin
+ M .gradle/9.8.1/executionHistory/executionHistory.lock
+ M .gradle/9.8.1/fileHashes/fileHashes.bin
+ M .gradle/9.8.1/fileHashes/fileHashes.lock
+ M .gradle/9.8.1/fileHashes/resourceHashesCache.bin
+ M .gradle/buildOutputCleanup/buildOutputCleanup.lock
+ M README.md
+ M build/classes/java/main/pro/coreservermod/handler/SpawnerSupport.class
+ M build/libs/CoreServerMod-1.0.0.jar
+ M build/tmp/compileJava/previous-compilation-data.bin
+ M opencode-output.log
+ M src/main/java/pro/coreservermod/handler/SpawnerSupport.java
 [0m
-[0m$ [0mgit log -5 --format='%an <%ae>'
-github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-[0m
-[0m$ [0mgit -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m "Add config fixer for missing options on startup (#67)" && git push origin main
-[main 747e4a7] Add config fixer for missing options on startup (#67)
- 3 files changed, 65 insertions(+), 1 deletion(-)
- create mode 100644 src/main/java/pro/coreservermod/ConfigFixer.java
+[0m$ [0mgit add README.md src/main/java/pro/coreservermod/handler/SpawnerSupport.java && git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m "Allow iron golems to spawn in lava (#68)" && git push origin main
+[main 5a0cd5b] Allow iron golems to spawn in lava (#68)
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 To https://github.com/promikailamin/mcJava
-   e2a7e04..747e4a7  main -> main
+   61a2e72..5a0cd5b  main -> main
 [0m
-[0m$ [0mgh issue comment 67 --repo promikailamin/mcJava --body "Implemented a config fixer.
+[0m$ [0mgh issue comment 68 --repo promikailamin/mcJava --body "Implemented lava support for CreateVillager iron golem spawning.
 
-- Added \`ConfigFixer\` which runs on server startup after the config is loaded/created.
-- It compares the existing \`config/coreservermod.json\` against the current defaults and adds only missing keys with their default values.
-- Existing values, including unknown/legacy keys, are left unchanged.
-- The file is only rewritten when missing options are actually added; invalid JSON is left untouched.
-- The check is idempotent, so subsequent startups make no changes.
+- Updated spawn-space validation so a position is valid when it contains air, water, or lava (flowing water/lava included).
+- This now matches the existing water behavior: valid bases (cobblestone, mud, hopper) can have lava or flowing lava above them.
+- Updated the README to document the new behavior.
 
-Validation: \`./gradlew build\` passed with Java 25, and a standalone test verified that existing values and legacy keys are preserved while missing defaults are added."
-https://github.com/promikailamin/mcJava/issues/67#issuecomment-6405351633
+Validation: \`./gradlew build -x test\` passed with Java 25.
+
+Commit: \`5a0cd5b\`"
+https://github.com/promikailamin/mcJava/issues/68#issuecomment-6410181027
 [0m
-Implemented and pushed the config fixer.
+Implemented and pushed lava support for iron golem spawning.
 
-- Added `ConfigFixer` to merge missing default options into an existing config while preserving current and legacy values.
-- Runs automatically during server config loading; only rewrites the file when changes are needed.
-- Verified with `./gradlew build` on Java 25 and a standalone behavior test.
-- Commit: `747e4a7`
-- Issue comment: https://github.com/promikailamin/mcJava/issues/67#issuecomment-6405351633
+- Spawn spaces now allow air, water, or lava, including flowing water/lava.
+- Updated README documentation.
+- `./gradlew build -x test` passed with Java 25.
+- Commit: `5a0cd5b`
+- Issue comment: https://github.com/promikailamin/mcJava/issues/68#issuecomment-6410181027
