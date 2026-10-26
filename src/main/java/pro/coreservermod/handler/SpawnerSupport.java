@@ -65,7 +65,7 @@ public final class SpawnerSupport {
 
         for (BlockPos check : BlockPos.betweenClosed(minX, minY, minZ, maxX, maxY, maxZ)) {
             BlockState state = world.getBlockState(check);
-            if (!isAirOrWater(state)) return false;
+            if (!isAirOrLiquid(state)) return false;
         }
         return true;
     }
@@ -74,7 +74,7 @@ public final class SpawnerSupport {
         return world.getEntitiesOfClass(Entity.class, box, Entity::isAlive).isEmpty();
     }
 
-    public static boolean isAirOrWater(BlockState state) {
-        return state.isAir() || state.is(Blocks.WATER);
+    public static boolean isAirOrLiquid(BlockState state) {
+        return state.isAir() || state.is(Blocks.WATER) || state.is(Blocks.LAVA);
     }
 }

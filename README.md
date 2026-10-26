@@ -20,7 +20,7 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
 - Tagged villagers attempt to spawn one iron golem every 5 seconds when a valid spawn position exists
 - Spawn areas are searched up to 16 blocks horizontally and 4 vertically; chat messages announce immediately when an area is found or lost
 - Iron golems only spawn on top of cobblestone, mud block, or hopper blocks
-- A spawn position must be air or water with no buttons, trapdoors, slabs, or other non-air blocks in the mob's space; water above a valid base is allowed
+- A spawn position must be air, water, or lava (including flowing water/lava) with no buttons, trapdoors, slabs, or other non-air blocks in the mob's space; water or lava above a valid base is allowed
 - Does not require beds, village membership, gossip, panic, nearby mobs, professions, or other vanilla golem eligibility checks
 - When a tagged villager is no longer standing on an iron block, its tag, hologram, and golem-spawning power are removed
 - Other villagers retain vanilla behavior
