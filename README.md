@@ -80,7 +80,7 @@ A Fabric server-side mod for Minecraft Java Edition 26.2 that accelerates variou
 
 ## Configuration
 
-The mod generates a configuration file at `config/coreservermod.json` on first launch. All features can be toggled and intervals adjusted:
+The mod generates a configuration file at `config/coreservermod.json` on first launch. On startup, any options added by a newer version are written into an existing config file with their default values; existing values are left unchanged. All features can be toggled and intervals adjusted:
 
 ```json
 {

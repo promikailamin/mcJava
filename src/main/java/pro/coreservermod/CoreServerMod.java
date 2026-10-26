@@ -57,6 +57,7 @@ public class CoreServerMod implements DedicatedServerModInitializer {
             if (!Files.exists(CONFIG_PATH)) {
                 saveDefaultConfig();
             }
+            ConfigFixer.fix(CONFIG_PATH);
             String json = Files.readString(CONFIG_PATH);
             CONFIG = Config.fromJson(json);
             LOGGER.info("Configuration loaded from {}", CONFIG_PATH);
